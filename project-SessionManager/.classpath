@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="lib/dom4j-1.6.1.jar" sourcepath="D:/Library/dom4j-1.6.1/src/java"/>
 	<classpathentry kind="lib" path="lib/swt.jar"/>
 	<classpathentry kind="lib" path="lib/commons-logging.jar"/>
