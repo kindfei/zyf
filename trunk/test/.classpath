@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="lib" path="conf"/>
+	<classpathentry kind="lib" path="log4j"/>
+	<classpathentry kind="lib" path="lib/swt/swt.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-4.0.5.GA/jboss-client.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-httpclient-3.0.jar"/>
+	<classpathentry kind="lib" path="lib/quartz-1.5.2.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/velocity-1.4.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart/jcommon-1.0.9.jar"/>
+	<classpathentry kind="lib" path="lib/jfreechart/jfreechart-1.0.5.jar"/>
+	<classpathentry kind="lib" path="lib/Sun/activation.jar"/>
+	<classpathentry kind="lib" path="lib/Sun/mail.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-email-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/IBM/com.ibm.mq-0.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/IBM/com.ibm.mqjms-0.0.1.jar"/>
+	<classpathentry kind="lib" path="lib/IBM/db2jcc.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/log4j-1.2.13.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-logging.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/backport-util-concurrent.jar" sourcepath="E:/Library/backport-util-concurrent-3.1/src"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
