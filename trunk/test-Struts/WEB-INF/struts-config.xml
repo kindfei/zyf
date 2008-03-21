@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="ISO-8859-1" ?>
+
+<!DOCTYPE struts-config PUBLIC
+          "-//Apache Software Foundation//DTD Struts Configuration 1.1//EN"
+          "http://jakarta.apache.org/struts/dtds/struts-config_1_1.dtd">
+
+<struts-config>
+
+	<form-beans>
+		<form-bean name="FooForm" type="test.struts.form.FooForm" />
+		<form-bean name="RegisterForm" type="test.struts.form.RegisterForm" />
+	</form-beans>
+
+	<action-mappings>
+		<action path="/regpage" 
+				type="org.apache.struts.actions.ForwardAction"
+				parameter="/register/register.jsp">
+		</action>
+		<action path="/register" 
+				type="test.struts.action.RegisterAction" 
+				name="RegisterForm" 
+				scope="session" 
+				validate="false"
+				input="/register/register.jsp">
+			<forward name="ok" path="/register/confirm.jsp" />
+		</action>
+		<action path="/confirm" 
+				type="test.struts.action.ConfirmAction">
+			<forward name="ok" path="/register/finish.jsp" />
+			<forward name="error" path="/register/error.jsp"></forward>
+		</action>
+		
+		<action path="/searchCity" type="test.struts.action.AjaxAction">
+		</action>
+		
+		<action path="/push" type="test.struts.action.PushAction">
+		</action>
+	</action-mappings>
+
+	<message-resources parameter="ApplicationResources.properties" />
+
+</struts-config>
