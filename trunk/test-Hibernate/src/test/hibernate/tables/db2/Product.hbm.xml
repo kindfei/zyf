@@ -1,0 +1,45 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.2
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="test.hibernate.tables.db2.Product" 
+    table="PRODUCTS"
+>
+
+    <id
+        name="productId"
+        type="java.lang.String"
+        column="PRODUCT_ID"
+    >
+    
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="productName"
+        type="java.lang.String"
+        column="PRODUCT_NAME"
+        length="50"
+    />
+    <property
+        name="leverage"
+        type="java.lang.Integer"
+        column="LEVERAGE"
+        length="5"
+    />
+
+    <!-- Associations -->
+  
+
+</class>
+</hibernate-mapping>
