@@ -21,5 +21,6 @@
 	<classpathentry kind="lib" path="lib/Apache/commons/commons-logging.jar"/>
 	<classpathentry kind="lib" path="lib/dom4j-1.6.1/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="lib/backport-util-concurrent.jar" sourcepath="E:/Library/backport-util-concurrent-3.1/src"/>
+	<classpathentry kind="lib" path="lib/iaik_jce_full.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
