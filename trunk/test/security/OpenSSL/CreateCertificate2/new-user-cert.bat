@@ -1,0 +1,1 @@
+./CreateCertificate.cmd new-user-cert

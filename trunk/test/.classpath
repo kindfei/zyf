@@ -4,6 +4,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="conf"/>
 	<classpathentry kind="lib" path="log4j"/>
+	<classpathentry kind="lib" path="secconf"/>
 	<classpathentry kind="lib" path="lib/swt/swt.jar"/>
 	<classpathentry kind="lib" path="lib/jboss-4.0.5.GA/jboss-client.jar"/>
 	<classpathentry kind="lib" path="lib/Apache/commons/commons-httpclient-3.0.jar"/>
