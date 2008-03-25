@@ -1,15 +1,21 @@
 package test.basic.security;
 
+import iaik.security.provider.IAIK;
+
 import java.io.FileInputStream;
 import java.security.Key;
 import java.security.KeyStore;
 import java.security.Provider;
+import java.security.Security;
 import java.security.cert.Certificate;
 import java.util.Enumeration;
 
 public class TestSecurity {
 	public static void main(String[] args) {
 		try {
+			Security.insertProviderAt(new IAIK(), 1);
+			IAIK.addAsJDK14Provider();
+			
 			KeyStore ks = KeyStore.getInstance("jks");
 			ks.load(new FileInputStream("secconf/pro1621keystore.keystore"), new char[] {'s','t','r','e','a','m','p','a','5','5'});
 //			ks.load(new FileInputStream("secconf/pro1622keystore.keystore"), new char[] {'t','r','a','d','e','r','p','a','5','5'});
