@@ -1,0 +1,17 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+<meta http-equiv="refresh" content=1800>
+<title>极慧网</title>
+<link href="../css/index.css" rel="stylesheet" type="text/css" />
+	<script language="JavaScript" type="text/javascript" src="../js/menu.js"></script>
+</head>
+<body onclick="parent.location.href='./?module=Main';" style="cursor:pointer; background-color:#000000;" >
+<div id="logo">
+  <div id="topwelcome">张轶飞,欢迎你  </div>
+  <div id="topyestody">昨日：08:59出勤 17:31退勤  缺勤0小时 <br/>本日：08:38出勤  缺勤0小时  <span style="color:#ccc">2007年12月26日 星期三 13:45 [出勤]</span></div>
+</div>
+
+</body>
+</html>

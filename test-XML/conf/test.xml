@@ -1,0 +1,28 @@
+<?xml version="1.0"?>
+<customer>
+	<name first="yifei" last="zhang">ZhangYifei</name>
+	
+	<!--comment-->
+	<![CDATA[haha]]>
+	
+	<sex>
+		male
+	</sex>
+	
+	<address>
+		<country>china</country>
+		<city>dalian</city>
+		<zip>116021</zip>
+	</address>
+	
+	<personal public="false">
+		<birthday>
+			<year>1980</year>
+			<month>12</month>
+			<day>22</day>
+		</birthday>
+		<email>iameinstein@tom.com</email>
+		<email>iameinstein@sina.com</email>
+		<number>13591329795</number>
+	</personal>
+</customer>
