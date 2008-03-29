@@ -1,4 +1,4 @@
-package test.basic.security;
+package test.security;
 
 import iaik.security.provider.IAIK;
 

@@ -1,4 +1,4 @@
-package test.basic;
+package test;
 
 import java.math.BigDecimal;
 import java.text.SimpleDateFormat;

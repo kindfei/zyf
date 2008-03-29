@@ -1,4 +1,4 @@
-package test.basic;
+package test.basic.inheritance;
 
 public class ClassTest {
 	

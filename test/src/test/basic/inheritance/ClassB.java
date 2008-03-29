@@ -1,4 +1,4 @@
-package test.basic;
+package test.basic.inheritance;
 
 public class ClassB extends ClassA {
 	static ClassTest sa = new ClassTest("ClassB parameter [sa] initialize");
