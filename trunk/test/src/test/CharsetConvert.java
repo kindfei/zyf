@@ -1,4 +1,4 @@
-package zyf.charset.convert;
+package test;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -10,12 +10,12 @@ import java.io.InputStreamReader;
 import java.io.OutputStreamWriter;
 import java.io.UnsupportedEncodingException;
 
-public class Convert {
+public class CharsetConvert {
 	
 	private String srcCharset;
 	private String tarCharset;
 	
-	public Convert(String s2, String s3) {
+	public CharsetConvert(String s2, String s3) {
 		srcCharset = s2;
 		tarCharset = s3;
 	}
@@ -107,7 +107,7 @@ public class Convert {
 	}
 	
 	public static void main(String[] args) {
-		Convert test = new Convert(args[1], args[2]);
+		CharsetConvert test = new CharsetConvert(args[1], args[2]);
 		File root = new File(args[0]);
 		test.walkFolder(root);
 	}

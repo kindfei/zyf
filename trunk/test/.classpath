@@ -3,6 +3,7 @@
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="conf"/>
+	<classpathentry kind="lib" path="quartz"/>
 	<classpathentry kind="lib" path="log4j"/>
 	<classpathentry kind="lib" path="secconf"/>
 	<classpathentry kind="lib" path="lib/swt/swt.jar"/>

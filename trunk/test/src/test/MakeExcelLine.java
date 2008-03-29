@@ -1,4 +1,4 @@
-package test.basic;
+package test;
 
 public class MakeExcelLine {
 	public static void main(String args[]) {
