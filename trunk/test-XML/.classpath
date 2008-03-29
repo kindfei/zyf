@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JDK1.5.0_14"/>
+	<classpathentry kind="src" path="src"/>
+	<classpathentry kind="src" path="dom4j"/>
+	<classpathentry kind="lib" path="conf"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/jaxen-1.1-beta-6.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/jaxme-api-0.3.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/jsr173_1.0_api.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/msv-20030807.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/pull-parser-2.1.10.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/relaxngDatatype-20030807.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/xpp3-1.1.3.3.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/xsdlib-20030807.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/tools/isorelax-20030108.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/tools/jaxme-0.3.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/tools/jaxme-js-0.3.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/tools/jaxme-xs-0.3.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/tools/jtidy-4aug2000r7-dev.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/tools/xalan-2.5.1.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/endorsed/xml-apis-2.0.2.jar"/>
+	<classpathentry kind="lib" path="/test/lib/dom4j-1.6.1/tools/xercesImpl-2.6.2.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
