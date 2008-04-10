@@ -1,6 +1,5 @@
 package test;
 
-import java.io.Serializable;
 import java.math.BigDecimal;
 import java.util.HashMap;
 import java.util.Map;
@@ -38,11 +37,11 @@ public class TestJMS {
 			
 //			new TestP2PAdapter("topic/testTopic", 3).start();
 //			new TestP2PAdapter("topic/testDurableTopic", 3).start();
-//			new TestP2PAdapter("queue/testQueue", 3).start();
+			new TestP2PAdapter("queue/testQueue", 3).start();
 			
 //			new TestPubAdapter("topic/testTopic", 3).start();
 //			new TestPubAdapter("topic/testDurableTopic", 3).start();
-			new TestPubAdapter("queue/testQueue", 3).start();
+//			new TestPubAdapter("queue/testQueue", 3).start();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -154,10 +153,10 @@ class TestP2PAdapter extends Thread {
 
 	public void run() {
 		try {
-			adapter = new P2PMessageAdapter(0, 5);
+			adapter = new P2PMessageAdapter(3);
 			
 			for (int i = 0; i < count; i++) {
-				Listener l = new Listener("Listener-" + i, 0);
+				Listener l = new Listener("Listener-" + i, 2000);
 				adapter.addListener(l);
 			}
 			
@@ -185,10 +184,10 @@ class TestPubAdapter extends Thread {
 
 	public void run() {
 		try {
-			adapter = new PubMessageAdapter(0, 5);
+			adapter = new PubMessageAdapter(2);
 			
 			for (int i = 0; i < count; i++) {
-				Listener l = new Listener("Listener-" + i, 0);
+				Listener l = new Listener("Listener-" + i, 1000);
 				adapter.addListener(l);
 			}
 			

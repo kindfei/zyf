@@ -1,6 +1,6 @@
 package test.jms.jboss;
 
-import java.util.Hashtable;
+import java.util.HashMap;
 
 import javax.jms.Message;
 
@@ -9,8 +9,8 @@ import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 public class P2PMessageAdapter extends MessageAdapter {
 	private BlockingQueue msgQueue;
 	
-	public P2PMessageAdapter(int capacity, int countLimit) throws IllegalAccessException {
-		super(capacity, countLimit, new Hashtable());
+	public P2PMessageAdapter(int capacity) throws IllegalAccessException {
+		super(capacity, new HashMap());
 	}
 
 	public void onMessage(Message msg) {

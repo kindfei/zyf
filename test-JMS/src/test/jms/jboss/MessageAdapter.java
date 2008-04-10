@@ -9,21 +9,19 @@ import javax.jms.MessageListener;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import edu.emory.mathcs.backport.java.util.concurrent.ArrayBlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.SynchronousQueue;
 
 public abstract class MessageAdapter implements MessageListener {
 	private static final Log log = LogFactory.getLog(P2PMessageAdapter.class);
 	
 	protected int capacity;
-	protected int countLimit;
 	protected Map listenerMap;
 	
-	public MessageAdapter(int capacity, int countLimit, Map listenerMap) throws IllegalAccessException {
-		if (capacity <= 0 && countLimit <= 0) throw new IllegalAccessException();
+	public MessageAdapter(int capacity, Map listenerMap) throws IllegalAccessException {
+		if (capacity < 0) throw new IllegalAccessException();
 		this.capacity = capacity;
-		this.countLimit = countLimit;
 		this.listenerMap = listenerMap;
 	}
 	
@@ -37,13 +35,12 @@ public abstract class MessageAdapter implements MessageListener {
 	}
 	
 	public void removeListener(MessageListener listener) {
-		MessageDispatcher dispatcher = (MessageDispatcher) listenerMap.get(listener);
+		MessageDispatcher dispatcher = (MessageDispatcher) listenerMap.remove(listener);
 		if (dispatcher == null) {
 			log.info("Listener:" + listener + " is not exist.");
 			return;
 		}
 		dispatcher.stop();
-		listenerMap.remove(listener);
 	}
 	
 	public void removeAll() {
@@ -62,10 +59,6 @@ public abstract class MessageAdapter implements MessageListener {
 		return capacity;
 	}
 	
-	public int getCountLimit() {
-		return countLimit;
-	}
-	
 	public MessageDispatcher getDispatcher(MessageListener listener) {
 		return (MessageDispatcher) listenerMap.get(listener);
 	}
@@ -74,8 +67,8 @@ public abstract class MessageAdapter implements MessageListener {
 	
 	protected BlockingQueue createMsgQueue() {
 		BlockingQueue msgQueue = null;
-		if (capacity > 0) {
-			msgQueue = new ArrayBlockingQueue(capacity);
+		if (capacity == 0) {
+			msgQueue = new SynchronousQueue();
 		} else {
 			msgQueue = new LinkedBlockingQueue();
 		}
@@ -83,10 +76,12 @@ public abstract class MessageAdapter implements MessageListener {
 	}
 	
 	protected void addMessage(BlockingQueue msgQueue, Message msg) throws InterruptedException {
-		int size = msgQueue.size();
-		if (countLimit > 0 && size > countLimit) {
-			msgQueue.clear();
-			log.warn("msgQueue size:" + size + " > countLimit:" + countLimit + " so clear the queue.");
+		if (capacity > 0) {
+			int size = msgQueue.size();
+			if (size > capacity) {
+				msgQueue.clear();
+				log.warn("msgQueue size:" + size + " > capacity:" + capacity + " so clear the queue.");
+			}
 		}
 		msgQueue.put(msg);
 	}
