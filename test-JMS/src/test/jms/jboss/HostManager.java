@@ -4,19 +4,19 @@ import java.util.Hashtable;
 import java.util.Map;
 
 public class HostManager {
-	private static Map groups = new Hashtable();
+	private Map groups = new Hashtable();
 	
-	static {
-		groups.put("G1", new Group("jnp://10.4.5.28:1099", "jnp://10.4.5.31:1099"));
-		groups.put("G2", new Group("jnp://10.4.5.31:1099", "jnp://10.4.5.28:1099"));
+	public HostManager() {
+		groups.put("G1", new Group("jnp://localhost:1099", "jnp://localhost:1099"));
+		groups.put("G2", new Group("jnp://localhost:1099", "jnp://localhost:1099"));
 	}
 	
-	public static String getFristHost(String groupName) {
+	public String getFristHost(String groupName) {
 		Group g = (Group) groups.get(groupName);
 		return g.getFristHost();
 	}
 	
-	public static String getNextHost(String groupName) {
+	public String getNextHost(String groupName) {
 		Group g = (Group) groups.get(groupName);
 		return g.getNextHost();
 	}

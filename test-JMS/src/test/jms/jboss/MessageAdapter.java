@@ -36,18 +36,6 @@ public abstract class MessageAdapter implements MessageListener {
 		listenerMap.put(listener, dispatcher);
 	}
 	
-	protected abstract BlockingQueue getMsgQueue();
-	
-	protected BlockingQueue createMsgQueue() {
-		BlockingQueue msgQueue = null;
-		if (capacity > 0) {
-			msgQueue = new ArrayBlockingQueue(capacity);
-		} else {
-			msgQueue = new LinkedBlockingQueue();
-		}
-		return msgQueue;
-	}
-	
 	public void removeListener(MessageListener listener) {
 		MessageDispatcher dispatcher = (MessageDispatcher) listenerMap.get(listener);
 		if (dispatcher == null) {
@@ -80,6 +68,18 @@ public abstract class MessageAdapter implements MessageListener {
 	
 	public MessageDispatcher getDispatcher(MessageListener listener) {
 		return (MessageDispatcher) listenerMap.get(listener);
+	}
+	
+	protected abstract BlockingQueue getMsgQueue();
+	
+	protected BlockingQueue createMsgQueue() {
+		BlockingQueue msgQueue = null;
+		if (capacity > 0) {
+			msgQueue = new ArrayBlockingQueue(capacity);
+		} else {
+			msgQueue = new LinkedBlockingQueue();
+		}
+		return msgQueue;
 	}
 	
 	protected void addMessage(BlockingQueue msgQueue, Message msg) throws InterruptedException {

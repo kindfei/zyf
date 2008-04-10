@@ -34,8 +34,6 @@ public abstract class Messenger implements Runnable {
 		log.info("Build end. Destination:" + destName);
 	}
 	
-	protected abstract void build(Connection conn, Destination dest) throws JMSException;
-	
 	public String getDestName() {
 		return destName;
 	}
@@ -59,6 +57,8 @@ public abstract class Messenger implements Runnable {
 			rebuildLock.unlock();
 		}
 	}
+	
+	protected abstract void build(Connection conn, Destination dest) throws JMSException;
 	
 	public void close() {
 		rebuildLock.lock();

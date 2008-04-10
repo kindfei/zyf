@@ -75,9 +75,9 @@ public class ConnectorFactory {
 			log.error(destName + " is not configed in " + fileName);
 			return null;
 		}
-		Connector inst = (Connector) connectorMap.get(groupName);
+		DefaultConnector inst = (DefaultConnector) connectorMap.get(groupName);
 		if (inst == null) {
-			inst = new Connector(groupName, isHA, user, password, clientID);
+			inst = new DefaultConnector(groupName, isHA, user, password, clientID);
 			connectorMap.put(groupName, inst);
 		}
 		return inst;

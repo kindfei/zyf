@@ -1,8 +1,13 @@
 package test;
 
-import javax.jms.JMSException;
+import java.io.Serializable;
+import java.math.BigDecimal;
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.jms.Message;
 import javax.jms.MessageListener;
+import javax.jms.ObjectMessage;
 import javax.jms.TextMessage;
 
 import test.jms.jboss.MessageAdapter;
@@ -10,26 +15,34 @@ import test.jms.jboss.P2PMessageAdapter;
 import test.jms.jboss.PubMessageAdapter;
 import test.jms.jboss.RecvMessenger;
 import test.jms.jboss.SendMessenger;
-import test.jms.jboss.DurableTopicRecvMessenger;
 
 public class TestJMS {
 	
 	public static void main(String[] args) {
 		
 		try {
-//			new TestReceive("topic/testTopic", "L1").start();
-//			new TestReceive("topic/testDurableTopic", "L1").start();
-//			new TestReceive("queue/testQueue", "L1").start();
-//			new TestReceive("queue/testQueue", "L2").start();
-//			new TestReceive("queue/testQueue", "L3").start();
 			
-			new TestAdapterReceive("topic/testTopic").start();
-//			new TestAdapterReceive("topic/testDurableTopic").start();
-//			new TestAdapterReceive("queue/testQueue").start();
+//			TestSend sender1 = new TestSend("topic/testTopic", 1000, 500);
+//			sender1.start();
+//			TestSend sender2 = new TestSend("topic/testDurableTopic", 1000, 500);
+//			sender2.start();
+			TestSend sender3 = new TestSend("queue/testQueue", 1000, 500);
+			sender3.start();
 			
-			new TestSend("topic/testTopic", 10000, false).start();
-//			new TestSend("topic/testDurableTopic", 100, true).start();
-//			new TestSend("queue/testQueue", 1000, false).start();
+			
+//			new TestReceive("topic/testTopic", "L1", 0).start();
+//			new TestReceive("topic/testDurableTopic", "L1", 0).start();
+//			new TestReceive("queue/testQueue", "L1", 0).start();
+//			new TestReceive("queue/testQueue", "L2", 0).start();
+//			new TestReceive("queue/testQueue", "L3", 0).start();
+			
+//			new TestP2PAdapter("topic/testTopic", 3).start();
+//			new TestP2PAdapter("topic/testDurableTopic", 3).start();
+//			new TestP2PAdapter("queue/testQueue", 3).start();
+			
+//			new TestPubAdapter("topic/testTopic", 3).start();
+//			new TestPubAdapter("topic/testDurableTopic", 3).start();
+			new TestPubAdapter("queue/testQueue", 3).start();
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -40,27 +53,36 @@ public class TestJMS {
 class TestSend extends Thread {
 	private String destName;
 	private int msgCount;
-	private boolean sendShutdown;
+	private SendMessenger sender;
+	private int interval;
 	
-	TestSend(String destName, int msgCount, boolean sendShutdown) {
+	public TestSend(String destName, int msgCount, int interval) throws Exception {
 		this.destName = destName;
 		this.msgCount = msgCount;
-		this.sendShutdown = sendShutdown;
+		this.interval = interval;
+
+		sender = new SendMessenger(this.destName);
+	}
+	
+	public void setProperty(String key, String value) {
+		sender.setProperty(key, value);
 	}
 
 	public void run() {
 		try {
-			SendMessenger s = new SendMessenger(destName);
 			String tn = Thread.currentThread().getName();
+			
+			Map prop = new HashMap();
+			prop.put("TEST_TARGET", "ALL");
+			
 			for (int i = 0; i < msgCount; i++) {
-//				if (i % 3 == 0) s.setProperty("type", "feeder");
-//				if (i % 5 == 0) s.setProperty("type", "all");
-				s.send(i + "");
+//				sender.send(i + "");
+				sender.send(new BigDecimal(i), prop);
 				System.out.println(tn + " send: " + i);
-				Thread.sleep(800);
+				Thread.sleep(interval);
 			}
-			if (sendShutdown) s.send("shutdown");
-//			s.close();
+			
+			sender.close();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
@@ -70,70 +92,113 @@ class TestSend extends Thread {
 class TestReceive extends Thread {
 	private String destName;
 	private String name;
-	private RecvMessenger r;
+	private RecvMessenger receiver;
+	private int interval;
 	
-	TestReceive(String destName, String name) {
+	TestReceive(String destName, String name, int interval) {
 		this.destName = destName;
 		this.name = name;
+		this.interval = interval;
 	}
 
 	public void run() {
 		try {
-			r = new RecvMessenger(destName, new Listener(name), "");
+			receiver = new RecvMessenger(destName, new Listener(name, interval));
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void close() {
+		receiver.close();
 	}
 }
 
 class Listener implements MessageListener {
-	String name;
+	private String name;
+	private int interval;
 	
-	Listener(String name) {
+	Listener(String name, int interval) {
 		this.name = name;
+		this.interval = interval;
 	}
 	
 	public void onMessage(Message msg) {
-		TextMessage tMsg = (TextMessage) msg;
 		try {
-			String str = tMsg.getText();
-			System.out.println(name + ":" + str);
-			Thread.sleep(1000);
+			Object obj = null;
+			if (msg instanceof TextMessage) {
+				TextMessage tm = (TextMessage) msg;
+				obj = tm.getText();
+			} else {
+				ObjectMessage om = (ObjectMessage) msg;
+				obj = om.getObject();
+			}
+			System.out.println(name + ":" + obj.getClass().getName() + "=" + obj.toString());
+			if (interval > 0) Thread.sleep(interval);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
 	}
 }
 
-class TestAdapterReceive extends Thread {
+class TestP2PAdapter extends Thread {
 	private String destName;
-	private MessageAdapter adp;
-	private RecvMessenger r;
+	private MessageAdapter adapter;
+	private RecvMessenger receiver;
+	private int count;
 	
-	TestAdapterReceive(String destName) {
+	TestP2PAdapter(String destName, int count) {
 		this.destName = destName;
+		this.count = count;
 	}
 
 	public void run() {
 		try {
-			adp = new P2PMessageAdapter(0, 5);
-			Listener l1 = new Listener("L1");
-			Listener l2 = new Listener("L2");
-			Listener l3 = new Listener("L3");
-			adp.addListener(l1);
-			adp.addListener(l1);
-//			adp.addListener(l2);
-//			adp.addListener(l3);
-			r = new RecvMessenger(destName, adp);
-
-//			Thread.sleep(2000);
-//			adp.removeListener(l1);
-//			Thread.sleep(2000);
-//			adp.removeListener(l2);
-//			Thread.sleep(5000);
-//			r.close();
+			adapter = new P2PMessageAdapter(0, 5);
+			
+			for (int i = 0; i < count; i++) {
+				Listener l = new Listener("Listener-" + i, 0);
+				adapter.addListener(l);
+			}
+			
+			receiver = new RecvMessenger(destName, adapter);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
+	}
+	
+	public void close() {
+		receiver.close();
+	}
+}
+
+class TestPubAdapter extends Thread {
+	private String destName;
+	private MessageAdapter adapter;
+	private RecvMessenger receiver;
+	private int count;
+	
+	TestPubAdapter(String destName, int count) {
+		this.destName = destName;
+		this.count = count;
+	}
+
+	public void run() {
+		try {
+			adapter = new PubMessageAdapter(0, 5);
+			
+			for (int i = 0; i < count; i++) {
+				Listener l = new Listener("Listener-" + i, 0);
+				adapter.addListener(l);
+			}
+			
+			receiver = new RecvMessenger(destName, adapter);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void close() {
+		receiver.close();
 	}
 }
