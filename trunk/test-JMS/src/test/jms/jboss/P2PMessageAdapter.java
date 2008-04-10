@@ -26,12 +26,4 @@ public class P2PMessageAdapter extends MessageAdapter {
 		}
 		return msgQueue;
 	}
-
-	public int countMessage() {
-		return msgQueue.size();
-	}
-
-	public void clearMessage() {
-		msgQueue.clear();
-	}
 }

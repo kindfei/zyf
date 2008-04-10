@@ -16,52 +16,83 @@ import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
 public class SendMessenger extends Messenger {
 	
-	private static final int TYPE_TEXT = 1;
-	private static final int TYPE_OBJECT = 2;
-	private static final boolean transacted = false;
-	private static final int acknowledgeMode = Session.AUTO_ACKNOWLEDGE;
+	private boolean transacted;
+	private int acknowledgeMode;
 	
 	private Session session;
 	private MessageProducer producer;
-	private Map prop;
+	
+	private Map properties;
 
 	public SendMessenger(String destName) 
 			throws BuildException, FailoverException, ConnectException {
-		super(destName);
-		executeBuild();
-		this.prop = new HashMap();
+		this(destName, new HashMap());
 	}
 
-	protected void build(Connection conn, Destination dest) throws JMSException {
+	public SendMessenger(String destName, Map prop) 
+			throws BuildException, FailoverException, ConnectException {
+		this(destName, prop, false, Session.AUTO_ACKNOWLEDGE);
+	}
+
+	public SendMessenger(String destName, Map prop, boolean transacted, int acknowledgeMode) 
+			throws BuildException, FailoverException, ConnectException {
+		
+		super(destName);
+
+		this.transacted = transacted;
+		this.acknowledgeMode = acknowledgeMode;
+		
+		this.properties = prop;
+		
+		executeBuild();
+	}
+
+	public void build(Connection conn, Destination dest) throws JMSException {
 		session = conn.createSession(transacted, acknowledgeMode);
 		producer = session.createProducer(dest);
 	}
 	
 	public void setProperty(String key, String value) {
-		prop.put(key, value);
+		properties.put(key, value);
+	}
+	
+	public String getProperty(String key) {
+		return (String) properties.get(key);
 	}
 	
 	public void removeProperty(String key) {
-		prop.remove(key);
+		properties.remove(key);
+	}
+	
+	public void clearProperty() {
+		properties.clear();
 	}
 
 	public void send(String text) throws JMSException {
-		send(text, TYPE_TEXT);
+		sendMsg(text, null);
+	}
+
+	public void send(String text, Map prop) throws JMSException {
+		sendMsg(text, prop);
 	}
 	
 	public void send(Serializable obj) throws JMSException {
-		send(obj, TYPE_OBJECT);
+		sendMsg(obj, null);
 	}
 	
-	private void send(Object obj, int msgType) throws JMSException {
+	public void send(Serializable obj, Map prop) throws JMSException {
+		sendMsg(obj, prop);
+	}
+	
+	private void sendMsg(Object obj, Map prop) throws JMSException {
 		rebuildLock.lock();
 		try {
-			Message msg = createMsg(obj, msgType);
+			Message msg = createMsg(obj, prop);
 			producer.send(msg);
 		} catch (JMSException e) {
 			try {
 				rebuilt.await(10, TimeUnit.SECONDS);
-				Message msg = createMsg(obj, msgType);
+				Message msg = createMsg(obj, prop);
 				producer.send(msg);
 			} catch (InterruptedException ex) {
 			}
@@ -70,28 +101,28 @@ public class SendMessenger extends Messenger {
 		}
 	}
 	
-	private Message createMsg(Object obj, int msgType) throws JMSException {
+	private Message createMsg(Object obj, Map prop) throws JMSException {
 		Message msg = null;
 		
-		switch (msgType) {
-		case TYPE_TEXT:
+		if (obj instanceof String) {
 			msg = session.createTextMessage((String)obj);
-			break;
-		case TYPE_OBJECT:
+		} else {
 			msg = session.createObjectMessage((Serializable)obj);
-			break;
-		default:
-			return null;
 		}
 		
-		if (prop.size() != 0) {
+		copyProperty(msg, properties);
+		copyProperty(msg, prop);
+		
+		return msg;
+	}
+	
+	private void copyProperty(Message msg, Map prop) throws JMSException {
+		if (prop != null && prop.size() != 0) {
 			for (Iterator iter = prop.entrySet().iterator(); iter.hasNext();) {
 				Map.Entry entry = (Map.Entry) iter.next();
 				msg.setStringProperty((String)entry.getKey(), (String)entry.getValue());
 			}
 		}
-		
-		return msg;
 	}
 
 	protected void innerClose() {

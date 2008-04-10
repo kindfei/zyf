@@ -3,7 +3,6 @@ package test.jms.jboss;
 import java.util.Iterator;
 
 import javax.jms.Message;
-import javax.jms.MessageListener;
 
 import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.ConcurrentHashMap;
@@ -26,15 +25,5 @@ public class PubMessageAdapter extends MessageAdapter {
 	
 	protected BlockingQueue getMsgQueue() {
 		return createMsgQueue();
-	}
-	
-	public int countMessage(MessageListener listener) {
-		MessageDispatcher dispatcher = (MessageDispatcher) listenerMap.get(listener);
-		return dispatcher.getMsgQueue().size();
-	}
-	
-	public void clearMessage(MessageListener listener) {
-		MessageDispatcher dispatcher = (MessageDispatcher) listenerMap.get(listener);
-		dispatcher.getMsgQueue().clear();
 	}
 }

@@ -12,16 +12,16 @@ import javax.jms.TopicSubscriber;
 
 public class DurableTopicRecvMessenger extends Messenger {
 	
-	private static final boolean transacted = false;
-	private static final int acknowledgeMode = Session.AUTO_ACKNOWLEDGE;
-	private static final boolean noLocal = false;
-	
-	private TopicSession session;
-	private TopicSubscriber subscriber;
-	
 	private MessageListener listener;
 	private String name;
 	private String messageSelector;
+	
+	private boolean transacted;
+	private int acknowledgeMode;
+	private boolean noLocal;
+	
+	private TopicSession session;
+	private TopicSubscriber subscriber;
 
 	public DurableTopicRecvMessenger(String destName, MessageListener listener, String name) 
 			throws BuildException, FailoverException, ConnectException {
@@ -30,10 +30,23 @@ public class DurableTopicRecvMessenger extends Messenger {
 
 	public DurableTopicRecvMessenger(String destName, MessageListener listener, String name, String messageSelector) 
 			throws BuildException, FailoverException, ConnectException {
+		this(destName, listener, name, messageSelector, false, Session.AUTO_ACKNOWLEDGE, false);
+	}
+	
+	public DurableTopicRecvMessenger(String destName, MessageListener listener, String name, String messageSelector
+			, boolean transacted, int acknowledgeMode, boolean noLocal) 
+			throws BuildException, FailoverException, ConnectException {
+		
 		super(destName);
+		
 		this.listener = listener;
 		this.name = name;
 		this.messageSelector = messageSelector;
+		
+		this.transacted = transacted;
+		this.acknowledgeMode = acknowledgeMode;
+		this.noLocal = noLocal;
+		
 		executeBuild();
 	}
 	

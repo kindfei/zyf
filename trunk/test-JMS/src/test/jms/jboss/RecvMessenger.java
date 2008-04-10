@@ -9,13 +9,14 @@ import javax.jms.Session;
 
 public class RecvMessenger extends Messenger {
 	
-	private static final boolean transacted = false;
-	private static final int acknowledgeMode = Session.AUTO_ACKNOWLEDGE;
+	private MessageListener listener;
+	private String selector;
+	
+	private boolean transacted;
+	private int acknowledgeMode;
 	
 	private Session session;
 	private MessageConsumer consumer;
-	private MessageListener listener;
-	private String selector;
 
 	public RecvMessenger(String destName, MessageListener listener) 
 			throws BuildException, FailoverException, ConnectException {
@@ -24,9 +25,21 @@ public class RecvMessenger extends Messenger {
 
 	public RecvMessenger(String destName, MessageListener listener, String selector) 
 			throws BuildException, FailoverException, ConnectException {
+		this(destName, listener, selector, false, Session.AUTO_ACKNOWLEDGE);
+	}
+
+	public RecvMessenger(String destName, MessageListener listener, String selector
+			, boolean transacted, int acknowledgeMode) 
+			throws BuildException, FailoverException, ConnectException {
+		
 		super(destName);
+		
 		this.listener = listener;
 		this.selector = selector;
+
+		this.transacted = transacted;
+		this.acknowledgeMode = acknowledgeMode;
+		
 		executeBuild();
 	}
 
