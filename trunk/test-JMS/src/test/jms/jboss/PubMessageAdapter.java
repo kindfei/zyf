@@ -8,8 +8,8 @@ import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.ConcurrentHashMap;
 
 public class PubMessageAdapter extends MessageAdapter {
-	public PubMessageAdapter(int capacity, int countLimit) throws IllegalAccessException {
-		super(capacity, countLimit, new ConcurrentHashMap());
+	public PubMessageAdapter(int capacity) throws IllegalAccessException {
+		super(capacity, new ConcurrentHashMap());
 	}
 
 	public void onMessage(Message msg) {
