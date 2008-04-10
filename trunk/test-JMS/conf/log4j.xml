@@ -7,22 +7,25 @@
 	<!-- console appender -->
 	<appender name="console" class="org.apache.log4j.ConsoleAppender">
 		<param name="Target" value="System.out" />
-		<param name="Threshold" value="info" />
+		<param name="Threshold" value="debug" />
 
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="[%p] [%t %c{1}] %m%n" />
+			<param name="ConversionPattern"
+				value="[%p] [%t %c{1}] %m%n" />
 		</layout>
 	</appender>
-	
+
 	<!-- DailyRollingFileAppender -->
-	<appender name="infoLog" class="org.apache.log4j.DailyRollingFileAppender">
-		<param name="File" value="info.txt" />
+	<appender name="infoLog"
+		class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="info.log" />
 		<param name="Append" value="true" />
 		<param name="Threshold" value="info" />
 		<param name="DatePattern" value="'.'yyyy-MM-dd" />
 
 		<layout class="org.apache.log4j.PatternLayout">
-			<param name="ConversionPattern" value="%d{yyyy/MM/dd HH:mm:ss.SSS} %p %t [%c] %m%n" />
+			<param name="ConversionPattern"
+				value="%d{yyyy/MM/dd HH:mm:ss.SSS} %p %t [%c] %m%n" />
 		</layout>
 	</appender>
 
@@ -31,7 +34,7 @@
 		class="org.apache.log4j.RollingFileAppender">
 		<param name="MaxFileSize" value="10MB" />
 		<param name="MaxBackupIndex" value="10" />
-		<param name="File" value="debug.txt" />
+		<param name="File" value="debug.log" />
 		<param name="Append" value="true" />
 		<param name="Threshold" value="debug" />
 
@@ -43,7 +46,7 @@
 
 	<!-- new appender -->
 	<appender name="new" class="org.apache.log4j.FileAppender">
-		<param name="File" value="new.txt" />
+		<param name="File" value="new.log" />
 		<param name="Append" value="true" />
 		<param name="Threshold" value="info" />
 
@@ -55,7 +58,7 @@
 
 	<!-- old appender -->
 	<appender name="old" class="org.apache.log4j.FileAppender">
-		<param name="File" value="old.txt" />
+		<param name="File" value="old.log" />
 		<param name="Append" value="true" />
 		<param name="Threshold" value="info" />
 
@@ -65,24 +68,33 @@
 		</layout>
 	</appender>
 
-	<!-- new category -->
+	<!-- new category 
 	<category name="test.jboss.messaging.queue.QueueProducer">
 		<level value="info" />
 		<appender-ref ref="new" />
-	</category>
+	</category>-->
 
-	<!-- old category -->
+	<!-- old category 
 	<category name="test.jboss.MQ.queue.QueueProducer">
 		<level value="info" />
 		<appender-ref ref="old" />
-	</category>
+	</category>-->
+	
+	<!-- debug 
+	<logger name="test">
+		<level value="debug" />
+		<appender-ref ref="debugLog" />
+	</logger>-->
 
 	<!-- root -->
 	<root>
 		<level value="debug" />
+		
+		<!-- console -->
 		<appender-ref ref="console" />
-		<appender-ref ref="infoLog" />
-		<appender-ref ref="debugLog" />
+		
+		<!-- info 
+		<appender-ref ref="infoLog" />-->
 	</root>
 
 </log4j:configuration>
