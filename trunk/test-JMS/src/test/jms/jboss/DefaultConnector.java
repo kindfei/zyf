@@ -106,7 +106,7 @@ public class DefaultConnector implements Connector {
 	
 	private void open() throws FailoverException, ConnectException {
 		try {
-			connect(hostManager.getFristHost(groupName));
+			connect(hostManager.getHost(groupName));
 		} catch (ConnectException e) {
 			if (isHA) {
 				failover(e);
