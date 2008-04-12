@@ -31,17 +31,19 @@ public class TestJMS {
 			
 //			new TestReceive("topic/testTopic", "L1", 0).start();
 //			new TestReceive("topic/testDurableTopic", "L1", 0).start();
-//			new TestReceive("queue/testQueue", "L1", 0).start();
-//			new TestReceive("queue/testQueue", "L2", 0).start();
-//			new TestReceive("queue/testQueue", "L3", 0).start();
+			new TestReceive("queue/testQueue", "L1", 0).start();
+			new TestReceive("queue/testQueue", "L2", 0).start();
+			new TestReceive("queue/testQueue", "L3", 0).start();
 			
 //			new TestP2PAdapter("topic/testTopic", 3).start();
 //			new TestP2PAdapter("topic/testDurableTopic", 3).start();
-			new TestP2PAdapter("queue/testQueue", 3).start();
+//			new TestP2PAdapter("queue/testQueue", 3).start();
 			
 //			new TestPubAdapter("topic/testTopic", 3).start();
 //			new TestPubAdapter("topic/testDurableTopic", 3).start();
 //			new TestPubAdapter("queue/testQueue", 3).start();
+			
+			Thread.sleep(5 * 1000);
 			
 		} catch (Exception e) {
 			e.printStackTrace();
@@ -102,7 +104,7 @@ class TestReceive extends Thread {
 
 	public void run() {
 		try {
-			receiver = new RecvMessenger(destName, new Listener(name, interval));
+			receiver = new RecvMessenger(destName, new Listener(name, interval), null, true);
 		} catch (Exception e) {
 			e.printStackTrace();
 		}

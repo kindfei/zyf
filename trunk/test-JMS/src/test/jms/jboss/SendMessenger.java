@@ -26,7 +26,7 @@ public class SendMessenger extends Messenger {
 
 	public SendMessenger(String destName) 
 			throws BuildException, FailoverException, ConnectException {
-		this(destName, new HashMap());
+		this(destName, null);
 	}
 
 	public SendMessenger(String destName, Map prop) 
@@ -42,6 +42,7 @@ public class SendMessenger extends Messenger {
 		this.transacted = transacted;
 		this.acknowledgeMode = acknowledgeMode;
 		
+		if (prop == null) prop = new HashMap();
 		this.properties = prop;
 		
 		executeBuild();

@@ -7,8 +7,8 @@ public class HostManager {
 	private Map groups = new HashMap();
 	
 	public HostManager() {
-		groups.put("GROUP1", new Group("GROUP1", "jnp://localhost:1099,jnp://localhost:1099"));
-		groups.put("GROUP2", new Group("GROUP2", "jnp://localhost:1099,jnp://localhost:1099"));
+		groups.put("GROUP1", new Group("GROUP1", "jnp://10.4.5.28:1099,jnp://localhost:1099"));
+		groups.put("GROUP2", new Group("GROUP2", "jnp://10.4.5.28:1099,jnp://localhost:1099"));
 	}
 	
 	public String getHost(String groupName) {
