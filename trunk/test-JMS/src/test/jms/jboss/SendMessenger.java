@@ -14,7 +14,7 @@ import javax.jms.Session;
 
 import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
-public class SendMessenger extends Messenger {
+public class SendMessenger extends DefaultMessenger {
 	
 	private boolean transacted;
 	private int acknowledgeMode;
@@ -48,7 +48,7 @@ public class SendMessenger extends Messenger {
 		executeBuild();
 	}
 
-	public void build(Connection conn, Destination dest) throws JMSException {
+	protected void build(Connection conn, Destination dest) throws JMSException {
 		session = conn.createSession(transacted, acknowledgeMode);
 		producer = session.createProducer(dest);
 	}

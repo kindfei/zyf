@@ -10,7 +10,7 @@ import javax.jms.TopicConnection;
 import javax.jms.TopicSession;
 import javax.jms.TopicSubscriber;
 
-public class DurableTopicRecvMessenger extends Messenger {
+public class DurableTopicRecvMessenger extends DefaultMessenger {
 	
 	private MessageListener listener;
 	private String name;
