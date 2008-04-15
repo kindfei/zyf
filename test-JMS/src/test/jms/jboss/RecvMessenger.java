@@ -8,7 +8,7 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.Session;
 
-public class RecvMessenger extends Messenger {
+public class RecvMessenger extends DefaultMessenger {
 	
 	private MessageListener listener;
 	private String selector;
