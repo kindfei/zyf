@@ -14,15 +14,17 @@ import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.SynchronousQueue;
 
 public abstract class MessageAdapter implements MessageListener {
-	private static final Log log = LogFactory.getLog(P2PMessageAdapter.class);
+	private static final Log log = LogFactory.getLog(HostManager.class);
 	
-	protected int capacity;
+	private int capacity;
+	private boolean isDaemon;
+	
 	protected Map listenerMap;
 	
-	public MessageAdapter(int capacity, Map listenerMap) throws IllegalAccessException {
-		if (capacity < 0) throw new IllegalAccessException();
+	public MessageAdapter(int capacity, Map listenerMap, boolean isDaemon) {
 		this.capacity = capacity;
 		this.listenerMap = listenerMap;
+		this.isDaemon = isDaemon;
 	}
 	
 	public void addListener(MessageListener listener) {
@@ -30,7 +32,7 @@ public abstract class MessageAdapter implements MessageListener {
 			log.info("Listener:" + listener + " already added.");
 			return;
 		}
-		MessageDispatcher dispatcher = new MessageDispatcher(getMsgQueue(), listener);
+		MessageDispatcher dispatcher = new MessageDispatcher(getMsgQueue(), listener, isDaemon);
 		listenerMap.put(listener, dispatcher);
 	}
 	
@@ -55,6 +57,10 @@ public abstract class MessageAdapter implements MessageListener {
 		return listenerMap.size();
 	}
 	
+	public boolean containsListener(MessageListener listener) {
+		return listenerMap.containsKey(listener);
+	}
+	
 	public int getCapacity() {
 		return capacity;
 	}
@@ -67,10 +73,10 @@ public abstract class MessageAdapter implements MessageListener {
 	
 	protected BlockingQueue createMsgQueue() {
 		BlockingQueue msgQueue = null;
-		if (capacity == 0) {
-			msgQueue = new SynchronousQueue();
-		} else {
+		if (capacity > 0) {
 			msgQueue = new LinkedBlockingQueue();
+		} else {
+			msgQueue = new SynchronousQueue();
 		}
 		return msgQueue;
 	}

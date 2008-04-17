@@ -20,7 +20,8 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import edu.emory.mathcs.backport.java.util.concurrent.ExecutorService;
-import edu.emory.mathcs.backport.java.util.concurrent.Executors;
+import edu.emory.mathcs.backport.java.util.concurrent.SynchronousQueue;
+import edu.emory.mathcs.backport.java.util.concurrent.ThreadPoolExecutor;
 import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.Condition;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.Lock;
@@ -38,8 +39,8 @@ public class DefaultConnector implements Connector {
 	private Lock failoverLock;
 	private Condition reconnected;
 	
-	private ExecutorService exeServ;
-	private Set targets;
+	private ExecutorService threadPool;
+	private Set messengers;
 	
 	private List failHosts;
 	
@@ -61,26 +62,26 @@ public class DefaultConnector implements Connector {
 		failoverLock = new ReentrantLock();
 		reconnected = failoverLock.newCondition();
 		
-		exeServ = Executors.newCachedThreadPool();
-		targets = new HashSet();
+		threadPool = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 10L, TimeUnit.SECONDS, new SynchronousQueue());
+		messengers = new HashSet();
 		
 		failHosts = new ArrayList();
 		
-		hostManager = new HostManager();
+		hostManager = new HostManager(groupName);
 	}
 	
-	public void buildMessenger(Messenger target, String destName) throws BuildException, FailoverException, ConnectException {
+	public void buildMessenger(Messenger messenger, String destName) throws BuildException, FailoverException, ConnectException {
 		failoverLock.lock();
 		try {
 			if (!isOpened) open();
-			build(target, destName);
+			build(messenger, destName);
 		} catch (BuildException e) {
 			try {
 				reconnected.await(5, TimeUnit.SECONDS);
 				try {
-					build(target, destName);
+					build(messenger, destName);
 				} catch (BuildException ex) {
-					removeMessenger(target);
+					removeMessenger(messenger);
 					throw ex;
 				}
 			} catch (InterruptedException ex) {
@@ -91,12 +92,12 @@ public class DefaultConnector implements Connector {
 		}
 	}
 	
-	public void removeMessenger(Messenger target) {
-		if (target == null) return;
+	public void removeMessenger(Messenger messenger) {
+		if (messenger == null) return;
 		failoverLock.lock();
 		try {
-			targets.remove(target);
-			if (targets.size() == 0 && isOpened) {
+			messengers.remove(messenger);
+			if (messengers.size() == 0 && isOpened) {
 				close();
 			}
 		} finally {
@@ -106,7 +107,7 @@ public class DefaultConnector implements Connector {
 	
 	private void open() throws FailoverException, ConnectException {
 		try {
-			connect(hostManager.getHost(groupName));
+			connect(hostManager.getCurrentHost());
 		} catch (ConnectException e) {
 			if (isHA) {
 				failover(e);
@@ -167,9 +168,17 @@ public class DefaultConnector implements Connector {
 	
 	private void failover(ConnectException ex) throws FailoverException {
 		failoverLock.lock();
-		String failHost = ex.getFailHost();
-		log.warn("Exception occurred on " + failHost + " try another one.", ex);
 		try {
+			String failHost = ex.getFailHost();
+			log.warn("Exception occurred on " + failHost + " try another one.", ex);
+			
+			if (isOpened) {
+				close();
+			} else {
+				log.info("Connection is closed. So cancel the failover process.");
+				return;
+			}
+			
 			log.info("Failover start");
 			
 			if (!failHost.equals(currentHost)) {
@@ -183,15 +192,14 @@ public class DefaultConnector implements Connector {
 			
 			failHosts.add(failHost);
 			
-			if (isOpened) close();
-			
-			connect(hostManager.getNextHost(groupName));
+			String nextHost = hostManager.getNextHost();
+			if (!isOpened) connect(nextHost);
 			
 			failHosts.clear();
 			
-			for (Iterator iter = targets.iterator(); iter.hasNext();) {
+			for (Iterator iter = messengers.iterator(); iter.hasNext();) {
 				Runnable element = (Runnable) iter.next();
-				exeServ.submit(element);
+				threadPool.submit(element);
 			}
 			
 			reconnected.signalAll();
@@ -204,11 +212,11 @@ public class DefaultConnector implements Connector {
 		}
 	}
 	
-	private void build(Messenger target, String destName) throws BuildException {
+	private void build(Messenger messenger, String destName) throws BuildException {
 		try {
 			Destination dest = (Destination) context.lookup(destName);
-			target.build(connection, dest);
-			targets.add(target);
+			messenger.build(connection, dest);
+			messengers.add(messenger);
 		} catch (NamingException e) {
 			throw new BuildException("NamingException occurred when build", e);
 		} catch (JMSException e) {

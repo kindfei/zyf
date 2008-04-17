@@ -36,13 +36,18 @@ public abstract class DefaultMessenger extends Messenger {
 	
 	public void run() {
 		rebuildLock.lock();
-		if (!isOpened) return;
 		try {
+			if (!isOpened) {
+				log.info("Messenger is closed. So cancel the rebuild process.");
+				return;
+			}
+			
 			log.info("Rebuild start. Destination:" + destName);
 			innerClose();
 			connector.buildMessenger(this, destName);
 			rebuilt.signalAll();
 			log.info("Rebuild end. Destination:" + destName);
+			
 		} catch (BuildException e) {
 			log.error("Rebuild failed.", e);
 		} catch (FailoverException e) {

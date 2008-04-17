@@ -29,12 +29,12 @@ public class SendMessenger extends DefaultMessenger {
 		this(destName, null);
 	}
 
-	public SendMessenger(String destName, Map prop) 
+	public SendMessenger(String destName, Map props) 
 			throws BuildException, FailoverException, ConnectException {
-		this(destName, prop, false, Session.AUTO_ACKNOWLEDGE);
+		this(destName, props, false, Session.AUTO_ACKNOWLEDGE);
 	}
 
-	public SendMessenger(String destName, Map prop, boolean transacted, int acknowledgeMode) 
+	public SendMessenger(String destName, Map props, boolean transacted, int acknowledgeMode) 
 			throws BuildException, FailoverException, ConnectException {
 		
 		super(destName);
@@ -42,8 +42,8 @@ public class SendMessenger extends DefaultMessenger {
 		this.transacted = transacted;
 		this.acknowledgeMode = acknowledgeMode;
 		
-		if (prop == null) prop = new HashMap();
-		this.properties = prop;
+		if (props == null) props = new HashMap();
+		this.properties = props;
 		
 		executeBuild();
 	}
@@ -61,8 +61,8 @@ public class SendMessenger extends DefaultMessenger {
 		return (String) properties.get(key);
 	}
 	
-	public void removeProperty(String key) {
-		properties.remove(key);
+	public Object removeProperty(String key) {
+		return properties.remove(key);
 	}
 	
 	public void clearProperty() {
@@ -73,36 +73,44 @@ public class SendMessenger extends DefaultMessenger {
 		sendMsg(text, null);
 	}
 
-	public void send(String text, Map prop) throws JMSException {
-		sendMsg(text, prop);
+	public void send(String text, Map props) throws JMSException {
+		sendMsg(text, props);
 	}
 	
 	public void send(Serializable obj) throws JMSException {
 		sendMsg(obj, null);
 	}
 	
-	public void send(Serializable obj, Map prop) throws JMSException {
-		sendMsg(obj, prop);
+	public void send(Serializable obj, Map props) throws JMSException {
+		sendMsg(obj, props);
 	}
 	
-	private void sendMsg(Object obj, Map prop) throws JMSException {
+	public void commit() throws JMSException {
+		session.commit();
+	}
+	
+	public void rollback() throws JMSException {
+		session.rollback();
+	}
+	
+	private void sendMsg(Object obj, Map props) throws JMSException {
 		rebuildLock.lock();
 		try {
-			Message msg = createMsg(obj, prop);
+			Message msg = createMsg(obj, props);
 			producer.send(msg);
 		} catch (JMSException e) {
 			try {
 				rebuilt.await(10, TimeUnit.SECONDS);
-				Message msg = createMsg(obj, prop);
+				Message msg = createMsg(obj, props);
 				producer.send(msg);
 			} catch (InterruptedException ex) {
 			}
 		} finally {
-			rebuildLock.lock();
+			rebuildLock.unlock();
 		}
 	}
 	
-	private Message createMsg(Object obj, Map prop) throws JMSException {
+	private Message createMsg(Object obj, Map props) throws JMSException {
 		Message msg = null;
 		
 		if (obj instanceof String) {
@@ -112,14 +120,14 @@ public class SendMessenger extends DefaultMessenger {
 		}
 		
 		copyProperty(msg, properties);
-		copyProperty(msg, prop);
+		copyProperty(msg, props);
 		
 		return msg;
 	}
 	
-	private void copyProperty(Message msg, Map prop) throws JMSException {
-		if (prop != null && prop.size() != 0) {
-			for (Iterator iter = prop.entrySet().iterator(); iter.hasNext();) {
+	private void copyProperty(Message msg, Map props) throws JMSException {
+		if (props != null && props.size() != 0) {
+			for (Iterator iter = props.entrySet().iterator(); iter.hasNext();) {
 				Map.Entry entry = (Map.Entry) iter.next();
 				msg.setStringProperty((String)entry.getKey(), (String)entry.getValue());
 			}

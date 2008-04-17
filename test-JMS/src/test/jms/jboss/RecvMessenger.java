@@ -8,6 +8,8 @@ import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.Session;
 
+import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
+
 public class RecvMessenger extends DefaultMessenger {
 	
 	private MessageListener listener;
@@ -19,6 +21,8 @@ public class RecvMessenger extends DefaultMessenger {
 	
 	private Session session;
 	private MessageConsumer consumer;
+	
+	private Dispatcher dispatcher;
 
 	public RecvMessenger(String destName, MessageListener listener) 
 			throws BuildException, FailoverException, ConnectException {
@@ -56,39 +60,55 @@ public class RecvMessenger extends DefaultMessenger {
 		consumer = session.createConsumer(dest, selector);
 		
 		if (isDaemon) {
-			Dispatcher.createDispatcher(consumer, listener);
+			dispatcher = new Dispatcher(consumer, listener);
 		} else {
 			consumer.setMessageListener(listener);
 		}
 	}
 	
-	private static class Dispatcher extends Thread {
+	public MessageListener getListener() {
+		return listener;
+	}
+	
+	private class Dispatcher extends Thread {
 		private MessageConsumer consumer;
 		private MessageListener listener;
-		
-		private static void createDispatcher(MessageConsumer consumer, MessageListener listener) {
-			Dispatcher inst = new Dispatcher(consumer, listener);
-			inst.start();
-		}
+		private boolean isAlive = true;
 		
 		private Dispatcher(MessageConsumer consumer, MessageListener listener) {
 			this.consumer = consumer;
 			this.listener = listener;
 			setDaemon(true);
+			start();
 		}
 		
 		public void run() {
 			try {
-				while (true) {
-					Message msg = consumer.receive();
-					listener.onMessage(msg);
+				while (isAlive) {
+					rebuildLock.lock();
+					try {
+						Message msg = consumer.receive();
+						listener.onMessage(msg);
+					} catch (JMSException e) {
+						rebuilt.await(10, TimeUnit.SECONDS);
+					} finally {
+						rebuildLock.unlock();
+					}
 				}
-			} catch (JMSException e) {
+			} catch (InterruptedException e) {
 			}
+		}
+		
+		private void close() {
+			isAlive = false;
+			interrupt();
 		}
 	}
 
 	protected void innerClose() {
+		if (dispatcher != null) {
+			dispatcher.close();
+		}
 		try {
 			consumer.setMessageListener(null);
 		} catch (JMSException e) {
