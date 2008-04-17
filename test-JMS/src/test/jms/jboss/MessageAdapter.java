@@ -14,7 +14,7 @@ import edu.emory.mathcs.backport.java.util.concurrent.LinkedBlockingQueue;
 import edu.emory.mathcs.backport.java.util.concurrent.SynchronousQueue;
 
 public abstract class MessageAdapter implements MessageListener {
-	private static final Log log = LogFactory.getLog(HostManager.class);
+	private static final Log log = LogFactory.getLog(MessageAdapter.class);
 	
 	private int capacity;
 	private boolean isDaemon;
