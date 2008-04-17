@@ -8,15 +8,19 @@ import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 public class MessageDispatcher implements Runnable {
 	private BlockingQueue msgQueue;
 	private MessageListener listener;
+	private boolean isDaemon;
+	
 	private volatile boolean isActive;
 	private Thread thread;
 	
-	MessageDispatcher (BlockingQueue msgQueue, MessageListener listener) {
+	MessageDispatcher (BlockingQueue msgQueue, MessageListener listener, boolean isDaemon) {
 		this.msgQueue = msgQueue;
 		this.listener = listener;
+		this.isDaemon = isDaemon;
+		
 		isActive = true;
 		thread = new Thread(this);
-		thread.setDaemon(false);
+		thread.setDaemon(isDaemon);
 		thread.start();
 	}
 	
@@ -50,5 +54,9 @@ public class MessageDispatcher implements Runnable {
 
 	public void clearMessage() {
 		msgQueue.clear();
+	}
+	
+	public boolean isDaemon() {
+		return isDaemon;
 	}
 }

@@ -1,62 +1,70 @@
 package test.jms.jboss;
 
-import java.util.HashMap;
-import java.util.Map;
+import java.util.Iterator;
+import java.util.LinkedList;
+
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 
 public class HostManager {
-	private Map groups = new HashMap();
-	
-	public HostManager() {
-		groups.put("GROUP1", new Group("GROUP1", "jnp://10.4.5.28:1099,jnp://localhost:1099"));
-		groups.put("GROUP2", new Group("GROUP2", "jnp://10.4.5.28:1099,jnp://localhost:1099"));
-	}
-	
-	public String getHost(String groupName) {
-		Group group = (Group) groups.get(groupName);
-		return group.getHost();
-	}
-	
-	public String getNextHost(String groupName) {
-		Group group = (Group) groups.get(groupName);
-		return group.getNextHost();
-	}
+	private static final Log log = LogFactory.getLog(HostManager.class);
 
-}
-
-class Group {
 	private String groupName;
-	private String master;
-	private String slaver;
+	private LinkedList hosts = new LinkedList();
 	
-	Group(String groupName, String hosts) {
+	public HostManager(String groupName) {
 		this.groupName = groupName;
-		String[] array = hosts.split(",");
-		this.master = array[0];
-		this.slaver = array[1];
+		init();
 	}
 	
-	public String getGroupName() {
-		return groupName;
+	private void init() {
+		hosts.add("jnp://10.4.5.60:1099");
 	}
 	
-	public String getHost() {
-		return master;
+	public String getCurrentHost() {
+		return (String) hosts.getFirst();
 	}
 	
 	public String getNextHost() {
-		String temp = master;
-		master = slaver;
-		slaver = temp;
+		String curr = fromat();
+		String currHost = getCurrentHost();
+		hosts.add(hosts.removeFirst());
+		String next = fromat();
+		String nextHost = getCurrentHost();
 		
-		String prev = slaver + "," + master;
-		String next = master + "," + slaver;
+		boolean isSuccess = false;
 		
-		synchronize(prev, next);
+		log.info("JMS provider change. groupName:" + groupName + " curr:[" + curr + "] ---> next:[" + next + "]");
+		if (!curr.equals(next)) {
+			log.info("JMS provider change. Synchronize to APP_PROPERTY.");
+			isSuccess = synchronize(curr, next);
+		}
 		
-		return master;
+		sendMail(curr, next, currHost, nextHost, isSuccess);
+		
+		shutdown(currHost);
+		
+		return getCurrentHost();
 	}
 	
-	public void synchronize(String prev, String next) {
+	private String fromat() {
+		StringBuffer result = new StringBuffer();
+		for (Iterator iter = hosts.iterator(); iter.hasNext();) {
+			result.append(iter.next());
+			if (iter.hasNext()) result.append(",");
+		}
+		return result.toString();
+	}
+	
+	private boolean synchronize(String curr, String next) {
+		boolean isSuccess = false;
 		
+		return isSuccess;
+	}
+	
+	private void sendMail(String prev, String curr, String prevHost, String currHost, boolean isSuccess) {
+	}
+	
+	private void shutdown(String prevHost) {
 	}
 }
