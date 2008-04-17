@@ -155,7 +155,7 @@ class TestP2PAdapter extends Thread {
 
 	public void run() {
 		try {
-			adapter = new P2PMessageAdapter(3);
+			adapter = new P2PMessageAdapter(3, false);
 			
 			for (int i = 0; i < count; i++) {
 				Listener l = new Listener("Listener-" + i, 2000);
@@ -186,7 +186,7 @@ class TestPubAdapter extends Thread {
 
 	public void run() {
 		try {
-			adapter = new PubMessageAdapter(2);
+			adapter = new PubMessageAdapter(2, false);
 			
 			for (int i = 0; i < count; i++) {
 				Listener l = new Listener("Listener-" + i, 1000);
