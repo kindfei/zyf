@@ -67,6 +67,7 @@ public class MessageReceiver {
 			
 			MessageAdapter adapter = (MessageAdapter) receiver.getListener();
 			adapter.addListener(msgListener);
+			log.info("Add listener to MessageAdapter. destName:" + destName + " selector:" + selector + " isDaemon:" + isDaemon);
 		}
 	}
 	
@@ -93,11 +94,11 @@ public class MessageReceiver {
 	public void close() {
 		if (receiver != null) {
 			receiver.close();
-			receiver = null;
 			if (type != DELIVERY_TYPE_NORMAL) {
 				MessageAdapter adapter = (MessageAdapter) receiver.getListener();
 				adapter.removeAll();
 			}
+			receiver = null;
 		}
 	}
 }

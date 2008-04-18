@@ -85,14 +85,16 @@ public class RecvMessenger extends DefaultMessenger {
 		public void run() {
 			try {
 				while (isAlive) {
-					rebuildLock.lock();
 					try {
 						Message msg = consumer.receive();
 						listener.onMessage(msg);
 					} catch (JMSException e) {
-						rebuilt.await(10, TimeUnit.SECONDS);
-					} finally {
-						rebuildLock.unlock();
+						rebuildLock.lock();
+						try {
+							rebuilt.await(10, TimeUnit.SECONDS);
+						} finally {
+							rebuildLock.unlock();
+						}
 					}
 				}
 			} catch (InterruptedException e) {
