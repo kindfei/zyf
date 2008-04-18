@@ -9,7 +9,12 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.jms.TextMessage;
 
+import test.jms.jboss.BuildException;
+import test.jms.jboss.ConnectException;
+import test.jms.jboss.FailoverException;
 import test.jms.jboss.MessageAdapter;
+import test.jms.jboss.MessageReceiver;
+import test.jms.jboss.MessageSender;
 import test.jms.jboss.P2PMessageAdapter;
 import test.jms.jboss.PubMessageAdapter;
 import test.jms.jboss.RecvMessenger;
@@ -21,19 +26,16 @@ public class TestJMS {
 		
 		try {
 			
-//			TestSend sender1 = new TestSend("topic/testTopic", 1000, 500);
-//			sender1.start();
-//			TestSend sender2 = new TestSend("topic/testDurableTopic", 1000, 500);
-//			sender2.start();
-			TestSend sender3 = new TestSend("queue/testQueue", 1000, 500);
-			sender3.start();
+//			new TestSend("topic/testTopic", 1000, 500);
+//			new TestSend("topic/testDurableTopic", 1000, 500);
+//			new TestSend("queue/testQueue", 1000, 500);
 			
 			
 //			new TestReceive("topic/testTopic", "L1", 0).start();
 //			new TestReceive("topic/testDurableTopic", "L1", 0).start();
-			new TestReceive("queue/testQueue", "L1", 0).start();
-			new TestReceive("queue/testQueue", "L2", 0).start();
-			new TestReceive("queue/testQueue", "L3", 0).start();
+//			new TestReceive("queue/testQueue", "L1", 0).start();
+//			new TestReceive("queue/testQueue", "L2", 0).start();
+//			new TestReceive("queue/testQueue", "L3", 0).start();
 			
 //			new TestP2PAdapter("topic/testTopic", 3).start();
 //			new TestP2PAdapter("topic/testDurableTopic", 3).start();
@@ -43,9 +45,27 @@ public class TestJMS {
 //			new TestPubAdapter("topic/testDurableTopic", 3).start();
 //			new TestPubAdapter("queue/testQueue", 3).start();
 			
-			Thread.sleep(5 * 1000);
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		
+		test();
+	}
+	
+	public static void test() {
+		try {
+			MessageReceiver receiver = new MessageReceiver("topic/testTopic", MessageReceiver.DELIVERY_TYPE_P2P, null, true);
+			
+			for (int i = 0; i < 3; i++) {
+				Listener l = new Listener("Listener-" + i, 1000);
+				receiver.setListener(l);
+			}
+			
+			new TestSend("topic/testTopic", 100, 500);
 			
 		} catch (Exception e) {
+			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
@@ -63,6 +83,8 @@ class TestSend extends Thread {
 		this.interval = interval;
 
 		sender = new SendMessenger(this.destName);
+		
+		start();
 	}
 	
 	public void setProperty(String key, String value) {

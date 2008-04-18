@@ -19,6 +19,7 @@ public class HostManager {
 	
 	private void init() {
 		hosts.add("jnp://10.4.5.60:1099");
+		hosts.add("jnp://10.4.5.29:1099");
 	}
 	
 	public String getCurrentHost() {
