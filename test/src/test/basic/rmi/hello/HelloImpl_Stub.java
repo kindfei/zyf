@@ -11,11 +11,13 @@ public final class HelloImpl_Stub
     
     private static java.lang.reflect.Method $method_getSet_0;
     private static java.lang.reflect.Method $method_sayHello_1;
+    private static java.lang.reflect.Method $method_setValue_2;
     
     static {
 	try {
 	    $method_getSet_0 = test.basic.rmi.hello.Hello.class.getMethod("getSet", new java.lang.Class[] {});
 	    $method_sayHello_1 = test.basic.rmi.hello.Hello.class.getMethod("sayHello", new java.lang.Class[] {});
+	    $method_setValue_2 = test.basic.rmi.hello.Hello.class.getMethod("setValue", new java.lang.Class[] {java.lang.Object.class});
 	} catch (java.lang.NoSuchMethodException e) {
 	    throw new java.lang.NoSuchMethodError(
 		"stub class initialization failed");
@@ -52,6 +54,21 @@ public final class HelloImpl_Stub
 	try {
 	    Object $result = ref.invoke(this, $method_sayHello_1, null, 6043973830760146143L);
 	    return ((java.lang.String) $result);
+	} catch (java.lang.RuntimeException e) {
+	    throw e;
+	} catch (java.rmi.RemoteException e) {
+	    throw e;
+	} catch (java.lang.Exception e) {
+	    throw new java.rmi.UnexpectedException("undeclared checked exception", e);
+	}
+    }
+    
+    // implementation of setValue(Object)
+    public void setValue(java.lang.Object $param_Object_1)
+	throws java.rmi.RemoteException
+    {
+	try {
+	    ref.invoke(this, $method_setValue_2, new java.lang.Object[] {$param_Object_1}, 2588629827116869210L);
 	} catch (java.lang.RuntimeException e) {
 	    throw e;
 	} catch (java.rmi.RemoteException e) {
