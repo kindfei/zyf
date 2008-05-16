@@ -11,7 +11,11 @@ import zyf.helper.CmdHelper;
 public class HelloServer {
 	
 	public static void main(String args[]) {
+		
+		// Set this if using [start rmiregistry] command
 //		System.setProperty("java.rmi.server.codebase", "file:///E:/eclipse/workspace-zyf/test/bin/");
+		
+		// Set this if set a security manager
 		System.setProperty("java.security.policy", "E:/eclipse/workspace-zyf/test/src/test/basic/rmi/hello/policy");
 
 		// Create and install a security manager
@@ -22,6 +26,7 @@ public class HelloServer {
 		try {
 			HelloImpl obj = new HelloImpl();
 			
+			// [start rmiregistry]
 			LocateRegistry.createRegistry(1099);
 			
 			// Bind this object instance to the name "HelloServer"
