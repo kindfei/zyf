@@ -22,4 +22,8 @@ public class HelloImpl extends UnicastRemoteObject implements Hello {
 	public Set getSet() {
 		return set;
 	}
+	
+	public void setValue(Object obj) {
+		set.add(obj);
+	}
 }

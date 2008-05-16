@@ -4,7 +4,6 @@ import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.util.Iterator;
 import java.util.Set;
 
 import zyf.helper.CmdHelper;
@@ -46,25 +45,27 @@ public class HelloServer {
 	
 	public static void command(Hello obj) throws RemoteException {
 		a:while (true) {
-			int opt = CmdHelper.options(new String[] {"Print", "Set", "Quit"});
+			int opt = CmdHelper.options(new String[] {"Quit", "Print set", "Get and set value", "Set value"});
 			Set set = null;
 			
-			switch (opt) {
+			switch (opt) {	
 			case 0:
-				set = obj.getSet();
-				for (Iterator tier = set.iterator(); tier.hasNext();) {
-					String object = (String) tier.next();
-					System.out.println(object);
-				}
-				break;
-				
+				break a;
+
 			case 1:
 				set = obj.getSet();
-				set.add(CmdHelper.input("Input value"));
+				System.out.println(set.hashCode() + " - " +set);
 				break;
 				
 			case 2:
-				break a;
+				set = obj.getSet();
+				set.add(CmdHelper.input("Input value"));
+				break;
+
+			case 3:
+				set = obj.getSet();
+				obj.setValue(CmdHelper.input("Input value"));
+				break;
 
 			default:
 				break;
