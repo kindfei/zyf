@@ -1,6 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/JDK1.5.0_14"/>
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="lib" path="conf"/>
 	<classpathentry kind="lib" path="quartz"/>
@@ -24,5 +24,6 @@
 	<classpathentry kind="lib" path="lib/dom4j-1.6.1/dom4j-1.6.1.jar"/>
 	<classpathentry kind="lib" path="lib/backport-util-concurrent.jar" sourcepath="E:/Library/backport-util-concurrent-3.1/src"/>
 	<classpathentry kind="lib" path="lib/iaik_jce_full.jar"/>
+	<classpathentry kind="lib" path="lib/skype/skype.jar" sourcepath="E:/Library/skype/src"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
