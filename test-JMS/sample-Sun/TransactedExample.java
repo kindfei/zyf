@@ -27,8 +27,21 @@
  * facility. Licensee represents and warrants that it will not use or
  * redistribute the Software for such purposes.
  */
-import java.util.*;
-import javax.jms.*;
+
+import java.util.Hashtable;
+import java.util.Random;
+
+import javax.jms.JMSException;
+import javax.jms.MapMessage;
+import javax.jms.Message;
+import javax.jms.MessageListener;
+import javax.jms.Queue;
+import javax.jms.QueueConnection;
+import javax.jms.QueueConnectionFactory;
+import javax.jms.QueueReceiver;
+import javax.jms.QueueSender;
+import javax.jms.QueueSession;
+import javax.jms.Session;
 
 /**
  * The TransactedExample class demonstrates the use of transactions in a JMS
