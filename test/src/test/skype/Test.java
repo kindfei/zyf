@@ -10,7 +10,7 @@ import com.skype.User;
 public class Test {
 	
     public static void main(String[] args) throws Exception {
-    	sendTo("I love this game", "ͦƵ", 5, 4);
+    	displayUsers("MFX");
     }
     
     public static void startListening() throws SkypeException {
@@ -39,15 +39,23 @@ public class Test {
 		}
     }
     
-    private static void displayUsers(ChatMessage received) throws SkypeException {
-    	Chat chat = received.getChat();
-    	
-    	System.out.println("title: " + chat.getWindowTitle());
-    	
-    	User[] users = chat.getAllActiveMembers();
-    	
-    	for (int i = 0; i < users.length; i++) {
-			System.out.println(users[i].getFullName() + " - " + users[i].getId());
+    public static void displayUsers(String title) throws SkypeException {
+
+    	Chat[] chats = Skype.getAllActiveChats();
+    	for (int i = 0; i < chats.length; i++) {
+			System.out.println(chats[i].getWindowTitle());
+			if (chats[i].getWindowTitle().equals(title)) {
+		    	
+		    	System.out.println("title: " + chats[i].getWindowTitle());
+		    	
+		    	User[] users = chats[i].getAllActiveMembers();
+		    	
+		    	for (int j = 0; j < users.length; j++) {
+					System.out.println(users[j].getFullName() + "=" + users[j].getId());
+				}
+		    	
+				break;
+			}
 		}
     }
     
