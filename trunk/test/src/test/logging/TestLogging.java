@@ -39,7 +39,7 @@ public class TestLogging {
 		cat.info("org.apache.log4j.Category");
 	}
 	
-	public static void main(String[] args) {
+	private static void test1() {
 		TestLogging test1 = new TestLogging("test.1", "log4j_1.xml");
 		test1.log();
 		
@@ -58,6 +58,16 @@ public class TestLogging {
 		
 		test1.log();
 
+	}
+	
+	private static void test2() {
+		TestLogging inst = new TestLogging("test.zyf", "log4j_4.properties");
+		
+		inst.log();
+	}
+	
+	public static void main(String[] args) {
+		test2();
 	}
 	
 }
