@@ -1,0 +1,33 @@
+<tc:tc-config xmlns:tc="http://www.terracotta.org/config"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-4.xsd">
+
+  <application>
+    <dso>  
+      <instrumented-classes>
+        <include>
+          <class-expression>Main$Transient1</class-expression>
+          <honor-transient>true</honor-transient>
+        </include>
+        <include>
+          <class-expression>Main$Transient2</class-expression>
+        </include>
+        <include>
+          <class-expression>Main$Transient3</class-expression>
+          <on-load>
+            <execute><![CDATA[self.foo = "Goodbye cruel";]]></execute>
+          </on-load>
+        </include>
+      </instrumented-classes>
+      <transient-fields>
+        <field-name>Main$Transient2.foo</field-name> 
+        <field-name>Main$Transient3.foo</field-name> 
+      </transient-fields>
+      <roots>
+        <root>
+          <field-name>Main.instance</field-name>
+        </root>
+      </roots>
+    </dso>
+  </application>
+</tc:tc-config>

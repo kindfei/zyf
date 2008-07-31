@@ -1,0 +1,26 @@
+<howto>
+h1.  Synchronized, Wait(), and Notify() Example
+
+h2.  Summary
+
+Standard Java syncrhonized, wait(), and notify() work the same in Terracotta as in normal Java.  This example demonstrates the usage of synchronized, wait(), and notify() to signal control from one VM (thread) to another VM (thread).
+
+h2.  How to run
+
+*Node 1:*
+{code}
+$ javac *.java
+$ start-tc-server &amp;
+$ dso-java Main
+Waiting for input...
+hi
+hey there
+{code}
+
+*Node 2:*
+{code}
+$ dso-java Main
+Enter a message> hi
+Enter a message> hey there
+{code}
+</howto>
