@@ -1,11 +1,11 @@
 #!/bin/sh
 
-
+# dso-env -q
 TC_JAVA_OPTS=
 -Xbootclasspath/p:"E:\Service\terracotta-2.6.2\bin\..\lib\dso-boot\dso-boot-hotspot_win32_150_14.jar" 
 -Dtc.install-root="E:\Service\terracotta-2.6.2\bin\.."
 
-
+# server
 C:\Java\JDK1.6.0_04\bin\javaw.exe 
 -Dtc.install-root=E:\Eclipse\plugin-common\terracotta\eclipse\plugins\org.terracotta.dso_2.6.2.r8952_v20080626 
 -Dtc.config=E:\Eclipse\workspace-zyf\test-terracotta\tc-config.xml 
@@ -17,7 +17,7 @@ C:\Java\JDK1.6.0_04\bin\javaw.exe
 -agentlib:jdwp=transport=dt_socket,suspend=y,address=localhost:2735 
 com.tc.server.TCServerMain
 
-
+# client
 C:\Java\JDK1.6.0_04\bin\javaw.exe 
 -Dtc.install-root=E:\Eclipse\plugin-common\terracotta\eclipse\plugins\org.terracotta.dso_2.6.2.r8952_v20080626 
 -Dtc.config=E:\Eclipse\workspace-zyf\test-terracotta\src\test\terracota\demo\rmi\tc-config.xml 
@@ -34,7 +34,7 @@ C:\Java\JDK1.6.0_04\bin\javaw.exe
 
 
 
-#### tc.properties ####
+# tc.properties set in server running
 
 # default=false
 -Dcom.tc.l2.l1reconnect.enabled=true
