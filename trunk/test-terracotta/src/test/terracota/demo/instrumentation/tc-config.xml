@@ -4,17 +4,19 @@
 
   <application>
     <dso>  
+      <instrumented-classes>
+        <include>
+          <class-expression>test.terracota.demo.instrumentation.Counter</class-expression>
+        </include>
+      </instrumented-classes>
       <locks>
         <autolock>
-           <method-expression>void test.terracota.demo.syn.Main.getInput(..) </method-expression>
-        </autolock>
-        <autolock>
-           <method-expression>void test.terracota.demo.syn.Main.printInput(..) </method-expression>
+           <method-expression>void test.terracota.demo.instrumentation.Counter.count()</method-expression>
         </autolock>
       </locks>
       <roots>
         <root>
-          <field-name>test.terracota.demo.syn.Main.instance</field-name>
+          <field-name>test.terracota.demo.instrumentation.Main.instance</field-name>
         </root>
       </roots>
     </dso>

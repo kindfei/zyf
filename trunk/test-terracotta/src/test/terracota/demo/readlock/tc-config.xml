@@ -2,19 +2,17 @@
   xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
   xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-4.xsd">
 
-  <application>
+ <application>
     <dso>  
       <locks>
         <autolock>
-           <method-expression>void test.terracota.demo.syn.Main.getInput(..) </method-expression>
-        </autolock>
-        <autolock>
-           <method-expression>void test.terracota.demo.syn.Main.printInput(..) </method-expression>
+           <method-expression>void test.terracota.demo.readlock.Main.enterMonitor()</method-expression>
+           <lock-level>read</lock-level>
         </autolock>
       </locks>
       <roots>
         <root>
-          <field-name>test.terracota.demo.syn.Main.instance</field-name>
+          <field-name>test.terracota.demo.readlock.Main.instance</field-name>
         </root>
       </roots>
     </dso>

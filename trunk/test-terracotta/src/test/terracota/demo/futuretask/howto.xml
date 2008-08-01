@@ -1,0 +1,31 @@
+<howto>
+h1.  FutureTask Example
+
+h2.  Summary
+
+This example demonstrates using a FutureTask to send a message from a Producer app to a Consumer app, and demonstrates the asynchronous nature of a FutureTask working across more than one physical JVM using Terracotta.
+
+The first node to start will listen for FutureTask objects, and execute them when received.  Subsequent nodes will create a new FutureTask, push it into the queue, then wait for it's execution to complete and print the result of the execution.
+
+h2.  How to run
+
+*Node 1:*
+{code}
+$ javac *.java
+$ start-tc-server &amp;
+$ dso-java Main
+Waiting...
+(after starting other node...)
+Mon Mar 17 17:53:45 PDT 2008: Sleeping 2 seconds...
+Hello world
+{code}
+
+*Node 2:*
+{code}
+$ dso-java Main
+Submitting task...
+Waiting for response...
+(after other node completes...)
+Task completed at: Mon Mar 17 17:53:47 PDT 2008
+{code}
+</howto>

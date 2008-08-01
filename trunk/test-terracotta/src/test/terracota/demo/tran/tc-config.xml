@@ -6,26 +6,26 @@
     <dso>  
       <instrumented-classes>
         <include>
-          <class-expression>Main$Transient1</class-expression>
+          <class-expression>test.terracota.demo.tran.Main$Transient1</class-expression>
           <honor-transient>true</honor-transient>
         </include>
         <include>
-          <class-expression>Main$Transient2</class-expression>
+          <class-expression>test.terracota.demo.tran.Main$Transient2</class-expression>
         </include>
         <include>
-          <class-expression>Main$Transient3</class-expression>
+          <class-expression>test.terracota.demo.tran.Main$Transient3</class-expression>
           <on-load>
             <execute><![CDATA[self.foo = "Goodbye cruel";]]></execute>
           </on-load>
         </include>
       </instrumented-classes>
       <transient-fields>
-        <field-name>Main$Transient2.foo</field-name> 
-        <field-name>Main$Transient3.foo</field-name> 
+        <field-name>test.terracota.demo.tran.Main$Transient2.foo</field-name> 
+        <field-name>test.terracota.demo.tran.Main$Transient3.foo</field-name> 
       </transient-fields>
       <roots>
         <root>
-          <field-name>Main.instance</field-name>
+          <field-name>test.terracota.demo.tran.Main.instance</field-name>
         </root>
       </roots>
     </dso>
