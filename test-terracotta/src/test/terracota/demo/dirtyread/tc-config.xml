@@ -18,12 +18,12 @@
     <dso>  
       <locks>
         <autolock>
-           <method-expression>void Main.count(..)</method-expression>
+           <method-expression>void test.terracota.demo.dirtyread.Main.count(..)</method-expression>
         </autolock>
       </locks>
       <roots>
         <root>
-          <field-name>Main.instance</field-name>
+          <field-name>test.terracota.demo.dirtyread.Main.instance</field-name>
         </root>
       </roots>
     </dso>

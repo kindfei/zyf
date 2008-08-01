@@ -6,15 +6,12 @@
     <dso>  
       <locks>
         <autolock>
-           <method-expression>void test.terracota.demo.syn.Main.getInput(..) </method-expression>
-        </autolock>
-        <autolock>
-           <method-expression>void test.terracota.demo.syn.Main.printInput(..) </method-expression>
+           <method-expression>void test.terracota.demo.helloworld.Main.count(..)</method-expression>
         </autolock>
       </locks>
       <roots>
         <root>
-          <field-name>test.terracota.demo.syn.Main.instance</field-name>
+          <field-name>test.terracota.demo.helloworld.Main.instance</field-name>
         </root>
       </roots>
     </dso>

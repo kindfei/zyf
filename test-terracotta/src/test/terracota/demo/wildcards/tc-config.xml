@@ -1,0 +1,37 @@
+<tc:tc-config xmlns:tc="http://www.terracotta.org/config"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-4.xsd">
+
+  <application>
+    <dso>  
+       <instrumented-classes>
+         <include>
+           <class-expression>*Bean</class-expression>
+         </include>
+       </instrumented-classes>
+      <locks>
+        <autolock>
+           <method-expression>void *..*.put*(..) </method-expression>
+           <lock-level>write</lock-level>
+        </autolock>
+        <autolock>
+           <method-expression>void *..*.get*(..) </method-expression>
+           <lock-level>read</lock-level>
+        </autolock>
+        <autolock>
+           <method-expression>void Main.put(..) </method-expression>
+           <lock-level>write</lock-level>
+        </autolock>
+        <autolock>
+           <method-expression>void Main.list(..) </method-expression>
+           <lock-level>read</lock-level>
+        </autolock>
+      </locks>
+      <roots>
+        <root>
+          <field-expression>* *.instance</field-expression>
+        </root>
+      </roots>
+    </dso>
+  </application>
+</tc:tc-config>

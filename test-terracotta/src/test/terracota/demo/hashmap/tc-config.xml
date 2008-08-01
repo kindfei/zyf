@@ -6,15 +6,16 @@
     <dso>  
       <locks>
         <autolock>
-           <method-expression>void test.terracota.demo.syn.Main.getInput(..) </method-expression>
+           <method-expression>void test.terracota.demo.hashmap.Main.put(..) </method-expression>
         </autolock>
         <autolock>
-           <method-expression>void test.terracota.demo.syn.Main.printInput(..) </method-expression>
+           <method-expression>void test.terracota.demo.hashmap.Main.list(..) </method-expression>
+           <lock-level>read</lock-level>
         </autolock>
       </locks>
       <roots>
         <root>
-          <field-name>test.terracota.demo.syn.Main.instance</field-name>
+          <field-name>test.terracota.demo.hashmap.Main.instance</field-name>
         </root>
       </roots>
     </dso>
