@@ -9,9 +9,9 @@
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
 			<l2-group-port>9530</l2-group-port>
-			<data>/opt/terracotta/server1-data</data>
-			<logs>terracotta/server-logs</logs>
-			<statistics>terracotta/cluster-statistics</statistics>
+			<data>/opt/tc-runtime/server1-data</data>
+			<logs>/opt/tc-runtime/server-logs</logs>
+			<statistics>/opt/tc-runtime/cluster-statistics</statistics>
 			<dso>
 				<persistence>
 					<mode>permanent-store</mode>
@@ -19,13 +19,13 @@
 				<client-reconnect-window>120</client-reconnect-window>
 			</dso>
 		</server>
-		<server host="10.15.2.227" name="server2">
+		<server host="192.168.0.10" name="server2">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
 			<l2-group-port>9530</l2-group-port>
-			<data>/opt/terracotta/server2-data</data>
-			<logs>terracotta/server-logs</logs>
-			<statistics>terracotta/cluster-statistics</statistics>
+			<data>/opt/tc-runtime/server2-data</data>
+			<logs>/opt/tc-runtime/server-logs</logs>
+			<statistics>/opt/tc-runtime/cluster-statistics</statistics>
 			<dso>
 				<persistence>
 					<mode>permanent-store</mode>
