@@ -42,8 +42,8 @@
 	</servers>
 
 	<clients>
-		<logs>terracotta/client-logs</logs>
-		<statistics>terracotta/client-statistics/%D</statistics>
+		<logs>client-runtime/client-logs</logs>
+		<statistics>client-runtime/client-statistics/%D</statistics>
 	</clients>
 
 	<application>
