@@ -22,7 +22,7 @@
               synchronized block(s).
      
               There are two synchronized blocks in this method, so the autolock
-              will apply to bloth blocks. -->
+              will apply to both blocks. -->
         <autolock>
            <method-expression>void test.terracota.demo.locking.Main.method2()</method-expression>
            <lock-level>write</lock-level>
