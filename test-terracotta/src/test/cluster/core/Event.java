@@ -1,7 +1,7 @@
 package test.cluster.core;
 
 
-public interface Task {
+public interface Event {
 
 	/**
 	 * @return  Returns the content.
