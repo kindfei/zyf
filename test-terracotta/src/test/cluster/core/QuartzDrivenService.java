@@ -1,8 +1,9 @@
 package test.cluster.core;
 
-public class TimerDrivenService extends AbstractService {
 
-	public TimerDrivenService(int mode, AbstractProcessor processor, int delay, int period) {
+public class QuartzDrivenService extends AbstractService {
+
+	public QuartzDrivenService(int mode, AbstractProcessor processor, String proFile) {
 		super(mode, processor);
 	}
 

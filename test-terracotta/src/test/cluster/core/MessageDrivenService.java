@@ -1,17 +1,14 @@
 package test.cluster.core;
 
-public class MessageDrivenService implements Service {
+public class MessageDrivenService extends AbstractService {
 
-	public MessageDrivenService(int mode, String dest, Master master,
-			Worker worker) {
+	public MessageDrivenService(int mode, AbstractProcessor processor, String dest) {
+		super(mode, processor);
 	}
 
-	public String shutdown() {
-		return null;
+	@Override
+	public void init() {
+		// TODO Auto-generated method stub
+		
 	}
-
-	public String startup() {
-		return null;
-	}
-
 }
