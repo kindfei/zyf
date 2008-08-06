@@ -1,0 +1,39 @@
+<howto>
+h1.  Disributed Method Invocation (DMI) Example
+
+h2.  Summary
+
+This example shows how to use Distributed Method Invocation with Terracotta.  DMI is a good choice to use if you want to broadcast a message to many clients.  
+
+h2.  How to run
+
+*Node 1:*
+{code}
+$ javac *.java
+$ start-tc-server &amp;
+$ dso-java Main 
+Waiting for dmi method calls...
+{code}
+
+*Node 2:*
+{code}
+$ dso-java Main rec
+Waiting for dmi method calls...
+{code}
+
+
+*Node 3:*
+{code}
+$ dso-java Main 
+Enter a message> hello
+hello
+{code}
+
+On nodes 1 &amp; 2 you will also see:
+{code}
+$ dso-java Main rec
+Waiting for dmi method calls...
+hello
+{code}
+
+</howto>
