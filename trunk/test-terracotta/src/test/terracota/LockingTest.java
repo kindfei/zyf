@@ -2,8 +2,8 @@ package test.terracota;
 
 import zyf.helper.CmdHelper;
 
-public class Test {
-	public static Test instance = new Test();
+public class LockingTest {
+	public static LockingTest instance = new LockingTest();
 	
 	int i = 0;
 	
