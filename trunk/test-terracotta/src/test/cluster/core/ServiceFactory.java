@@ -7,17 +7,17 @@ public class ServiceFactory {
 
 	/**
 	 */
-	public Service getMessageDrivenService() {
+	public static Service getMessageDrivenService() {
 		return null;
 	}
 
 	/**
 	 */
-	public Service getTimerDrivenService() {
+	public static Service getTimerDrivenService() {
 		return null;
 	}
 
-	public Service getQuartzDrivenService() {
+	public static Service getQuartzDrivenService() {
 		return null;
 	}
 
