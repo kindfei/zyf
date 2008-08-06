@@ -1,0 +1,101 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<tc:tc-config xmlns:tc="http://www.terracotta.org/config"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-4.xsd">
+
+	<servers>
+		<server host="192.168.0.10" name="server1">
+			<dso-port>9510</dso-port>
+			<jmx-port>9520</jmx-port>
+			<l2-group-port>9530</l2-group-port>
+			<data>/opt/tc-runtime/server1-data</data>
+			<logs>/opt/tc-runtime/server-logs</logs>
+			<statistics>/opt/tc-runtime/cluster-statistics</statistics>
+			<dso>
+				<persistence>
+					<mode>permanent-store</mode>
+				</persistence>
+				<client-reconnect-window>120</client-reconnect-window>
+			</dso>
+		</server>
+		<server host="10.4.6.218" name="server2">
+			<dso-port>9510</dso-port>
+			<jmx-port>9520</jmx-port>
+			<l2-group-port>9530</l2-group-port>
+			<data>/opt/tc-runtime/server2-data</data>
+			<logs>/opt/tc-runtime/server-logs</logs>
+			<statistics>/opt/tc-runtime/cluster-statistics</statistics>
+			<dso>
+				<persistence>
+					<mode>permanent-store</mode>
+				</persistence>
+				<client-reconnect-window>120</client-reconnect-window>
+			</dso>
+		</server>
+		<ha>
+			<mode>networked-active-passive</mode>
+			<networked-active-passive>
+				<election-time>5</election-time>
+			</networked-active-passive>
+		</ha>
+	</servers>
+
+	<clients>
+		<logs>client-runtime/client-logs/%(nodeId)</logs>
+		<statistics>
+			client-runtime/client-statistics/%(nodeId)
+		</statistics>
+	</clients>
+
+	<application>
+		<dso>
+			<locks>
+				<autolock>
+					<method-expression>
+						void test.terracota.LockingTest.writeLock(..)
+					</method-expression>
+					<lock-level>write</lock-level>
+				</autolock>
+				<autolock>
+					<method-expression>
+						void test.terracota.LockingTest.readLock(..)
+					</method-expression>
+					<lock-level>read</lock-level>
+				</autolock>
+				<autolock>
+					<method-expression>
+						void test.terracota.LockingTest.concurrentLock(..)
+					</method-expression>
+					<lock-level>concurrent</lock-level>
+				</autolock>
+				<autolock auto-synchronized="true">
+					<method-expression>
+						void test.terracota.LockingTest.asWriteLock(..)
+					</method-expression>
+					<lock-level>write</lock-level>
+				</autolock>
+				<autolock auto-synchronized="true">
+					<method-expression>
+						void test.terracota.LockingTest.asReadLock(..)
+					</method-expression>
+					<lock-level>read</lock-level>
+				</autolock>
+				<autolock auto-synchronized="true">
+					<method-expression>
+						void test.terracota.LockingTest.asConcurrentLock(..)
+					</method-expression>
+					<lock-level>concurrent</lock-level>
+				</autolock>
+			</locks>
+			<roots>
+				<root>
+					<field-name>
+						test.terracota.LockingTest.instance
+					</field-name>
+				</root>
+			</roots>
+		</dso>
+	</application>
+
+</tc:tc-config>
