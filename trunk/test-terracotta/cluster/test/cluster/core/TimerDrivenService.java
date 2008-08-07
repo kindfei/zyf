@@ -1,15 +1,15 @@
 package test.cluster.core;
 
-public class TimerDrivenService extends AbstractService {
+public class TimerDrivenService extends AbstractService<Object> {
 
-	public TimerDrivenService(int mode, AbstractProcessor processor, int delay, int period) {
+	public TimerDrivenService(int mode, Processor<Object> processor, int delay, int period) {
 		super(mode, processor);
 	}
 
-	@Override
 	public void init() {
-		// TODO Auto-generated method stub
-		
+	}
+
+	public void close() {
 	}
 
 }

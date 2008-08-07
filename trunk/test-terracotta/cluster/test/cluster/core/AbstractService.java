@@ -1,30 +1,43 @@
 package test.cluster.core;
 
-public abstract class AbstractService implements Service {
+public abstract class AbstractService<T> implements Service {
+	
+	private int mode;
+	private Processor<T> processor;
 
-	public AbstractService(int mode, AbstractProcessor processor) {
-
+	public AbstractService(int mode, Processor<T> processor) {
+		this.mode = mode;
+		this.processor = processor;
+	}
+	
+	public int getMode() {
+		return mode;
+	}
+	
+	public Processor<T> getProcessor() {
+		return processor;
 	}
 
-	@Override
 	public String startup() {
-		// TODO Auto-generated method stub
-		return null;
+		try {
+			init();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+		
+		return "OK";
 	}
 
-	@Override
 	public String shutdown() {
-		// TODO Auto-generated method stub
-		return null;
+		close();
+		return "OK";
 	}
 
-	/**
-	 */
-	public abstract void init();
+	public abstract void init() throws Exception;
+	public abstract void close();
 
-	/**
-	 */
-	public void process(Object obj) {
+	public void process(T t) {
+		processor.masterProcess(t);
 	}
 
 }

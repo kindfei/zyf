@@ -1,14 +1,24 @@
 package test.cluster.core;
 
-public class MessageDrivenService extends AbstractService {
+import javax.jms.Message;
 
-	public MessageDrivenService(int mode, AbstractProcessor processor, String dest) {
+public class MessageDrivenService extends AbstractService<Message> {
+	
+	private String destName;
+
+	public MessageDrivenService(int mode, MessageProcessor processor, String destName) {
 		super(mode, processor);
+		this.destName = destName;
+	}
+	
+	public String getDestName() {
+		return destName;
 	}
 
-	@Override
 	public void init() {
-		// TODO Auto-generated method stub
 		
+	}
+
+	public void close() {
 	}
 }
