@@ -70,8 +70,13 @@
 			<locks>
 				<autolock>
 					<method-expression>
-						void
-						test.cluster.core.tc.ClusterLock.acquire(..)
+						void test.cluster.core.tc.ClusterLock.acquire(..)
+					</method-expression>
+					<lock-level>write</lock-level>
+				</autolock>
+				<autolock>
+					<method-expression>
+						void test.cluster.core.tc.ClusterShareRoot.acquireMutex(..)
 					</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
