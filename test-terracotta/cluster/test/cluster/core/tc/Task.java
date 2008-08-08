@@ -1,4 +1,4 @@
-package test.cluster.core;
+package test.cluster.core.tc;
 
 
 public interface Task {
