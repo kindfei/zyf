@@ -1,9 +1,15 @@
 package test.cluster.core;
 
+import java.util.List;
+
+import test.cluster.core.tc.ClusterShareRoot;
+import test.cluster.core.tc.Task;
+
 public abstract class AbstractService<T> implements Service {
 	
 	private int mode;
 	private Processor<T> processor;
+	private ClusterShareRoot root = ClusterShareRoot.instance;
 
 	public AbstractService(int mode, Processor<T> processor) {
 		this.mode = mode;
@@ -19,6 +25,8 @@ public abstract class AbstractService<T> implements Service {
 	}
 
 	public String startup() {
+		root.acquireMutex("");
+		
 		try {
 			init();
 		} catch (Exception e) {
@@ -28,16 +36,28 @@ public abstract class AbstractService<T> implements Service {
 		return "OK";
 	}
 
+	public abstract void init() throws Exception;
+
 	public String shutdown() {
 		close();
 		return "OK";
 	}
-
-	public abstract void init() throws Exception;
+	
 	public abstract void close();
 
 	public void process(T t) {
-		processor.masterProcess(t);
+		List<Task> tasks = processor.masterProcess(t);
+		
+	}
+	
+	private void addTask(List<Task> tasks) {
+		
+	}
+	
+	private void exeTask(List<Task> tasks) {
+		for (Task task : tasks) {
+			processor.workerProcess(task);
+		}
 	}
 
 }
