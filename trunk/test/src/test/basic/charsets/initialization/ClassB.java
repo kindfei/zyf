@@ -1,4 +1,4 @@
-package test.basic.inheritance;
+package test.basic.charsets.initialization;
 
 public class ClassB extends ClassA {
 	static ClassTest sa = new ClassTest("ClassB parameter [sa] initialize");
