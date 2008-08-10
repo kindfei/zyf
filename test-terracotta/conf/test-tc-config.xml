@@ -87,6 +87,18 @@
 					</method-expression>
 					<lock-level>concurrent</lock-level>
 				</autolock>
+				<autolock>
+					<method-expression>
+						void test.terracota.LockingTest.writeLock1(..)
+					</method-expression>
+					<lock-level>write</lock-level>
+				</autolock>
+				<autolock>
+					<method-expression>
+						void test.terracota.LockingTest.writeLock2(..)
+					</method-expression>
+					<lock-level>write</lock-level>
+				</autolock>
 			</locks>
 			<roots>
 				<root>

@@ -66,6 +66,11 @@
 						test.cluster.core.tc.ClusterLock
 					</class-expression>
 				</include>
+				<include>
+					<class-expression>
+						test.cluster.core.tc.Task
+					</class-expression>
+				</include>
 			</instrumented-classes>
 			<locks>
 				<autolock>
@@ -76,7 +81,7 @@
 				</autolock>
 				<autolock>
 					<method-expression>
-						void test.cluster.core.tc.ClusterShareRoot.acquireMutex(..)
+						* test.cluster.core.tc.ClusterShareRoot.addValue(..)
 					</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
