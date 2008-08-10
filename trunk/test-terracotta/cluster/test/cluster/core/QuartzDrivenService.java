@@ -11,8 +11,8 @@ public class QuartzDrivenService extends AbstractService<JobExecutionContext> {
 	private String propName;
 	private Scheduler scheduler;
 
-	public QuartzDrivenService(int mode, QuartzProcessor processor, String propName) {
-		super(mode, processor);
+	public QuartzDrivenService(int serviceMode, int executorSize, boolean acceptTask, QuartzProcessor processor, String propName) {
+		super(serviceMode, executorSize, acceptTask, processor);
 		this.propName = propName;
 	}
 	
@@ -21,7 +21,6 @@ public class QuartzDrivenService extends AbstractService<JobExecutionContext> {
 	}
 
 	public void init() throws Exception {
-		QuartzProcessor.setService(this);
 		StdSchedulerFactory factory = new StdSchedulerFactory();
 		scheduler = factory.getScheduler();
 		scheduler.start();

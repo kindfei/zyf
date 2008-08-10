@@ -7,6 +7,9 @@ public class LockingTest {
 	
 	int i = 0;
 	
+	Object lock1 = new Object();
+	Object lock2 = new Object();
+	
 	public synchronized void writeLock() {
 		CmdHelper.pause("writeLock");
 	}
@@ -35,6 +38,18 @@ public class LockingTest {
 		CmdHelper.pause("asConcurrentLock");
 	}
 	
+	public void writeLock1() {
+		synchronized (lock1) {
+			CmdHelper.pause("writeLock1");
+		}
+	}
+	
+	public void writeLock2() {
+		synchronized (lock2) {
+			CmdHelper.pause("writeLock2");
+		}
+	}
+	
 	public static void main(String[] args) {
 		a:while (true) {
 			int opt = CmdHelper.options(new String[] {
@@ -45,6 +60,8 @@ public class LockingTest {
 					"asWriteLock",
 					"asReadLock",
 					"asConcurrentLock",
+					"writeLock1",
+					"writeLock2",
 					"cancel",
 			});
 			
@@ -78,6 +95,14 @@ public class LockingTest {
 				break;
 
 			case 7:
+				instance.writeLock1();
+				break;
+
+			case 8:
+				instance.writeLock2();
+				break;
+
+			case 9:
 				break a;
 
 			default:
