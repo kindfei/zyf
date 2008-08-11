@@ -5,16 +5,13 @@ public class Task {
 	private int mode;
 	private Object content;
 	
-	public Task(int mode) {
+	public Task(int mode, Object content) {
 		this.mode = mode;
+		this.content = content;
 	}
 	
 	public int getExecuteMode() {
 		return mode;
-	}
-	
-	public void setContent(Object content) {
-		this.content = content;
 	}
 	
 	public Object getContent() {
