@@ -1,5 +1,8 @@
 package test.terracota;
 
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
 import zyf.helper.CmdHelper;
 
 public class LockingTest {
@@ -9,6 +12,9 @@ public class LockingTest {
 	
 	Object lock1 = new Object();
 	Object lock2 = new Object();
+	
+	Lock lockA = new ReentrantLock();
+	Lock lockB = new ReentrantLock();
 	
 	public synchronized void writeLock() {
 		CmdHelper.pause("writeLock");
@@ -50,6 +56,18 @@ public class LockingTest {
 		}
 	}
 	
+	public void lockA() {
+		lockA.lock();
+		CmdHelper.pause("lockA");
+		lockA.unlock();
+	}
+	
+	public void lockB() {
+		lockB.lock();
+		CmdHelper.pause("lockB");
+		lockB.unlock();
+	}
+	
 	public static void main(String[] args) {
 		a:while (true) {
 			int opt = CmdHelper.options(new String[] {
@@ -62,6 +80,8 @@ public class LockingTest {
 					"asConcurrentLock",
 					"writeLock1",
 					"writeLock2",
+					"lockA",
+					"lockB",
 					"cancel",
 			});
 			
@@ -103,6 +123,14 @@ public class LockingTest {
 				break;
 
 			case 9:
+				instance.lockA();
+				break;
+
+			case 10:
+				instance.lockB();
+				break;
+
+			case 11:
 				break a;
 
 			default:

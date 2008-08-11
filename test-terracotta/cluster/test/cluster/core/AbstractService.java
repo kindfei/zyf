@@ -10,6 +10,12 @@ import java.util.concurrent.TimeUnit;
 import test.cluster.core.tc.ClusterShareRoot;
 import test.cluster.core.tc.Task;
 
+/**
+ * Basic service operation control
+ * @author zhangyf
+ *
+ * @param <T>
+ */
 public abstract class AbstractService<T> implements Service {
 	
 	private int serviceMode;
@@ -22,7 +28,14 @@ public abstract class AbstractService<T> implements Service {
 	
 	private List<TaskExecutor> executorList;
 	private ExecutorService threadPool;
-
+	
+	/**
+	 * Create Service
+	 * @param serviceMode service mode 
+	 * @param executorSize how many thread to take the task and process it
+	 * @param acceptTask whether take the task from the share queue
+	 * @param processor business implementation
+	 */
 	public AbstractService(int serviceMode, int executorSize, boolean acceptTask, Processor<T> processor) {
 		this.serviceMode = serviceMode;
 		this.executorSize = executorSize;
@@ -34,8 +47,12 @@ public abstract class AbstractService<T> implements Service {
 	public Processor<T> getProcessor() {
 		return processor;
 	}
-
-	public String startup() {
+	
+	/**
+	 * Startup the service 
+	 * @throws Exception 
+	 */
+	public void startup() throws Exception {
 		
 		if (acceptTask) {
 			if (executorList == null) executorList = new ArrayList<TaskExecutor>();
@@ -59,20 +76,18 @@ public abstract class AbstractService<T> implements Service {
 			break;
 		}
 		
-		try {
-			init();
-		} catch (Exception e) {
-			e.printStackTrace();
-			return e.getMessage();
-		}
-		
-		return "OK";
+		init();
 	}
 
 	public abstract void init() throws Exception;
-
-	public String shutdown() {
+	
+	/**
+	 * Shutdown the service 
+	 */
+	public void shutdown() {
 		close();
+		
+		tcRoot.releaseMutex(procName);
 		
 		if (executorList != null) {
 			for (TaskExecutor executor : executorList) {
@@ -83,13 +98,15 @@ public abstract class AbstractService<T> implements Service {
 		if (threadPool != null) {
 			threadPool.shutdown();
 		}
-		
-		return "OK";
 	}
 	
 	public abstract void close();
-
-	public void process(T t) {
+	
+	/**
+	 * Process entry for service trigger
+	 * @param t
+	 */
+	public synchronized void process(T t) {
 		List<Task> tasks = processor.masterProcess(t);
 		
 		if (tasks == null) {
@@ -117,6 +134,11 @@ public abstract class AbstractService<T> implements Service {
 		}
 	}
 	
+	/**
+	 * Take task from share queue for worker
+	 * @author zhangyf
+	 *
+	 */
 	private class TaskExecutor extends Thread {
 		private volatile boolean isActive = true;
 		
@@ -141,6 +163,10 @@ public abstract class AbstractService<T> implements Service {
 		}
 	}
 	
+	/**
+	 * Local invoke worker process
+	 * @param task
+	 */
 	private void exeTask(final Task task) {
 		if (threadPool == null) {
 			threadPool = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
@@ -159,10 +185,18 @@ public abstract class AbstractService<T> implements Service {
 		});
 	}
 	
+	/**
+	 * Add task to share queue
+	 * @param task
+	 */
 	private void addTask(Task task) {
 		tcRoot.addTask(procName, task);
 	}
 	
+	/**
+	 * Distributed invoke worker process
+	 * @param task
+	 */
 	private void dmiTask(Task task) {
 		tcRoot.dmiTask(procName, task);
 	}
