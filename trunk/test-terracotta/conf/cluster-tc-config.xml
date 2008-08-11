@@ -84,6 +84,18 @@
 					</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
+				<autolock>
+					<method-expression>
+						void test.cluster.tc.caches.*.set*(..)
+					</method-expression>
+					<lock-level>write</lock-level>
+				</autolock>
+				<autolock>
+					<method-expression>
+						void test.cluster.tc.caches.*.get*(..)
+					</method-expression>
+					<lock-level>read</lock-level>
+				</autolock>
 			</locks>
 			<roots>
 				<root>

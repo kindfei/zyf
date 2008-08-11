@@ -58,6 +58,7 @@ public abstract class AbstractService<T> implements Service {
 			if (executorList == null) executorList = new ArrayList<TaskExecutor>();
 			for (int i = 0; i < executorSize; i++) {
 				TaskExecutor executor = new TaskExecutor();
+				executor.setName(procName + "-TaskExecutor" + i);
 				executorList.add(executor);
 				executor.start();
 			}
