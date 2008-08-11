@@ -3,6 +3,11 @@ package test.cluster.core;
 import java.util.Timer;
 import java.util.TimerTask;
 
+/**
+ * Timer Driven Service
+ * @author zhangyf
+ *
+ */
 public class TimerDrivenService extends AbstractService<Object> {
 	
 	private int delay;
@@ -10,7 +15,7 @@ public class TimerDrivenService extends AbstractService<Object> {
 	
 	private Timer timer;
 
-	public TimerDrivenService(int serviceMode, int executorSize, boolean acceptTask, Processor<Object> processor, int delay, int period) {
+	public TimerDrivenService(int serviceMode, int executorSize, boolean acceptTask, TimerProcessor processor, int delay, int period) {
 		super(serviceMode, executorSize, acceptTask, processor);
 		this.delay = delay;
 		this.period = period;

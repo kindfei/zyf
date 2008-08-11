@@ -7,5 +7,8 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/test"/>
 	<classpathentry kind="lib" path="/test/lib/jboss-4.0.5.GA/jbossall-client.jar" sourcepath="E:/Library/Sun/jms1.1/src/share"/>
 	<classpathentry kind="lib" path="/test/lib/quartz-1.5.2.jar"/>
+	<classpathentry kind="con" path="com.soyatec.uml.CONTAINER"/>
+	<classpathentry kind="lib" path="/test/lib/Apache/commons/commons-logging.jar"/>
+	<classpathentry kind="lib" path="/test/lib/Apache/log4j-1.2.13.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

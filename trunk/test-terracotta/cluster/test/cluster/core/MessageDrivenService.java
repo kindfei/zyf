@@ -2,6 +2,11 @@ package test.cluster.core;
 
 import javax.jms.Message;
 
+/**
+ * MessageDrivenService
+ * @author zhangyf
+ *
+ */
 public class MessageDrivenService extends AbstractService<Message> {
 	
 	private String destName;
@@ -20,5 +25,6 @@ public class MessageDrivenService extends AbstractService<Message> {
 	}
 
 	public void close() {
+		
 	}
 }

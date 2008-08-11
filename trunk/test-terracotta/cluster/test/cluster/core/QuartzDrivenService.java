@@ -5,9 +5,13 @@ import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
 import org.quartz.impl.StdSchedulerFactory;
 
-
+/**
+ * QuartzDrivenService
+ * @author zhangyf
+ *
+ */
 public class QuartzDrivenService extends AbstractService<JobExecutionContext> {
-	
+
 	private String propName;
 	private Scheduler scheduler;
 
@@ -15,7 +19,7 @@ public class QuartzDrivenService extends AbstractService<JobExecutionContext> {
 		super(serviceMode, executorSize, acceptTask, processor);
 		this.propName = propName;
 	}
-	
+
 	public String getPropName() {
 		return propName;
 	}

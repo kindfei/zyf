@@ -13,7 +13,7 @@ public class ServiceFactory {
 		return service;
 	}
 
-	public static Service getTimerDrivenService(int serviceMode, int executorSize, boolean acceptTask, Processor<Object> processor, int delay, int period) {
+	public static Service getTimerDrivenService(int serviceMode, int executorSize, boolean acceptTask, TimerProcessor processor, int delay, int period) {
 		TimerDrivenService service = new TimerDrivenService(serviceMode, executorSize, acceptTask, processor, delay, period);
 		String procName = processor.getClass().getName();
 		servMap.put(procName, service);

@@ -2,9 +2,11 @@ package test.cluster.core.tc;
 
 import java.util.HashMap;
 import java.util.Map;
-import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.ConcurrentHashMap;
-import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.SynchronousQueue;
 
 import test.cluster.core.Processor;
 import test.cluster.core.ServiceFactory;
@@ -15,7 +17,7 @@ public class ClusterShareRoot {
 	private ClusterShareRoot() {
 	}
 	
-	private Map<String, ClusterLock> lockMap = new HashMap<String, ClusterLock>();
+	private Map<String, Lock> lockMap = new HashMap<String, Lock>();
 	
 	private Map<String, BlockingQueue<Task>> queueMap = new HashMap<String, BlockingQueue<Task>>();
 	
@@ -23,50 +25,43 @@ public class ClusterShareRoot {
 	
 	
 	public void acquireMutex(String procName) {
-		ClusterLock lock = lockMap.get(procName);
-		if (lock == null) {
-			lock = this.<ClusterLock>addValue(procName, lockMap, new ClusterLock());
-		}
+		Lock lock = getLock(procName);
 		
 		System.out.println("acquiring mutex...");
-		lock.acquire();
+		lock.lock();
+		System.out.println("acquired mutex...");
+	}
+	
+	public void releaseMutex(String procName) {
+		Lock lock = getLock(procName);
+		
+		System.out.println("releasing mutex...");
+		lock.unlock();
 		System.out.println("released mutex...");
 	}
 	
 	public void addTask(String procName, Task task) {
-		BlockingQueue<Task> queue = queueMap.get(procName);
-		if (queue == null) {
-			queue = this.<BlockingQueue<Task>>addValue(procName, queueMap, new LinkedBlockingQueue<Task>());
-		}
+		BlockingQueue<Task> queue = getQueue(procName);
 		
 		queue.add(task);
 	}
 	
 	public Task takeTask(String procName) throws InterruptedException {
-		BlockingQueue<Task> queue = queueMap.get(procName);
-		if (queue == null) {
-			queue = this.<BlockingQueue<Task>>addValue(procName, queueMap, new LinkedBlockingQueue<Task>());
-		}
+		BlockingQueue<Task> queue = getQueue(procName);
 		
 		Task task = queue.take();
 		
 		return task;
 	}
 	
-	public Object getCache(String procName, String key) {
-		Map<String, Object> cache = cacheMap.get(procName);
-		if (cache == null) {
-			cache = this.<Map<String, Object>>addValue(procName, cacheMap, new ConcurrentHashMap<String, Object>());
-		}
+	public Object getCacheValue(String procName, String key) {
+		Map<String, Object> cache = getCache(procName);
 		
 		return cache.get(key);
 	}
 	
-	public void setCache(String procName, String key, Object value) {
-		Map<String, Object> cache = cacheMap.get(procName);
-		if (cache == null) {
-			cache = this.<Map<String, Object>>addValue(procName, cacheMap, new ConcurrentHashMap<String, Object>());
-		}
+	public void setCacheValue(String procName, String key, Object value) {
+		Map<String, Object> cache = getCache(procName);
 		
 		cache.put(key, value);
 	}
@@ -81,6 +76,30 @@ public class ClusterShareRoot {
 		} catch (Throwable e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private Lock getLock(String procName) {
+		Lock lock = lockMap.get(procName);
+		if (lock == null) {
+			lock = this.<Lock>addValue(procName, lockMap, new ReentrantLock());
+		}
+		return lock;
+	}
+	
+	private BlockingQueue<Task> getQueue(String procName) {
+		BlockingQueue<Task> queue = queueMap.get(procName);
+		if (queue == null) {
+			queue = this.<BlockingQueue<Task>>addValue(procName, queueMap, new SynchronousQueue<Task>());
+		}
+		return queue;
+	}
+	
+	private Map<String, Object> getCache(String procName) {
+		Map<String, Object> cache = cacheMap.get(procName);
+		if (cache == null) {
+			cache = this.<Map<String, Object>>addValue(procName, cacheMap, new ConcurrentHashMap<String, Object>());
+		}
+		return cache;
 	}
 	
 	private <V> V addValue(String procName, Map<String, V> map, V newV) {

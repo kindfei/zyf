@@ -63,22 +63,21 @@
 			<instrumented-classes>
 				<include>
 					<class-expression>
-						test.cluster.core.tc.ClusterLock
+						test.cluster.core.tc.Task
 					</class-expression>
 				</include>
 				<include>
 					<class-expression>
-						test.cluster.core.tc.Task
+						test.cluster.tc.caches.*
+					</class-expression>
+				</include>
+				<include>
+					<class-expression>
+						test.cluster.tc.tasks.*
 					</class-expression>
 				</include>
 			</instrumented-classes>
 			<locks>
-				<autolock>
-					<method-expression>
-						void test.cluster.core.tc.ClusterLock.acquire(..)
-					</method-expression>
-					<lock-level>write</lock-level>
-				</autolock>
 				<autolock>
 					<method-expression>
 						* test.cluster.core.tc.ClusterShareRoot.addValue(..)
