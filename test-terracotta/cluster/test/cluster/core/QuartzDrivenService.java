@@ -26,6 +26,7 @@ public class QuartzDrivenService extends AbstractService<JobExecutionContext> {
 
 	public void init() throws Exception {
 		StdSchedulerFactory factory = new StdSchedulerFactory();
+		factory.initialize(ClassLoader.getSystemResourceAsStream(propName));
 		scheduler = factory.getScheduler();
 		scheduler.start();
 	}

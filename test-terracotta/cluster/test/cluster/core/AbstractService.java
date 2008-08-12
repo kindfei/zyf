@@ -50,9 +50,26 @@ public abstract class AbstractService<T> implements Service {
 	
 	/**
 	 * Startup the service 
-	 * @throws Exception 
 	 */
-	public void startup() throws Exception {
+	public void startup() {
+		new Thread(new Runnable() {
+
+			public void run() {
+				try {
+					runStartup();
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			}
+			
+		}).start();
+	}
+	
+	/**
+	 * Run startup operation.
+	 * @throws Exception
+	 */
+	private void runStartup() throws Exception {
 		
 		if (acceptTask) {
 			if (executorList == null) executorList = new ArrayList<TaskExecutor>();
@@ -65,11 +82,11 @@ public abstract class AbstractService<T> implements Service {
 		}
 		
 		switch (serviceMode) {
-		case Service.SERVICE_MODE_HA:
+		case Service.MODE_SERVICE_ACTIVE_STANDBY:
 			tcRoot.acquireMutex(procName);
 			break;
 
-		case Service.SERVICE_MODE_HA_LB:
+		case Service.MODE_SERVICE_ALL_ACTIVE:
 			
 			break;
 			
@@ -78,6 +95,8 @@ public abstract class AbstractService<T> implements Service {
 		}
 		
 		init();
+		
+		System.out.println("[" + procName + "] successfully started.");
 	}
 
 	public abstract void init() throws Exception;
@@ -117,15 +136,15 @@ public abstract class AbstractService<T> implements Service {
 		for (Task task : tasks) {
 			int mode = task.getExecuteMode();
 			switch (mode) {
-			case Service.EXECUTE_MODE_INVOKE:
+			case Service.MODE_EXECUTE_LOCAL_INVOKE:
 				exeTask(task);
 				break;
 
-			case Service.EXECUTE_MODE_P2P:
+			case Service.MODE_EXECUTE_TASK_QUEUE:
 				addTask(task);
 				break;
 
-			case Service.EXECUTE_MODE_PUB:
+			case Service.MODE_EXECUTE_ALL_INVOKE:
 				dmiTask(task);
 				break;
 

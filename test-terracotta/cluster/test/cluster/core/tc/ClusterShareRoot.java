@@ -12,7 +12,7 @@ import test.cluster.core.Processor;
 import test.cluster.core.ServiceFactory;
 
 public class ClusterShareRoot {
-	public static ClusterShareRoot instance = new ClusterShareRoot();
+	public static final ClusterShareRoot instance = new ClusterShareRoot();
 	
 	private ClusterShareRoot() {
 	}
@@ -27,17 +27,17 @@ public class ClusterShareRoot {
 	public void acquireMutex(String procName) {
 		Lock lock = getLock(procName);
 		
-		System.out.println("acquiring mutex...");
+		System.out.println("[" + procName + "] acquiring mutex...");
 		lock.lock();
-		System.out.println("acquired mutex...");
+		System.out.println("[" + procName + "] acquired mutex...");
 	}
 	
 	public void releaseMutex(String procName) {
 		Lock lock = getLock(procName);
 		
-		System.out.println("releasing mutex...");
+		System.out.println("[" + procName + "] releasing mutex...");
 		lock.unlock();
-		System.out.println("released mutex...");
+		System.out.println("[" + procName + "] released mutex...");
 	}
 	
 	public void addTask(String procName, Task task) {
