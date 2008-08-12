@@ -10,5 +10,9 @@
 	<classpathentry kind="con" path="com.soyatec.uml.CONTAINER"/>
 	<classpathentry kind="lib" path="/test/lib/Apache/commons/commons-logging.jar"/>
 	<classpathentry kind="lib" path="/test/lib/Apache/log4j-1.2.13.jar"/>
+	<classpathentry kind="lib" path="/test/lib/Apache/commons/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="/test/lib/Apache/commons/commons-digester-1.7.jar"/>
+	<classpathentry kind="lib" path="/test/lib/Apache/commons/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="conf"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

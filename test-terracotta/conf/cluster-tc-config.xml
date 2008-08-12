@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-4.xsd">
 
 	<servers>
-		<server host="192.168.0.10" name="server1">
+		<server host="10.4.6.218" name="server1">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
 			<l2-group-port>9530</l2-group-port>
@@ -24,7 +24,7 @@
 				</garbage-collection>
 			</dso>
 		</server>
-		<server host="10.4.6.218" name="server2">
+		<server host="192.168.0.10" name="server2">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
 			<l2-group-port>9530</l2-group-port>
@@ -104,6 +104,11 @@
 					</field-name>
 				</root>
 			</roots>
+			<distributed-methods>
+				<method-expression>
+					void test.cluster.core.tc.ClusterShareRoot.dmiTask(..)
+				</method-expression>
+			</distributed-methods>
 		</dso>
 	</application>
 
