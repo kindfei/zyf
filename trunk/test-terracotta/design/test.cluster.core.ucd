@@ -1,12 +1,28 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" size="2147,1077" id="test.cluster.core" metadata="uml2-1.0" initialized="true" scrolledX="149" scrolledY="186" tag="1000" key="32303037303533312D3130303020746573742D7465727261636F7474612F41646D696E6973747261746F72">
-  <children xsi:type="editmodel:ClassEditModel" name="ServiceFactory" location="731,613" size="137,29" id="test.cluster.core/ServiceFactory" runTimeClassModel="getService(Ljava.lang.String;),getQuartzDrivenService(IIZLtest.cluster.core.QuartzProcessor;Ljava.lang.String;),getMessageDrivenService(IIZLtest.cluster.core.MessageProcessor;Ljava.lang.String;),getProcessor(Ljava.lang.String;),getTimerDrivenService(IIZLtest.cluster.core.Processor;II)">
+<editmodel:ClassDiagramEditModel xmi:version="2.0" xmlns:xmi="http://www.omg.org/XMI" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:editmodel="editmodel.xmi" xmlns:options="options.xmi" size="1733,1110" id="test.cluster.core" metadata="uml2-1.0" initialized="true" scrolledY="281" tag="1000" key="32303037303533312D3130303020746573742D7465727261636F7474612F41646D696E6973747261746F72">
+  <children xsi:type="editmodel:ClassEditModel" name="ServiceFactory" location="649,703" size="223,139" id="test.cluster.core/ServiceFactory" runTimeClassModel="getService(Ljava.lang.String;),getQuartzDrivenService(IIZLtest.cluster.core.QuartzProcessor;Ljava.lang.String;),getMessageDrivenService(IIZLtest.cluster.core.MessageProcessor;Ljava.lang.String;),getProcessor(Ljava.lang.String;),getTimerDrivenService(IIZLtest.cluster.core.TimerProcessor;II)">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="716,90">
+      <children xsi:type="editmodel:MethodEditModel" name="getMessageDrivenService" id="test.cluster.core/ServiceFactory#getMessageDrivenService(IIZLtest.cluster.core.MessageProcessor;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getProcessor" id="test.cluster.core/ServiceFactory#getProcessor(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getQuartzDrivenService" id="test.cluster.core/ServiceFactory#getQuartzDrivenService(IIZLtest.cluster.core.QuartzProcessor;Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getService" id="test.cluster.core/ServiceFactory#getService(Ljava.lang.String;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getTimerDrivenService" id="test.cluster.core/ServiceFactory#getTimerDrivenService(IIZLtest.cluster.core.TimerProcessor;II)"/>
+    </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPublicMethods="true" showPublicInnerClasses="true" packageIndication="3"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.4/@sourceConnections.0" name="AbstractService" location="823,199" size="534,175" id="test.cluster.core/AbstractService" runTimeClassModel="getProcessor(),init(),process(LT;),close(),shutdown(),AbstractService(IIZLtest.cluster.core.Processor;),startup()">
+  <children xsi:type="editmodel:ClassEditModel" name="Task" location="922,703" size="150,117" id="test.cluster.core.tc/Task" runTimeClassModel="content,getExecuteMode(),Task(ILjava.lang.Object;),getContent()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="175,54">
+      <children xsi:type="editmodel:MethodEditModel" name="Task" id="test.cluster.core.tc/Task#Task(ILjava.lang.Object;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getContent" id="test.cluster.core.tc/Task#getContent()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getExecuteMode" id="test.cluster.core.tc/Task#getExecuteMode()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.6/@sourceConnections.0" name="AbstractService" location="253,289" size="192,175" id="test.cluster.core/AbstractService" runTimeClassModel="getProcessor(),init(),process(LT;),close(),shutdown(),AbstractService(IIZLtest.cluster.core.Processor;),startup()">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="511,126">
       <children xsi:type="editmodel:MethodEditModel" name="AbstractService" id="test.cluster.core/AbstractService#AbstractService(IIZLtest.cluster.core.Processor;)"/>
@@ -18,22 +34,44 @@
       <children xsi:type="editmodel:MethodEditModel" name="startup" id="test.cluster.core/AbstractService#startup()"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="test.cluster.core/Service&lt;-test.cluster.core/AbstractService" source="//@children.1" target="//@children.2" targetEnd="//@children.1/@sourceConnections.0/@children.1" sourceEnd="//@children.1/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="267,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="51,99"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="test.cluster.core/Service&lt;-test.cluster.core/AbstractService" source="//@children.2" target="//@children.3" targetEnd="//@children.2/@sourceConnections.0/@children.1" sourceEnd="//@children.2/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="96,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="118,189"/>
     </sourceConnections>
-    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPublicMethods="true" showPublicInnerClasses="true" packageIndication="3"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.1/@sourceConnections.0" name="Service" location="1039,50" size="102,99" id="test.cluster.core/Service" runTimeClassModel="eXECUTE_MODE_PUB,eXECUTE_MODE_INVOKE,sERVICE_MODE_HA_LB,shutdown(),sERVICE_MODE_HA,eXECUTE_MODE_P2P,startup()">
-    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.2/@sourceConnections.0" name="Service" location="231,50" size="236,189" id="test.cluster.core/Service" runTimeClassModel="mODE_EXECUTE_ALL_INVOKE,mODE_SERVICE_ACTIVE_STANDBY,mODE_EXECUTE_LOCAL_INVOKE,mODE_SERVICE_ALL_ACTIVE,shutdown(),mODE_EXECUTE_TASK_QUEUE,startup()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="213,90">
+      <children xsi:type="editmodel:AttributeEditModel" name="mODE_EXECUTE_ALL_INVOKE" id="test.cluster.core/Service#mODE_EXECUTE_ALL_INVOKE"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="mODE_EXECUTE_LOCAL_INVOKE" id="test.cluster.core/Service#mODE_EXECUTE_LOCAL_INVOKE"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="mODE_EXECUTE_TASK_QUEUE" id="test.cluster.core/Service#mODE_EXECUTE_TASK_QUEUE"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="mODE_SERVICE_ACTIVE_STANDBY" id="test.cluster.core/Service#mODE_SERVICE_ACTIVE_STANDBY"/>
+      <children xsi:type="editmodel:AttributeEditModel" name="mODE_SERVICE_ALL_ACTIVE" id="test.cluster.core/Service#mODE_SERVICE_ALL_ACTIVE"/>
+    </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="79,36">
       <children xsi:type="editmodel:MethodEditModel" name="shutdown" id="test.cluster.core/Service#shutdown()"/>
       <children xsi:type="editmodel:MethodEditModel" name="startup" id="test.cluster.core/Service#startup()"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPublicMethods="true" showPublicInnerClasses="true" packageIndication="3"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="QuartzDrivenService" location="761,424" size="660,121" id="test.cluster.core/QuartzDrivenService" runTimeClassModel="init(),close(),getPropName(),QuartzDrivenService(IIZLtest.cluster.core.QuartzProcessor;Ljava.lang.String;),propName">
+  <children xsi:type="editmodel:ClassEditModel" name="TimerDrivenService" location="469,514" size="168,139" id="test.cluster.core/TimerDrivenService" runTimeClassModel="init(),TimerDrivenService(IIZLtest.cluster.core.TimerProcessor;II),close(),getPeriod(),getDelay()">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="636,90">
+      <children xsi:type="editmodel:MethodEditModel" name="TimerDrivenService" id="test.cluster.core/TimerDrivenService#TimerDrivenService(IIZLtest.cluster.core.TimerProcessor;II)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="close" id="test.cluster.core/TimerDrivenService#close()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getDelay" id="test.cluster.core/TimerDrivenService#getDelay()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="getPeriod" id="test.cluster.core/TimerDrivenService#getPeriod()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="init" id="test.cluster.core/TimerDrivenService#init()"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="test.cluster.core/AbstractService&lt;-test.cluster.core/TimerDrivenService" source="//@children.4" target="//@children.6/@sourceConnections.0" targetEnd="//@children.4/@sourceConnections.0/@children.1" sourceEnd="//@children.4/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="84,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel"/>
+    </sourceConnections>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
+  </children>
+  <children xsi:type="editmodel:ClassEditModel" name="QuartzDrivenService" location="266,514" size="173,121" id="test.cluster.core/QuartzDrivenService" runTimeClassModel="init(),close(),getPropName(),QuartzDrivenService(IIZLtest.cluster.core.QuartzProcessor;Ljava.lang.String;)">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="637,72">
       <children xsi:type="editmodel:MethodEditModel" name="QuartzDrivenService" id="test.cluster.core/QuartzDrivenService#QuartzDrivenService(IIZLtest.cluster.core.QuartzProcessor;Ljava.lang.String;)"/>
@@ -42,13 +80,13 @@
       <children xsi:type="editmodel:MethodEditModel" name="init" id="test.cluster.core/QuartzDrivenService#init()"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="test.cluster.core/AbstractService&lt;-test.cluster.core/QuartzDrivenService" source="//@children.3" target="//@children.4/@sourceConnections.0" targetEnd="//@children.3/@sourceConnections.0/@children.1" sourceEnd="//@children.3/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="330,0" anchorKind="FixedAtEdge" attachSource="true"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="test.cluster.core/AbstractService&lt;-test.cluster.core/QuartzDrivenService" source="//@children.5" target="//@children.6/@sourceConnections.0" targetEnd="//@children.5/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="86,0" anchorKind="FixedAtEdge" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel"/>
     </sourceConnections>
-    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPublicMethods="true" showPublicInnerClasses="true" packageIndication="3"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="MessageDrivenService" location="50,424" size="681,121" id="test.cluster.core/MessageDrivenService" runTimeClassModel="destName,getDestName(),init(),close(),MessageDrivenService(IIZLtest.cluster.core.MessageProcessor;Ljava.lang.String;)">
+  <children xsi:type="editmodel:ClassEditModel" name="MessageDrivenService" location="50,514" size="186,121" id="test.cluster.core/MessageDrivenService" runTimeClassModel="getDestName(),init(),close(),MessageDrivenService(IIZLtest.cluster.core.MessageProcessor;Ljava.lang.String;)">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="658,72">
       <children xsi:type="editmodel:MethodEditModel" name="MessageDrivenService" id="test.cluster.core/MessageDrivenService#MessageDrivenService(IIZLtest.cluster.core.MessageProcessor;Ljava.lang.String;)"/>
@@ -57,73 +95,48 @@
       <children xsi:type="editmodel:MethodEditModel" name="init" id="test.cluster.core/MessageDrivenService#init()"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.3/@sourceConnections.0 //@children.5/@sourceConnections.0" autoLocated="true" id="test.cluster.core/AbstractService&lt;-test.cluster.core/MessageDrivenService" source="//@children.4" target="//@children.1" targetEnd="//@children.4/@sourceConnections.0/@children.1" sourceEnd="//@children.4/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="340,0" anchorKind="FixedAtEdge" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="267,175" anchorKind="FixedAtEdge"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.5/@sourceConnections.0 //@children.4/@sourceConnections.0" autoLocated="true" id="test.cluster.core/AbstractService&lt;-test.cluster.core/MessageDrivenService" source="//@children.6" target="//@children.2" targetEnd="//@children.6/@sourceConnections.0/@children.1" sourceEnd="//@children.6/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="93,0" anchorKind="FixedAtEdge" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="96,175" anchorKind="FixedAtEdge"/>
     </sourceConnections>
-    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPublicMethods="true" showPublicInnerClasses="true" packageIndication="3"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="TimerDrivenService" location="1451,424" size="676,139" id="test.cluster.core/TimerDrivenService" runTimeClassModel="init(),close(),getPeriod(),TimerDrivenService(IIZLtest.cluster.core.Processor;II),delay,period,getDelay()">
+  <children xsi:type="editmodel:ClassEditModel" name="TimerProcessor" location="50,1005" size="184,85" id="test.cluster.core/TimerProcessor" runTimeClassModel="masterProcess(Ljava.lang.Object;),masterProcess()">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <children xsi:type="editmodel:CompartmentEditModel" size="653,90">
-      <children xsi:type="editmodel:MethodEditModel" name="TimerDrivenService" id="test.cluster.core/TimerDrivenService#TimerDrivenService(IIZLtest.cluster.core.Processor;II)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="close" id="test.cluster.core/TimerDrivenService#close()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getDelay" id="test.cluster.core/TimerDrivenService#getDelay()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="getPeriod" id="test.cluster.core/TimerDrivenService#getPeriod()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="init" id="test.cluster.core/TimerDrivenService#init()"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="212,36">
+      <children xsi:type="editmodel:MethodEditModel" name="masterProcess" id="test.cluster.core/TimerProcessor#masterProcess()"/>
+      <children xsi:type="editmodel:MethodEditModel" name="masterProcess" id="test.cluster.core/TimerProcessor#masterProcess(Ljava.lang.Object;)"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="test.cluster.core/AbstractService&lt;-test.cluster.core/TimerDrivenService" source="//@children.5" target="//@children.4/@sourceConnections.0" targetEnd="//@children.5/@sourceConnections.0/@children.1" sourceEnd="//@children.5/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="338,0" anchorKind="FixedAtEdge" attachSource="true"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="test.cluster.core/AbstractProcessor&lt;-test.cluster.core/TimerProcessor" source="//@children.7" target="//@children.9/@sourceConnections.0" targetEnd="//@children.7/@sourceConnections.0/@children.1" sourceEnd="//@children.7/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="92,0" anchorKind="FixedAtEdge" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel"/>
     </sourceConnections>
-    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPublicMethods="true" showPublicInnerClasses="true" packageIndication="3"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="QuartzProcessor" location="239,915" size="235,67" id="test.cluster.core/QuartzProcessor" runTimeClassModel="execute(Lorg.quartz.JobExecutionContext;)">
+  <children xsi:type="editmodel:ClassEditModel" name="QuartzProcessor" location="453,1005" size="146,67" id="test.cluster.core/QuartzProcessor" runTimeClassModel="execute(Lorg.quartz.JobExecutionContext;)">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="212,18">
       <children xsi:type="editmodel:MethodEditModel" name="execute" id="test.cluster.core/QuartzProcessor#execute(Lorg.quartz.JobExecutionContext;)"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="test.cluster.core/AbstractProcessor&lt;-test.cluster.core/QuartzProcessor" source="//@children.6" target="//@children.7/@sourceConnections.0" targetEnd="//@children.6/@sourceConnections.0/@children.1" sourceEnd="//@children.6/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="117,0" anchorKind="FixedAtEdge" attachSource="true"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="test.cluster.core/AbstractProcessor&lt;-test.cluster.core/QuartzProcessor" source="//@children.8" target="//@children.9/@sourceConnections.0" targetEnd="//@children.8/@sourceConnections.0/@children.1" sourceEnd="//@children.8/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="73,0" anchorKind="FixedAtEdge" attachSource="true"/>
       <children xsi:type="editmodel:AssociationEndEditModel"/>
     </sourceConnections>
-    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPublicMethods="true" showPublicInnerClasses="true" packageIndication="3"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:ClassEditModel" name="MessageProcessor" location="50,915" size="159,29" id="test.cluster.core/MessageProcessor" runTimeClassModel="">
+  <children xsi:type="editmodel:ClassEditModel" name="MessageProcessor" location="264,1005" size="159,29" id="test.cluster.core/MessageProcessor" runTimeClassModel="">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.6/@sourceConnections.0 //@children.9/@sourceConnections.0" autoLocated="true" id="test.cluster.core/AbstractProcessor&lt;-test.cluster.core/MessageProcessor" source="//@children.7" target="//@children.10" targetEnd="//@children.7/@sourceConnections.0/@children.1" sourceEnd="//@children.7/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" targetConnections="//@children.8/@sourceConnections.0 //@children.7/@sourceConnections.0" autoLocated="true" id="test.cluster.core/AbstractProcessor&lt;-test.cluster.core/MessageProcessor" source="//@children.9" target="//@children.10" targetEnd="//@children.9/@sourceConnections.0/@children.1" sourceEnd="//@children.9/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
       <children xsi:type="editmodel:AssociationEndEditModel" location="79,0" anchorKind="FixedAtEdge" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="123,103" anchorKind="FixedAtEdge"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="91,103" anchorKind="FixedAtEdge"/>
     </sourceConnections>
-    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPublicMethods="true" showPublicInnerClasses="true" packageIndication="3"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.10/@sourceConnections.0" name="Processor" location="271,613" size="177,99" id="test.cluster.core/Processor" runTimeClassModel="workerProcess(Ltest.cluster.core.tc.Task;),masterProcess(LT;)">
-    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <children xsi:type="editmodel:CompartmentEditModel" size="154,36">
-      <children xsi:type="editmodel:MethodEditModel" name="masterProcess" id="test.cluster.core/Processor#masterProcess(LT;)"/>
-      <children xsi:type="editmodel:MethodEditModel" name="workerProcess" id="test.cluster.core/Processor#workerProcess(Ltest.cluster.core.tc.Task;)"/>
-    </children>
-    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPublicMethods="true" showPublicInnerClasses="true" packageIndication="3"/>
-  </children>
-  <children xsi:type="editmodel:ClassEditModel" name="TimerProcessor" location="504,915" size="177,85" id="test.cluster.core/TimerProcessor" runTimeClassModel="masterProcess(Ljava.lang.Object;),masterProcess()">
-    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <children xsi:type="editmodel:CompartmentEditModel" size="154,36">
-      <children xsi:type="editmodel:MethodEditModel" name="masterProcess" id="test.cluster.core/TimerProcessor#masterProcess()"/>
-      <children xsi:type="editmodel:MethodEditModel" name="masterProcess" id="test.cluster.core/TimerProcessor#masterProcess(Ljava.lang.Object;)"/>
-    </children>
-    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="test.cluster.core/AbstractProcessor&lt;-test.cluster.core/TimerProcessor" source="//@children.9" target="//@children.7/@sourceConnections.0" targetEnd="//@children.9/@sourceConnections.0/@children.1" sourceEnd="//@children.9/@sourceConnections.0/@children.0" connectionRouterKind="GeneralizationManhattan">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="88,0" anchorKind="FixedAtEdge" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel"/>
-    </sourceConnections>
-    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPublicMethods="true" showPublicInnerClasses="true" packageIndication="3"/>
-  </children>
-  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.7/@sourceConnections.0" name="AbstractProcessor" location="236,762" size="247,103" id="test.cluster.core/AbstractProcessor" runTimeClassModel="AbstractProcessor(),setCacheValue(Ljava.lang.String;Ljava.lang.Object;),getCacheValue(Ljava.lang.String;)">
+  <children xsi:type="editmodel:ClassEditModel" targetConnections="//@children.9/@sourceConnections.0" name="AbstractProcessor" location="245,852" size="183,103" id="test.cluster.core/AbstractProcessor" runTimeClassModel="AbstractProcessor(),setCacheValue(Ljava.lang.String;Ljava.lang.Object;),getCacheValue(Ljava.lang.String;)">
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
     <children xsi:type="editmodel:CompartmentEditModel" size="224,54">
       <children xsi:type="editmodel:MethodEditModel" name="AbstractProcessor" id="test.cluster.core/AbstractProcessor#AbstractProcessor()"/>
@@ -131,16 +144,25 @@
       <children xsi:type="editmodel:MethodEditModel" name="setCacheValue" id="test.cluster.core/AbstractProcessor#setCacheValue(Ljava.lang.String;Ljava.lang.Object;)"/>
     </children>
     <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
-    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="test.cluster.core/Processor&lt;-test.cluster.core/AbstractProcessor" source="//@children.10" target="//@children.8" targetEnd="//@children.10/@sourceConnections.0/@children.1" sourceEnd="//@children.10/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
-      <children xsi:type="editmodel:AssociationEndEditModel" location="123,0" attachSource="true"/>
-      <children xsi:type="editmodel:AssociationEndEditModel" location="88,99"/>
+    <sourceConnections xsi:type="editmodel:GeneralizationEditModel" autoLocated="true" id="test.cluster.core/Processor&lt;-test.cluster.core/AbstractProcessor" source="//@children.10" target="//@children.11" targetEnd="//@children.10/@sourceConnections.0/@children.1" sourceEnd="//@children.10/@sourceConnections.0/@children.0" connectionRouterKind="Manual">
+      <children xsi:type="editmodel:AssociationEndEditModel" location="91,0" attachSource="true"/>
+      <children xsi:type="editmodel:AssociationEndEditModel" location="91,99"/>
     </sourceConnections>
-    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsParameterTypes="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showPublicMethods="true" showPublicInnerClasses="true" packageIndication="3"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
   </children>
-  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=1;Product=eUML2" autoName="false"/>
+  <children xsi:type="editmodel:InterfaceEditModel" targetConnections="//@children.10/@sourceConnections.0" name="Processor" location="245,703" size="184,99" id="test.cluster.core/Processor" runTimeClassModel="workerProcess(Ltest.cluster.core.tc.Task;),masterProcess(LT;)">
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <children xsi:type="editmodel:CompartmentEditModel" size="176,36">
+      <children xsi:type="editmodel:MethodEditModel" name="masterProcess" id="test.cluster.core/Processor#masterProcess(LT;)"/>
+      <children xsi:type="editmodel:MethodEditModel" name="workerProcess" id="test.cluster.core/Processor#workerProcess(Ltest.cluster.core.tc.Task;)"/>
+    </children>
+    <children xsi:type="editmodel:CompartmentEditModel" size="0,0"/>
+    <classifierPreferences xsi:type="editmodel:UMLClassDiagramClassifierPreference" showStereotype="true" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
+  </children>
+  <diagramOptions xsi:type="options:ClassDiagramOptions" properties="wireOptions=7;Product=eUML2" autoName="false"/>
   <boardSetting rulersVisibility="false" snapToGeometry="true" gridEnabled="true" gridSpacing="15,15" gridOrigin="0,0" rulerUnit="pixel">
     <leftRuler/>
     <topRuler/>
   </boardSetting>
-  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showMethodsParameterTypes="true" showMethodsParameterNames="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showPublicMethods="true" showPublicInnerClasses="true" packageIndication="3"/>
+  <classDiagramPreferences xsi:type="editmodel:UMLClassDiagramPreference" showMethodsReturnType="true" attributeSorter="Natural" methodSorter="Natural" showClassStereotype="true" showPackageStereotype="true" showDependencyStereotype="true" showInterfaceStereotype="true" innerClassSorter="Natural" showPublicAttributes="true" showStaticAttributes="true" showPublicMethods="true" showStaticMethods="true" showPublicInnerClasses="true" showStaticInnerClasses="true" packageIndication="3"/>
 </editmodel:ClassDiagramEditModel>
