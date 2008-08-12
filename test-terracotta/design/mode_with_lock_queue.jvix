@@ -3,23 +3,23 @@
 <bgColor id="1">16777215</bgColor>
 <children id="2" cn="org.uniera.jviz.model.impl.Rectangle">
 <align>9</align>
-<bgColor id="3">16381686</bgColor>
+<bgColor id="3">16777215</bgColor>
 <fontHeight>10</fontHeight>
 <fontName id="4">Tahoma</fontName>
 <fontStyle>0</fontStyle>
 <foregroundColor id="5">0</foregroundColor>
-<lineColor id="6">10011046</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<location id="7">239,255</location>
+<lineColor id="6">0</lineColor>
+<lineStyle>3</lineStyle>
+<lineWidth>2</lineWidth>
+<location id="7">210,232</location>
 <opaque>true</opaque>
 <perf href="0"/>
-<size id="8">168,488</size>
-<text id="9">service</text>
+<size id="8">636,534</size>
+<text id="9">service group</text>
 </children>
 <children id="10" cn="org.uniera.jviz.model.impl.Rectangle">
-<align>18</align>
-<bgColor id="11">10484217</bgColor>
+<align>9</align>
+<bgColor id="11">16381686</bgColor>
 <fontHeight>10</fontHeight>
 <fontName id="12">Tahoma</fontName>
 <fontStyle>0</fontStyle>
@@ -27,323 +27,323 @@
 <lineColor id="14">10011046</lineColor>
 <lineStyle>1</lineStyle>
 <lineWidth>1</lineWidth>
-<location id="15">440,55</location>
+<location id="15">239,255</location>
 <opaque>true</opaque>
 <perf href="0"/>
-<size id="16">176,64</size>
-<sourceLinks id="17" cn="org.uniera.jviz.model.impl.Link">
-<align>18</align>
-<bgColor id="18">16777215</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="19">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="20">10265827</foregroundColor>
-<lineColor id="21">12560536</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<linked>true</linked>
-<perf href="0"/>
-<source href="10"/>
-<target id="22" cn="org.uniera.jviz.model.impl.Rectangle">
-<align>18</align>
-<bgColor id="23">10484217</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="24">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="25">0</foregroundColor>
-<lineColor id="26">10011046</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<location id="27">440,157</location>
-<opaque>true</opaque>
-<perf href="0"/>
-<size id="28">176,64</size>
-<sourceLinks id="29" cn="org.uniera.jviz.model.impl.Link">
-<align>18</align>
-<bgColor id="30">16777215</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="31">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="32">10265827</foregroundColor>
-<lineColor id="33">12560536</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<linked>true</linked>
-<perf href="0"/>
-<source href="22"/>
-<target id="34" cn="org.uniera.jviz.model.impl.Rectangle">
-<align>18</align>
-<bgColor id="35">10484217</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="36">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="37">0</foregroundColor>
-<lineColor id="38">10011046</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<location id="39">259,384</location>
-<opaque>true</opaque>
-<perf href="0"/>
-<size id="40">127,51</size>
-<sourceLinks id="41" cn="org.uniera.jviz.model.impl.Link">
-<align>18</align>
-<bgColor id="42">16777215</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="43">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="44">10265827</foregroundColor>
-<lineColor id="45">12560536</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<linked>true</linked>
-<perf href="0"/>
-<source href="34"/>
-<target id="46" cn="org.uniera.jviz.model.impl.Rectangle">
-<align>18</align>
-<bgColor id="47">12560536</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="48">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="49">0</foregroundColor>
-<lineColor id="50">10011046</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<location id="51">239,476</location>
-<opaque>true</opaque>
-<perf href="0"/>
-<size id="52">578,49</size>
-<sourceLinks id="53" cn="org.uniera.jviz.model.impl.Link">
-<align>18</align>
-<bgColor id="54">16777215</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="55">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="56">10265827</foregroundColor>
-<lineColor id="57">12560536</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<linked>true</linked>
-<perf href="0"/>
-<source href="46"/>
-<target id="58" cn="org.uniera.jviz.model.impl.Rectangle">
-<align>10</align>
-<bgColor id="59">10484217</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="60">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="61">0</foregroundColor>
-<lineColor id="62">10011046</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<location id="63">259,566</location>
-<opaque>true</opaque>
-<perf href="0"/>
-<size id="64">127,160</size>
-<targetLinks href="53"/>
-<text id="65">Worker</text>
-</target>
-<text id="66">take</text>
-<type id="67">Arrow</type>
-</sourceLinks>
-<sourceLinks id="68" cn="org.uniera.jviz.model.impl.Link">
-<align>18</align>
-<bgColor id="69">16777215</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="70">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="71">10265827</foregroundColor>
-<lineColor id="72">12560536</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<linked>true</linked>
-<perf href="0"/>
-<source href="46"/>
-<target id="73" cn="org.uniera.jviz.model.impl.Rectangle">
-<align>10</align>
-<bgColor id="74">10484217</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="75">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="76">0</foregroundColor>
-<lineColor id="77">10011046</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<location id="78">669,566</location>
-<opaque>true</opaque>
-<perf href="0"/>
-<size id="79">127,160</size>
-<targetLinks href="68"/>
-<text id="80">Worker</text>
-</target>
-<text id="81">take</text>
-<type id="82">Arrow</type>
-</sourceLinks>
-<sourceLinks id="83" cn="org.uniera.jviz.model.impl.Link">
-<align>18</align>
-<bgColor id="84">16777215</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="85">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="86">10265827</foregroundColor>
-<lineColor id="87">12560536</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<linked>true</linked>
-<perf href="0"/>
-<source href="46"/>
-<target id="88" cn="org.uniera.jviz.model.impl.Rectangle">
-<align>10</align>
-<bgColor id="89">10484217</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="90">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="91">0</foregroundColor>
-<lineColor id="92">10011046</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<location id="93">464,566</location>
-<opaque>true</opaque>
-<perf href="0"/>
-<size id="94">127,160</size>
-<targetLinks href="83"/>
-<text id="95">Worker</text>
-</target>
-<text id="96">take</text>
-<type id="97">Arrow</type>
-</sourceLinks>
-<targetLinks href="41"/>
-<text id="98">TC Task Queue</text>
-</target>
-<text id="99">put</text>
-<type id="100">Arrow</type>
-</sourceLinks>
-<targetLinks id="101" cn="org.uniera.jviz.model.impl.Link">
-<align>18</align>
-<bgColor id="102">16777215</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="103">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="104">10265827</foregroundColor>
-<lineColor id="105">12560536</lineColor>
-<lineStyle>3</lineStyle>
-<lineWidth>2</lineWidth>
-<linked>true</linked>
-<perf href="0"/>
-<source id="106" cn="org.uniera.jviz.model.impl.Rectangle">
-<align>18</align>
-<bgColor id="107">12560536</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="108">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="109">0</foregroundColor>
-<lineColor id="110">10011046</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<location id="111">239,290</location>
-<opaque>true</opaque>
-<perf href="0"/>
-<size id="112">578,49</size>
-<sourceLinks href="101"/>
-<sourceLinks id="113" cn="org.uniera.jviz.model.impl.Link">
-<align>18</align>
-<bgColor id="114">16777215</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="115">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="116">10265827</foregroundColor>
-<lineColor id="117">12560536</lineColor>
-<lineStyle>3</lineStyle>
-<lineWidth>2</lineWidth>
-<linked>true</linked>
-<perf href="0"/>
-<source href="106"/>
-<target id="118" cn="org.uniera.jviz.model.impl.Rectangle">
-<align>18</align>
-<bgColor id="119">10011046</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="120">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="121">0</foregroundColor>
-<lineColor id="122">10011046</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<location id="123">464,384</location>
-<opaque>true</opaque>
-<perf href="0"/>
-<size id="124">127,51</size>
-<targetLinks href="113"/>
-<text id="125">Master</text>
-</target>
-<text id="126">block</text>
-<type id="127">Line</type>
-</sourceLinks>
-<sourceLinks id="128" cn="org.uniera.jviz.model.impl.Link">
-<align>18</align>
-<bgColor id="129">16777215</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="130">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="131">10265827</foregroundColor>
-<lineColor id="132">12560536</lineColor>
-<lineStyle>3</lineStyle>
-<lineWidth>2</lineWidth>
-<linked>true</linked>
-<perf href="0"/>
-<source href="106"/>
-<target id="133" cn="org.uniera.jviz.model.impl.Rectangle">
-<align>18</align>
-<bgColor id="134">10011046</bgColor>
-<fontHeight>10</fontHeight>
-<fontName id="135">Tahoma</fontName>
-<fontStyle>0</fontStyle>
-<foregroundColor id="136">0</foregroundColor>
-<lineColor id="137">10011046</lineColor>
-<lineStyle>1</lineStyle>
-<lineWidth>1</lineWidth>
-<location id="138">669,384</location>
-<opaque>true</opaque>
-<perf href="0"/>
-<size id="139">127,51</size>
-<targetLinks href="128"/>
-<text id="140">Master</text>
-</target>
-<text id="141">block</text>
-<type id="142">Line</type>
-</sourceLinks>
-<text id="143">TC ReentrantLock</text>
-</source>
-<target href="34"/>
-<text id="144">acquire</text>
-<type id="145">Line</type>
-</targetLinks>
-<targetLinks href="29"/>
-<text id="146">Master</text>
-</target>
-<text id="147"></text>
-<type id="148">Arrow</type>
-</sourceLinks>
-<targetLinks href="17"/>
-<text id="149">JMS Provider</text>
-</target>
-<text id="150"></text>
-<type id="151">Arrow</type>
-</sourceLinks>
-<text id="152">service</text>
+<size id="16">168,488</size>
+<text id="17">service-node1</text>
 </children>
-<children id="153" cn="org.uniera.jviz.model.impl.Rectangle">
-<align>9</align>
-<bgColor id="154">16381686</bgColor>
+<children id="18" cn="org.uniera.jviz.model.impl.Rectangle">
+<align>18</align>
+<bgColor id="19">10484217</bgColor>
 <fontHeight>10</fontHeight>
-<fontName id="155">Tahoma</fontName>
+<fontName id="20">Tahoma</fontName>
 <fontStyle>0</fontStyle>
-<foregroundColor id="156">0</foregroundColor>
-<lineColor id="157">10011046</lineColor>
+<foregroundColor id="21">0</foregroundColor>
+<lineColor id="22">10011046</lineColor>
 <lineStyle>1</lineStyle>
 <lineWidth>1</lineWidth>
-<location id="158">649,255</location>
+<location id="23">440,55</location>
 <opaque>true</opaque>
 <perf href="0"/>
-<size id="159">168,488</size>
+<size id="24">176,64</size>
+<sourceLinks id="25" cn="org.uniera.jviz.model.impl.Link">
+<align>18</align>
+<bgColor id="26">16777215</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="27">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="28">10265827</foregroundColor>
+<lineColor id="29">12560536</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<linked>true</linked>
+<perf href="0"/>
+<source href="18"/>
+<target id="30" cn="org.uniera.jviz.model.impl.Rectangle">
+<align>18</align>
+<bgColor id="31">10484217</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="32">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="33">0</foregroundColor>
+<lineColor id="34">10011046</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<location id="35">440,157</location>
+<opaque>true</opaque>
+<perf href="0"/>
+<size id="36">176,64</size>
+<sourceLinks id="37" cn="org.uniera.jviz.model.impl.Link">
+<align>18</align>
+<bgColor id="38">16777215</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="39">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="40">10265827</foregroundColor>
+<lineColor id="41">12560536</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<linked>true</linked>
+<perf href="0"/>
+<source href="30"/>
+<target id="42" cn="org.uniera.jviz.model.impl.Rectangle">
+<align>18</align>
+<bgColor id="43">10484217</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="44">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="45">0</foregroundColor>
+<lineColor id="46">10011046</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<location id="47">259,384</location>
+<opaque>true</opaque>
+<perf href="0"/>
+<size id="48">127,51</size>
+<sourceLinks id="49" cn="org.uniera.jviz.model.impl.Link">
+<align>18</align>
+<bgColor id="50">16777215</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="51">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="52">10265827</foregroundColor>
+<lineColor id="53">12560536</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<linked>true</linked>
+<perf href="0"/>
+<source href="42"/>
+<target id="54" cn="org.uniera.jviz.model.impl.Rectangle">
+<align>18</align>
+<bgColor id="55">12560536</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="56">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="57">0</foregroundColor>
+<lineColor id="58">10011046</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<location id="59">239,476</location>
+<opaque>true</opaque>
+<perf href="0"/>
+<size id="60">578,49</size>
+<sourceLinks id="61" cn="org.uniera.jviz.model.impl.Link">
+<align>18</align>
+<bgColor id="62">16777215</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="63">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="64">10265827</foregroundColor>
+<lineColor id="65">12560536</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<linked>true</linked>
+<perf href="0"/>
+<source href="54"/>
+<target id="66" cn="org.uniera.jviz.model.impl.Rectangle">
+<align>10</align>
+<bgColor id="67">10484217</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="68">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="69">0</foregroundColor>
+<lineColor id="70">10011046</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<location id="71">259,566</location>
+<opaque>true</opaque>
+<perf href="0"/>
+<size id="72">127,160</size>
+<targetLinks href="61"/>
+<text id="73">Worker</text>
+</target>
+<text id="74">take</text>
+<type id="75">Arrow</type>
+</sourceLinks>
+<sourceLinks id="76" cn="org.uniera.jviz.model.impl.Link">
+<align>18</align>
+<bgColor id="77">16777215</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="78">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="79">10265827</foregroundColor>
+<lineColor id="80">12560536</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<linked>true</linked>
+<perf href="0"/>
+<source href="54"/>
+<target id="81" cn="org.uniera.jviz.model.impl.Rectangle">
+<align>10</align>
+<bgColor id="82">10484217</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="83">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="84">0</foregroundColor>
+<lineColor id="85">10011046</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<location id="86">669,566</location>
+<opaque>true</opaque>
+<perf href="0"/>
+<size id="87">127,160</size>
+<targetLinks href="76"/>
+<text id="88">Worker</text>
+</target>
+<text id="89">take</text>
+<type id="90">Arrow</type>
+</sourceLinks>
+<sourceLinks id="91" cn="org.uniera.jviz.model.impl.Link">
+<align>18</align>
+<bgColor id="92">16777215</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="93">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="94">10265827</foregroundColor>
+<lineColor id="95">12560536</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<linked>true</linked>
+<perf href="0"/>
+<source href="54"/>
+<target id="96" cn="org.uniera.jviz.model.impl.Rectangle">
+<align>10</align>
+<bgColor id="97">10484217</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="98">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="99">0</foregroundColor>
+<lineColor id="100">10011046</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<location id="101">464,566</location>
+<opaque>true</opaque>
+<perf href="0"/>
+<size id="102">127,160</size>
+<targetLinks href="91"/>
+<text id="103">Worker</text>
+</target>
+<text id="104">take</text>
+<type id="105">Arrow</type>
+</sourceLinks>
+<targetLinks href="49"/>
+<text id="106">TC Task Queue</text>
+</target>
+<text id="107">put</text>
+<type id="108">Arrow</type>
+</sourceLinks>
+<targetLinks id="109" cn="org.uniera.jviz.model.impl.Link">
+<align>18</align>
+<bgColor id="110">16777215</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="111">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="112">10265827</foregroundColor>
+<lineColor id="113">12560536</lineColor>
+<lineStyle>3</lineStyle>
+<lineWidth>2</lineWidth>
+<linked>true</linked>
+<perf href="0"/>
+<source id="114" cn="org.uniera.jviz.model.impl.Rectangle">
+<align>18</align>
+<bgColor id="115">12560536</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="116">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="117">0</foregroundColor>
+<lineColor id="118">10011046</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<location id="119">239,290</location>
+<opaque>true</opaque>
+<perf href="0"/>
+<size id="120">578,49</size>
+<sourceLinks href="109"/>
+<sourceLinks id="121" cn="org.uniera.jviz.model.impl.Link">
+<align>18</align>
+<bgColor id="122">16777215</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="123">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="124">10265827</foregroundColor>
+<lineColor id="125">12560536</lineColor>
+<lineStyle>3</lineStyle>
+<lineWidth>2</lineWidth>
+<linked>true</linked>
+<perf href="0"/>
+<source href="114"/>
+<target id="126" cn="org.uniera.jviz.model.impl.Rectangle">
+<align>18</align>
+<bgColor id="127">10011046</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="128">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="129">0</foregroundColor>
+<lineColor id="130">10011046</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<location id="131">464,384</location>
+<opaque>true</opaque>
+<perf href="0"/>
+<size id="132">127,51</size>
+<targetLinks href="121"/>
+<text id="133">Master</text>
+</target>
+<text id="134">block</text>
+<type id="135">Line</type>
+</sourceLinks>
+<sourceLinks id="136" cn="org.uniera.jviz.model.impl.Link">
+<align>18</align>
+<bgColor id="137">16777215</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="138">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="139">10265827</foregroundColor>
+<lineColor id="140">12560536</lineColor>
+<lineStyle>3</lineStyle>
+<lineWidth>2</lineWidth>
+<linked>true</linked>
+<perf href="0"/>
+<source href="114"/>
+<target id="141" cn="org.uniera.jviz.model.impl.Rectangle">
+<align>18</align>
+<bgColor id="142">10011046</bgColor>
+<fontHeight>10</fontHeight>
+<fontName id="143">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="144">0</foregroundColor>
+<lineColor id="145">10011046</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<location id="146">669,384</location>
+<opaque>true</opaque>
+<perf href="0"/>
+<size id="147">127,51</size>
+<targetLinks href="136"/>
+<text id="148">Master</text>
+</target>
+<text id="149">block</text>
+<type id="150">Line</type>
+</sourceLinks>
+<text id="151">TC ReentrantLock</text>
+</source>
+<target href="42"/>
+<text id="152">acquire</text>
+<type id="153">Line</type>
+</targetLinks>
+<targetLinks href="37"/>
+<text id="154">Master</text>
+</target>
+<text id="155"></text>
+<type id="156">Arrow</type>
+</sourceLinks>
+<targetLinks href="25"/>
+<text id="157">JMS Provider</text>
+</target>
+<text id="158"></text>
+<type id="159">Arrow</type>
+</sourceLinks>
 <text id="160">service</text>
 </children>
 <children id="161" cn="org.uniera.jviz.model.impl.Rectangle">
@@ -356,24 +356,15 @@
 <lineColor id="165">10011046</lineColor>
 <lineStyle>1</lineStyle>
 <lineWidth>1</lineWidth>
-<location id="166">444,255</location>
+<location id="166">649,255</location>
 <opaque>true</opaque>
 <perf href="0"/>
 <size id="167">168,488</size>
-<text id="168">service</text>
+<text id="168">service-node3</text>
 </children>
-<children href="106"/>
-<children href="34"/>
-<children href="88"/>
-<children href="118"/>
-<children href="46"/>
-<children href="58"/>
-<children href="133"/>
-<children href="73"/>
-<children href="22"/>
 <children id="169" cn="org.uniera.jviz.model.impl.Rectangle">
-<align>18</align>
-<bgColor id="170">12560536</bgColor>
+<align>9</align>
+<bgColor id="170">16381686</bgColor>
 <fontHeight>10</fontHeight>
 <fontName id="171">Tahoma</fontName>
 <fontStyle>0</fontStyle>
@@ -381,31 +372,40 @@
 <lineColor id="173">10011046</lineColor>
 <lineStyle>1</lineStyle>
 <lineWidth>1</lineWidth>
-<location id="174">259,653</location>
+<location id="174">444,255</location>
 <opaque>true</opaque>
 <perf href="0"/>
-<size id="175">537,49</size>
-<text id="176">TC Distributed Caching</text>
+<size id="175">168,488</size>
+<text id="176">service-node2</text>
 </children>
+<children href="114"/>
+<children href="42"/>
+<children href="96"/>
+<children href="126"/>
+<children href="54"/>
+<children href="66"/>
+<children href="141"/>
+<children href="81"/>
+<children href="30"/>
 <children id="177" cn="org.uniera.jviz.model.impl.Rectangle">
 <align>18</align>
-<bgColor id="178">10484217</bgColor>
-<fontHeight>8</fontHeight>
+<bgColor id="178">12560536</bgColor>
+<fontHeight>10</fontHeight>
 <fontName id="179">Tahoma</fontName>
 <fontStyle>0</fontStyle>
 <foregroundColor id="180">0</foregroundColor>
 <lineColor id="181">10011046</lineColor>
 <lineStyle>1</lineStyle>
 <lineWidth>1</lineWidth>
-<location id="182">239,63</location>
+<location id="182">259,653</location>
 <opaque>true</opaque>
 <perf href="0"/>
-<size id="183">58,25</size>
-<text id="184">active</text>
+<size id="183">537,49</size>
+<text id="184">TC Distributed Caching</text>
 </children>
 <children id="185" cn="org.uniera.jviz.model.impl.Rectangle">
 <align>18</align>
-<bgColor id="186">10011046</bgColor>
+<bgColor id="186">10484217</bgColor>
 <fontHeight>8</fontHeight>
 <fontName id="187">Tahoma</fontName>
 <fontStyle>0</fontStyle>
@@ -413,28 +413,60 @@
 <lineColor id="189">10011046</lineColor>
 <lineStyle>1</lineStyle>
 <lineWidth>1</lineWidth>
-<location id="190">239,101</location>
+<location id="190">239,63</location>
 <opaque>true</opaque>
 <perf href="0"/>
 <size id="191">58,25</size>
-<text id="192">standby</text>
+<text id="192">active</text>
+</children>
+<children id="193" cn="org.uniera.jviz.model.impl.Rectangle">
+<align>18</align>
+<bgColor id="194">10011046</bgColor>
+<fontHeight>8</fontHeight>
+<fontName id="195">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="196">0</foregroundColor>
+<lineColor id="197">10011046</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<location id="198">239,101</location>
+<opaque>true</opaque>
+<perf href="0"/>
+<size id="199">58,25</size>
+<text id="200">standby</text>
+</children>
+<children id="201" cn="org.uniera.jviz.model.impl.Rectangle">
+<align>18</align>
+<bgColor id="202">12560536</bgColor>
+<fontHeight>8</fontHeight>
+<fontName id="203">Tahoma</fontName>
+<fontStyle>0</fontStyle>
+<foregroundColor id="204">0</foregroundColor>
+<lineColor id="205">10011046</lineColor>
+<lineStyle>1</lineStyle>
+<lineWidth>1</lineWidth>
+<location id="206">239,145</location>
+<opaque>true</opaque>
+<perf href="0"/>
+<size id="207">58,25</size>
+<text id="208">terracotta</text>
 </children>
 <gridEnabled>false</gridEnabled>
-<leftRuler id="193" cn="org.uniera.jviz.model.impl.DiagramRuler">
+<leftRuler id="209" cn="org.uniera.jviz.model.impl.DiagramRuler">
 <horizontal>false</horizontal>
 <unit>2</unit>
 </leftRuler>
-<location id="194">0,0</location>
+<location id="210">0,0</location>
 <opaque>true</opaque>
 <orthogonal>false</orthogonal>
 <perf href="0"/>
 <rulersVisibility>false</rulersVisibility>
-<size id="195">48,36</size>
+<size id="211">48,36</size>
 <snapToGeometry>true</snapToGeometry>
-<topRuler id="196" cn="org.uniera.jviz.model.impl.DiagramRuler">
+<topRuler id="212" cn="org.uniera.jviz.model.impl.DiagramRuler">
 <horizontal>true</horizontal>
 <unit>2</unit>
 </topRuler>
-<version id="197">1.0D</version>
+<version id="213">1.0D</version>
 <zoom>1.0</zoom>
 </JVix>
