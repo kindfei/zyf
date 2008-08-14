@@ -3,12 +3,12 @@ package test;
 import test.cluster.core.Service;
 import test.cluster.core.ServiceFactory;
 
-public class TestCluster {
+public class TestClusterService {
 	
 	private Service service1;
 	private Service service2;
 	
-	public TestCluster() {
+	public TestClusterService() {
 		service1 = ServiceFactory.getTimerDrivenService(Service.MODE_SERVICE_ACTIVE_STANDBY, 2, true, new TestTimerProcessor(), 0, 2000);
 		service2 = ServiceFactory.getQuartzDrivenService(Service.MODE_SERVICE_ACTIVE_STANDBY, 2, true, new TestQuartzProcessor(), "quartz_test.properties");
 	}
@@ -24,7 +24,7 @@ public class TestCluster {
 	}
 	
 	public static void main(String[] args) {
-		TestCluster test = new TestCluster();
+		TestClusterService test = new TestClusterService();
 		test.startup();
 		
 		try {

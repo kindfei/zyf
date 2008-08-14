@@ -27,23 +27,20 @@ public class ClusterShareRoot {
 	public void acquireMutex(String procName) {
 		Lock lock = getLock(procName);
 		
-		System.out.println("[" + procName + "] acquiring mutex...");
 		lock.lock();
-		System.out.println("[" + procName + "] acquired mutex...");
 	}
 	
 	public void releaseMutex(String procName) {
 		Lock lock = getLock(procName);
 		
-		System.out.println("[" + procName + "] releasing mutex...");
 		lock.unlock();
-		System.out.println("[" + procName + "] released mutex...");
 	}
 	
-	public void addTask(String procName, Task task) {
+	public int addTask(String procName, Task task) {
 		BlockingQueue<Task> queue = getQueue(procName);
 		
 		queue.add(task);
+		return queue.size();
 	}
 	
 	public Task takeTask(String procName) throws InterruptedException {
