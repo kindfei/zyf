@@ -7,6 +7,9 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import test.cluster.core.tc.ClusterShareRoot;
 import test.cluster.core.tc.Task;
 
@@ -17,6 +20,8 @@ import test.cluster.core.tc.Task;
  * @param <T>
  */
 public abstract class AbstractService<T> implements Service {
+	
+	private static final Log log = LogFactory.getLog(AbstractService.class);
 	
 	private int serviceMode;
 	private int executorSize;
@@ -70,8 +75,11 @@ public abstract class AbstractService<T> implements Service {
 	 * @throws Exception
 	 */
 	private void runStartup() throws Exception {
+		log.info("[" + procName + "] starting.");
 		
 		if (acceptTask) {
+			log.info(procName + " start executor. executorSize=" + executorSize);
+			
 			if (executorList == null) executorList = new ArrayList<TaskExecutor>();
 			for (int i = 0; i < executorSize; i++) {
 				TaskExecutor executor = new TaskExecutor();
@@ -83,20 +91,23 @@ public abstract class AbstractService<T> implements Service {
 		
 		switch (serviceMode) {
 		case Service.MODE_SERVICE_ACTIVE_STANDBY:
+			log.info("[" + procName + "] acquiring mutex...");
 			tcRoot.acquireMutex(procName);
+			log.info("[" + procName + "] acquired mutex...");
 			break;
 
 		case Service.MODE_SERVICE_ALL_ACTIVE:
-			
+			log.info("[" + procName + "] service mode is all active.");
 			break;
 			
 		default:
-			break;
+			log.error("[" + procName + "] error service mode: " + serviceMode);
+			return;
 		}
 		
 		init();
 		
-		System.out.println("[" + procName + "] successfully started.");
+		log.info("[" + procName + "] successfully started.");
 	}
 
 	public abstract void init() throws Exception;
@@ -106,8 +117,10 @@ public abstract class AbstractService<T> implements Service {
 	 */
 	public void shutdown() {
 		close();
-		
+
+		log.info("[" + procName + "] releasing mutex...");
 		tcRoot.releaseMutex(procName);
+		log.info("[" + procName + "] released mutex...");
 		
 		if (executorList != null) {
 			for (TaskExecutor executor : executorList) {
@@ -118,6 +131,8 @@ public abstract class AbstractService<T> implements Service {
 		if (threadPool != null) {
 			threadPool.shutdown();
 		}
+		
+		log.info("[" + procName + "] successfully stoped.");
 	}
 	
 	public abstract void close();
@@ -127,6 +142,8 @@ public abstract class AbstractService<T> implements Service {
 	 * @param t
 	 */
 	public synchronized void process(T t) {
+		log.debug("[" + procName + "] begin processing.");
+		
 		List<Task> tasks = processor.masterProcess(t);
 		
 		if (tasks == null) {
@@ -149,6 +166,7 @@ public abstract class AbstractService<T> implements Service {
 				break;
 
 			default:
+				log.error("[" + procName + "] error execute mode: " + mode + ". task: " + task.toString());
 				break;
 			}
 		}
@@ -166,6 +184,7 @@ public abstract class AbstractService<T> implements Service {
 			try {
 				while (isActive) {
 					Task task = tcRoot.takeTask(procName);
+					log.debug("[" + procName + "] the task has been taken from queue. task: " + task.toString());
 					try {
 						processor.workerProcess(task);
 					} catch (Throwable e) {
@@ -210,7 +229,8 @@ public abstract class AbstractService<T> implements Service {
 	 * @param task
 	 */
 	private void addTask(Task task) {
-		tcRoot.addTask(procName, task);
+		int size = tcRoot.addTask(procName, task);
+		log.debug("[" + procName + "] the task queue size=" + size);
 	}
 	
 	/**

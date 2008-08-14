@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-4.xsd">
 
 	<servers>
-		<server host="10.4.6.218" name="server1">
+		<server host="10.4.6.217" name="server1">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
 			<l2-group-port>9530</l2-group-port>
@@ -24,7 +24,7 @@
 				</garbage-collection>
 			</dso>
 		</server>
-		<server host="192.168.0.10" name="server2">
+		<server host="10.4.6.218" name="server2">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
 			<l2-group-port>9530</l2-group-port>
@@ -53,28 +53,20 @@
 
 	<clients>
 		<logs>client-runtime/client-logs/%(nodeId)</logs>
-		<statistics>
-			client-runtime/client-statistics/%(nodeId)
-		</statistics>
+		<statistics>client-runtime/client-statistics/%(nodeId)</statistics>
 	</clients>
 
 	<application>
 		<dso>
 			<instrumented-classes>
 				<include>
-					<class-expression>
-						test.cluster.core.tc.Task
-					</class-expression>
+					<class-expression>test.cluster.core.tc.Task</class-expression>
 				</include>
 				<include>
-					<class-expression>
-						test.cluster.tc.caches.*
-					</class-expression>
+					<class-expression>test.cluster.tc.caches.*</class-expression>
 				</include>
 				<include>
-					<class-expression>
-						test.cluster.tc.tasks.*
-					</class-expression>
+					<class-expression>test.cluster.tc.tasks.*</class-expression>
 				</include>
 			</instrumented-classes>
 			<locks>
@@ -85,23 +77,17 @@
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
-					<method-expression>
-						void test.cluster.tc.caches.*.set*(..)
-					</method-expression>
+					<method-expression>void test.cluster.tc.caches.*.set*(..)</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
-					<method-expression>
-						void test.cluster.tc.caches.*.get*(..)
-					</method-expression>
+					<method-expression>void test.cluster.tc.caches.*.get*(..)</method-expression>
 					<lock-level>read</lock-level>
 				</autolock>
 			</locks>
 			<roots>
 				<root>
-					<field-name>
-						test.cluster.core.tc.ClusterShareRoot.instance
-					</field-name>
+					<field-name>test.cluster.core.tc.ClusterShareRoot.instance</field-name>
 				</root>
 			</roots>
 			<distributed-methods>
