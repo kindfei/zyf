@@ -2,6 +2,7 @@ package test;
 
 import test.cluster.core.Service;
 import test.cluster.core.ServiceFactory;
+import test.cluster.core.ServiceMode;
 
 public class TestClusterService {
 	
@@ -9,8 +10,8 @@ public class TestClusterService {
 	private Service service2;
 	
 	public TestClusterService() {
-		service1 = ServiceFactory.getTimerDrivenService(Service.MODE_SERVICE_ACTIVE_STANDBY, 2, true, new TestTimerProcessor(), 0, 2000);
-		service2 = ServiceFactory.getQuartzDrivenService(Service.MODE_SERVICE_ACTIVE_STANDBY, 2, true, new TestQuartzProcessor(), "quartz_test.properties");
+		service1 = ServiceFactory.getTimerDrivenService(ServiceMode.ACTIVE_STANDBY, 2, true, new TestTimerProcessor(), 0, 2000);
+		service2 = ServiceFactory.getQuartzDrivenService(ServiceMode.ACTIVE_STANDBY, 2, true, new TestQuartzProcessor(), "quartz_test.properties");
 	}
 	
 	public void startup() {

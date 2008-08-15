@@ -23,7 +23,7 @@ public abstract class AbstractService<T> implements Service {
 	
 	private static final Log log = LogFactory.getLog(AbstractService.class);
 	
-	private int serviceMode;
+	private ServiceMode serviceMode;
 	private int executorSize;
 	private boolean acceptTask;
 	private Processor<T> processor;
@@ -41,12 +41,16 @@ public abstract class AbstractService<T> implements Service {
 	 * @param acceptTask whether take the task from the share queue
 	 * @param processor business implementation
 	 */
-	public AbstractService(int serviceMode, int executorSize, boolean acceptTask, Processor<T> processor) {
+	public AbstractService(ServiceMode serviceMode, int executorSize, boolean acceptTask, Processor<T> processor) {
 		this.serviceMode = serviceMode;
 		this.executorSize = executorSize;
 		this.acceptTask = acceptTask;
 		this.processor = processor;
 		this.procName = processor.getClass().getName();
+	}
+	
+	public ServiceMode getServiceMode() {
+		return serviceMode;
 	}
 	
 	public Processor<T> getProcessor() {
@@ -90,19 +94,15 @@ public abstract class AbstractService<T> implements Service {
 		}
 		
 		switch (serviceMode) {
-		case Service.MODE_SERVICE_ACTIVE_STANDBY:
+		case ACTIVE_STANDBY:
 			log.info("[" + procName + "] acquiring mutex...");
 			tcRoot.acquireMutex(procName);
 			log.info("[" + procName + "] acquired mutex...");
 			break;
 
-		case Service.MODE_SERVICE_ALL_ACTIVE:
+		case ALL_ACTIVE:
 			log.info("[" + procName + "] service mode is all active.");
 			break;
-			
-		default:
-			log.error("[" + procName + "] error service mode: " + serviceMode);
-			return;
 		}
 		
 		init();
@@ -151,22 +151,18 @@ public abstract class AbstractService<T> implements Service {
 		}
 		
 		for (Task task : tasks) {
-			int mode = task.getExecuteMode();
-			switch (mode) {
-			case Service.MODE_EXECUTE_LOCAL_INVOKE:
+			ExecuteMode executeMode = task.getExecuteMode();
+			switch (executeMode) {
+			case LOCAL_INVOKE:
 				exeTask(task);
 				break;
 
-			case Service.MODE_EXECUTE_TASK_QUEUE:
+			case TASK_QUEUE:
 				addTask(task);
 				break;
 
-			case Service.MODE_EXECUTE_ALL_INVOKE:
+			case ALL_INVOKE:
 				dmiTask(task);
-				break;
-
-			default:
-				log.error("[" + procName + "] error execute mode: " + mode + ". task: " + task.toString());
 				break;
 			}
 		}

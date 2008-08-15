@@ -6,6 +6,7 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
+import test.cluster.core.ExecuteMode;
 import test.cluster.core.Service;
 import test.cluster.core.TimerProcessor;
 import test.cluster.core.tc.Task;
@@ -19,9 +20,9 @@ public class TestTimerProcessor extends TimerProcessor {
 		
 		String time = new SimpleDateFormat("HH:mm:ss").format(date);
 		
-		Task t1 = new Task(Service.MODE_EXECUTE_LOCAL_INVOKE, new TestTask("Timer-" + time + "-task1"));
-		Task t2 = new Task(Service.MODE_EXECUTE_TASK_QUEUE, new TestTask("Timer-" + time + "-task2"));
-		Task t3 = new Task(Service.MODE_EXECUTE_ALL_INVOKE, new TestTask("Timer-" + time + "-task3"));
+		Task t1 = new Task(ExecuteMode.LOCAL_INVOKE, new TestTask("Timer-" + time + "-task1"));
+		Task t2 = new Task(ExecuteMode.TASK_QUEUE, new TestTask("Timer-" + time + "-task2"));
+		Task t3 = new Task(ExecuteMode.ALL_INVOKE, new TestTask("Timer-" + time + "-task3"));
 		
 		List<Task> list = new ArrayList<Task>();
 		list.add(t1);
