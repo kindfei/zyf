@@ -14,7 +14,7 @@
 			<statistics>/opt/tc-runtime/cluster-statistics</statistics>
 			<dso>
 				<persistence>
-					<mode>permanent-store</mode>
+					<mode>temporary-swap-only</mode>
 				</persistence>
 				<client-reconnect-window>120</client-reconnect-window>
 				<garbage-collection>
@@ -33,7 +33,7 @@
 			<statistics>/opt/tc-runtime/cluster-statistics</statistics>
 			<dso>
 				<persistence>
-					<mode>permanent-store</mode>
+					<mode>temporary-swap-only</mode>
 				</persistence>
 				<client-reconnect-window>120</client-reconnect-window>
 				<garbage-collection>
