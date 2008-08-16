@@ -11,8 +11,8 @@ public class MessageDrivenService extends AbstractService<Message> {
 	
 	private String destName;
 
-	public MessageDrivenService(ServiceMode serviceMode, int executorSize, boolean acceptTask, MessageProcessor processor, String destName) {
-		super(serviceMode, executorSize, acceptTask, processor);
+	public MessageDrivenService(ServiceMode serviceMode, int executorSize, MessageProcessor processor, String destName) {
+		super(serviceMode, executorSize, processor);
 		this.destName = destName;
 	}
 	
