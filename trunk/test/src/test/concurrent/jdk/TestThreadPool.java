@@ -1,4 +1,4 @@
-package test.concurrent;
+package test.concurrent.jdk;
 
 import java.util.concurrent.Executor;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -6,7 +6,7 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-public class TestJdkThreadPool {
+public class TestThreadPool {
 	
 	private Executor pool1 = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 0, TimeUnit.SECONDS, new SynchronousQueue<Runnable>());
 	private Executor pool2 = new ThreadPoolExecutor(0, Integer.MAX_VALUE, 0, TimeUnit.SECONDS, new LinkedBlockingQueue<Runnable>());
@@ -32,7 +32,7 @@ public class TestJdkThreadPool {
 	}
 	
 	public static void main(String[] args) {
-		TestJdkThreadPool test = new TestJdkThreadPool();
+		TestThreadPool test = new TestThreadPool();
 		test.execute();
 	}
 }
