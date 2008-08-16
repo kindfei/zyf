@@ -25,11 +25,12 @@ public abstract class AbstractService<T> implements Service {
 	
 	private ServiceMode serviceMode;
 	private int executorSize;
-	private boolean acceptTask;
 	private Processor<T> processor;
 	private String procName;
 
 	private ClusterShareRoot tcRoot = ClusterShareRoot.instance;
+	
+	private Thread startupThread;
 	
 	private List<TaskExecutor> executorList;
 	private ExecutorService threadPool;
@@ -38,13 +39,11 @@ public abstract class AbstractService<T> implements Service {
 	 * Create Service
 	 * @param serviceMode service mode 
 	 * @param executorSize how many thread to take the task and process it
-	 * @param acceptTask whether take the task from the share queue
 	 * @param processor business implementation
 	 */
-	public AbstractService(ServiceMode serviceMode, int executorSize, boolean acceptTask, Processor<T> processor) {
+	public AbstractService(ServiceMode serviceMode, int executorSize, Processor<T> processor) {
 		this.serviceMode = serviceMode;
 		this.executorSize = executorSize;
-		this.acceptTask = acceptTask;
 		this.processor = processor;
 		this.procName = processor.getClass().getName();
 	}
@@ -61,17 +60,26 @@ public abstract class AbstractService<T> implements Service {
 	 * Startup the service 
 	 */
 	public void startup() {
-		new Thread(new Runnable() {
+		if (startupThread != null) {
+			log.info("The service is already started.");
+			return;
+		}
+		
+		startupThread = new Thread(new Runnable() {
 
 			public void run() {
 				try {
 					runStartup();
+				}catch (InterruptedException e) {
+					log.info("Interrupted startup thread for shutdown. processor=" + procName);
 				} catch (Throwable e) {
-					e.printStackTrace();
+					log.error("Startup error.", e);
 				}
 			}
 			
-		}).start();
+		});
+		
+		startupThread.start();
 	}
 	
 	/**
@@ -81,7 +89,7 @@ public abstract class AbstractService<T> implements Service {
 	private void runStartup() throws Exception {
 		log.info("[" + procName + "] starting.");
 		
-		if (acceptTask) {
+		if (executorSize > 0) {
 			log.info(procName + " start executor. executorSize=" + executorSize);
 			
 			if (executorList == null) executorList = new ArrayList<TaskExecutor>();
@@ -116,11 +124,15 @@ public abstract class AbstractService<T> implements Service {
 	 * Shutdown the service 
 	 */
 	public void shutdown() {
-		close();
+		if (startupThread.isAlive()) {
+			startupThread.interrupt();
+		} else {
+			close();
 
-		log.info("[" + procName + "] releasing mutex...");
-		tcRoot.releaseMutex(procName);
-		log.info("[" + procName + "] released mutex...");
+			log.info("[" + procName + "] releasing mutex...");
+			tcRoot.releaseMutex(procName);
+			log.info("[" + procName + "] released mutex...");
+		}
 		
 		if (executorList != null) {
 			for (TaskExecutor executor : executorList) {
@@ -184,11 +196,11 @@ public abstract class AbstractService<T> implements Service {
 					try {
 						processor.workerProcess(task);
 					} catch (Throwable e) {
-						e.printStackTrace();
+						log.error("Worker process error.", e);
 					}
 				}
 			} catch (InterruptedException e) {
-				e.printStackTrace();
+				log.info("Interrupted TaskExecutor for shutdown. Name=" + getName());
 			}
 		}
 		
@@ -214,7 +226,7 @@ public abstract class AbstractService<T> implements Service {
 				try {
 					processor.workerProcess(task);
 				} catch (Throwable e) {
-					e.printStackTrace();
+					log.error("Worker process error.", e);
 				}
 			}
 		});
@@ -234,7 +246,11 @@ public abstract class AbstractService<T> implements Service {
 	 * @param task
 	 */
 	private void dmiTask(Task task) {
-		tcRoot.dmiTask(procName, task);
+		try {
+			tcRoot.dmiTask(procName, task);
+		} catch (Throwable e) {
+			log.error("dmiTask error.", e);
+		}
 	}
 
 }

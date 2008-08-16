@@ -10,19 +10,13 @@ import java.util.TimerTask;
  */
 public class TimerDrivenService extends AbstractService<Object> {
 	
-	private int delay;
 	private int period;
 	
 	private Timer timer;
 
-	public TimerDrivenService(ServiceMode serviceMode, int executorSize, boolean acceptTask, TimerProcessor processor, int delay, int period) {
-		super(serviceMode, executorSize, acceptTask, processor);
-		this.delay = delay;
+	public TimerDrivenService(ServiceMode serviceMode, int executorSize, TimerProcessor processor, int period) {
+		super(serviceMode, executorSize, processor);
 		this.period = period;
-	}
-	
-	public int getDelay() {
-		return delay;
 	}
 	
 	public int getPeriod() {
@@ -35,7 +29,7 @@ public class TimerDrivenService extends AbstractService<Object> {
 			public void run() {
 				process(null);
 			}
-		}, delay, period);
+		}, 0, period);
 	}
 
 	public void close() {

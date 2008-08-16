@@ -24,10 +24,10 @@ public class ClusterShareRoot {
 	private Map<String, Map<String, Object>> cacheMap = new HashMap<String, Map<String, Object>>();
 	
 	
-	public void acquireMutex(String procName) {
+	public void acquireMutex(String procName) throws InterruptedException {
 		Lock lock = getLock(procName);
 		
-		lock.lock();
+		lock.lockInterruptibly();
 	}
 	
 	public void releaseMutex(String procName) {
@@ -64,15 +64,11 @@ public class ClusterShareRoot {
 	}
 	
 	public void dmiTask(String procName, Task task) {
-		try {
-			Processor<?> processor = ServiceFactory.getProcessor(procName);
-			if (processor == null) {
-				return;
-			}
-			processor.workerProcess(task);
-		} catch (Throwable e) {
-			e.printStackTrace();
+		Processor<?> processor = ServiceFactory.getProcessor(procName);
+		if (processor == null) {
+			return;
 		}
+		processor.workerProcess(task);
 	}
 	
 	private Lock getLock(String procName) {
