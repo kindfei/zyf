@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-4.xsd">
 
 	<servers>
-		<server host="localhost" name="server1">
+		<server host="10.4.6.217" name="server1">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
 			<l2-group-port>9530</l2-group-port>
@@ -14,7 +14,7 @@
 			<statistics>/opt/tc-runtime/cluster-statistics</statistics>
 			<dso>
 				<persistence>
-					<mode>permanent-store</mode>
+					<mode>temporary-swap-only</mode>
 				</persistence>
 				<client-reconnect-window>120</client-reconnect-window>
 			</dso>
@@ -28,7 +28,7 @@
 			<statistics>/opt/tc-runtime/cluster-statistics</statistics>
 			<dso>
 				<persistence>
-					<mode>permanent-store</mode>
+					<mode>temporary-swap-only</mode>
 				</persistence>
 				<client-reconnect-window>120</client-reconnect-window>
 			</dso>
@@ -104,6 +104,11 @@
 				<root>
 					<field-name>
 						test.terracota.LockingTest.instance
+					</field-name>
+				</root>
+				<root>
+					<field-name>
+						test.terracota.HaTest.instance
 					</field-name>
 				</root>
 			</roots>
