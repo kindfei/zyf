@@ -6,8 +6,8 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServiceFactory {
 	private static Map<String, AbstractService<?>> servMap = new ConcurrentHashMap<String, AbstractService<?>>();
 	
-	public static Service getMessageDrivenService(ServiceMode serviceMode, int executorSize, MessageProcessor processor, String destName) {
-		MessageDrivenService service = new MessageDrivenService(serviceMode, executorSize, processor, destName);
+	public static Service getMessageDrivenService(ServiceMode serviceMode, int executorSize, MessageProcessor processor, String destName, int receiverSize) {
+		MessageDrivenService service = new MessageDrivenService(serviceMode, executorSize, processor, destName, receiverSize);
 		String procName = processor.getClass().getName();
 		servMap.put(procName, service);
 		return service;
