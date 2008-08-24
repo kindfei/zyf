@@ -5,6 +5,7 @@
 	<classpathentry kind="src" path="sample-Sun"/>
 	<classpathentry kind="src" path="sample-JBoss"/>
 	<classpathentry kind="src" path="sample-messaging"/>
+	<classpathentry kind="src" path="sample-ActiveMQ"/>
 	<classpathentry kind="lib" path="conf"/>
 	<classpathentry kind="lib" path="/test/lib/jboss-4.0.5.GA/jbossall-client.jar" sourcepath="E:/Library/Sun/jms1.1/src/share"/>
 	<classpathentry kind="lib" path="/test/lib/jboss-4.0.5.GA/messaging-1.3.0.GA/jboss-messaging-client.jar"/>
@@ -16,5 +17,6 @@
 	<classpathentry kind="lib" path="/test/lib/Apache/log4j-1.2.13.jar"/>
 	<classpathentry kind="lib" path="/test/lib/Apache/commons/commons-logging.jar"/>
 	<classpathentry kind="lib" path="/test/lib/backport-util-concurrent.jar" sourcepath="E:/Library/backport-util-concurrent-3.1/src"/>
+	<classpathentry kind="lib" path="/test/lib/ActiveMQ/activemq-core-5.1.0.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

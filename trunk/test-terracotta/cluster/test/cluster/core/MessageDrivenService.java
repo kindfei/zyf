@@ -2,7 +2,12 @@ package test.cluster.core;
 
 import java.util.List;
 
+import javax.jms.JMSException;
 import javax.jms.Message;
+import javax.jms.ObjectMessage;
+
+import test.jms.activemq.DestTypes;
+import test.jms.activemq.Receiver;
 
 /**
  * MessageDrivenService
@@ -11,12 +16,13 @@ import javax.jms.Message;
  */
 public class MessageDrivenService extends AbstractService<Message> {
 	
+	private Receiver recv;
 	private String destName;
 	private int receiverSize;
-	private List<Receiver> receiverList;
+	private List<MessageReceiver> receiverList;
 
-	public MessageDrivenService(ServiceMode serviceMode, int executorSize, MessageProcessor processor, String destName, int receiverSize) {
-		super(serviceMode, executorSize, processor);
+	public MessageDrivenService(ServiceMode serviceMode, int executorSize, boolean acceptTask, MessageProcessor processor, String destName, int receiverSize) {
+		super(serviceMode, executorSize, acceptTask, processor);
 		this.destName = destName;
 		this.receiverSize = receiverSize;
 	}
@@ -25,27 +31,39 @@ public class MessageDrivenService extends AbstractService<Message> {
 		return destName;
 	}
 
-	public void init() {
-		Receiver receiver = null;
+	public void init() throws JMSException {
+		recv = new Receiver(destName, DestTypes.Queue);
+		
+		MessageReceiver receiver = null;
 		for (int i = 0; i < receiverSize; i++) {
-			receiver = new Receiver();
+			receiver = new MessageReceiver();
 			receiverList.add(receiver);
 			receiver.start();
 		}
 	}
 
 	public void close() {
-		for (Receiver receiver : receiverList) {
+		for (MessageReceiver receiver : receiverList) {
 			receiver.end();
+		}
+		try {
+			recv.close();
+		} catch (JMSException e) {
+			e.printStackTrace();
 		}
 	}
 	
-	class Receiver extends Thread {
+	class MessageReceiver extends Thread {
 		private volatile boolean isActive = true;
 		
 		public void run() {
-			while(isActive) {
-				process(null);
+			try {
+				while(isActive) {
+					Message msg = (ObjectMessage) recv.receive();
+					if (msg != null) process(msg);
+				}
+			} catch (JMSException e) {
+				e.printStackTrace();
 			}
 		}
 		
