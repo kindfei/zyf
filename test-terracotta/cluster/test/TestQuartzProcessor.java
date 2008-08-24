@@ -11,7 +11,6 @@ import org.quartz.StatefulJob;
 
 import test.cluster.core.ExecuteMode;
 import test.cluster.core.QuartzProcessor;
-import test.cluster.core.Service;
 import test.cluster.core.tc.Task;
 import test.cluster.tc.caches.TestCache;
 import test.cluster.tc.tasks.TestTask;

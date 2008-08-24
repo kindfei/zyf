@@ -6,22 +6,22 @@ import java.util.concurrent.ConcurrentHashMap;
 public class ServiceFactory {
 	private static Map<String, AbstractService<?>> servMap = new ConcurrentHashMap<String, AbstractService<?>>();
 	
-	public static Service getMessageDrivenService(ServiceMode serviceMode, int executorSize, MessageProcessor processor, String destName, int receiverSize) {
-		MessageDrivenService service = new MessageDrivenService(serviceMode, executorSize, processor, destName, receiverSize);
+	public static Service getMessageDrivenService(ServiceMode serviceMode, int executorSize, boolean acceptTask, MessageProcessor processor, String destName, int receiverSize) {
+		MessageDrivenService service = new MessageDrivenService(serviceMode, executorSize, acceptTask, processor, destName, receiverSize);
 		String procName = processor.getClass().getName();
 		servMap.put(procName, service);
 		return service;
 	}
 
-	public static Service getTimerDrivenService(ServiceMode serviceMode, int executorSize, TimerProcessor processor, int period) {
-		TimerDrivenService service = new TimerDrivenService(serviceMode, executorSize, processor, period);
+	public static Service getTimerDrivenService(ServiceMode serviceMode, int executorSize, boolean acceptTask, TimerProcessor processor, int period) {
+		TimerDrivenService service = new TimerDrivenService(serviceMode, executorSize, acceptTask, processor, period);
 		String procName = processor.getClass().getName();
 		servMap.put(procName, service);
 		return service;
 	}
 
-	public static Service getQuartzDrivenService(ServiceMode serviceMode, int excutorSize, QuartzProcessor processor, String propName) {
-		QuartzDrivenService service = new QuartzDrivenService(serviceMode, excutorSize, processor, propName);
+	public static Service getQuartzDrivenService(ServiceMode serviceMode, int excutorSize, boolean acceptTask, QuartzProcessor processor, String propName) {
+		QuartzDrivenService service = new QuartzDrivenService(serviceMode, excutorSize, acceptTask, processor, propName);
 		String procName = processor.getClass().getName();
 		servMap.put(procName, service);
 		return service;

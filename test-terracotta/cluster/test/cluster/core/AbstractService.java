@@ -1,6 +1,5 @@
 package test.cluster.core;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
@@ -25,15 +24,16 @@ public abstract class AbstractService<T> implements Service {
 	
 	private ServiceMode serviceMode;
 	private int executorSize;
+	private boolean acceptTask;
 	private Processor<T> processor;
 	private String procName;
 
 	private ClusterShareRoot tcRoot = ClusterShareRoot.instance;
 	
 	private Thread startupThread;
-	
-	private List<TaskExecutor> executorList;
+
 	private ExecutorService threadPool;
+	private TaskTaker taker;
 	
 	/**
 	 * Create Service
@@ -41,9 +41,10 @@ public abstract class AbstractService<T> implements Service {
 	 * @param executorSize how many thread to take the task and process it
 	 * @param processor business implementation
 	 */
-	public AbstractService(ServiceMode serviceMode, int executorSize, Processor<T> processor) {
+	public AbstractService(ServiceMode serviceMode, int executorSize, boolean acceptTask, Processor<T> processor) {
 		this.serviceMode = serviceMode;
 		this.executorSize = executorSize;
+		this.acceptTask = acceptTask;
 		this.processor = processor;
 		this.procName = processor.getClass().getName();
 	}
@@ -59,7 +60,7 @@ public abstract class AbstractService<T> implements Service {
 	/**
 	 * Startup the service 
 	 */
-	public void startup() {
+	public synchronized void startup() {
 		if (startupThread != null) {
 			log.info("The service is already started.");
 			return;
@@ -89,16 +90,15 @@ public abstract class AbstractService<T> implements Service {
 	private void runStartup() throws Exception {
 		log.info("[" + procName + "] starting.");
 		
-		if (executorSize > 0) {
-			log.info(procName + " start executor. executorSize=" + executorSize);
-			
-			if (executorList == null) executorList = new ArrayList<TaskExecutor>();
-			for (int i = 0; i < executorSize; i++) {
-				TaskExecutor executor = new TaskExecutor();
-				executor.setName(procName + "-TaskExecutor" + i);
-				executorList.add(executor);
-				executor.start();
-			}
+		threadPool = new ThreadPoolExecutor(executorSize
+				, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS
+				, new SynchronousQueue<Runnable>());
+		
+		if (acceptTask) {
+			log.info(procName + " start TaskTaker.");
+			taker = new TaskTaker();
+			taker.setName(procName + "-TaskTaker");
+			taker.start();
 		}
 		
 		switch (serviceMode) {
@@ -123,25 +123,38 @@ public abstract class AbstractService<T> implements Service {
 	/**
 	 * Shutdown the service 
 	 */
-	public void shutdown() {
+	public synchronized void shutdown() {
 		if (startupThread.isAlive()) {
-			startupThread.interrupt();
-		} else {
-			close();
-
-			log.info("[" + procName + "] releasing mutex...");
-			tcRoot.releaseMutex(procName);
-			log.info("[" + procName + "] released mutex...");
+			try {
+				startupThread.interrupt();
+			} catch (RuntimeException e) {
+			}
 		}
 		
-		if (executorList != null) {
-			for (TaskExecutor executor : executorList) {
-				executor.end();
+		try {
+			close();
+		} catch (RuntimeException e) {
+		}
+
+		log.info("[" + procName + "] releasing mutex...");
+		try {
+			tcRoot.releaseMutex(procName);
+		} catch (RuntimeException e) {
+		}
+		log.info("[" + procName + "] released mutex...");
+		
+		if (taker != null) {
+			try {
+				taker.end();
+			} catch (RuntimeException e) {
 			}
 		}
 		
 		if (threadPool != null) {
-			threadPool.shutdown();
+			try {
+				threadPool.shutdown();
+			} catch (RuntimeException e) {
+			}
 		}
 		
 		log.info("[" + procName + "] successfully stoped.");
@@ -153,8 +166,8 @@ public abstract class AbstractService<T> implements Service {
 	 * Process entry for service trigger
 	 * @param t
 	 */
-	public synchronized void process(T t) {
-		log.debug("[" + procName + "] begin processing.");
+	public void process(T t) {
+		log.info("[" + procName + "] begin processing.");
 		
 		List<Task> tasks = processor.masterProcess(t);
 		
@@ -185,22 +198,18 @@ public abstract class AbstractService<T> implements Service {
 	 * @author zhangyf
 	 *
 	 */
-	private class TaskExecutor extends Thread {
+	private class TaskTaker extends Thread {
 		private volatile boolean isActive = true;
 		
 		public void run() {
 			try {
 				while (isActive) {
 					Task task = tcRoot.takeTask(procName);
-					log.debug("[" + procName + "] the task has been taken from queue. task: " + task.toString());
-					try {
-						processor.workerProcess(task);
-					} catch (Throwable e) {
-						log.error("Worker process error.", e);
-					}
+					log.info("[" + procName + "] the task has been taken from queue. task: " + task.toString());
+					exeTask(task);
 				}
 			} catch (InterruptedException e) {
-				log.info("Interrupted TaskExecutor for shutdown. Name=" + getName());
+				log.info("Interrupted TaskTaker for shutdown. Name=" + getName());
 			}
 		}
 		
@@ -215,12 +224,6 @@ public abstract class AbstractService<T> implements Service {
 	 * @param task
 	 */
 	private void exeTask(final Task task) {
-		if (threadPool == null) {
-			threadPool = new ThreadPoolExecutor(0, Integer.MAX_VALUE,
-                    60L, TimeUnit.SECONDS,
-                    new SynchronousQueue<Runnable>());
-		}
-		
 		threadPool.execute(new Runnable() {
 			public void run() {
 				try {

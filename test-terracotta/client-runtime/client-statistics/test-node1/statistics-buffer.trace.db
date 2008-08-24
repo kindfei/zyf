@@ -1,0 +1,43 @@
+08-22 21:36:32 database: SET LOG 0
+08-22 21:46:09 database: SET LOG 0
+08-22 21:46:59 database: opening E:\Eclipse\workspace-zyf\test-terracotta\client-runtime\client-statistics\test-node1\statistics-buffer
+org.h2.jdbc.JdbcSQLException: Database may be already in use: Locked by another process. Possible solutions: close all other connection(s); use the server mode [90020-67]
+	at org.h2.message.Message.getSQLException(Message.java:89)
+	at org.h2.message.Message.getSQLException(Message.java:93)
+	at org.h2.message.Message.getSQLException(Message.java:71)
+	at org.h2.store.FileLock.error(FileLock.java:313)
+	at org.h2.store.FileLock.lockFile(FileLock.java:176)
+	at org.h2.store.FileLock.lock(FileLock.java:72)
+	at org.h2.engine.Database.open(Database.java:451)
+	at org.h2.engine.Database.<init>(Database.java:197)
+	at org.h2.engine.Engine.openSession(Engine.java:52)
+	at org.h2.engine.Engine.getSession(Engine.java:100)
+	at org.h2.engine.Session.createSession(Session.java:182)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:965)
+	at org.h2.jdbc.JdbcConnection.<init>(JdbcConnection.java:946)
+	at org.h2.Driver.connect(Driver.java:52)
+	at java.sql.DriverManager.getConnection(DriverManager.java:582)
+	at java.sql.DriverManager.getConnection(DriverManager.java:185)
+	at com.tc.statistics.database.impl.H2StatisticsDatabase.openConnection(H2StatisticsDatabase.java:53)
+	at com.tc.statistics.database.impl.AbstractStatisticsDatabase.open(AbstractStatisticsDatabase.java:49)
+	at com.tc.statistics.database.impl.H2StatisticsDatabase.open(H2StatisticsDatabase.java:47)
+	at com.tc.statistics.buffer.h2.H2StatisticsBufferImpl$1.execute(H2StatisticsBufferImpl.java:151)
+	at com.tc.util.concurrent.FileLockGuard.guard(FileLockGuard.java:37)
+	at com.tc.statistics.buffer.h2.H2StatisticsBufferImpl.open(H2StatisticsBufferImpl.java:147)
+	at com.tc.statistics.StatisticsAgentSubSystemImpl.setup(StatisticsAgentSubSystemImpl.java:76)
+	at com.tc.object.DistributedObjectClient.start(DistributedObjectClient.java:347)
+	at com.tc.object.bytecode.ManagerImpl$2.execute(ManagerImpl.java:178)
+	at com.tc.lang.StartupHelper.startUp(StartupHelper.java:39)
+	at com.tc.object.bytecode.ManagerImpl.startClient(ManagerImpl.java:194)
+	at com.tc.object.bytecode.ManagerImpl.init(ManagerImpl.java:133)
+	at com.tc.object.bytecode.ManagerImpl.init(ManagerImpl.java:121)
+	at com.tc.object.bytecode.hook.impl.ClassProcessorHelper.createGlobalContext(ClassProcessorHelper.java:628)
+	at com.tc.object.bytecode.hook.impl.ClassProcessorHelper.init(ClassProcessorHelper.java:417)
+	at com.tc.object.bytecode.hook.impl.ClassProcessorHelper.systemLoaderInitialized(ClassProcessorHelper.java:805)
+	at java.lang.ClassLoader.initSystemClassLoader(ClassLoader.java:1327)
+	at java.lang.ClassLoader.getSystemClassLoader(ClassLoader.java:1286)
+08-22 21:47:26 database: SET LOG 0
+08-22 22:36:16 database: SET LOG 0
+08-22 22:38:41 database: SET LOG 0
+08-22 22:40:14 database: SET LOG 0
+08-22 22:41:58 database: SET LOG 0

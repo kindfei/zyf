@@ -14,5 +14,6 @@
 	<classpathentry kind="lib" path="/test/lib/Apache/commons/commons-digester-1.7.jar"/>
 	<classpathentry kind="lib" path="/test/lib/Apache/commons/commons-beanutils.jar"/>
 	<classpathentry kind="lib" path="conf"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/test-JMS"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
