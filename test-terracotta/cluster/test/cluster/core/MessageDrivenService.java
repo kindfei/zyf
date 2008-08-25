@@ -7,7 +7,6 @@ import javax.jms.Message;
 import javax.jms.ObjectMessage;
 
 import test.jms.activemq.DestTypes;
-import test.jms.activemq.Receiver;
 
 /**
  * MessageDrivenService
@@ -16,12 +15,12 @@ import test.jms.activemq.Receiver;
  */
 public class MessageDrivenService extends AbstractService<Message> {
 	
-	private Receiver recv;
+	private test.jms.activemq.Receiver recv;
 	private String destName;
 	private int receiverSize;
-	private List<MessageReceiver> receiverList;
+	private List<Receiver> receiverList;
 
-	public MessageDrivenService(ServiceMode serviceMode, int executorSize, boolean acceptTask, MessageProcessor processor, String destName, int receiverSize) {
+	public MessageDrivenService(ServiceMode serviceMode, int executorSize, boolean acceptTask, MessageProcessor processor, String destName, int receiverSize, boolean newReceiver) {
 		super(serviceMode, executorSize, acceptTask, processor);
 		this.destName = destName;
 		this.receiverSize = receiverSize;
@@ -32,18 +31,18 @@ public class MessageDrivenService extends AbstractService<Message> {
 	}
 
 	public void init() throws JMSException {
-		recv = new Receiver(destName, DestTypes.Queue);
+		recv = new test.jms.activemq.Receiver(destName, DestTypes.Queue);
 		
-		MessageReceiver receiver = null;
+		Receiver receiver = null;
 		for (int i = 0; i < receiverSize; i++) {
-			receiver = new MessageReceiver();
+			receiver = new Receiver();
 			receiverList.add(receiver);
 			receiver.start();
 		}
 	}
 
 	public void close() {
-		for (MessageReceiver receiver : receiverList) {
+		for (Receiver receiver : receiverList) {
 			receiver.end();
 		}
 		try {
@@ -53,7 +52,7 @@ public class MessageDrivenService extends AbstractService<Message> {
 		}
 	}
 	
-	class MessageReceiver extends Thread {
+	class Receiver extends Thread {
 		private volatile boolean isActive = true;
 		
 		public void run() {
