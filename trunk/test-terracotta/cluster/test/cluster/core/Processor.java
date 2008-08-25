@@ -4,6 +4,12 @@ import java.util.List;
 
 import test.cluster.core.tc.Task;
 
+/**
+ * Processor
+ * @author Zhangyf
+ *
+ * @param <T>
+ */
 public interface Processor<T> {
 
 	public abstract List<Task> masterProcess(T t);

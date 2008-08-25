@@ -4,26 +4,21 @@ import java.util.Timer;
 import java.util.TimerTask;
 
 /**
- * Timer Driven Service
+ * TimerDrivenService
  * @author zhangyf
  *
  */
 public class TimerDrivenService extends AbstractService<Object> {
 	
 	private int period;
-	
 	private Timer timer;
 
-	public TimerDrivenService(ServiceMode serviceMode, int executorSize, boolean acceptTask, TimerProcessor processor, int period) {
-		super(serviceMode, executorSize, acceptTask, processor);
+	TimerDrivenService(ServiceMode serviceMode, int takerSize, boolean takerExecute, TimerProcessor processor, int period) {
+		super(serviceMode, takerSize, takerExecute, processor);
 		this.period = period;
 	}
 	
-	public int getPeriod() {
-		return period;
-	}
-	
-	public void init() {
+	protected void init() {
 		timer = new Timer();
 		timer.schedule(new TimerTask() {
 			public void run() {
@@ -32,7 +27,7 @@ public class TimerDrivenService extends AbstractService<Object> {
 		}, 0, period);
 	}
 
-	public void close() {
+	protected void close() {
 		timer.cancel();
 	}
 

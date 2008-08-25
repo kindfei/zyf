@@ -11,6 +11,11 @@ import java.util.concurrent.LinkedBlockingQueue;
 import test.cluster.core.Processor;
 import test.cluster.core.ServiceFactory;
 
+/**
+ * ClusterShareRoot
+ * @author Zhangyf
+ *
+ */
 public class ClusterShareRoot {
 	public static final ClusterShareRoot instance = new ClusterShareRoot();
 	
@@ -64,11 +69,15 @@ public class ClusterShareRoot {
 	}
 	
 	public void dmiTask(String procName, Task task) {
-		Processor<?> processor = ServiceFactory.getProcessor(procName);
-		if (processor == null) {
-			return;
+		try {
+			Processor<?> processor = ServiceFactory.getProcessor(procName);
+			if (processor == null) {
+				return;
+			}
+			processor.workerProcess(task);
+		} catch (Throwable e) {
+			e.printStackTrace();
 		}
-		processor.workerProcess(task);
 	}
 	
 	private Lock getLock(String procName) {

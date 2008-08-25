@@ -6,6 +6,11 @@ import javax.jms.Message;
 
 import test.cluster.core.tc.Task;
 
+/**
+ * MainMessageProcessor
+ * @author Zhangyf
+ *
+ */
 public abstract class MainMessageProcessor extends MessageProcessor {
 
 	public List<Task> masterProcess(Message msg) {
