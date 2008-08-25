@@ -1,5 +1,7 @@
 package test.cluster.core;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.quartz.JobExecutionContext;
 import org.quartz.Scheduler;
 import org.quartz.SchedulerException;
@@ -11,30 +13,29 @@ import org.quartz.impl.StdSchedulerFactory;
  *
  */
 public class QuartzDrivenService extends AbstractService<JobExecutionContext> {
+	
+	private static final Log log = LogFactory.getLog(QuartzDrivenService.class);
 
 	private String propName;
 	private Scheduler scheduler;
 
-	public QuartzDrivenService(ServiceMode serviceMode, int executorSize, boolean acceptTask, QuartzProcessor processor, String propName) {
-		super(serviceMode, executorSize, acceptTask, processor);
+	QuartzDrivenService(ServiceMode serviceMode, int takerSize, boolean takerExecute, QuartzProcessor processor, String propName) {
+		super(serviceMode, takerSize, takerExecute, processor);
 		this.propName = propName;
 	}
 
-	public String getPropName() {
-		return propName;
-	}
-
-	public void init() throws Exception {
+	protected void init() throws Exception {
 		StdSchedulerFactory factory = new StdSchedulerFactory();
 		factory.initialize(ClassLoader.getSystemResourceAsStream(propName));
 		scheduler = factory.getScheduler();
 		scheduler.start();
 	}
 
-	public void close() {
+	protected void close() {
 		try {
 			scheduler.shutdown();
 		} catch (SchedulerException e) {
+			log.error("Quartz Scheduler shutdown error.", e);
 		}
 	}
 

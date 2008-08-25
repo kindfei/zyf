@@ -24,8 +24,8 @@ public abstract class AbstractService<T> implements Service {
 	private static final Log log = LogFactory.getLog(AbstractService.class);
 	
 	private ServiceMode serviceMode;
-	private int executorSize;
-	private boolean newExecutor;
+	private int takerSize;
+	private boolean takerExecute;
 	private Processor<T> processor;
 	private String procName;
 
@@ -34,27 +34,24 @@ public abstract class AbstractService<T> implements Service {
 	private Thread startupThread;
 
 	private ExecutorService threadPool;
-	private List<Executor> executorList = new ArrayList<Executor>();
+	private List<TaskTaker> takerList = new ArrayList<TaskTaker>();
 	
 	/**
 	 * Create Service
 	 * @param serviceMode service mode 
-	 * @param executorSize how many thread to take the task and process it
+	 * @param takerSize how many thread to take the task
+	 * @param takerExecute execute in taker thread
 	 * @param processor business implementation
 	 */
-	public AbstractService(ServiceMode serviceMode, int executorSize, boolean newExecutor, Processor<T> processor) {
+	protected AbstractService(ServiceMode serviceMode, int takerSize, boolean takerExecute, Processor<T> processor) {
 		this.serviceMode = serviceMode;
-		this.executorSize = executorSize;
-		this.newExecutor = newExecutor;
+		this.takerSize = takerSize;
+		this.takerExecute = takerExecute;
 		this.processor = processor;
 		this.procName = processor.getClass().getName();
 	}
 	
-	public ServiceMode getServiceMode() {
-		return serviceMode;
-	}
-	
-	public Processor<T> getProcessor() {
+	Processor<T> getProcessor() {
 		return processor;
 	}
 	
@@ -62,20 +59,23 @@ public abstract class AbstractService<T> implements Service {
 	 * Startup the service 
 	 */
 	public synchronized void startup() {
-		if (startupThread != null) {
-			log.info("The service is already started.");
+		if (startupThread != null && startupThread.isAlive()) {
+			log.info("The service is already started. processor=" + procName);
 			return;
 		}
 		
 		startupThread = new Thread() {
 
-			public synchronized void run() {
+			public void run() {
 				try {
 					runStartup();
 					
-					this.wait();
+					synchronized (this) {
+						this.wait();
+					}
+					
 				}catch (InterruptedException e) {
-					log.info("Interrupted startup thread for shutdown. processor=" + procName);
+					log.info("[" + procName + "] Interrupted startup thread for shutdown.");
 				} catch (Throwable e) {
 					log.error("Startup error.", e);
 				}
@@ -91,145 +91,158 @@ public abstract class AbstractService<T> implements Service {
 		
 		startupThread.start();
 	}
+
+	/**
+	 * Shutdown the service 
+	 */
+	public synchronized void shutdown() {
+		if (startupThread == null) {
+			log.info("The service have never started. processor=" + procName);
+		}
+		startupThread.interrupt();
+		try {
+			startupThread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+		}
+		startupThread = null;
+	}
+	
+	/**
+	 * Process entry for service trigger
+	 * @param t
+	 */
+	protected void process(T t) {
+		try {
+			List<Task> tasks = processor.masterProcess(t);
+			
+			if (tasks == null) {
+				return;
+			}
+			
+			for (Task task : tasks) {
+				ExecuteMode executeMode = task.getExecuteMode();
+				switch (executeMode) {
+				case LOCAL_INVOKE:
+					exeTask(task);
+					break;
+
+				case TASK_QUEUE:
+					addTask(task);
+					break;
+
+				case ALL_INVOKE:
+					dmiTask(task);
+					break;
+				}
+			}
+		} catch (Throwable e) {
+			log.error("Master process error.", e);
+		}
+	}
 	
 	/**
 	 * Run startup operation.
 	 * @throws Exception
 	 */
 	private void runStartup() throws Exception {
-		log.info("[" + procName + "] starting.");
+		log.info("[" + procName + "] Starting.");
 		
 		threadPool = new ThreadPoolExecutor(0
 				, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS
 				, new SynchronousQueue<Runnable>());
 		
-		Executor executor = null;
-		for (int i = 0; i < executorSize; i++) {
-			executor = new Executor();
-			executor.setName(procName + "-Executor" + i);
-			executorList.add(executor);
-			executor.start();
+		TaskTaker taker = null;
+		for (int i = 0; i < takerSize; i++) {
+			taker = new TaskTaker();
+			taker.setName(procName + "-TaskTaker" + i);
+			takerList.add(taker);
+			taker.start();
 		}
 		
 		switch (serviceMode) {
 		case ACTIVE_STANDBY:
-			log.info("[" + procName + "] acquiring mutex...");
+			log.info("[" + procName + "] Acquiring mutex...");
 			tcRoot.acquireMutex(procName);
-			log.info("[" + procName + "] acquired mutex...");
+			log.info("[" + procName + "] Acquired mutex...");
 			break;
 
 		case ALL_ACTIVE:
-			log.info("[" + procName + "] service mode is all active.");
+			log.info("[" + procName + "] Service mode is all active.");
 			break;
 		}
 		
 		init();
 		
-		log.info("[" + procName + "] successfully started.");
+		log.info("[" + procName + "] Successfully started.");
 	}
-
-	public abstract void init() throws Exception;
 	
 	/**
-	 * Shutdown the service 
+	 * Initialize the service.
+	 * @throws Exception
+	 */
+	protected abstract void init() throws Exception;
+	
+	/**
+	 * Run shutdown operation.
 	 */
 	private void runShutdown() {
+		log.info("[" + procName + "] Stopping.");
+		
 		try {
 			close();
 		} catch (Throwable e) {
+			e.printStackTrace();
 		}
 
-		log.info("[" + procName + "] releasing mutex...");
+		log.info("[" + procName + "] Releasing mutex...");
 		try {
 			tcRoot.releaseMutex(procName);
 		} catch (Throwable e) {
+			e.printStackTrace();
 		}
-		log.info("[" + procName + "] released mutex...");
+		log.info("[" + procName + "] Released mutex...");
 		
-		for (Executor executor : executorList) {
-			try {
-				executor.end();
-			} catch (Throwable e) {
-			}
+		for (TaskTaker taker : takerList) {
+			taker.end();
 		}
 		
-		try {
-			threadPool.shutdown();
-		} catch (Throwable e) {
-		}
+		threadPool.shutdown();
 		
-		log.info("[" + procName + "] successfully stoped.");
+		log.info("[" + procName + "] Successfully stoped.");
 	}
-	
-	public synchronized void shutdown() {
-		if (startupThread == null) {
-			log.info("The service have never started.");
-		}
-		
-		synchronized (startupThread) {
-			startupThread.interrupt();
-		}
-	}
-	
-	public abstract void close();
 	
 	/**
-	 * Process entry for service trigger
-	 * @param t
+	 * Close the service.
 	 */
-	public void process(T t) {
-		log.info("[" + procName + "] begin processing.");
-		
-		List<Task> tasks = processor.masterProcess(t);
-		
-		if (tasks == null) {
-			return;
-		}
-		
-		for (Task task : tasks) {
-			ExecuteMode executeMode = task.getExecuteMode();
-			switch (executeMode) {
-			case LOCAL_INVOKE:
-				exeTask(task);
-				break;
-
-			case TASK_QUEUE:
-				addTask(task);
-				break;
-
-			case ALL_INVOKE:
-				dmiTask(task);
-				break;
-			}
-		}
-	}
+	protected abstract void close();
 	
 	/**
-	 * Take task from share queue for worker
+	 * Take task from share queue for worker process.
 	 * @author zhangyf
 	 *
 	 */
-	private class Executor extends Thread {
+	private class TaskTaker extends Thread {
 		private volatile boolean isActive = true;
 		
 		public void run() {
 			try {
 				while (isActive) {
 					Task task = tcRoot.takeTask(procName);
-					log.info("[" + procName + "] the task has been taken from queue. task: " + task.toString());
+					log.info("[" + procName + "] The task has been taken from queue. task: " + task.toString());
 					
-					if (newExecutor) {
-						exeTask(task);
-					} else {
+					if (takerExecute) {
 						try {
 							processor.workerProcess(task);
 						} catch (Throwable e) {
 							log.error("Worker process error.", e);
 						}
+					} else {
+						exeTask(task);
 					}
 				}
 			} catch (InterruptedException e) {
-				log.info("Interrupted TaskTaker for shutdown. Name=" + getName());
+				log.info("[" + procName + "] Interrupted TaskTaker for shutdown. Name=" + getName());
 			}
 		}
 		
@@ -256,12 +269,12 @@ public abstract class AbstractService<T> implements Service {
 	}
 	
 	/**
-	 * Add task to share queue
+	 * Add task to task queue
 	 * @param task
 	 */
 	private void addTask(Task task) {
 		int size = tcRoot.addTask(procName, task);
-		log.debug("[" + procName + "] the task queue size=" + size);
+		log.info("[" + procName + "] The task queue size=" + size);
 	}
 	
 	/**
@@ -269,11 +282,7 @@ public abstract class AbstractService<T> implements Service {
 	 * @param task
 	 */
 	private synchronized void dmiTask(Task task) {
-		try {
-			tcRoot.dmiTask(procName, task);
-		} catch (Throwable e) {
-			log.error("dmiTask error.", e);
-		}
+		tcRoot.dmiTask(procName, task);
 	}
 
 }

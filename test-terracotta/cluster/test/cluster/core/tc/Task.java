@@ -2,6 +2,11 @@ package test.cluster.core.tc;
 
 import test.cluster.core.ExecuteMode;
 
+/**
+ * Task
+ * @author Zhangyf
+ *
+ */
 public class Task {
 	
 	private ExecuteMode executeMode;
