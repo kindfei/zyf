@@ -13,11 +13,11 @@ public class ServiceFactory {
 	private static Map<String, AbstractService<?>> servMap = new HashMap<String, AbstractService<?>>();
 	
 	/**
-	 * The service is no <code>TaskTaker</code> to take the task, so you
-	 * can not add task to the task queue. A new thread will be created
-	 * to process when the JMS receiver got a message. And the amount of
-	 * the thread is no limit to create. In other words, there is no worker,
-	 * just a lot of master in there.
+	 * The <tt>MessageReceiver</tt> will creates new threads as needed to execute 
+	 * <tt>masterProcess</tt> when it got a message from JMS receiver.
+	 * <p>There is no <tt>TaskTaker</tt> to take task from task queue. So can not
+	 * add task to the task queue.
+	 * 
 	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
 	 * @param processor the business implementation
 	 * @param destName the destination name of JMS for receive message
@@ -29,14 +29,15 @@ public class ServiceFactory {
 	}
 	
 	/**
-	 * The service is no <code>TaskTaker</code> to take the task, so you
-	 * can not add task to the task queue. Fixed number of threads will be created
-	 * when the service been created for receive the message, and the receive
-	 * thread also process the message when it was gotten.
+	 * The fixed number of threads(<tt>MessageReceiver</tt>) was created to receive
+	 * message from the JMS receiver and execute <tt>masterProcess</tt> with the message.
+	 * <p>There is no <tt>TaskTaker</tt> to take task from task queue. So can not add
+	 * task to the task queue.
+	 * 
 	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
 	 * @param processor the business implementation
 	 * @param destName the destination name of JMS for receive message
-	 * @param receiverSize how many receiver(thread) to receive the message
+	 * @param receiverSize how many threads to receive and process the message
 	 * @return the service
 	 */
 	public synchronized static Service getMessageDrivenServiceWithoutWorker(ServiceMode serviceMode
@@ -45,12 +46,11 @@ public class ServiceFactory {
 	}
 	
 	/**
-	 * A new thread will be created to process the task when the <code>TaskTaker</code>
-	 * take a task from the task queue. And the number of the thread is no limit. The
-	 * worker process is the same as master process. A new thread will be created
-	 * to process when the JMS receiver got a message. And the amount of
-	 * the thread is no limit to create. In other words, there is lots of worker
-	 * and also lots of master.
+	 * The <tt>MessageReceiver</tt> will creates new threads as needed to execute 
+	 * <tt>masterProcess</tt> when it got a message from JMS receiver.
+	 * <p>The <tt>TaskTaker</tt> will creates new threads as needed to execute
+	 * <tt>workerProcess</tt> when it got a task from task queue.
+	 * 
 	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
 	 * @param processor the business implementation
 	 * @param destName the destination name of JMS for receive message
@@ -62,9 +62,13 @@ public class ServiceFactory {
 	}
 	
 	/**
-	 * Fixed number of threads
+	 * The <tt>MessageReceiver</tt> will creates new threads as needed to execute
+	 * <tt>masterProcess</tt> when it got a message from JMS receiver.
+	 * <p>The fixed number of threads(<tt>TaskTaker</tt>) was created to take task
+	 * from the task queue and execute <tt>workerProcess</tt> with the task.
+	 * 
 	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
-	 * @param takerSize how many <code>TaskTaker</code> to take the task
+	 * @param takerSize how many threads to take and process the task
 	 * @param processor the business implementation
 	 * @param destName the destination name of JMS for receive message
 	 * @return the service
@@ -75,12 +79,16 @@ public class ServiceFactory {
 	}
 	
 	/**
+	 * The fixed number of threads(<tt>MessageReceiver</tt>) was created to receive
+	 * message from the JMS receiver and execute <tt>masterProcess</tt> with the message.
+	 * <p>The <tt>TaskTaker</tt> will creates new threads as needed to execute
+	 * <tt>workerProcess</tt> when it got a task from task queue.
 	 * 
-	 * @param serviceMode
-	 * @param processor
-	 * @param destName
-	 * @param receiverSize
-	 * @return
+	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
+	 * @param processor the business implementation
+	 * @param destName the destination name of JMS for receive message
+	 * @param receiverSize how many threads to receive and process the message
+	 * @return the service
 	 */
 	public synchronized static Service getMessageDrivenService(ServiceMode serviceMode
 			, MessageProcessor processor, String destName, int receiverSize) {
@@ -88,13 +96,17 @@ public class ServiceFactory {
 	}
 	
 	/**
+	 * The fixed number of threads(<tt>MessageReceiver</tt>) was created to receive
+	 * message from the JMS receiver and execute <tt>masterProcess</tt> with the message.
+	 * <p>The fixed number of threads(<tt>TaskTaker</tt>) was created to take task
+	 * from the task queue and execute <tt>workerProcess</tt> with the task.
 	 * 
-	 * @param serviceMode
-	 * @param takerSize
-	 * @param processor
-	 * @param destName
-	 * @param receiverSize
-	 * @return
+	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
+	 * @param takerSize how many threads to take and process the task
+	 * @param processor the business implementation
+	 * @param destName the destination name of JMS for receive message
+	 * @param receiverSize how many threads to receive and process the message
+	 * @return the service
 	 */
 	public synchronized static Service getMessageDrivenService(ServiceMode serviceMode
 			, int takerSize, MessageProcessor processor, String destName, int receiverSize) {
@@ -116,11 +128,13 @@ public class ServiceFactory {
 	}
 	
 	/**
+	 * <p>The <tt>TaskTaker</tt> will creates new threads as needed to execute
+	 * <tt>workerProcess</tt> when it got a task from task queue.
 	 * 
-	 * @param serviceMode
-	 * @param processor
-	 * @param period
-	 * @return
+	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
+	 * @param processor the business implementation
+	 * @param period time in milliseconds between successive <tt>masterProcess</tt> executions
+	 * @return the service
 	 */
 	public synchronized static Service getTimerDrivenService(ServiceMode serviceMode
 			, TimerProcessor processor, int period) {
@@ -128,12 +142,14 @@ public class ServiceFactory {
 	}
 	
 	/**
+	 * <p>The fixed number of threads(<tt>TaskTaker</tt>) was created to take task
+	 * from the task queue and execute <tt>workerProcess</tt> with the task.
 	 * 
-	 * @param serviceMode
-	 * @param takerSize
-	 * @param processor
-	 * @param period
-	 * @return
+	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
+	 * @param takerSize how many threads to take and process the task
+	 * @param processor the business implementation
+	 * @param period time in milliseconds between successive <tt>masterProcess</tt> executions
+	 * @return the service
 	 */
 	public synchronized static Service getTimerDrivenService(ServiceMode serviceMode
 			, int takerSize, TimerProcessor processor, int period) {
@@ -155,11 +171,13 @@ public class ServiceFactory {
 	}
 	
 	/**
+	 * <p>The <tt>TaskTaker</tt> will creates new threads as needed to execute
+	 * <tt>workerProcess</tt> when it got a task from task queue.
 	 * 
-	 * @param serviceMode
-	 * @param processor
-	 * @param propName
-	 * @return
+	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
+	 * @param processor the business implementation
+	 * @param propName quartz properties file name
+	 * @return the service
 	 */
 	public synchronized static Service getQuartzDrivenService(ServiceMode serviceMode
 			, QuartzProcessor processor, String propName) {
@@ -167,12 +185,14 @@ public class ServiceFactory {
 	}
 	
 	/**
+	 * <p>The fixed number of threads(<tt>TaskTaker</tt>) was created to take task
+	 * from the task queue and execute <tt>workerProcess</tt> with the task.
 	 * 
-	 * @param serviceMode
-	 * @param takerSize
-	 * @param processor
-	 * @param propName
-	 * @return
+	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
+	 * @param takerSize how many threads to take and process the task
+	 * @param processor the business implementation
+	 * @param propName quartz properties file name
+	 * @return the service
 	 */
 	public synchronized static Service getQuartzDrivenService(ServiceMode serviceMode
 			, int takerSize, QuartzProcessor processor, String propName) {

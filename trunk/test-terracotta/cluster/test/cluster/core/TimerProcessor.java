@@ -11,7 +11,7 @@ import test.cluster.core.tc.Task;
  */
 public abstract class TimerProcessor extends AbstractProcessor<Object> {
 	
-	public List<Task> masterProcess(Object obj) {
+	public final List<Task> masterProcess(Object obj) {
 		return masterProcess();
 	}
 	
