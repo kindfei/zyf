@@ -128,7 +128,7 @@ public class ServiceFactory {
 	}
 	
 	/**
-	 * <p>The <tt>TaskTaker</tt> will creates new threads as needed to execute
+	 * The <tt>TaskTaker</tt> will creates new threads as needed to execute
 	 * <tt>workerProcess</tt> when it got a task from task queue.
 	 * 
 	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
@@ -142,7 +142,7 @@ public class ServiceFactory {
 	}
 	
 	/**
-	 * <p>The fixed number of threads(<tt>TaskTaker</tt>) was created to take task
+	 * The fixed number of threads(<tt>TaskTaker</tt>) was created to take task
 	 * from the task queue and execute <tt>workerProcess</tt> with the task.
 	 * 
 	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
@@ -171,7 +171,7 @@ public class ServiceFactory {
 	}
 	
 	/**
-	 * <p>The <tt>TaskTaker</tt> will creates new threads as needed to execute
+	 * The <tt>TaskTaker</tt> will creates new threads as needed to execute
 	 * <tt>workerProcess</tt> when it got a task from task queue.
 	 * 
 	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
@@ -185,7 +185,7 @@ public class ServiceFactory {
 	}
 	
 	/**
-	 * <p>The fixed number of threads(<tt>TaskTaker</tt>) was created to take task
+	 * The fixed number of threads(<tt>TaskTaker</tt>) was created to take task
 	 * from the task queue and execute <tt>workerProcess</tt> with the task.
 	 * 
 	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
@@ -213,20 +213,10 @@ public class ServiceFactory {
 		return service;
 	}
 	
-	/**
-	 * 
-	 * @param name
-	 * @return
-	 */
 	public synchronized static Processor<?> getProcessor(String name) {
 		return servMap.get(name).getProcessor();
 	}
 	
-	/**
-	 * 
-	 * @param name
-	 * @return
-	 */
 	public synchronized static AbstractService<?> getService(String name) {
 		return servMap.get(name);
 	}
