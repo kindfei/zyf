@@ -13,16 +13,16 @@ public abstract class AbstractProcessor<T> implements Processor<T> {
 	protected String procName;
 	private ClusterShareRoot root;
 	
-	public AbstractProcessor() {
+	protected AbstractProcessor() {
 		this.procName = this.getClass().getName();
 		root = ClusterShareRoot.instance;
 	}
 	
-	public void setCacheValue(String key, Object value) {
+	public final void setCacheValue(String key, Object value) {
 		root.setCacheValue(procName, key, value);
 	}
 	
-	public Object getCacheValue(String key) {
+	public final Object getCacheValue(String key) {
 		return root.getCacheValue(procName, key);
 	}
 }
