@@ -85,6 +85,8 @@ public abstract class AbstractService<T> implements Service {
 				} catch (Throwable e) {
 					log.error("Shutdown error.", e);
 				}
+				
+				startupThread = null;
 			}
 			
 		};
@@ -100,12 +102,6 @@ public abstract class AbstractService<T> implements Service {
 			log.info("The service have never started. processor=" + procName);
 		}
 		startupThread.interrupt();
-		try {
-			startupThread.join();
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		startupThread = null;
 	}
 	
 	/**
@@ -192,14 +188,12 @@ public abstract class AbstractService<T> implements Service {
 		try {
 			close();
 		} catch (Throwable e) {
-			e.printStackTrace();
 		}
 
 		log.info("[" + procName + "] Releasing mutex...");
 		try {
 			tcRoot.releaseMutex(procName);
 		} catch (Throwable e) {
-			e.printStackTrace();
 		}
 		log.info("[" + procName + "] Released mutex...");
 		
@@ -229,7 +223,7 @@ public abstract class AbstractService<T> implements Service {
 			try {
 				while (isActive) {
 					Task task = tcRoot.takeTask(procName);
-					log.info("[" + procName + "] The task has been taken from queue. task: " + task.toString());
+					log.debug("[" + procName + "] The task has been taken from queue. task: " + task.toString());
 					
 					if (takerExecute) {
 						try {
@@ -274,7 +268,7 @@ public abstract class AbstractService<T> implements Service {
 	 */
 	private void addTask(Task task) {
 		int size = tcRoot.addTask(procName, task);
-		log.info("[" + procName + "] The task queue size=" + size);
+		log.debug("[" + procName + "] The task queue size=" + size);
 	}
 	
 	/**
