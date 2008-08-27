@@ -6,7 +6,6 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 import java.util.concurrent.BlockingQueue;
-import java.util.concurrent.LinkedBlockingQueue;
 
 import test.cluster.core.Processor;
 import test.cluster.core.ServiceFactory;
@@ -91,7 +90,7 @@ public class ClusterShareRoot {
 	private BlockingQueue<Task> getQueue(String procName) {
 		BlockingQueue<Task> queue = queueMap.get(procName);
 		if (queue == null) {
-			queue = this.<BlockingQueue<Task>>addValue(procName, queueMap, new LinkedBlockingQueue<Task>());
+			queue = this.<BlockingQueue<Task>>addValue(procName, queueMap, new TaskQueue());
 		}
 		return queue;
 	}

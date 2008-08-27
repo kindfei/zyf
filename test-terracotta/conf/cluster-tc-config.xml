@@ -63,6 +63,9 @@
 					<class-expression>test.cluster.core.tc.Task</class-expression>
 				</include>
 				<include>
+					<class-expression>test.cluster.core.tc.TaskQueue</class-expression>
+				</include>
+				<include>
 					<class-expression>test.cluster.tc.caches.*</class-expression>
 				</include>
 				<include>
