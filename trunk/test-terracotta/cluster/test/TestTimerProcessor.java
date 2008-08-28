@@ -13,10 +13,10 @@ public class TestTimerProcessor extends TimerProcessor {
 
 	public List<Task> masterProcess() {
 		
-		Task t = new Task(ExecuteMode.TASK_QUEUE, new TestTask(i++ + ""));
+		Task task = new Task(ExecuteMode.TASK_QUEUE, new TestTask(i++ + ""));
 		
 		List<Task> list = new ArrayList<Task>();
-		list.add(t);
+		list.add(task);
 		
 		return list;
 	}

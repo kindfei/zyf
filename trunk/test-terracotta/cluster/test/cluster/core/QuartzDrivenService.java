@@ -1,5 +1,7 @@
 package test.cluster.core;
 
+import java.util.Properties;
+
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.quartz.JobExecutionContext;
@@ -16,18 +18,18 @@ public class QuartzDrivenService extends AbstractService<JobExecutionContext> {
 	
 	private static final Log log = LogFactory.getLog(QuartzDrivenService.class);
 
-	private String propName;
+	private Properties props;
 	private Scheduler scheduler;
 
 	QuartzDrivenService(ServiceMode serviceMode, int takerSize, boolean takerExecute
-			, boolean fairTake, QuartzProcessor processor, String propName) {
+			, boolean fairTake, QuartzProcessor processor, Properties props) {
 		super(serviceMode, takerSize, takerExecute, fairTake, processor);
-		this.propName = propName;
+		this.props = props;
 	}
 
 	protected void init() throws Exception {
 		StdSchedulerFactory factory = new StdSchedulerFactory();
-		factory.initialize(ClassLoader.getSystemResourceAsStream(propName));
+		factory.initialize(props);
 		scheduler = factory.getScheduler();
 		scheduler.start();
 	}

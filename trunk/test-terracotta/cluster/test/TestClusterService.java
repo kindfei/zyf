@@ -1,40 +1,49 @@
 package test;
 
+import java.io.IOException;
+import java.util.Properties;
+
 import test.cluster.core.Service;
 import test.cluster.core.ServiceFactory;
 import test.cluster.core.ServiceMode;
+import zyf.helper.CmdHelper;
 
 public class TestClusterService {
 	
-	private Service service1;
-	private Service service2;
-	
-	public TestClusterService() {
-		service1 = ServiceFactory.getTimerDrivenService(ServiceMode.ACTIVE_STANDBY, new TestTimerProcessor(), 1000);
-//		service2 = ServiceFactory.getQuartzDrivenService(ServiceMode.ACTIVE_STANDBY, 2, true, new TestQuartzProcessor(), "quartz_test.properties");
+	public static void testTimer() {
+		Service servive = ServiceFactory.getTimerDrivenService(ServiceMode.ACTIVE_STANDBY, new TestTimerProcessor(), 1000);
+		
+		servive.startup();
+		
+		CmdHelper.pause("Shutdown.........");
+		
+		servive.shutdown();
 	}
 	
-	public void startup() {
-		service1.startup();
-//		service2.startup();
+	public static void testQuartz() throws IOException {
+		Properties prop = new Properties();
+		prop.load(ClassLoader.getSystemResourceAsStream("quartz_test.properties"));
+		Service servive = ServiceFactory.getQuartzDrivenService(ServiceMode.ACTIVE_STANDBY, new TestQuartzProcessor(), prop);
+		
+		servive.startup();
+		
+		CmdHelper.pause("Shutdown.........");
+		
+		servive.shutdown();
 	}
 	
-	public void shutdown() {
-		service1.shutdown();
-//		service2.shutdown();
+	public static void testJMS() {
+		Service servive = ServiceFactory.getMessageDrivenService(ServiceMode.ALL_ACTIVE, new TestMessageProcessor(), "queue/TestQueue");
+		
+		servive.startup();
+		
+		CmdHelper.pause("Shutdown.........");
+		
+		servive.shutdown();
 	}
 	
 	public static void main(String[] args) {
-		TestClusterService test = new TestClusterService();
-		test.startup();
 		
-		try {
-			Thread.sleep(1 * 60 * 1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		
-		test.shutdown();
 	}
 
 }
