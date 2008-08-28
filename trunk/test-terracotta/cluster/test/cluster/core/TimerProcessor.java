@@ -6,7 +6,7 @@ import test.cluster.core.tc.Task;
 
 /**
  * TimerProcessor
- * @author Zhangyf
+ * @author zhangyf
  *
  */
 public abstract class TimerProcessor extends AbstractProcessor<Object> {

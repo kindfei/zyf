@@ -19,8 +19,9 @@ public class QuartzDrivenService extends AbstractService<JobExecutionContext> {
 	private String propName;
 	private Scheduler scheduler;
 
-	QuartzDrivenService(ServiceMode serviceMode, int takerSize, boolean takerExecute, QuartzProcessor processor, String propName) {
-		super(serviceMode, takerSize, takerExecute, processor);
+	QuartzDrivenService(ServiceMode serviceMode, int takerSize, boolean takerExecute
+			, boolean fairTake, QuartzProcessor processor, String propName) {
+		super(serviceMode, takerSize, takerExecute, fairTake, processor);
 		this.propName = propName;
 	}
 

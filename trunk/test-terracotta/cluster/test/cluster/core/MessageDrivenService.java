@@ -33,9 +33,9 @@ public class MessageDrivenService extends AbstractService<Message> {
 	
 	private ExecutorService threadPool;
 
-	MessageDrivenService(ServiceMode serviceMode, int takerSize, boolean takerExecute
+	MessageDrivenService(ServiceMode serviceMode, int takerSize, boolean takerExecute, boolean fairTake
 			, MessageProcessor processor, String destName, int receiverSize, boolean receiverExecute) {
-		super(serviceMode, takerSize, takerExecute, processor);
+		super(serviceMode, takerSize, takerExecute, fairTake, processor);
 		this.destName = destName;
 		this.receiverSize = receiverSize;
 		this.receiverExecute = receiverExecute;

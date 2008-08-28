@@ -2,7 +2,7 @@ package test.cluster.core;
 
 /**
  * ServiceMode
- * @author Zhangyf
+ * @author zhangyf
  *
  */
 public enum ServiceMode {

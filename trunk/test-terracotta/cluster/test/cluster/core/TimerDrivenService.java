@@ -13,8 +13,9 @@ public class TimerDrivenService extends AbstractService<Object> {
 	private int period;
 	private Timer timer;
 
-	TimerDrivenService(ServiceMode serviceMode, int takerSize, boolean takerExecute, TimerProcessor processor, int period) {
-		super(serviceMode, takerSize, takerExecute, processor);
+	TimerDrivenService(ServiceMode serviceMode, int takerSize, boolean takerExecute
+			, boolean fairTake, TimerProcessor processor, int period) {
+		super(serviceMode, takerSize, takerExecute, fairTake, processor);
 		this.period = period;
 	}
 	

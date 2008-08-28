@@ -2,7 +2,7 @@ package test.cluster.core;
 
 /**
  * ExecuteMode
- * @author Zhangyf
+ * @author zhangyf
  *
  */
 public enum ExecuteMode {

@@ -5,7 +5,7 @@ import org.quartz.JobExecutionException;
 
 /**
  * QuartzProcessor
- * @author Zhangyf
+ * @author zhangyf
  *
  */
 public abstract class QuartzProcessor extends AbstractProcessor<JobExecutionContext> {
