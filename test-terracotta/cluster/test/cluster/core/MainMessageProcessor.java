@@ -8,7 +8,7 @@ import test.cluster.core.tc.Task;
 
 /**
  * MainMessageProcessor
- * @author Zhangyf
+ * @author zhangyf
  *
  */
 public abstract class MainMessageProcessor extends MessageProcessor {

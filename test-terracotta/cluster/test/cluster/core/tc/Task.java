@@ -4,7 +4,7 @@ import test.cluster.core.ExecuteMode;
 
 /**
  * Task
- * @author Zhangyf
+ * @author zhangyf
  *
  */
 public class Task {

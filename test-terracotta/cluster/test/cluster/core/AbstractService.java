@@ -26,6 +26,7 @@ public abstract class AbstractService<T> implements Service {
 	private ServiceMode serviceMode;
 	private int takerSize;
 	private boolean takerExecute;
+	private boolean fairTake;
 	private Processor<T> processor;
 	private String procName;
 
@@ -43,10 +44,11 @@ public abstract class AbstractService<T> implements Service {
 	 * @param takerExecute execute in taker thread
 	 * @param processor business implementation
 	 */
-	protected AbstractService(ServiceMode serviceMode, int takerSize, boolean takerExecute, Processor<T> processor) {
+	protected AbstractService(ServiceMode serviceMode, int takerSize, boolean takerExecute, boolean fairTake, Processor<T> processor) {
 		this.serviceMode = serviceMode;
 		this.takerSize = takerSize;
 		this.takerExecute = takerExecute;
+		this.fairTake = fairTake;
 		this.processor = processor;
 		this.procName = processor.getClass().getName();
 	}
@@ -222,7 +224,7 @@ public abstract class AbstractService<T> implements Service {
 		public void run() {
 			try {
 				while (isActive) {
-					Task task = tcRoot.takeTask(procName);
+					Task task = tcRoot.takeTask(procName, fairTake);
 					log.debug("[" + procName + "] The task has been taken from queue. task: " + task.toString());
 					
 					if (takerExecute) {

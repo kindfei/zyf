@@ -12,7 +12,7 @@ import test.cluster.core.ServiceFactory;
 
 /**
  * ClusterShareRoot
- * @author Zhangyf
+ * @author zhangyf
  *
  */
 public class ClusterShareRoot {
@@ -23,7 +23,7 @@ public class ClusterShareRoot {
 	
 	private Map<String, Lock> lockMap = new HashMap<String, Lock>();
 	
-	private Map<String, BlockingQueue<Task>> queueMap = new HashMap<String, BlockingQueue<Task>>();
+	private Map<String, TaskQueue> queueMap = new HashMap<String, TaskQueue>();
 	
 	private Map<String, Map<String, Object>> cacheMap = new HashMap<String, Map<String, Object>>();
 	
@@ -47,10 +47,15 @@ public class ClusterShareRoot {
 		return queue.size();
 	}
 	
-	public Task takeTask(String procName) throws InterruptedException {
-		BlockingQueue<Task> queue = getQueue(procName);
+	public Task takeTask(String procName, boolean fairTake) throws InterruptedException {
+		TaskQueue queue = getQueue(procName);
 		
-		Task task = queue.take();
+		Task task = null;
+		if (fairTake) {
+			task = queue.fairTake();
+		} else {
+			task = queue.take();
+		}
 		
 		return task;
 	}
@@ -87,10 +92,10 @@ public class ClusterShareRoot {
 		return lock;
 	}
 	
-	private BlockingQueue<Task> getQueue(String procName) {
-		BlockingQueue<Task> queue = queueMap.get(procName);
+	private TaskQueue getQueue(String procName) {
+		TaskQueue queue = queueMap.get(procName);
 		if (queue == null) {
-			queue = this.<BlockingQueue<Task>>addValue(procName, queueMap, new TaskQueue());
+			queue = this.<TaskQueue>addValue(procName, queueMap, new TaskQueue());
 		}
 		return queue;
 	}

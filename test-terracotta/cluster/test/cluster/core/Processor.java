@@ -6,7 +6,7 @@ import test.cluster.core.tc.Task;
 
 /**
  * Processor
- * @author Zhangyf
+ * @author zhangyf
  *
  * @param <T>
  */

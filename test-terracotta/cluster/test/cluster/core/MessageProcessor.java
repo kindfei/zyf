@@ -4,7 +4,7 @@ import javax.jms.Message;
 
 /**
  * MessageProcessor
- * @author Zhangyf
+ * @author zhangyf
  *
  */
 public abstract class MessageProcessor extends AbstractProcessor<Message> {

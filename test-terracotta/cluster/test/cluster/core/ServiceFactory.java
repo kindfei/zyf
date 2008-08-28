@@ -5,7 +5,7 @@ import java.util.Map;
 
 /**
  * ServiceFactory
- * @author Zhangyf
+ * @author zhangyf
  *
  */
 public class ServiceFactory {
@@ -25,7 +25,7 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getMessageDrivenServiceWithoutWorker(ServiceMode serviceMode
 			, MainMessageProcessor processor, String destName) {
-		return getMessageDrivenService(serviceMode, 0, true, processor, destName, 1, false);
+		return getMessageDrivenService(serviceMode, 0, true, false, processor, destName, 1, false);
 	}
 	
 	/**
@@ -42,7 +42,7 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getMessageDrivenServiceWithoutWorker(ServiceMode serviceMode
 			, MainMessageProcessor processor, String destName, int receiverSize) {
-		return getMessageDrivenService(serviceMode, 0, true, processor, destName, receiverSize, true);
+		return getMessageDrivenService(serviceMode, 0, true, false, processor, destName, receiverSize, true);
 	}
 	
 	/**
@@ -58,7 +58,7 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getMessageDrivenService(ServiceMode serviceMode
 			, MessageProcessor processor, String destName) {
-		return getMessageDrivenService(serviceMode, 1, false, processor, destName, 1, false);
+		return getMessageDrivenService(serviceMode, 1, false, true, processor, destName, 1, false);
 	}
 	
 	/**
@@ -75,7 +75,7 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getMessageDrivenService(ServiceMode serviceMode
 			, int takerSize, MessageProcessor processor, String destName) {
-		return getMessageDrivenService(serviceMode, takerSize, true, processor, destName, 1, false);
+		return getMessageDrivenService(serviceMode, takerSize, true, false, processor, destName, 1, false);
 	}
 	
 	/**
@@ -92,7 +92,7 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getMessageDrivenService(ServiceMode serviceMode
 			, MessageProcessor processor, String destName, int receiverSize) {
-		return getMessageDrivenService(serviceMode, 1, false, processor, destName, receiverSize, true);
+		return getMessageDrivenService(serviceMode, 1, false, true, processor, destName, receiverSize, true);
 	}
 	
 	/**
@@ -110,11 +110,11 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getMessageDrivenService(ServiceMode serviceMode
 			, int takerSize, MessageProcessor processor, String destName, int receiverSize) {
-		return getMessageDrivenService(serviceMode, takerSize, true, processor, destName, receiverSize, true);
+		return getMessageDrivenService(serviceMode, takerSize, true, false, processor, destName, receiverSize, true);
 	}
 	
 	private synchronized static Service getMessageDrivenService(ServiceMode serviceMode, int takerSize, boolean takerExecute
-			, MessageProcessor processor, String destName, int receiverSize, boolean receiverExecute) {
+			, boolean fairTake, MessageProcessor processor, String destName, int receiverSize, boolean receiverExecute) {
 		
 		String procName = processor.getClass().getName();
 		AbstractService<?> service = servMap.get(procName);
@@ -122,7 +122,7 @@ public class ServiceFactory {
 			return service;
 		}
 		
-		service = new MessageDrivenService(serviceMode, takerSize, takerExecute, processor, destName, receiverSize, receiverExecute);
+		service = new MessageDrivenService(serviceMode, takerSize, takerExecute, fairTake, processor, destName, receiverSize, receiverExecute);
 		servMap.put(procName, service);
 		return service;
 	}
@@ -138,7 +138,7 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getTimerDrivenService(ServiceMode serviceMode
 			, TimerProcessor processor, int period) {
-		return getTimerDrivenService(serviceMode, 1, false, processor, period);
+		return getTimerDrivenService(serviceMode, 1, false, true, processor, period);
 	}
 	
 	/**
@@ -153,11 +153,11 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getTimerDrivenService(ServiceMode serviceMode
 			, int takerSize, TimerProcessor processor, int period) {
-		return getTimerDrivenService(serviceMode, takerSize, true, processor, period);
+		return getTimerDrivenService(serviceMode, takerSize, true, false, processor, period);
 	}
 	
-	private synchronized static Service getTimerDrivenService(ServiceMode serviceMode
-			, int takerSize, boolean takerExecute, TimerProcessor processor, int period) {
+	private synchronized static Service getTimerDrivenService(ServiceMode serviceMode, int takerSize
+			, boolean takerExecute, boolean fairTake, TimerProcessor processor, int period) {
 		
 		String procName = processor.getClass().getName();
 		AbstractService<?> service = servMap.get(procName);
@@ -165,7 +165,7 @@ public class ServiceFactory {
 			return service;
 		}
 		
-		service = new TimerDrivenService(serviceMode, takerSize, takerExecute, processor, period);
+		service = new TimerDrivenService(serviceMode, takerSize, takerExecute, fairTake, processor, period);
 		servMap.put(procName, service);
 		return service;
 	}
@@ -181,7 +181,7 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getQuartzDrivenService(ServiceMode serviceMode
 			, QuartzProcessor processor, String propName) {
-		return getQuartzDrivenService(serviceMode, 1, false, processor, propName);
+		return getQuartzDrivenService(serviceMode, 1, false, true, processor, propName);
 	}
 	
 	/**
@@ -196,11 +196,11 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getQuartzDrivenService(ServiceMode serviceMode
 			, int takerSize, QuartzProcessor processor, String propName) {
-		return getQuartzDrivenService(serviceMode, takerSize, true, processor, propName);
+		return getQuartzDrivenService(serviceMode, takerSize, true, false, processor, propName);
 	}
 
-	private synchronized static Service getQuartzDrivenService(ServiceMode serviceMode
-			, int takerSize, boolean takerExecute, QuartzProcessor processor, String propName) {
+	private synchronized static Service getQuartzDrivenService(ServiceMode serviceMode, int takerSize
+			, boolean takerExecute, boolean fairTake, QuartzProcessor processor, String propName) {
 		
 		String procName = processor.getClass().getName();
 		AbstractService<?> service = servMap.get(procName);
@@ -208,7 +208,7 @@ public class ServiceFactory {
 			return service;
 		}
 		
-		service = new QuartzDrivenService(serviceMode, takerSize, takerExecute, processor, propName);
+		service = new QuartzDrivenService(serviceMode, takerSize, takerExecute, fairTake, processor, propName);
 		servMap.put(procName, service);
 		return service;
 	}

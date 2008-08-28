@@ -5,7 +5,7 @@ import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * TaskQueue
- * @author Zhangyf
+ * @author zhangyf
  *
  */
 public class TaskQueue extends LinkedBlockingQueue<Task> {
@@ -13,7 +13,7 @@ public class TaskQueue extends LinkedBlockingQueue<Task> {
 	
 	private ReentrantLock lock = new ReentrantLock(true);
 	
-	public Task take() throws InterruptedException {
+	public Task fairTake() throws InterruptedException {
 		lock.lockInterruptibly();
 		
 		try {
