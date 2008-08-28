@@ -14,14 +14,19 @@ public class Sender {
 	private Destination dest;
 	private MessageProducer producer;
 	
-	public Sender(String destName, DestTypes type) throws JMSException {
+	public Sender(String destName) throws JMSException {
 		connector = ConnectorFactory.createConnection();
 		session = connector.createSession(false, Session.AUTO_ACKNOWLEDGE);
-		if (type == DestTypes.Queue) {
+		
+		String type = destName.split("/")[0];
+		if (type.equals("queue")) {
 			dest = session.createQueue(destName);
-		} else {
+		} else if (type.equals("topic")) {
 			dest = session.createTopic(destName);
+		} else {
+			throw new RuntimeException("Error destName format - " + destName);
 		}
+		
 		producer = session.createProducer(dest);
 	}
 	

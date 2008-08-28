@@ -3,7 +3,6 @@ package test;
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
 
-import test.jms.activemq.DestTypes;
 import test.jms.activemq.Receiver;
 import test.jms.activemq.Sender;
 
@@ -18,9 +17,9 @@ public class TestActiveMQ {
 	
 	public static void testBoth() {
 		try {
-			Producer prod = new Producer("TEST.FOO");
-			Consumer cons1 = new Consumer("TEST.FOO");
-			Consumer cons2 = new Consumer("TEST.FOO");
+			Producer prod = new Producer("queue/TEST.FOO");
+			Consumer cons1 = new Consumer("queue/TEST.FOO");
+			Consumer cons2 = new Consumer("queue/TEST.FOO");
 			
 			prod.start();
 			cons1.start();
@@ -39,7 +38,7 @@ public class TestActiveMQ {
 	
 	public static void testSend() {
 		try {
-			Producer prod = new Producer("TEST.FOO");
+			Producer prod = new Producer("queue/TEST.FOO");
 			
 			prod.start();
 			
@@ -54,7 +53,7 @@ public class TestActiveMQ {
 	
 	public static void testRecv() {
 		try {
-			Consumer cons = new Consumer("TEST.FOO");
+			Consumer cons = new Consumer("queue/TEST.FOO");
 			
 			cons.start();
 			
@@ -72,8 +71,7 @@ public class TestActiveMQ {
 		private boolean isActive = true;
 		
 		Producer(String destName) throws JMSException {
-//			sender = new Sender(destName, DestTypes.Queue);
-			sender = new Sender(destName, DestTypes.Topic);
+			sender = new Sender(destName);
 		}
 		
 		public void run() {
@@ -103,8 +101,7 @@ public class TestActiveMQ {
 		private boolean isActive = true;
 		
 		Consumer(String destName) throws JMSException {
-//			receiver = new Receiver(destName, DestTypes.Queue);
-			receiver = new Receiver(destName, DestTypes.Topic);
+			receiver = new Receiver(destName);
 		}
 		
 		public void run() {
