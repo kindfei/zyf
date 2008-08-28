@@ -2,6 +2,7 @@ package test.cluster.core;
 
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Properties;
 
 /**
  * ServiceFactory
@@ -180,8 +181,8 @@ public class ServiceFactory {
 	 * @return the service
 	 */
 	public synchronized static Service getQuartzDrivenService(ServiceMode serviceMode
-			, QuartzProcessor processor, String propName) {
-		return getQuartzDrivenService(serviceMode, 1, false, true, processor, propName);
+			, QuartzProcessor processor, Properties props) {
+		return getQuartzDrivenService(serviceMode, 1, false, true, processor, props);
 	}
 	
 	/**
@@ -195,12 +196,12 @@ public class ServiceFactory {
 	 * @return the service
 	 */
 	public synchronized static Service getQuartzDrivenService(ServiceMode serviceMode
-			, int takerSize, QuartzProcessor processor, String propName) {
-		return getQuartzDrivenService(serviceMode, takerSize, true, false, processor, propName);
+			, int takerSize, QuartzProcessor processor, Properties props) {
+		return getQuartzDrivenService(serviceMode, takerSize, true, false, processor, props);
 	}
 
 	private synchronized static Service getQuartzDrivenService(ServiceMode serviceMode, int takerSize
-			, boolean takerExecute, boolean fairTake, QuartzProcessor processor, String propName) {
+			, boolean takerExecute, boolean fairTake, QuartzProcessor processor, Properties props) {
 		
 		String procName = processor.getClass().getName();
 		AbstractService<?> service = servMap.get(procName);
@@ -208,7 +209,7 @@ public class ServiceFactory {
 			return service;
 		}
 		
-		service = new QuartzDrivenService(serviceMode, takerSize, takerExecute, fairTake, processor, propName);
+		service = new QuartzDrivenService(serviceMode, takerSize, takerExecute, fairTake, processor, props);
 		servMap.put(procName, service);
 		return service;
 	}

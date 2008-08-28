@@ -13,8 +13,6 @@ import javax.jms.Message;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import test.jms.activemq.DestTypes;
-
 /**
  * MessageDrivenService
  * @author zhangyf
@@ -42,7 +40,7 @@ public class MessageDrivenService extends AbstractService<Message> {
 	}
 
 	protected void init() throws JMSException {
-		recv = new test.jms.activemq.Receiver(destName, DestTypes.Queue);
+		recv = new test.jms.activemq.Receiver(destName);
 		
 		MessageReceiver receiver = null;
 		for (int i = 0; i < receiverSize; i++) {
