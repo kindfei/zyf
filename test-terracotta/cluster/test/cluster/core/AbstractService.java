@@ -41,7 +41,8 @@ public abstract class AbstractService<T> implements Service {
 	 * Create Service
 	 * @param serviceMode service mode 
 	 * @param takerSize how many thread to take the task
-	 * @param takerExecute execute in taker thread
+	 * @param takerExecute whether execute inside of the taker thread
+	 * @param fairTake whether use fair mode when take task from the queue
 	 * @param processor business implementation
 	 */
 	protected AbstractService(ServiceMode serviceMode, int takerSize, boolean takerExecute, boolean fairTake, Processor<T> processor) {
