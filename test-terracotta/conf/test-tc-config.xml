@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-4.xsd">
 
 	<servers>
-		<server host="10.4.6.217" name="server1">
+		<server host="192.168.0.10" name="server1">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
 			<l2-group-port>9530</l2-group-port>
@@ -50,6 +50,15 @@
 
 	<application>
 		<dso>
+			<instrumented-classes>
+				<include>
+					<class-expression>test.terracota.TestTransient$Counter</class-expression>
+					<honor-transient>true</honor-transient>
+					<on-load>
+						<method>onload</method>
+					</on-load>
+				</include>
+			</instrumented-classes>
 			<locks>
 				<autolock>
 					<method-expression>
@@ -109,6 +118,11 @@
 				<root>
 					<field-name>
 						test.terracota.HaTest.instance
+					</field-name>
+				</root>
+				<root>
+					<field-name>
+						test.terracota.TestTransient.instance
 					</field-name>
 				</root>
 			</roots>

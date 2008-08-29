@@ -6,6 +6,8 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
+import java.util.concurrent.locks.Condition;
+import java.util.concurrent.locks.ReentrantLock;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -229,11 +231,7 @@ public abstract class AbstractService<T> implements Service {
 					log.debug("[" + procName + "] The task has been taken from queue. task: " + task.toString());
 					
 					if (takerExecute) {
-						try {
-							processor.workerProcess(task);
-						} catch (Throwable e) {
-							log.error("Worker process error.", e);
-						}
+						exeWorkerProcess(task);
 					} else {
 						exeTask(task);
 					}
@@ -256,13 +254,29 @@ public abstract class AbstractService<T> implements Service {
 	private synchronized void exeTask(final Task task) {
 		threadPool.execute(new Runnable() {
 			public void run() {
-				try {
-					processor.workerProcess(task);
-				} catch (Throwable e) {
-					log.error("Worker process error.", e);
-				}
+				exeWorkerProcess(task);
 			}
 		});
+	}
+	
+	private void exeWorkerProcess(Task task) {
+		try {
+			ReentrantLock groupLock = task.getGroupLock();
+			Condition finish = task.getFinish();
+			if (groupLock != null && finish != null) {
+				groupLock.lock();
+				try {
+					processor.workerProcess(task);
+				} finally {
+					finish.signalAll();
+					groupLock.unlock();
+				}
+			} else {
+				processor.workerProcess(task);
+			}
+		} catch (Throwable e) {
+			log.error("Worker process error.", e);
+		}
 	}
 	
 	/**

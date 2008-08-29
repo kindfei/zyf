@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<tc:tc-config xmlns:tc="http://www.terracotta.org/config"
-	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+<tc:tc-config xmlns:tc="http://www.terracotta.org/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-4.xsd">
 
 	<servers>
@@ -66,6 +65,13 @@
 					<class-expression>test.cluster.core.tc.TaskQueue</class-expression>
 				</include>
 				<include>
+					<class-expression>test.cluster.core.tc.GroupTaskFilter</class-expression>
+					<honor-transient>true</honor-transient>
+					<on-load>
+						<method>onload</method>
+					</on-load>
+				</include>
+				<include>
 					<class-expression>test.cluster.tc.caches.*</class-expression>
 				</include>
 				<include>
@@ -74,9 +80,23 @@
 			</instrumented-classes>
 			<locks>
 				<autolock>
-					<method-expression>
-						* test.cluster.core.tc.ClusterShareRoot.addValue(..)
-					</method-expression>
+					<method-expression>* test.cluster.core.tc.ClusterShareRoot.addValue(..)</method-expression>
+					<lock-level>write</lock-level>
+				</autolock>
+				<autolock>
+					<method-expression>* test.cluster.core.tc.TaskQueue.add(..)</method-expression>
+					<lock-level>write</lock-level>
+				</autolock>
+				<autolock>
+					<method-expression>void test.cluster.core.tc.GroupTaskFilter.run()</method-expression>
+					<lock-level>write</lock-level>
+				</autolock>
+				<autolock>
+					<method-expression>void test.cluster.core.tc.Task.setGroupLock(..)</method-expression>
+					<lock-level>write</lock-level>
+				</autolock>
+				<autolock>
+					<method-expression>void test.cluster.core.tc.Task.setFinish(..)</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
@@ -94,9 +114,7 @@
 				</root>
 			</roots>
 			<distributed-methods>
-				<method-expression>
-					void test.cluster.core.tc.ClusterShareRoot.dmiTask(..)
-				</method-expression>
+				<method-expression>void test.cluster.core.tc.ClusterShareRoot.dmiTask(..)</method-expression>
 			</distributed-methods>
 		</dso>
 	</application>
