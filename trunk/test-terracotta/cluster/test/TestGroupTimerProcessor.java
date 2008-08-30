@@ -27,7 +27,7 @@ public class TestGroupTimerProcessor extends TimerProcessor {
 		TestTask bean = (TestTask) task.getContent();
 		String content = bean.getStr();
 		try {
-			Thread.sleep(4000);
+			Thread.sleep(2000);
 		} catch (InterruptedException e) {
 			e.printStackTrace();
 		}
