@@ -43,7 +43,7 @@ public class TestClusterService {
 	}
 	
 	public static void testGroup() {
-		Service servive = ServiceFactory.getTimerDrivenService(ServiceMode.ACTIVE_STANDBY, new TestGroupTimerProcessor(), 50);
+		Service servive = ServiceFactory.getTimerDrivenService(ServiceMode.ACTIVE_STANDBY, new TestGroupTimerProcessor(), 1000);
 		
 		servive.startup();
 		

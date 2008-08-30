@@ -1,6 +1,8 @@
 package test.cluster.core.tc;
 
+import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
@@ -9,8 +11,8 @@ public class GroupTaskFilter implements Runnable {
 	private TaskQueue taskQueue;
 	private String groupId;
 	
-	private LinkedBlockingQueue<Task> queue = new LinkedBlockingQueue<Task>();
-	private ReentrantLock groupLock = new ReentrantLock(true);
+	private BlockingQueue<Task> queue = new LinkedBlockingQueue<Task>();
+	private ReentrantLock groupLock = new ReentrantLock();
 	private Condition finish = groupLock.newCondition();
 	
 	private transient Thread thread;
@@ -18,13 +20,13 @@ public class GroupTaskFilter implements Runnable {
 	public GroupTaskFilter(String groupId, TaskQueue taskQueue) {
 		this.groupId = groupId;
 		this.taskQueue = taskQueue;
-		onload();
 	}
 	
-	private void onload() {
+	void onload() {
 		if (thread == null) {
 			thread = new Thread(this);
 			thread.setDaemon(true);
+			thread.setName("GroupTaskFilter. groupId=" + groupId);
 			thread.start();
 		}
 	}
@@ -48,7 +50,7 @@ public class GroupTaskFilter implements Runnable {
 					
 					taskQueue.addTask(task);
 					
-					finish.await();
+					finish.await(1, TimeUnit.SECONDS);
 				} finally {
 					groupLock.unlock();
 				}

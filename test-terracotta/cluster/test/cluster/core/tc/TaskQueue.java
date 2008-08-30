@@ -37,6 +37,7 @@ public class TaskQueue extends LinkedBlockingQueue<Task> {
 					if (filter == null) {
 						filter = new GroupTaskFilter(groupId, this);
 						map.put(groupId, filter);
+						filter.onload();
 					}
 				}
 			}
