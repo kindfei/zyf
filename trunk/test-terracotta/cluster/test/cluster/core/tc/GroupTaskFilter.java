@@ -6,14 +6,23 @@ import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
+/**
+ * GroupTaskFilter
+ * @author zhangyf
+ *
+ */
 public class GroupTaskFilter implements Runnable {
+	
+	private static final Log log = LogFactory.getLog(GroupTaskFilter.class);
 	
 	private TaskQueue taskQueue;
 	private String groupId;
 	
 	private BlockingQueue<Task> queue = new LinkedBlockingQueue<Task>();
 	private ReentrantLock groupLock = new ReentrantLock();
-	private Condition finish = groupLock.newCondition();
 	
 	private transient Thread thread;
 	
@@ -36,6 +45,7 @@ public class GroupTaskFilter implements Runnable {
 	}
 	
 	public boolean add(Task task) {
+		queue.clear();
 		return queue.add(task);
 	}
 	
@@ -46,6 +56,7 @@ public class GroupTaskFilter implements Runnable {
 				try {
 					Task task = queue.take();
 					task.setGroupLock(groupLock);
+					Condition finish = groupLock.newCondition();
 					task.setFinish(finish);
 					
 					taskQueue.addTask(task);
@@ -56,11 +67,9 @@ public class GroupTaskFilter implements Runnable {
 				}
 			}
 		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("GroupTaskFilter was interrupted. groupId=" + groupId, e);
 		} catch (Throwable e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.error("GroupTaskFilter error. groupId=" + groupId, e);
 		}
 	}
 }

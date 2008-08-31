@@ -6,6 +6,9 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 import test.cluster.core.Processor;
 import test.cluster.core.ServiceFactory;
 
@@ -15,6 +18,9 @@ import test.cluster.core.ServiceFactory;
  *
  */
 public class ClusterShareRoot {
+	
+	private static final Log log = LogFactory.getLog(ClusterShareRoot.class);
+	
 	public static final ClusterShareRoot instance = new ClusterShareRoot();
 	
 	private ClusterShareRoot() {
@@ -79,7 +85,7 @@ public class ClusterShareRoot {
 			}
 			processor.workerProcess(task);
 		} catch (Throwable e) {
-			e.printStackTrace();
+			log.error("dmiTask error.", e);
 		}
 	}
 	
