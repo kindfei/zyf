@@ -40,19 +40,19 @@ public class Task {
 		return groupId;
 	}
 
-	public synchronized ReentrantLock getGroupLock() {
+	public ReentrantLock getGroupLock() {
 		return groupLock;
 	}
 
-	public synchronized void setGroupLock(ReentrantLock groupLock) {
+	public void setGroupLock(ReentrantLock groupLock) {
 		this.groupLock = groupLock;
 	}
 
-	public synchronized Condition getFinish() {
+	public Condition getFinish() {
 		return finish;
 	}
 
-	public synchronized void setFinish(Condition finish) {
+	public void setFinish(Condition finish) {
 		this.finish = finish;
 	}
 }
