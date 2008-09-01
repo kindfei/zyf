@@ -13,14 +13,19 @@ import test.cluster.core.ExecuteMode;
 public class Task {
 	
 	private ExecuteMode executeMode;
+	private String groupId;
 	private Object content;
 	
-	private String groupId;
 	private ReentrantLock groupLock;
 	private Condition finish;
 	
 	public Task(ExecuteMode executeMode, Object content) {
 		this.executeMode = executeMode;
+		this.content = content;
+	}
+	
+	public Task(String groupId, Object content) {
+		this.groupId = groupId;
 		this.content = content;
 	}
 	
@@ -30,10 +35,6 @@ public class Task {
 	
 	public Object getContent() {
 		return content;
-	}
-	
-	public void setGroupId(String groupId) {
-		this.groupId = groupId;
 	}
 	
 	public String getGroupId() {
