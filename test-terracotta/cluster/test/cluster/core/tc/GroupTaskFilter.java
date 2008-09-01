@@ -61,7 +61,7 @@ public class GroupTaskFilter implements Runnable {
 					
 					taskQueue.addTask(task);
 					
-					finish.await(1, TimeUnit.SECONDS);
+					finish.await(5, TimeUnit.SECONDS);
 				} finally {
 					groupLock.unlock();
 				}
