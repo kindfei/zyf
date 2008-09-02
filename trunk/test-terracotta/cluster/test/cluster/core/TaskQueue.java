@@ -1,4 +1,4 @@
-package test.cluster.core.tc;
+package test.cluster.core;
 
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;

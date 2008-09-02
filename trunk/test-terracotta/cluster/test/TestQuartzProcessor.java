@@ -8,7 +8,7 @@ import org.quartz.StatefulJob;
 
 import test.cluster.core.ExecuteMode;
 import test.cluster.core.QuartzProcessor;
-import test.cluster.core.tc.Task;
+import test.cluster.core.Task;
 import test.cluster.tc.tasks.TestTask;
 
 public class TestQuartzProcessor extends QuartzProcessor implements StatefulJob {

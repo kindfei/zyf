@@ -4,8 +4,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import test.cluster.core.ExecuteMode;
+import test.cluster.core.Task;
 import test.cluster.core.TimerProcessor;
-import test.cluster.core.tc.Task;
 import test.cluster.tc.tasks.TestTask;
 
 public class TestTimerProcessor extends TimerProcessor {

@@ -1,4 +1,4 @@
-package test.cluster.core.tc;
+package test.cluster.core;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -9,8 +9,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import test.cluster.core.Processor;
-import test.cluster.core.ServiceFactory;
 
 /**
  * ClusterShareRoot
@@ -33,26 +31,26 @@ public class ClusterShareRoot {
 	private Map<String, Map<String, Object>> cacheMap = new HashMap<String, Map<String, Object>>();
 	
 	
-	public void acquireMutex(String procName) throws InterruptedException {
+	void acquireMutex(String procName) throws InterruptedException {
 		Lock lock = getLock(procName);
 		
 		lock.lockInterruptibly();
 	}
 	
-	public void releaseMutex(String procName) {
+	void releaseMutex(String procName) {
 		Lock lock = getLock(procName);
 		
 		lock.unlock();
 	}
 	
-	public int addTask(String procName, Task task) {
+	int addTask(String procName, Task task) {
 		TaskQueue queue = getQueue(procName);
 		
 		queue.add(task);
 		return queue.size();
 	}
 	
-	public Task takeTask(String procName, boolean fairTake) throws InterruptedException {
+	Task takeTask(String procName, boolean fairTake) throws InterruptedException {
 		TaskQueue queue = getQueue(procName);
 		
 		Task task = null;
@@ -65,19 +63,19 @@ public class ClusterShareRoot {
 		return task;
 	}
 	
-	public Object getCacheValue(String procName, String key) {
+	Object getCacheValue(String procName, String key) {
 		Map<String, Object> cache = getCache(procName);
 		
 		return cache.get(key);
 	}
 	
-	public void setCacheValue(String procName, String key, Object value) {
+	void setCacheValue(String procName, String key, Object value) {
 		Map<String, Object> cache = getCache(procName);
 		
 		cache.put(key, value);
 	}
 	
-	public void dmiTask(String procName, Task task) {
+	void dmiTask(String procName, Task task) {
 		try {
 			Processor<?> processor = ServiceFactory.getProcessor(procName);
 			if (processor == null) {

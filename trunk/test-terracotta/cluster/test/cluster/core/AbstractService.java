@@ -12,8 +12,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-import test.cluster.core.tc.ClusterShareRoot;
-import test.cluster.core.tc.Task;
 
 /**
  * Basic service operation control
@@ -96,6 +94,7 @@ public abstract class AbstractService<T> implements Service {
 			
 		};
 		
+		startupThread.setName(procName + "-StartupThread");
 		startupThread.start();
 	}
 
@@ -231,7 +230,7 @@ public abstract class AbstractService<T> implements Service {
 					log.debug("[" + procName + "] The task has been taken from queue. task: " + task.toString());
 					
 					if (takerExecute) {
-						exeWorkerProcess(task);
+						execute(task);
 					} else {
 						exeTask(task);
 					}
@@ -248,18 +247,10 @@ public abstract class AbstractService<T> implements Service {
 	}
 	
 	/**
-	 * Local invoke worker process
+	 * Execute worker process with the task.
 	 * @param task
 	 */
-	private synchronized void exeTask(final Task task) {
-		threadPool.execute(new Runnable() {
-			public void run() {
-				exeWorkerProcess(task);
-			}
-		});
-	}
-	
-	private void exeWorkerProcess(Task task) {
+	private void execute(Task task) {
 		try {
 			ReentrantLock groupLock = task.getGroupLock();
 			Condition finish = task.getFinish();
@@ -277,6 +268,18 @@ public abstract class AbstractService<T> implements Service {
 		} catch (Throwable e) {
 			log.error("Worker process error.", e);
 		}
+	}
+	
+	/**
+	 * Local invoke worker process
+	 * @param task
+	 */
+	private synchronized void exeTask(final Task task) {
+		threadPool.execute(new Runnable() {
+			public void run() {
+				execute(task);
+			}
+		});
 	}
 	
 	/**
