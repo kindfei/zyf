@@ -1,9 +1,8 @@
-package test.cluster.core.tc;
+package test.cluster.core;
 
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-import test.cluster.core.ExecuteMode;
 
 /**
  * Task
@@ -41,19 +40,19 @@ public class Task {
 		return groupId;
 	}
 
-	public ReentrantLock getGroupLock() {
+	ReentrantLock getGroupLock() {
 		return groupLock;
 	}
 
-	public void setGroupLock(ReentrantLock groupLock) {
+	void setGroupLock(ReentrantLock groupLock) {
 		this.groupLock = groupLock;
 	}
 
-	public Condition getFinish() {
+	Condition getFinish() {
 		return finish;
 	}
 
-	public void setFinish(Condition finish) {
+	void setFinish(Condition finish) {
 		this.finish = finish;
 	}
 }

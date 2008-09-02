@@ -2,7 +2,6 @@ package test.cluster.core;
 
 import java.util.List;
 
-import test.cluster.core.tc.Task;
 
 /**
  * TimerProcessor

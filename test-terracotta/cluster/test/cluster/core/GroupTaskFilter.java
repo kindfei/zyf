@@ -1,4 +1,4 @@
-package test.cluster.core.tc;
+package test.cluster.core;
 
 import java.util.concurrent.BlockingQueue;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -26,7 +26,7 @@ public class GroupTaskFilter implements Runnable {
 	
 	private transient Thread thread;
 	
-	public GroupTaskFilter(String groupId, TaskQueue taskQueue) {
+	GroupTaskFilter(String groupId, TaskQueue taskQueue) {
 		this.groupId = groupId;
 		this.taskQueue = taskQueue;
 	}
@@ -40,11 +40,11 @@ public class GroupTaskFilter implements Runnable {
 		}
 	}
 	
-	public String getGroupId() {
+	String getGroupId() {
 		return groupId;
 	}
 	
-	public boolean add(Task task) {
+	boolean add(Task task) {
 		queue.clear();
 		return queue.add(task);
 	}

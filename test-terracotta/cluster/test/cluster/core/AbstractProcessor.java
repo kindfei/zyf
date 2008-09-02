@@ -1,6 +1,5 @@
 package test.cluster.core;
 
-import test.cluster.core.tc.ClusterShareRoot;
 
 /**
  * AbstractProcessor

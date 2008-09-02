@@ -9,7 +9,7 @@ import javax.jms.ObjectMessage;
 
 import test.cluster.core.ExecuteMode;
 import test.cluster.core.MessageProcessor;
-import test.cluster.core.tc.Task;
+import test.cluster.core.Task;
 import test.cluster.tc.tasks.TestTask;
 
 public class TestMessageProcessor extends MessageProcessor {

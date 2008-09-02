@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.jms.Message;
 
-import test.cluster.core.tc.Task;
 
 /**
  * MainMessageProcessor
