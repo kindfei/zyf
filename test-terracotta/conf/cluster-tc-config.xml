@@ -4,7 +4,8 @@
 	xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-4.xsd">
 
 	<servers>
-		<server host="192.168.0.10" name="server1">
+	
+		<server host="10.4.6.217" name="server1">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
 			<l2-group-port>9530</l2-group-port>
@@ -23,6 +24,7 @@
 				</garbage-collection>
 			</dso>
 		</server>
+		
 		<server host="10.4.6.218" name="server2">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
@@ -42,12 +44,14 @@
 				</garbage-collection>
 			</dso>
 		</server>
+		
 		<ha>
 			<mode>networked-active-passive</mode>
 			<networked-active-passive>
 				<election-time>5</election-time>
 			</networked-active-passive>
 		</ha>
+		
 	</servers>
 
 	<clients>
@@ -57,15 +61,16 @@
 
 	<application>
 		<dso>
+		
 			<instrumented-classes>
 				<include>
-					<class-expression>test.cluster.core.tc.Task</class-expression>
+					<class-expression>test.cluster.core.Task</class-expression>
 				</include>
 				<include>
-					<class-expression>test.cluster.core.tc.TaskQueue</class-expression>
+					<class-expression>test.cluster.core.TaskQueue</class-expression>
 				</include>
 				<include>
-					<class-expression>test.cluster.core.tc.GroupTaskFilter</class-expression>
+					<class-expression>test.cluster.core.GroupTaskFilter</class-expression>
 					<honor-transient>true</honor-transient>
 					<on-load>
 						<method>onload</method>
@@ -78,17 +83,18 @@
 					<class-expression>test.cluster.tc.tasks.*</class-expression>
 				</include>
 			</instrumented-classes>
+			
 			<locks>
 				<autolock>
-					<method-expression>* test.cluster.core.tc.ClusterShareRoot.addValue(..)</method-expression>
+					<method-expression>* test.cluster.core.ClusterShareRoot.addValue(..)</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
-					<method-expression>* test.cluster.core.tc.TaskQueue.add(..)</method-expression>
+					<method-expression>* test.cluster.core.TaskQueue.add(..)</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
-					<method-expression>void test.cluster.core.tc.GroupTaskFilter.run()</method-expression>
+					<method-expression>void test.cluster.core.GroupTaskFilter.run()</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
@@ -100,14 +106,17 @@
 					<lock-level>read</lock-level>
 				</autolock>
 			</locks>
+			
 			<roots>
 				<root>
 					<field-name>test.cluster.core.tc.ClusterShareRoot.instance</field-name>
 				</root>
 			</roots>
+			
 			<distributed-methods>
 				<method-expression>void test.cluster.core.tc.ClusterShareRoot.dmiTask(..)</method-expression>
 			</distributed-methods>
+			
 		</dso>
 	</application>
 
