@@ -25,6 +25,7 @@ public class Task {
 	
 	public Task(String groupId, Object content) {
 		this.groupId = groupId;
+		this.executeMode = ExecuteMode.TASK_QUEUE;
 		this.content = content;
 	}
 	
@@ -55,4 +56,5 @@ public class Task {
 	void setFinish(Condition finish) {
 		this.finish = finish;
 	}
+	
 }
