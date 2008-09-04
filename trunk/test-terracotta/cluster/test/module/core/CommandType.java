@@ -1,4 +1,4 @@
-package test.module;
+package test.module.core;
 
 public enum CommandType {
 	STARTUP ("Startup Command. Execute the method and listen on the port."),

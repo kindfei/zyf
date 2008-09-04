@@ -1,4 +1,4 @@
-package test.module;
+package test.module.core;
 
 import java.util.Map;
 

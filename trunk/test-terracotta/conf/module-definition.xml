@@ -1,6 +1,13 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
 <modules>
-	<module>
+	<module name="test" class="" ip="" port="">
+		<jvmarg value="-server"/>
+		<jvmarg value="-Xms256"/>
+		<jvmarg value="-Xmx256"/>
+		<jvmarg value="-Xbootclasspath/p:"/>
+		<jvmarg value="-Dtc.install-root="/>
+		<jvmarg value="-Dtc.config="/>
+		<jvmarg value="-Dtc.node-name="/>
 	</module>
 </modules>
