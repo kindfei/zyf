@@ -78,15 +78,15 @@ public abstract class AbstractService<T> implements Service {
 					}
 					
 				}catch (InterruptedException e) {
-					log.info("[" + procName + "] Interrupted startup thread for shutdown.");
+					log.info("Interrupted startup thread for shutdown. Name=" + getName());
 				} catch (Throwable e) {
-					log.error("Startup error.", e);
+					log.error("Startup error. processor=" + procName, e);
 				}
 				
 				try {
 					runShutdown();
 				} catch (Throwable e) {
-					log.error("Shutdown error.", e);
+					log.error("Shutdown error. processor=" + procName, e);
 				}
 				
 				startupThread = null;
@@ -107,6 +107,76 @@ public abstract class AbstractService<T> implements Service {
 		}
 		startupThread.interrupt();
 	}
+	
+	/**
+	 * Run startup operation.
+	 * @throws Exception
+	 */
+	private void runStartup() throws Exception {
+		threadPool = new ThreadPoolExecutor(0
+				, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS
+				, new SynchronousQueue<Runnable>());
+		
+		TaskTaker taker = null;
+		for (int i = 0; i < takerSize; i++) {
+			taker = new TaskTaker();
+			taker.setName(procName + "-TaskTaker" + i);
+			takerList.add(taker);
+			taker.start();
+		}
+		
+		switch (serviceMode) {
+		case ACTIVE_STANDBY:
+			log.info("Acquiring mutex... processor=" + procName);
+			tcRoot.acquireMutex(procName);
+			log.info("Acquired mutex... processor=" + procName);
+			break;
+
+		case ALL_ACTIVE:
+			log.info("Service mode is all active. processor=" + procName);
+			break;
+		}
+		
+		init();
+		
+		log.info("Successfully started. processor=" + procName);
+	}
+	
+	/**
+	 * Run shutdown operation.
+	 */
+	private void runShutdown() {
+		try {
+			close();
+		} catch (Throwable e) {
+		}
+
+		log.info("Releasing mutex... processor=" + procName);
+		try {
+			tcRoot.releaseMutex(procName);
+		} catch (Throwable e) {
+		}
+		log.info("Released mutex... processor=" + procName);
+		
+		for (TaskTaker taker : takerList) {
+			taker.end();
+		}
+		
+		threadPool.shutdown();
+		
+		log.info("Successfully stoped. processor=" + procName);
+	}
+	
+	/**
+	 * Initialize the service.
+	 * @throws Exception
+	 */
+	protected abstract void init() throws Exception;
+	
+	/**
+	 * Close the service.
+	 */
+	protected abstract void close();
 	
 	/**
 	 * Process entry for service trigger
@@ -137,83 +207,9 @@ public abstract class AbstractService<T> implements Service {
 				}
 			}
 		} catch (Throwable e) {
-			log.error("Master process error.", e);
+			log.error("Master process error. processor=" + procName, e);
 		}
 	}
-	
-	/**
-	 * Run startup operation.
-	 * @throws Exception
-	 */
-	private void runStartup() throws Exception {
-		log.info("[" + procName + "] Starting.");
-		
-		threadPool = new ThreadPoolExecutor(0
-				, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS
-				, new SynchronousQueue<Runnable>());
-		
-		TaskTaker taker = null;
-		for (int i = 0; i < takerSize; i++) {
-			taker = new TaskTaker();
-			taker.setName(procName + "-TaskTaker" + i);
-			takerList.add(taker);
-			taker.start();
-		}
-		
-		switch (serviceMode) {
-		case ACTIVE_STANDBY:
-			log.info("[" + procName + "] Acquiring mutex...");
-			tcRoot.acquireMutex(procName);
-			log.info("[" + procName + "] Acquired mutex...");
-			break;
-
-		case ALL_ACTIVE:
-			log.info("[" + procName + "] Service mode is all active.");
-			break;
-		}
-		
-		init();
-		
-		log.info("[" + procName + "] Successfully started.");
-	}
-	
-	/**
-	 * Initialize the service.
-	 * @throws Exception
-	 */
-	protected abstract void init() throws Exception;
-	
-	/**
-	 * Run shutdown operation.
-	 */
-	private void runShutdown() {
-		log.info("[" + procName + "] Stopping.");
-		
-		try {
-			close();
-		} catch (Throwable e) {
-		}
-
-		log.info("[" + procName + "] Releasing mutex...");
-		try {
-			tcRoot.releaseMutex(procName);
-		} catch (Throwable e) {
-		}
-		log.info("[" + procName + "] Released mutex...");
-		
-		for (TaskTaker taker : takerList) {
-			taker.end();
-		}
-		
-		threadPool.shutdown();
-		
-		log.info("[" + procName + "] Successfully stoped.");
-	}
-	
-	/**
-	 * Close the service.
-	 */
-	protected abstract void close();
 	
 	/**
 	 * Take task from share queue for worker process.
@@ -236,7 +232,7 @@ public abstract class AbstractService<T> implements Service {
 					}
 				}
 			} catch (InterruptedException e) {
-				log.info("[" + procName + "] Interrupted TaskTaker for shutdown. Name=" + getName());
+				log.info("Interrupted TaskTaker for shutdown. Name=" + getName());
 			}
 		}
 		
@@ -266,7 +262,7 @@ public abstract class AbstractService<T> implements Service {
 				processor.workerProcess(task);
 			}
 		} catch (Throwable e) {
-			log.error("Worker process error.", e);
+			log.error("Worker process error. processor=" + procName, e);
 		}
 	}
 	
