@@ -109,12 +109,12 @@
 			
 			<roots>
 				<root>
-					<field-name>test.cluster.core.tc.ClusterShareRoot.instance</field-name>
+					<field-name>test.cluster.core.ClusterShareRoot.instance</field-name>
 				</root>
 			</roots>
 			
 			<distributed-methods>
-				<method-expression>void test.cluster.core.tc.ClusterShareRoot.dmiTask(..)</method-expression>
+				<method-expression>void test.cluster.core.ClusterShareRoot.dmiTask(..)</method-expression>
 			</distributed-methods>
 			
 		</dso>
