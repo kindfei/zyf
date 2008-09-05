@@ -1,5 +1,8 @@
 package test.module.core;
 
+import java.util.HashMap;
+import java.util.Map;
+
 import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 
@@ -11,7 +14,25 @@ import org.w3c.dom.NodeList;
 public class ModuleBootstrap {
 	private static final String fileName = "module-definition.xml";
 	
-	private void read(String name) throws Exception {
+	private String moduleName;
+	private String moduleClass;
+	private String moduleIp;
+	private String modulePort;
+	private Map<String, String> moduleProps;
+	
+	public ModuleBootstrap(String[] args) throws Exception {
+		parse(args);
+		init();
+	}
+	
+	private void parse(String[] args) {
+		int len = args.length;
+		if (len < 2 || len > 3) {
+			throw new IllegalArgumentException("Error command format.");
+		}
+	}
+	
+	private void init() throws Exception {
 		
 		DocumentBuilderFactory factory = DocumentBuilderFactory.newInstance();
 		DocumentBuilder builder = factory.newDocumentBuilder();
@@ -29,18 +50,20 @@ public class ModuleBootstrap {
 			if (child.getNodeType() == Document.ELEMENT_NODE) {
 				Element module = (Element) child;
 				
-				if (module.getAttribute("name").equals(name)) {
-					String strClass = module.getAttribute("class");
-					String strIp = module.getAttribute("ip");
-					String strPort = module.getAttribute("port");
-					StringBuffer arg = new StringBuffer();
+				if (module.getAttribute("name").equals(moduleName)) {
+					moduleClass = module.getAttribute("class");
+					moduleIp = module.getAttribute("ip");
+					modulePort = module.getAttribute("port");
+					moduleProps = new HashMap<String, String>();
 					
 					children = module.getChildNodes();
 					for (int j = 0; j < children.getLength(); j++) {
 						child = children.item(i);
 						if (child.getNodeType() == Document.ELEMENT_NODE) {
-							Element jvmarg = (Element) child;
-							arg.append(jvmarg.getAttribute("value")).append(" ");
+							Element arg = (Element) child;
+							String key = arg.getAttribute("key");
+							String value = arg.getAttribute("value");
+							moduleProps.put(key, value);
 						}
 					}
 					
@@ -49,5 +72,18 @@ public class ModuleBootstrap {
 			}
 		}
 		
+	}
+	
+	private void execute() {
+		
+	}
+	
+	public static void main(String[] args) {
+		try {
+			ModuleBootstrap instance = new ModuleBootstrap(args);
+		} catch (Throwable e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }
