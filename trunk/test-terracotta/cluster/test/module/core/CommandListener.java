@@ -10,19 +10,14 @@ import java.net.Socket;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-/**
- * Service control, listen a command from the specified port.
- * @author zhangyf
- *
- */
-public class ServiceControl implements Runnable {
-	private static Log log = LogFactory.getLog(ServiceControl.class);
+public class CommandListener implements Runnable {
+	private static Log log = LogFactory.getLog(CommandListener.class);
 	
 	private ServerSocket serverSocket;
-	private ServiceEntry instance;
+	private ModuleBootstrap instance;
 	private boolean isAlive = true;
 	
-	public ServiceControl(int port, ServiceEntry inst) throws IOException {
+	public CommandListener(int port, ModuleBootstrap inst) throws IOException {
 		serverSocket = new ServerSocket(port);
 		instance = inst;
 	}
@@ -67,4 +62,6 @@ public class ServiceControl implements Runnable {
 			try {socket.close();} catch (IOException e) {}
 		}
 	}
+
+
 }
