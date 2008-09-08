@@ -34,28 +34,25 @@ public abstract class ServiceEntry {
 	}
 	
 	private void initCommand() {
-		ServiceCommand startup = new ServiceCommand("startup", CommandType.STARTUP, new Commandable() {
+		addCommand(new ServiceCommand("startup", CommandType.STARTUP, new Commandable() {
 			public String operate() throws Exception {
 				return startup();
 			}
-		}, "Startup the service, and listen the command on the specified port.");
+		}, "Startup the service, and listen the command on the specified port."));
 		
-		ServiceCommand shutdown = new ServiceCommand("shutdown", CommandType.REMOTE, new Commandable() {
+		addCommand(new ServiceCommand("shutdown", CommandType.REMOTE, new Commandable() {
 			public String operate() throws Exception {
 				return shutdown();
 			}
-		}, "Shutdown the service, send the shutdown command to the port that the service listen on.");
-		
-		commands.add(startup);
-		commands.add(shutdown);
+		}, "Shutdown the service, send the shutdown command to the port that the service listen on."));
 	}
-	
-	public abstract String startup() throws Exception;
-	public abstract String shutdown() throws Exception;
 	
 	public void addCommand(ServiceCommand command) {
 		commands.add(command);
 	}
+	
+	public abstract String startup() throws Exception;
+	public abstract String shutdown() throws Exception;
 	
 	public void executeCommand(String[] args) {
 		try {
@@ -85,7 +82,7 @@ public abstract class ServiceEntry {
 		} catch (IllegalArgumentException e) {
 			log.error(e.getMessage(), e);
 			System.err.println(e.getMessage());
-			help();
+			printHelp();
 		} catch (Throwable e) {
 			log.error("Unknown error occurred when execute command.", e);
 			System.err.println("Unknown error occurred when execute command. " + e.getMessage());
@@ -161,7 +158,7 @@ public abstract class ServiceEntry {
 		}
 	}
 	
-	private void help() {
+	private void printHelp() {
 		log.info("Supported Commands:");
 		System.out.println("Supported Commands:");
 		
