@@ -6,7 +6,7 @@
     <job-detail>
       <name>TestJob</name>
       <group>Group1</group>
-      <job-class>test.TestQuartzProcessor</job-class>
+      <job-class>test.cluster.TestQuartzProcessor</job-class>
       <job-data-map allows-transient-data="true">
       	<entry>
       		<key>testkey</key>

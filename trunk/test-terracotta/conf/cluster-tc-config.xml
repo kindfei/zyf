@@ -64,57 +64,57 @@
 		
 			<instrumented-classes>
 				<include>
-					<class-expression>test.cluster.core.Task</class-expression>
+					<class-expression>fx.cluster.core.Task</class-expression>
 				</include>
 				<include>
-					<class-expression>test.cluster.core.TaskQueue</class-expression>
+					<class-expression>fx.cluster.core.TaskQueue</class-expression>
 				</include>
 				<include>
-					<class-expression>test.cluster.core.GroupTaskFilter</class-expression>
+					<class-expression>fx.cluster.core.GroupTaskFilter</class-expression>
 					<honor-transient>true</honor-transient>
 					<on-load>
 						<method>onload</method>
 					</on-load>
 				</include>
 				<include>
-					<class-expression>test.cluster.tc.caches.*</class-expression>
+					<class-expression>test.cluster.caches.*</class-expression>
 				</include>
 				<include>
-					<class-expression>test.cluster.tc.tasks.*</class-expression>
+					<class-expression>test.cluster.tasks.*</class-expression>
 				</include>
 			</instrumented-classes>
 			
 			<locks>
 				<autolock>
-					<method-expression>* test.cluster.core.ClusterShareRoot.addValue(..)</method-expression>
+					<method-expression>* fx.cluster.core.ClusterShareRoot.addValue(..)</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
-					<method-expression>* test.cluster.core.TaskQueue.add(..)</method-expression>
+					<method-expression>* fx.cluster.core.TaskQueue.add(..)</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
-					<method-expression>void test.cluster.core.GroupTaskFilter.run()</method-expression>
+					<method-expression>void fx.cluster.core.GroupTaskFilter.run()</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
-					<method-expression>void test.cluster.tc.caches.*.set*(..)</method-expression>
+					<method-expression>void test.cluster.caches.*.set*(..)</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
-					<method-expression>void test.cluster.tc.caches.*.get*(..)</method-expression>
+					<method-expression>void test.cluster.caches.*.get*(..)</method-expression>
 					<lock-level>read</lock-level>
 				</autolock>
 			</locks>
 			
 			<roots>
 				<root>
-					<field-name>test.cluster.core.ClusterShareRoot.instance</field-name>
+					<field-name>fx.cluster.core.ClusterShareRoot.instance</field-name>
 				</root>
 			</roots>
 			
 			<distributed-methods>
-				<method-expression>void test.cluster.core.ClusterShareRoot.dmiTask(..)</method-expression>
+				<method-expression>void fx.cluster.core.ClusterShareRoot.dmiTask(..)</method-expression>
 			</distributed-methods>
 			
 		</dso>

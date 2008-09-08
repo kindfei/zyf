@@ -61,7 +61,7 @@
 	</appender>
 	
 	<!-- Core Info Log Category-->
-	<category name="test.cluster.core">
+	<category name="fx.cluster.core">
 		<level value="debug" />
 		<appender-ref ref="coreInfo" />
 	</category>
