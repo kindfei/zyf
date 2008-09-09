@@ -1,5 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-
-<modules>
-	<module name="test" class="test.cluster.TestClusterService" ip="localhost" port="10000" />
-</modules>
