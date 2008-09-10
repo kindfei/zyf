@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
+import java.lang.reflect.Method;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -21,62 +22,42 @@ public abstract class ServiceEntry {
 
 	private String ipAddress;
 	private int listenPort;
-	private List<ServiceCommand> commands = new ArrayList<ServiceCommand>();
+	private List<Command> commands = new ArrayList<Command>();
 	
-	protected ServiceEntry(int listenPort) {
+	public ServiceEntry(int listenPort) {
 		this("127.0.0.1", listenPort);
 	}
 	
-	protected ServiceEntry(String ipAddress, int listenPort) {
+	public ServiceEntry(String ipAddress, int listenPort) {
 		this.listenPort = listenPort;
 		this.ipAddress = ipAddress;
-		initCommand();
+		addBasicCmd();
+		addAnnotCmd();
 	}
-	
-	private void initCommand() {
-		addCommand(new ServiceCommand("startup", CommandType.STARTUP, new Commandable() {
-			public String operate() throws Exception {
-				return startup();
-			}
-		}, "Startup the service, and listen the command on the specified port."));
-		
-		addCommand(new ServiceCommand("shutdown", CommandType.REMOTE, new Commandable() {
-			public String operate() throws Exception {
-				return shutdown();
-			}
-		}, "Shutdown the service, send the shutdown command to the port that the service listen on."));
-	}
-	
-	public void addCommand(ServiceCommand command) {
-		commands.add(command);
-	}
-	
-	public abstract String startup() throws Exception;
-	public abstract String shutdown() throws Exception;
 	
 	public void executeCommand(String[] args) {
 		try {
 			if (args == null || args.length == 0) {
-				throw new IllegalArgumentException("No program arguments was specified as a command to execute.");
+				throw new IllegalArgumentException("No program arguments was specified as a command.");
 			}
 			
-			String strCmd = args[0];
+			String key = args[0];
 			
-			ServiceCommand command = searchCommand(strCmd);
+			Command command = searchCommand(key);
 			
 			CommandType type = command.getType();
 			
 			switch (type) {
 			case STARTUP:
-				startupInvoke(command.getCommandable());
+				startupInvoke(command);
 				break;
 
 			case REMOTE:
-				remoteInvoke(strCmd);
+				remoteInvoke(key);
 				break;
 
 			case LOCAL:
-				localInvoke(command.getCommandable());
+				localInvoke(command);
 				break;
 			}
 		} catch (IllegalArgumentException e) {
@@ -89,14 +70,51 @@ public abstract class ServiceEntry {
 		}
 	}
 	
-	ServiceCommand searchCommand(String strCmd) {
-		for (ServiceCommand command : commands) {
-			if (command.getCommand().equals(strCmd)) {
+	public void addCommand(NormalCommand command) {
+		commands.add(command);
+	}
+	
+	public abstract String startup() throws Exception;
+	public abstract String shutdown() throws Exception;
+	
+	private void addBasicCmd() {
+		addCommand(new NormalCommand("startup", CommandType.STARTUP, 
+				"Startup the service, and listen the command on the specified port.", 
+				new Commandable() {
+					public String execute() throws Exception {
+						return startup();
+					}
+				}
+		));
+		
+		addCommand(new NormalCommand("shutdown", CommandType.REMOTE, 
+				"Shutdown the service, send the shutdown command to the port that the service listen on.", 
+				new Commandable() {
+					public String execute() throws Exception {
+						return shutdown();
+					}
+				}
+		));
+	}
+	
+	private void addAnnotCmd() {
+		Method[] methods = this.getClass().getDeclaredMethods();
+		for (Method method : methods) {
+			CMD cmd = method.getAnnotation(CMD.class);
+			if (cmd != null) {
+				commands.add(new RelfectionCommand(cmd.key(), cmd.type(), cmd.description(), this, method));
+			}
+		}
+	}
+	
+	Command searchCommand(String key) {
+		for (Command command : commands) {
+			if (command.getKey().equals(key)) {
 				return command;
 			}
 		}
 		
-		throw new IllegalArgumentException("No such command matched. Unsupported Command = " + strCmd);
+		throw new IllegalArgumentException("No such command matched. Unsupported Command = " + key);
 	}
 	
 	private void startMonitor() throws IOException {
@@ -105,10 +123,10 @@ public abstract class ServiceEntry {
 		thread.start();		
 	}
 	
-	private void startupInvoke(Commandable commandable) {
+	private void startupInvoke(Command command) {
 		try {
 			startMonitor();
-			String result = commandable.operate();
+			String result = command.execute();
 			
 			log.info(result);
 			System.out.println(result);
@@ -118,9 +136,9 @@ public abstract class ServiceEntry {
 		}
 	}
 	
-	private void localInvoke(Commandable commandable) {
+	private void localInvoke(Command command) {
 		try {
-			String result = commandable.operate();
+			String result = command.execute();
 			
 			log.info(result);
 			System.out.println(result);
@@ -130,7 +148,7 @@ public abstract class ServiceEntry {
 		}
 	}
 	
-	private void remoteInvoke(String strCmd) {
+	private void remoteInvoke(String key) {
 		Socket socket = null;
 		InputStreamReader isr = null;
 		BufferedReader reader = null;
@@ -141,7 +159,7 @@ public abstract class ServiceEntry {
 			reader = new BufferedReader(isr);
 			writer = new PrintWriter(socket.getOutputStream());
 			
-			writer.println(strCmd);
+			writer.println(key);
 			writer.flush();
 			String result = reader.readLine();
 			
@@ -162,10 +180,10 @@ public abstract class ServiceEntry {
 		log.info("Supported Commands:");
 		System.out.println("Supported Commands:");
 		
-		for (ServiceCommand command : commands) {
-			String strCmd = command.getCommand();
+		for (Command command : commands) {
+			String key = command.getKey();
 			String desc = command.getDescription();
-			log.info(strCmd + " - " + desc);
-			System.out.println(strCmd + " - " + desc);
+			log.info(key + " - " + desc);
+			System.out.println(key + " - " + desc);
 		}
 	}}
