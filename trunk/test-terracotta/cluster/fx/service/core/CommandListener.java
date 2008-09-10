@@ -37,7 +37,7 @@ public class CommandListener implements Runnable {
 							}
 						};
 				thread.setDaemon(false);
-				thread.setName("CommandOperate" + count++);
+				thread.setName("CommandOperator-" + count++);
 				thread.start();
 			}
 		} catch (Throwable e) {
@@ -55,11 +55,11 @@ public class CommandListener implements Runnable {
 			reader = new BufferedReader(isr);
 			writer = new PrintWriter(socket.getOutputStream());
 			
-			String strCmd = reader.readLine();
+			String key = reader.readLine();
 			String result = null;
 			try {
-				ServiceCommand command = service.searchCommand(strCmd);
-				result = command.getCommandable().operate();
+				Command command = service.searchCommand(key);
+				result = command.execute();
 			} catch (IllegalArgumentException e) {
 				log.error(e.getMessage(), e);
 				result = e.getMessage();

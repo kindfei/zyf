@@ -3,9 +3,10 @@ package test.service;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import fx.service.core.CMD;
 import fx.service.core.CommandType;
 import fx.service.core.Commandable;
-import fx.service.core.ServiceCommand;
+import fx.service.core.NormalCommand;
 import fx.service.core.ServiceEntry;
 
 public class TestService extends ServiceEntry {
@@ -37,11 +38,16 @@ public class TestService extends ServiceEntry {
 		return counter + "";
 	}
 	
+	@CMD(key = "refresh", type = CommandType.REMOTE)
+	public void refresh() {
+		counter = 0;
+	}
+	
 	public static void main(String[] args) {
 		final TestService test = new TestService(1234);
 		
-		test.addCommand(new ServiceCommand("status", CommandType.REMOTE, new Commandable() {
-			public String operate() throws Exception {
+		test.addCommand(new NormalCommand("status", CommandType.REMOTE, new Commandable() {
+			public String execute() throws Exception {
 				return test.status();
 			}
 		}));
