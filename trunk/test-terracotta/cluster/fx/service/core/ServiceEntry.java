@@ -35,41 +35,6 @@ public abstract class ServiceEntry {
 		addAnnotCmd();
 	}
 	
-	public void executeCommand(String[] args) {
-		try {
-			if (args == null || args.length == 0) {
-				throw new IllegalArgumentException("No program arguments was specified as a command.");
-			}
-			
-			String key = args[0];
-			
-			Command command = searchCommand(key);
-			
-			CommandType type = command.getType();
-			
-			switch (type) {
-			case STARTUP:
-				startupInvoke(command);
-				break;
-
-			case REMOTE:
-				remoteInvoke(key);
-				break;
-
-			case LOCAL:
-				localInvoke(command);
-				break;
-			}
-		} catch (IllegalArgumentException e) {
-			log.error(e.getMessage(), e);
-			System.err.println(e.getMessage());
-			printHelp();
-		} catch (Throwable e) {
-			log.error("Unknown error occurred when execute command.", e);
-			System.err.println("Unknown error occurred when execute command. " + e.getMessage());
-		}
-	}
-	
 	public void addCommand(NormalCommand command) {
 		commands.add(command);
 	}
@@ -107,7 +72,42 @@ public abstract class ServiceEntry {
 		}
 	}
 	
-	Command searchCommand(String key) {
+	public void execute(String... args) {
+		try {
+			if (args == null || args.length == 0) {
+				throw new IllegalArgumentException("No program arguments was specified as a command.");
+			}
+			
+			String key = args[0];
+			
+			Command command = searchCommand(key);
+			
+			CommandType type = command.getType();
+			
+			switch (type) {
+			case STARTUP:
+				startupInvoke(command);
+				break;
+
+			case REMOTE:
+				remoteInvoke(key);
+				break;
+
+			case LOCAL:
+				localInvoke(command);
+				break;
+			}
+		} catch (IllegalArgumentException e) {
+			log.error(e.getMessage(), e);
+			System.err.println(e.getMessage());
+			printHelp();
+		} catch (Throwable e) {
+			log.error("Unknown error occurred when execute command.", e);
+			System.err.println("Unknown error occurred when execute command. " + e.getMessage());
+		}
+	}
+	
+	private Command searchCommand(String key) {
 		for (Command command : commands) {
 			if (command.getKey().equals(key)) {
 				return command;
@@ -117,15 +117,25 @@ public abstract class ServiceEntry {
 		throw new IllegalArgumentException("No such command matched. Unsupported Command = " + key);
 	}
 	
-	private void startMonitor() throws IOException {
-		Thread thread = new Thread(new CommandListener(listenPort, this), "CommandListener");
-		thread.setDaemon(true);
-		thread.start();		
+	private void execute(Command command) throws Exception {
+		String key = command.getKey();
+		try {
+			String result = command.execute();
+			log.info("Execute OK. command=" + key + " result=" + result);
+			System.out.println("Execute OK. command=" + key + " result=" + result);
+		} catch (Exception e) {
+			log.error("Execute error. command=" + key, e);
+			System.err.println("Execute error. command=" + key + " error=" + e.getMessage());
+			throw e;
+		}
 	}
 	
 	private void startupInvoke(Command command) {
 		try {
-			startMonitor();
+			Thread thread = new Thread(new CommandListener(listenPort, this), "CommandListener");
+			thread.setDaemon(true);
+			thread.start();
+			
 			String result = command.execute();
 			
 			log.info(result);
@@ -168,6 +178,44 @@ public abstract class ServiceEntry {
 		} catch (Throwable e) {
 			log.error("Error occurred when remote invoke.", e);
 			System.err.println("Error occurred when remote invoke. " + e.getMessage());
+		} finally {
+			if (writer != null) writer.close();
+			if (reader != null) try {reader.close();} catch (IOException e) {};
+			if (isr != null) try {isr.close();} catch (IOException e) {};
+			if (socket != null) try {socket.close();} catch (IOException e) {};
+		}
+	}
+	
+	void remoteExecute(Socket socket) {
+		InputStreamReader isr = null;
+		BufferedReader reader = null;
+		PrintWriter writer = null;
+		try {
+			isr = new InputStreamReader(socket.getInputStream());
+			reader = new BufferedReader(isr);
+			writer = new PrintWriter(socket.getOutputStream());
+			
+			String key = reader.readLine();
+			String result = null;
+			
+			try {
+				
+				Command command = searchCommand(key);
+				
+				result = command.execute();
+				
+			} catch (IllegalArgumentException e) {
+				log.error(e.getMessage(), e);
+				result = e.getMessage();
+			} catch (Throwable e) {
+				log.error("Error occurred when execute command remotely.", e);
+				result = "Error occurred when execute command remotely. " + e.getMessage();
+			}
+			
+			writer.println(result);
+			writer.flush();
+		} catch (Throwable e) {
+			log.error("Execute remote operation error.", e);
 		} finally {
 			if (writer != null) writer.close();
 			if (reader != null) try {reader.close();} catch (IOException e) {};
