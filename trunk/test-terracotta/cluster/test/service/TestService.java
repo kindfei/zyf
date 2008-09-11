@@ -52,6 +52,6 @@ public class TestService extends ServiceEntry {
 			}
 		}));
 		
-		test.executeCommand(args);
+		test.execute(args);
 	}
 }
