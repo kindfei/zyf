@@ -102,9 +102,9 @@ public abstract class ServiceEntry {
 			errorLog(e.getMessage(), e);
 			printHelp();
 		} catch (IOException e) {
-			errorLog("Start command listener error: " + e.getMessage(), e);
+			errorLog("Start command listener error.", e);
 		} catch (Throwable e) {
-			errorLog("Unknown error occurred when execute command. " + e.getMessage(), e);
+			errorLog("Unknown error occurred when execute command.", e);
 		}
 	}
 	
@@ -155,7 +155,7 @@ public abstract class ServiceEntry {
 			
 			infoLog(result);
 		} catch (Throwable e) {
-			errorLog("Send command to remote service error." + e.getMessage(), e);
+			errorLog("Send command to remote service error.", e);
 		} finally {
 			if (writer != null) writer.close();
 			if (reader != null) try {reader.close();} catch (IOException e) {};
