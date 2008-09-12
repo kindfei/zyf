@@ -44,7 +44,7 @@ public abstract class ServiceEntry {
 	
 	private void addBasicCmd() {
 		addCommand(new NormalCommand("startup", CommandType.STARTUP, 
-				"Startup the service, and listen the command on the specified port.", 
+				"Startup the service, and listen command on the specified port.", 
 				new Commandable() {
 					public String execute() throws Exception {
 						return startup();
@@ -72,7 +72,7 @@ public abstract class ServiceEntry {
 		}
 	}
 	
-	public void execute(String... args) {
+	public void process(String... args) {
 		try {
 			if (args == null || args.length == 0) {
 				throw new IllegalArgumentException("No program arguments was specified as a command.");
@@ -80,13 +80,14 @@ public abstract class ServiceEntry {
 			
 			String key = args[0];
 			
-			Command command = searchCommand(key);
+			Command command = search(key);
 			
 			CommandType type = command.getType();
 			
 			switch (type) {
 			case STARTUP:
-				startupInvoke(command);
+				startListener();
+				execute(command);
 				break;
 
 			case REMOTE:
@@ -94,20 +95,20 @@ public abstract class ServiceEntry {
 				break;
 
 			case LOCAL:
-				localInvoke(command);
+				execute(command);
 				break;
 			}
 		} catch (IllegalArgumentException e) {
-			log.error(e.getMessage(), e);
-			System.err.println(e.getMessage());
+			errorLog(e.getMessage(), e);
 			printHelp();
+		} catch (IOException e) {
+			errorLog("Start command listener error: " + e.getMessage(), e);
 		} catch (Throwable e) {
-			log.error("Unknown error occurred when execute command.", e);
-			System.err.println("Unknown error occurred when execute command. " + e.getMessage());
+			errorLog("Unknown error occurred when execute command. " + e.getMessage(), e);
 		}
 	}
 	
-	private Command searchCommand(String key) {
+	private Command search(String key) {
 		for (Command command : commands) {
 			if (command.getKey().equals(key)) {
 				return command;
@@ -117,45 +118,24 @@ public abstract class ServiceEntry {
 		throw new IllegalArgumentException("No such command matched. Unsupported Command = " + key);
 	}
 	
-	private void execute(Command command) throws Exception {
+	private String execute(Command command) {
+		String result = null;
 		String key = command.getKey();
 		try {
-			String result = command.execute();
-			log.info("Execute OK. command=" + key + " result=" + result);
-			System.out.println("Execute OK. command=" + key + " result=" + result);
-		} catch (Exception e) {
-			log.error("Execute error. command=" + key, e);
-			System.err.println("Execute error. command=" + key + " error=" + e.getMessage());
-			throw e;
+			result = command.execute();
+			result = "Execute OK. command=" + key + ", result=" + result;
+			infoLog(result);
+		} catch (Throwable e) {
+			result = "Execute error. command=" + key + ", error=" + e.getMessage();
+			errorLog(result, e);
 		}
+		return result;
 	}
 	
-	private void startupInvoke(Command command) {
-		try {
-			Thread thread = new Thread(new CommandListener(listenPort, this), "CommandListener");
-			thread.setDaemon(true);
-			thread.start();
-			
-			String result = command.execute();
-			
-			log.info(result);
-			System.out.println(result);
-		} catch (Throwable e) {
-			log.error("Error occurred when startup invoke.", e);
-			System.err.println("Error occurred when startup invoke. " + e.getMessage());
-		}
-	}
-	
-	private void localInvoke(Command command) {
-		try {
-			String result = command.execute();
-			
-			log.info(result);
-			System.out.println(result);
-		} catch (Throwable e) {
-			log.error("Error occurred when local invoke.", e);
-			System.err.println("Error occurred when local invoke. " + e.getMessage());
-		}
+	private void startListener() throws IOException {
+		Thread thread = new Thread(new CommandListener(listenPort, this), "CommandListener");
+		thread.setDaemon(true);
+		thread.start();
 	}
 	
 	private void remoteInvoke(String key) {
@@ -173,11 +153,9 @@ public abstract class ServiceEntry {
 			writer.flush();
 			String result = reader.readLine();
 			
-			log.info(result);
-			System.out.println(result);
+			infoLog(result);
 		} catch (Throwable e) {
-			log.error("Error occurred when remote invoke.", e);
-			System.err.println("Error occurred when remote invoke. " + e.getMessage());
+			errorLog("Send command to remote service error." + e.getMessage(), e);
 		} finally {
 			if (writer != null) writer.close();
 			if (reader != null) try {reader.close();} catch (IOException e) {};
@@ -186,7 +164,7 @@ public abstract class ServiceEntry {
 		}
 	}
 	
-	void remoteExecute(Socket socket) {
+	void onCommand(Socket socket) {
 		InputStreamReader isr = null;
 		BufferedReader reader = null;
 		PrintWriter writer = null;
@@ -200,22 +178,19 @@ public abstract class ServiceEntry {
 			
 			try {
 				
-				Command command = searchCommand(key);
+				Command command = search(key);
 				
-				result = command.execute();
+				result = execute(command);
 				
 			} catch (IllegalArgumentException e) {
-				log.error(e.getMessage(), e);
+				errorLog(e.getMessage(), e);
 				result = e.getMessage();
-			} catch (Throwable e) {
-				log.error("Error occurred when execute command remotely.", e);
-				result = "Error occurred when execute command remotely. " + e.getMessage();
 			}
 			
 			writer.println(result);
 			writer.flush();
 		} catch (Throwable e) {
-			log.error("Execute remote operation error.", e);
+			errorLog("Receive remote command error.", e);
 		} finally {
 			if (writer != null) writer.close();
 			if (reader != null) try {reader.close();} catch (IOException e) {};
@@ -225,13 +200,22 @@ public abstract class ServiceEntry {
 	}
 	
 	private void printHelp() {
-		log.info("Supported Commands:");
-		System.out.println("Supported Commands:");
+		infoLog("Supported Commands:");
 		
 		for (Command command : commands) {
 			String key = command.getKey();
 			String desc = command.getDescription();
-			log.info(key + " - " + desc);
-			System.out.println(key + " - " + desc);
+			infoLog(key + " - " + desc);
 		}
-	}}
+	}
+	
+	private void errorLog(String msg, Throwable e) {
+		log.error(msg, e);
+//		System.err.println(msg);
+	}
+	
+	private void infoLog(String msg) {
+		log.info(msg);
+//		System.out.println(msg);
+	}
+}

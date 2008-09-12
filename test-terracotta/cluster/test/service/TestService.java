@@ -43,6 +43,11 @@ public class TestService extends ServiceEntry {
 		counter = 0;
 	}
 	
+	@CMD(key = "set", type = CommandType.REMOTE)
+	public void setValue(int i) {
+		counter = i;
+	}
+	
 	public static void main(String[] args) {
 		final TestService test = new TestService(1234);
 		
@@ -52,6 +57,6 @@ public class TestService extends ServiceEntry {
 			}
 		}));
 		
-		test.execute(args);
+		test.process(args);
 	}
 }

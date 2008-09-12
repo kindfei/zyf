@@ -30,16 +30,15 @@ public class CommandListener implements Runnable {
 				final Socket socket = serverSocket.accept();
 				Thread thread = new Thread() {
 							public void run() {
-								service.remoteExecute(socket);
+								service.onCommand(socket);
 							}
 						};
 				thread.setDaemon(false);
-				thread.setName("CommandOperator-" + count++);
+				thread.setName("CommandExecutor-" + count++);
 				thread.start();
 			}
 		} catch (Throwable e) {
-			System.err.println("Run CommandListener error.");
-			log.error("Run CommandListener error.", e);
+			log.error("Listen Command error.", e);
 		}
 	}
 }
