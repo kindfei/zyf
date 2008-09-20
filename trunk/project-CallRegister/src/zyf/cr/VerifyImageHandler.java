@@ -103,6 +103,11 @@ public class VerifyImageHandler {
 			log.info(cr.getValue() + " - " + cr.getHit() + "/" + (cr.getHit() + cr.getMiss()) + " miss:" + cr.getMiss());
 			result += cr.getValue();
 		}
+		
+		if (!CMDHelper.confirm("verify code = " + result)) {
+			result = CMDHelper.input("input verify code: ");
+		}
+		
 		return result;
 	}
 	
