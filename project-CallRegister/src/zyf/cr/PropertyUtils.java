@@ -19,7 +19,7 @@ public class PropertyUtils {
 	}
 	
 	public static boolean isConsoleInput() {
-		return Boolean.getBoolean(prop.getProperty("CONSOLE_INPUT"));
+		return "true".equalsIgnoreCase(prop.getProperty("CONSOLE_INPUT")) ? true : false;
 	}
 	
 	public static String getNumber() {
