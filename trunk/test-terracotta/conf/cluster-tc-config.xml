@@ -64,10 +64,16 @@
 		
 			<instrumented-classes>
 				<include>
-					<class-expression>fx.cluster.core.Task</class-expression>
+					<class-expression>fx.cluster.core.ClusterHandler</class-expression>
+				</include>
+				<include>
+					<class-expression>fx.cluster.core.ClusterLock</class-expression>
 				</include>
 				<include>
 					<class-expression>fx.cluster.core.TaskQueue</class-expression>
+				</include>
+				<include>
+					<class-expression>fx.cluster.core.Task</class-expression>
 				</include>
 				<include>
 					<class-expression>fx.cluster.core.GroupTaskFilter</class-expression>
@@ -86,7 +92,7 @@
 			
 			<locks>
 				<autolock>
-					<method-expression>* fx.cluster.core.ClusterShareRoot.addValue(..)</method-expression>
+					<method-expression>* fx.cluster.core.ClusterHandlerFactory.getClusterHandler(..)</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
@@ -109,12 +115,12 @@
 			
 			<roots>
 				<root>
-					<field-name>fx.cluster.core.ClusterShareRoot.instance</field-name>
+					<field-name>fx.cluster.core.ClusterHandlerFactory.instance</field-name>
 				</root>
 			</roots>
 			
 			<distributed-methods>
-				<method-expression>void fx.cluster.core.ClusterShareRoot.dmiTask(..)</method-expression>
+				<method-expression>void fx.cluster.core.ClusterHandler.dmiTask(..)</method-expression>
 			</distributed-methods>
 			
 		</dso>

@@ -59,7 +59,7 @@ public class GroupTaskFilter implements Runnable {
 					Condition finish = groupLock.newCondition();
 					task.setFinish(finish);
 					
-					taskQueue.addTask(task);
+					taskQueue.add(task);
 					
 					finish.await(5, TimeUnit.SECONDS);
 				} finally {
