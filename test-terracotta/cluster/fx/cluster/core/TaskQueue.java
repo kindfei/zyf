@@ -3,7 +3,6 @@ package fx.cluster.core;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
-import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * TaskQueue
@@ -13,7 +12,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class TaskQueue extends LinkedBlockingQueue<Task> {
 	private static final long serialVersionUID = -3202737378383193112L;
 	
-	private ReentrantLock lock = new ReentrantLock(true);
+	private ClusterLock lock = new ClusterLock(true);
 	
 	private Map<String, GroupTaskFilter> map = new ConcurrentHashMap<String, GroupTaskFilter>();
 	
@@ -27,7 +26,7 @@ public class TaskQueue extends LinkedBlockingQueue<Task> {
 		}
 	}
 	
-	public boolean add(Task task) {
+	boolean addTask(Task task) {
 		String groupId = task.getGroupId();
 		if (groupId != null) {
 			GroupTaskFilter filter = map.get(groupId);
@@ -43,11 +42,7 @@ public class TaskQueue extends LinkedBlockingQueue<Task> {
 			}
 			return filter.add(task);
 		} else {
-			return addTask(task);
+			return add(task);
 		}
-	}
-	
-	boolean addTask(Task task) {
-		return super.add(task);
 	}
 }

@@ -30,7 +30,7 @@ public abstract class AbstractService<T> implements Service {
 	private Processor<T> processor;
 	private String procName;
 
-	private ClusterShareRoot tcRoot = ClusterShareRoot.instance;
+	private ClusterHandler handler;
 	
 	private Thread startupThread;
 
@@ -52,6 +52,8 @@ public abstract class AbstractService<T> implements Service {
 		this.fairTake = fairTake;
 		this.processor = processor;
 		this.procName = processor.getClass().getName();
+		
+		handler = ClusterHandlerFactory.instance.getClusterHandler(procName);
 	}
 	
 	Processor<T> getProcessor() {
@@ -128,7 +130,7 @@ public abstract class AbstractService<T> implements Service {
 		switch (serviceMode) {
 		case ACTIVE_STANDBY:
 			log.info("Acquiring mutex... processor=" + procName);
-			tcRoot.acquireMutex(procName);
+			handler.acquireMutex();
 			log.info("Acquired mutex... processor=" + procName);
 			break;
 
@@ -153,7 +155,7 @@ public abstract class AbstractService<T> implements Service {
 
 		log.info("Releasing mutex... processor=" + procName);
 		try {
-			tcRoot.releaseMutex(procName);
+			handler.releaseMutex();
 		} catch (Throwable e) {
 		}
 		log.info("Released mutex... processor=" + procName);
@@ -222,8 +224,7 @@ public abstract class AbstractService<T> implements Service {
 		public void run() {
 			try {
 				while (isActive) {
-					Task task = tcRoot.takeTask(procName, fairTake);
-					log.debug("[" + procName + "] The task has been taken from queue. task: " + task.toString());
+					Task task = handler.takeTask(fairTake);
 					
 					if (takerExecute) {
 						execute(task);
@@ -283,8 +284,7 @@ public abstract class AbstractService<T> implements Service {
 	 * @param task
 	 */
 	private void addTask(Task task) {
-		int size = tcRoot.addTask(procName, task);
-		log.debug("[" + procName + "] The task queue size=" + size);
+		handler.addTask(task);
 	}
 	
 	/**
@@ -292,7 +292,7 @@ public abstract class AbstractService<T> implements Service {
 	 * @param task
 	 */
 	private synchronized void dmiTask(Task task) {
-		tcRoot.dmiTask(procName, task);
+		handler.dmiTask(task);
 	}
 
 }
