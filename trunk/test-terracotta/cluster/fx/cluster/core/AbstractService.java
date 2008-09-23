@@ -12,7 +12,6 @@ import java.util.concurrent.locks.ReentrantLock;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
 /**
  * Basic service operation control
  * @author zhangyf
@@ -192,6 +191,7 @@ public abstract class AbstractService<T> implements Service {
 				return;
 			}
 			
+			List<Task> list = new ArrayList<Task>();
 			for (Task task : tasks) {
 				ExecuteMode executeMode = task.getExecuteMode();
 				switch (executeMode) {
@@ -200,13 +200,17 @@ public abstract class AbstractService<T> implements Service {
 					break;
 
 				case TASK_QUEUE:
-					addTask(task);
+					list.add(task);
 					break;
 
 				case ALL_INVOKE:
 					dmiTask(task);
 					break;
 				}
+			}
+			
+			if (list.size() != 0) {
+				addTask(list);
 			}
 		} catch (Throwable e) {
 			log.error("Master process error. processor=" + procName, e);
@@ -283,8 +287,8 @@ public abstract class AbstractService<T> implements Service {
 	 * Add task to task queue
 	 * @param task
 	 */
-	private void addTask(Task task) {
-		handler.addTask(task);
+	private void addTask(List<Task> tasks) {
+		handler.addTask(tasks);
 	}
 	
 	/**
