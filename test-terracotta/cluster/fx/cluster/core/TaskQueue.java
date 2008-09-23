@@ -1,5 +1,6 @@
 package fx.cluster.core;
 
+import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
@@ -44,5 +45,9 @@ public class TaskQueue extends LinkedBlockingQueue<Task> {
 		} else {
 			return add(task);
 		}
+	}
+	
+	boolean addAllTask(List<Task> tasks) {
+		return addAll(tasks);
 	}
 }

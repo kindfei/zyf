@@ -3,7 +3,6 @@ package fx.cluster.core;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-
 /**
  * Task
  * @author zhangyf
