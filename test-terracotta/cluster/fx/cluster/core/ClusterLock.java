@@ -16,7 +16,7 @@ public class ClusterLock extends ReentrantLock {
 
 	@Override
 	public void lockInterruptibly() throws InterruptedException {
-		while (!Thread.currentThread().isInterrupted()) {
+		while (!Thread.interrupted()) {
 			if (super.tryLock(5, TimeUnit.SECONDS)) {
 				return;
 			}
