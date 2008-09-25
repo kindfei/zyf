@@ -8,8 +8,8 @@ public class BlockingTaskQueue {
 	private final AtomicInteger count = new AtomicInteger(0);
     private transient Node head;
     private transient Node last;
-	private ClusterLock putLock = new ClusterLock();
-	private ClusterLock takeLock = new ClusterLock();
+	private ReentrantLock putLock = new ReentrantLock();
+	private ReentrantLock takeLock = new ReentrantLock();
 	private Condition notEmpty = takeLock.newCondition();
 	
 	BlockingTaskQueue() {
