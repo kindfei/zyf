@@ -7,8 +7,8 @@ import net.sf.hibernate.Hibernate;
 import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Query;
 import net.sf.hibernate.Session;
-import test.helper.CmdHelper;
 import test.hibernate.tables.mysql.Product;
+import zyf.helper.CmdHelper;
 
 public class TestL2Cache {
 	public static void main(String[] args) {

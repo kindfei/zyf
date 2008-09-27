@@ -12,8 +12,8 @@ import net.sf.hibernate.LockMode;
 import net.sf.hibernate.Query;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.Transaction;
-import test.helper.CmdHelper;
 import test.hibernate.tables.db2.Product;
+import zyf.helper.CmdHelper;
 
 public class TestLock {
 	public static void main(String[] args) {
