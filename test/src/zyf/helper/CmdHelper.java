@@ -28,7 +28,7 @@ public class CmdHelper {
 		try {
 			writer.print(msg + pauseMsg);
 			writer.flush();
-			System.in.read();
+			reader.readLine();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
