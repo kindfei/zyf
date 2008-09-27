@@ -24,5 +24,6 @@
 	<classpathentry kind="lib" path="/test/lib/hibernate-2.1/jboss-jmx.jar"/>
 	<classpathentry kind="lib" path="/test/lib/hibernate-2.1/jboss-common.jar"/>
 	<classpathentry kind="lib" path="/test/lib/hibernate-2.1/concurrent-1.3.3.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/test"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

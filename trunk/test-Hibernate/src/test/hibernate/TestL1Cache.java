@@ -8,8 +8,8 @@ import net.sf.hibernate.HibernateException;
 import net.sf.hibernate.Query;
 import net.sf.hibernate.Session;
 import net.sf.hibernate.Transaction;
-import test.helper.CmdHelper;
 import test.hibernate.tables.db2.Product;
+import zyf.helper.CmdHelper;
 
 public class TestL1Cache {
 	public static void main(String[] args) {
