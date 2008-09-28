@@ -1,18 +1,17 @@
 package fx.cluster.core;
 
 import java.util.concurrent.atomic.AtomicInteger;
-import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
-public class BlockingTaskQueue {
+public class ClusterTaskQueue {
 	private final AtomicInteger count = new AtomicInteger(0);
     private transient Node head;
     private transient Node last;
 	private ReentrantLock putLock = new ReentrantLock();
-	private ReentrantLock takeLock = new ReentrantLock();
-	private Condition notEmpty = takeLock.newCondition();
+	private ReentrantLock takeLock = new ReentrantLock(true);
+	private Object notEmpty = new Object();
 	
-	BlockingTaskQueue() {
+	ClusterTaskQueue() {
 		last = head = new Node(null);
 	}
 	
@@ -27,13 +26,9 @@ public class BlockingTaskQueue {
     }
 
     private void signalNotEmpty() {
-        final ReentrantLock takeLock = this.takeLock;
-        takeLock.lock();
-        try {
-            notEmpty.signal();
-        } finally {
-            takeLock.unlock();
-        }
+    	synchronized (notEmpty) {
+    		notEmpty.notify();
+		}
     }
     
     private void insert(Task task) {
@@ -66,68 +61,25 @@ public class BlockingTaskQueue {
     
     public Task take() throws InterruptedException {
     	Task task;
-        int c = -1;
         final AtomicInteger count = this.count;
         final ReentrantLock takeLock = this.takeLock;
         takeLock.lockInterruptibly();
         try {
             try {
-                while (count.get() == 0)
-                    notEmpty.await();
+        		if (count.get() == 0)
+	            	synchronized (notEmpty) {
+	            		while (count.get() == 0)
+	                		notEmpty.wait();
+					}
             } catch (InterruptedException ie) {
-                notEmpty.signal();
                 throw ie;
             }
 
             task = extract();
-            c = count.getAndDecrement();
-            if (c > 1)
-                notEmpty.signal();
+            count.getAndDecrement();
         } finally {
             takeLock.unlock();
         }
         return task;
     }
-    
-    public static void main(String[] args) {
-    	final BlockingTaskQueue queue = new BlockingTaskQueue();
-    	
-    	new Thread() {
-    		@Override
-    		public void run() {
-    			try {
-					for (int i = 0; i < 100; i++) {
-						queue.put(new Task(ExecuteMode.TASK_QUEUE, i + ""));
-						Thread.sleep(1000);
-					}
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-    		}
-    	}.start();
-    	
-    	class TakeThread extends Thread {
-    		@Override
-    		public void run() {
-    			try {
-					for (;;) {
-						System.out.println(Thread.currentThread().getName() + " - " + queue.take().getContent());
-					}
-				} catch (InterruptedException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-    		}
-    	}
-    	
-    	new TakeThread().start();
-    	new TakeThread().start();
-    	new TakeThread().start();
-    	new TakeThread().start();
-    	new TakeThread().start();
-    	new TakeThread().start();
-    	new TakeThread().start();
-    	new TakeThread().start();
-	}
 }
