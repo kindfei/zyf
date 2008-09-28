@@ -70,7 +70,10 @@
 					<class-expression>fx.cluster.core.ClusterLock</class-expression>
 				</include>
 				<include>
-					<class-expression>fx.cluster.core.TaskQueue</class-expression>
+					<class-expression>fx.cluster.core.ClusterTaskQueue</class-expression>
+				</include>
+				<include>
+					<class-expression>fx.cluster.core.ClusterTaskQueue$Node</class-expression>
 				</include>
 				<include>
 					<class-expression>fx.cluster.core.Task</class-expression>
@@ -93,6 +96,14 @@
 			<locks>
 				<autolock>
 					<method-expression>* fx.cluster.core.ClusterHandlerFactory.getClusterHandler(..)</method-expression>
+					<lock-level>write</lock-level>
+				</autolock>
+				<autolock>
+					<method-expression>* fx.cluster.core.ClusterTaskQueue.signalNotEmpty(..)</method-expression>
+					<lock-level>write</lock-level>
+				</autolock>
+				<autolock>
+					<method-expression>* fx.cluster.core.ClusterTaskQueue.take(..)</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>

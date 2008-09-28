@@ -1,6 +1,5 @@
 package fx.cluster.core;
 
-import java.util.List;
 import java.util.concurrent.ConcurrentHashMap;
 
 import org.apache.commons.logging.Log;
@@ -10,7 +9,7 @@ public class ClusterHandler {
 	private static final Log log = LogFactory.getLog(ClusterHandler.class);
 	
 	private ClusterLock lock = new ClusterLock();
-	private TaskQueue queue = new TaskQueue();
+	private ClusterTaskQueue queue = new ClusterTaskQueue();
 	private ConcurrentHashMap<String, Object> cache = new ConcurrentHashMap<String, Object>();
 	
 	private String procName;
@@ -27,17 +26,13 @@ public class ClusterHandler {
 		lock.unlock();
 	}
 	
-	void addTask(List<Task> tasks) {
-		queue.addAllTask(tasks);
+	void putTask(Task task) throws InterruptedException {
+		queue.put(task);
 	}
 	
 	Task takeTask(boolean fairTake) throws InterruptedException {
 		Task task = null;
-		if (fairTake) {
-			task = queue.fairTake();
-		} else {
-			task = queue.take();
-		}
+		task = queue.take();
 		
 		return task;
 	}

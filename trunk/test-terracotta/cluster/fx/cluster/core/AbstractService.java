@@ -78,7 +78,7 @@ public abstract class AbstractService<T> implements Service {
 						this.wait();
 					}
 					
-				}catch (InterruptedException e) {
+				} catch (InterruptedException e) {
 					log.info("Interrupted startup thread for shutdown. Name=" + getName());
 				} catch (Throwable e) {
 					log.error("Startup error. processor=" + procName, e);
@@ -191,7 +191,6 @@ public abstract class AbstractService<T> implements Service {
 				return;
 			}
 			
-			List<Task> list = new ArrayList<Task>();
 			for (Task task : tasks) {
 				ExecuteMode executeMode = task.getExecuteMode();
 				switch (executeMode) {
@@ -200,17 +199,13 @@ public abstract class AbstractService<T> implements Service {
 					break;
 
 				case TASK_QUEUE:
-					list.add(task);
+					putTask(task);
 					break;
 
 				case ALL_INVOKE:
 					dmiTask(task);
 					break;
 				}
-			}
-			
-			if (list.size() != 0) {
-				addTask(list);
 			}
 		} catch (Throwable e) {
 			log.error("Master process error. processor=" + procName, e);
@@ -225,6 +220,10 @@ public abstract class AbstractService<T> implements Service {
 	private class TaskTaker extends Thread {
 		private volatile boolean isActive = true;
 		
+		public TaskTaker() {
+			this.setDaemon(true);
+		}
+		
 		public void run() {
 			try {
 				while (isActive) {
@@ -238,12 +237,14 @@ public abstract class AbstractService<T> implements Service {
 				}
 			} catch (InterruptedException e) {
 				log.info("Interrupted TaskTaker for shutdown. Name=" + getName());
+			} catch (Throwable e) {
+				log.error("TaskTaker error. Name=" + getName(), e);
 			}
 		}
 		
 		public void end() {
 			isActive = false;
-			interrupt();
+			this.interrupt();
 		}
 	}
 	
@@ -286,9 +287,10 @@ public abstract class AbstractService<T> implements Service {
 	/**
 	 * Add task to task queue
 	 * @param task
+	 * @throws InterruptedException 
 	 */
-	private void addTask(List<Task> tasks) {
-		handler.addTask(tasks);
+	private void putTask(Task task) throws InterruptedException {
+		handler.putTask(task);
 	}
 	
 	/**

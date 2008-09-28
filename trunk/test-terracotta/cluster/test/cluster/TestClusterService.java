@@ -54,7 +54,7 @@ public class TestClusterService {
 	}
 	
 	public static void main(String[] args) {
-		testGroup();
+		testTimer();
 	}
 
 }
