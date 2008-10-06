@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.lang.reflect.Method;
+import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
@@ -133,7 +134,28 @@ public abstract class ServiceEntry {
 	}
 	
 	private void startListener() throws IOException {
-		Thread thread = new Thread(new CommandListener(listenPort, this), "CommandListener");
+		Thread thread = new Thread("CommandListener") {
+			private long count;
+			
+			public void run() {
+				try {
+					ServerSocket serverSocket = new ServerSocket(listenPort);
+					
+					while (true) {
+						final Socket socket = serverSocket.accept();
+						Thread thread = new Thread("CommandExecutor-" + count++) {
+							public void run() {
+								onCommand(socket);
+							}
+						};
+						thread.setDaemon(false);
+						thread.start();
+					}
+				} catch (Throwable e) {
+					log.error("Listen Command error.", e);
+				}
+			}
+		};
 		thread.setDaemon(true);
 		thread.start();
 	}

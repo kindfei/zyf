@@ -4,6 +4,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.LinkedBlockingQueue;
+import java.util.concurrent.locks.ReentrantLock;
 
 /**
  * TaskQueue
@@ -13,7 +14,7 @@ import java.util.concurrent.LinkedBlockingQueue;
 public class TaskQueue extends LinkedBlockingQueue<Task> {
 	private static final long serialVersionUID = -3202737378383193112L;
 	
-	private ClusterLock lock = new ClusterLock(true);
+	private ReentrantLock lock = new ReentrantLock(true);
 	
 	private Map<String, GroupTaskFilter> map = new ConcurrentHashMap<String, GroupTaskFilter>();
 	
