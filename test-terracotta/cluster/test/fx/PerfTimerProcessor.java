@@ -13,15 +13,15 @@ import fx.cluster.core.ExecuteMode;
 import fx.cluster.core.Task;
 import fx.cluster.core.TimerProcessor;
 
-public class TestPerformanceProcessor extends TimerProcessor {
-	private static final Log log = LogFactory.getLog(TestPerformanceProcessor.class);
+public class PerfTimerProcessor extends TimerProcessor {
+	private static final Log log = LogFactory.getLog(PerfTimerProcessor.class);
 	
 	private boolean isFair;
 	private int takerSize;
 	private int counter;
 	private String nodeId = System.getProperty("nodeId");
 	
-	TestPerformanceProcessor(boolean isFair, int takerSize) {
+	PerfTimerProcessor(boolean isFair, int takerSize) {
 		this.isFair = isFair;
 		this.takerSize = takerSize;
 	}

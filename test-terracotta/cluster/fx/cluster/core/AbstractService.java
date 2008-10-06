@@ -244,7 +244,6 @@ public abstract class AbstractService<T> implements Service {
 		
 		public void end() {
 			isActive = false;
-			this.interrupt();
 		}
 	}
 	

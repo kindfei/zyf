@@ -8,10 +8,10 @@ import fx.cluster.core.ServiceFactory;
 import fx.cluster.core.ServiceMode;
 import fx.service.core.ServiceEntry;
 
-public class TestCluster extends ServiceEntry {
+public class PerfTestService extends ServiceEntry {
 	private Service service;
 
-	public TestCluster(int listenPort) {
+	public PerfTestService(int listenPort) {
 		super(listenPort);
 	}
 
@@ -35,9 +35,9 @@ public class TestCluster extends ServiceEntry {
 		}
 		
 		if (isFair) {
-			service = ServiceFactory.getTimerDrivenService(ServiceMode.ACTIVE_STANDBY, new TestPerformanceProcessor(true, 1), 1000 * 10);
+			service = ServiceFactory.getTimerDrivenService(ServiceMode.ACTIVE_STANDBY, new PerfTimerProcessor(true, 1), 1000 * 10);
 		} else {
-			service = ServiceFactory.getTimerDrivenService(ServiceMode.ACTIVE_STANDBY, takerSize, new TestPerformanceProcessor(false, takerSize), 1000 * 10);
+			service = ServiceFactory.getTimerDrivenService(ServiceMode.ACTIVE_STANDBY, takerSize, new PerfTimerProcessor(false, takerSize), 1000 * 10);
 		}
 		
 		service.startup();
@@ -45,7 +45,7 @@ public class TestCluster extends ServiceEntry {
 	}
 	
 	public static void main(String[] args) {
-		TestCluster inst = new TestCluster(Integer.parseInt(args[1]));
+		PerfTestService inst = new PerfTestService(Integer.parseInt(args[1]));
 		inst.process(args);
 	}
 }
