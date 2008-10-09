@@ -5,7 +5,7 @@
 	xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-4.xsd">
 
 	<servers>
-		<server host="192.168.0.10" name="server1">
+		<server host="localhost" name="server1">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
 			<l2-group-port>9530</l2-group-port>
@@ -62,49 +62,49 @@
 			<locks>
 				<autolock>
 					<method-expression>
-						void test.terracota.LockingTest.writeLock(..)
+						void test.terracota.TestLocking.writeLock(..)
 					</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
 					<method-expression>
-						void test.terracota.LockingTest.readLock(..)
+						void test.terracota.TestLocking.readLock(..)
 					</method-expression>
 					<lock-level>read</lock-level>
 				</autolock>
 				<autolock>
 					<method-expression>
-						void test.terracota.LockingTest.concurrentLock(..)
+						void test.terracota.TestLocking.concurrentLock(..)
 					</method-expression>
 					<lock-level>concurrent</lock-level>
 				</autolock>
 				<autolock auto-synchronized="true">
 					<method-expression>
-						void test.terracota.LockingTest.asWriteLock(..)
+						void test.terracota.TestLocking.asWriteLock(..)
 					</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock auto-synchronized="true">
 					<method-expression>
-						void test.terracota.LockingTest.asReadLock(..)
+						void test.terracota.TestLocking.asReadLock(..)
 					</method-expression>
 					<lock-level>read</lock-level>
 				</autolock>
 				<autolock auto-synchronized="true">
 					<method-expression>
-						void test.terracota.LockingTest.asConcurrentLock(..)
+						void test.terracota.TestLocking.asConcurrentLock(..)
 					</method-expression>
 					<lock-level>concurrent</lock-level>
 				</autolock>
 				<autolock>
 					<method-expression>
-						void test.terracota.LockingTest.writeLock1(..)
+						void test.terracota.TestLocking.writeLock1(..)
 					</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
 					<method-expression>
-						void test.terracota.LockingTest.writeLock2(..)
+						void test.terracota.TestLocking.writeLock2(..)
 					</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
@@ -112,17 +112,22 @@
 			<roots>
 				<root>
 					<field-name>
-						test.terracota.LockingTest.instance
+						test.terracota.TestLocking.instance
 					</field-name>
 				</root>
 				<root>
 					<field-name>
-						test.terracota.HaTest.instance
+						test.terracota.TestHa.instance
 					</field-name>
 				</root>
 				<root>
 					<field-name>
 						test.terracota.TestTransient.instance
+					</field-name>
+				</root>
+				<root>
+					<field-name>
+						test.terracota.TestCachePerf.instance
 					</field-name>
 				</root>
 			</roots>

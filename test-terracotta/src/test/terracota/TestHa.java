@@ -6,8 +6,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import zyf.helper.CmdHelper;
 
-public class HaTest {
-	public static final HaTest instance = new HaTest();
+public class TestHa {
+	public static final TestHa instance = new TestHa();
 	
 	private BlockingQueue<String> queue = new LinkedBlockingQueue<String>();
 	private ReentrantLock lock = new ReentrantLock();
