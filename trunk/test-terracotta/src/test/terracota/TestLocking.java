@@ -5,8 +5,8 @@ import java.util.concurrent.locks.ReentrantLock;
 
 import zyf.helper.CmdHelper;
 
-public class LockingTest {
-	public static LockingTest instance = new LockingTest();
+public class TestLocking {
+	public static TestLocking instance = new TestLocking();
 	
 	int i = 0;
 	

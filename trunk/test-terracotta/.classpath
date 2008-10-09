@@ -3,6 +3,7 @@
 	<classpathentry kind="src" path="src"/>
 	<classpathentry kind="src" path="demo"/>
 	<classpathentry kind="src" path="cluster"/>
+	<classpathentry kind="src" path="memcached"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/test"/>
 	<classpathentry kind="lib" path="/test/lib/jboss-4.0.5.GA/jbossall-client.jar" sourcepath="E:/Library/Sun/jms1.1/src/share"/>
@@ -15,5 +16,6 @@
 	<classpathentry kind="lib" path="/test/lib/Apache/commons/commons-beanutils.jar"/>
 	<classpathentry kind="lib" path="conf"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/test-JMS"/>
+	<classpathentry kind="lib" path="/test/lib/java_memcached-release_2.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
