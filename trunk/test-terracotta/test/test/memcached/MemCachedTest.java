@@ -17,7 +17,7 @@
  * @author Greg Whalin <greg@meetup.com> 
  * @version 1.5.2
  */
-package com.danga.MemCached.test;
+package test.memcached;
 
 import com.danga.MemCached.*;
 import java.util.*;
@@ -40,7 +40,7 @@ public class MemCachedTest {
 	 */
 	public static void main(String[] args) {
 
-		String[] serverlist = { "localhost:11211" };
+		String[] serverlist = { "10.4.6.218:11211" };
 
 		// initialize the pool for memcache servers
 		SockIOPool pool = SockIOPool.getInstance();
