@@ -9,7 +9,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.Future;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+
 public class TestCachePerf {
+	public static final Log log = LogFactory.getLog(TestCachePerf.class);
+	
 	public static final TestCachePerf instance = new TestCachePerf();
 	
 	private ConcurrentHashMap<String, Object> map = new ConcurrentHashMap<String, Object>();
@@ -54,12 +59,12 @@ public class TestCachePerf {
 			List<Future<StringBuilder>> futures = pool.invokeAll(tasks);
 			for (Future<StringBuilder> future : futures) {
 				StringBuilder result = future.get();
-				System.out.println(result);
+				log.info(result);
 			}
 		} catch (InterruptedException e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
 		} catch (ExecutionException e) {
-			e.printStackTrace();
+			log.error(e.getMessage(), e);
 		}
 		
 		System.exit(1);
