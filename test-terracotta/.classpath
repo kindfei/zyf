@@ -1,21 +1,21 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src"/>
-	<classpathentry kind="src" path="demo"/>
+	<classpathentry kind="src" path="tc-demo"/>
+	<classpathentry kind="src" path="memcached-java-client"/>
+	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="cluster"/>
-	<classpathentry kind="src" path="memcached"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/test"/>
+	<classpathentry kind="con" path="com.soyatec.uml.CONTAINER"/>
 	<classpathentry kind="lib" path="/test/lib/jboss-4.0.5.GA/jbossall-client.jar" sourcepath="E:/Library/Sun/jms1.1/src/share"/>
 	<classpathentry kind="lib" path="/test/lib/quartz-1.5.2.jar"/>
-	<classpathentry kind="con" path="com.soyatec.uml.CONTAINER"/>
 	<classpathentry kind="lib" path="/test/lib/Apache/commons/commons-logging.jar"/>
 	<classpathentry kind="lib" path="/test/lib/Apache/log4j-1.2.13.jar"/>
 	<classpathentry kind="lib" path="/test/lib/Apache/commons/commons-collections-3.1.jar"/>
 	<classpathentry kind="lib" path="/test/lib/Apache/commons/commons-digester-1.7.jar"/>
 	<classpathentry kind="lib" path="/test/lib/Apache/commons/commons-beanutils.jar"/>
-	<classpathentry kind="lib" path="conf"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/test-JMS"/>
 	<classpathentry kind="lib" path="/test/lib/java_memcached-release_2.0.1.jar"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/test"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/test-JMS"/>
+	<classpathentry kind="lib" path="conf"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
