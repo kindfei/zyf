@@ -1,9 +1,9 @@
 package test.cluster.tasks;
 
-public class TestTask {
+public class TestTaskBean {
 	private String str;
 	
-	public TestTask(String str) {
+	public TestTaskBean(String str) {
 		this.str = str;
 	}
 	

@@ -6,7 +6,7 @@ import java.util.List;
 import fx.cluster.core.Task;
 import fx.cluster.core.TimerProcessor;
 
-import test.cluster.tasks.TestTask;
+import test.cluster.tasks.TestTaskBean;
 
 public class TestGroupTimerProcessor extends TimerProcessor {
 	private int i;
@@ -14,7 +14,7 @@ public class TestGroupTimerProcessor extends TimerProcessor {
 	public List<Task> masterProcess() {
 		int counter = i++;
 		
-		Task task = new Task(counter % 2 + "", new TestTask(counter + ""));
+		Task task = new Task(counter % 2 + "", new TestTaskBean(counter + ""));
 		
 		List<Task> list = new ArrayList<Task>();
 		list.add(task);
@@ -23,7 +23,7 @@ public class TestGroupTimerProcessor extends TimerProcessor {
 	}
 
 	public void workerProcess(Task task) {
-		TestTask bean = (TestTask) task.getContent();
+		TestTaskBean bean = (TestTaskBean) task.getContent();
 		String content = bean.getStr();
 		try {
 			Thread.sleep(2000);

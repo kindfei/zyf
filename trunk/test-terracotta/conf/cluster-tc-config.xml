@@ -5,7 +5,7 @@
 
 	<servers>
 	
-		<server host="10.4.6.217" name="server1">
+		<server host="localhost" name="server1">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
 			<l2-group-port>9530</l2-group-port>
@@ -96,14 +96,6 @@
 			<locks>
 				<autolock>
 					<method-expression>* fx.cluster.core.ClusterHandlerFactory.getClusterHandler(..)</method-expression>
-					<lock-level>write</lock-level>
-				</autolock>
-				<autolock>
-					<method-expression>* fx.cluster.core.ClusterTaskQueue.signalNotEmpty(..)</method-expression>
-					<lock-level>write</lock-level>
-				</autolock>
-				<autolock>
-					<method-expression>* fx.cluster.core.ClusterTaskQueue.take(..)</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>

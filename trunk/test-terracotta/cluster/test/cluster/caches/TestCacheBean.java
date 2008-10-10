@@ -1,6 +1,6 @@
 package test.cluster.caches;
 
-public class TestCache {
+public class TestCacheBean {
 	
 	private String str;
 	
