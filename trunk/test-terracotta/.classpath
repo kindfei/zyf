@@ -3,7 +3,7 @@
 	<classpathentry kind="src" path="tc-demo"/>
 	<classpathentry kind="src" path="memcached-java-client"/>
 	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="src" path="cluster"/>
+	<classpathentry kind="src" path="core"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="conf"/>
 	<classpathentry kind="con" path="com.soyatec.uml.CONTAINER"/>
