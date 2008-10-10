@@ -11,7 +11,7 @@ import fx.cluster.core.ExecuteMode;
 import fx.cluster.core.MessageProcessor;
 import fx.cluster.core.Task;
 
-import test.cluster.tasks.TestTask;
+import test.cluster.tasks.TestTaskBean;
 
 public class TestMessageProcessor extends MessageProcessor {
 
@@ -33,7 +33,7 @@ public class TestMessageProcessor extends MessageProcessor {
 	}
 
 	public void workerProcess(Task task) {
-		TestTask bean = (TestTask) task.getContent();
+		TestTaskBean bean = (TestTaskBean) task.getContent();
 		String content = bean.getStr();
 		System.out.println(Thread.currentThread().getName() + " - " + content);
 	}

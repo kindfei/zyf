@@ -5,6 +5,7 @@
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="cluster"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="conf"/>
 	<classpathentry kind="con" path="com.soyatec.uml.CONTAINER"/>
 	<classpathentry kind="lib" path="/test/lib/jboss-4.0.5.GA/jbossall-client.jar" sourcepath="E:/Library/Sun/jms1.1/src/share"/>
 	<classpathentry kind="lib" path="/test/lib/quartz-1.5.2.jar"/>
@@ -16,6 +17,5 @@
 	<classpathentry kind="lib" path="/test/lib/java_memcached-release_2.0.1.jar"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/test"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/test-JMS"/>
-	<classpathentry kind="lib" path="conf"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

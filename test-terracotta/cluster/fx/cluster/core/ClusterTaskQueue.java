@@ -1,6 +1,7 @@
 package fx.cluster.core;
 
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
 public class ClusterTaskQueue {
@@ -9,7 +10,8 @@ public class ClusterTaskQueue {
     private transient Node last;
 	private ReentrantLock putLock = new ReentrantLock();
 	private ReentrantLock takeLock = new ReentrantLock(true);
-	private Object notEmpty = new Object();
+	private ReentrantLock waitLock = new ReentrantLock();
+	private Condition notEmpty = waitLock.newCondition();
 	
 	ClusterTaskQueue() {
 		last = head = new Node(null);
@@ -26,9 +28,12 @@ public class ClusterTaskQueue {
     }
 
     private void signalNotEmpty() {
-    	synchronized (notEmpty) {
-    		notEmpty.notify();
-		}
+    	waitLock.lock();
+    	try {
+    		notEmpty.signal();
+    	} finally {
+        	waitLock.unlock();
+    	}
     }
     
     private void insert(Task task) {
@@ -66,13 +71,17 @@ public class ClusterTaskQueue {
         takeLock.lockInterruptibly();
         try {
             try {
-        		if (count.get() == 0)
-	            	synchronized (notEmpty) {
+        		if (count.get() == 0) {
+        			waitLock.lockInterruptibly();
+	        		try {
 	            		while (count.get() == 0)
-	                		notEmpty.wait();
-					}
-            } catch (InterruptedException ie) {
-                throw ie;
+	                		notEmpty.await();
+	        		} finally {
+		            	waitLock.unlock();
+	        		}
+        		}
+            } catch (InterruptedException e) {
+                throw e;
             }
 
             task = extract();

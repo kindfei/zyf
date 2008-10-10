@@ -1,6 +1,7 @@
 package fx.cluster.core;
 
 import java.util.concurrent.ConcurrentHashMap;
+import java.util.concurrent.LinkedBlockingQueue;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -9,7 +10,8 @@ public class ClusterHandler {
 	private static final Log log = LogFactory.getLog(ClusterHandler.class);
 	
 	private ClusterLock lock = new ClusterLock();
-	private ClusterTaskQueue queue = new ClusterTaskQueue();
+//	private ClusterTaskQueue queue = new ClusterTaskQueue();
+	private LinkedBlockingQueue<Task> queue = new LinkedBlockingQueue<Task>();
 	private ConcurrentHashMap<String, Object> cache = new ConcurrentHashMap<String, Object>();
 	
 	private String procName;
