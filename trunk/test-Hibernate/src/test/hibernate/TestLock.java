@@ -6,12 +6,13 @@ import java.sql.ResultSet;
 import java.util.Iterator;
 import java.util.List;
 
-import net.sf.hibernate.Hibernate;
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.LockMode;
-import net.sf.hibernate.Query;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.Transaction;
+import org.hibernate.Hibernate;
+import org.hibernate.HibernateException;
+import org.hibernate.LockMode;
+import org.hibernate.Query;
+import org.hibernate.classic.Session;
+import org.hibernate.Transaction;
+
 import test.hibernate.tables.db2.Product;
 import zyf.helper.CmdHelper;
 
