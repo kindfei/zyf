@@ -4,12 +4,12 @@ import java.util.Iterator;
 import java.util.Map;
 import java.util.Set;
 
+import org.hibernate.HibernateException;
+import org.hibernate.Session;
+
 import test.hibernate.tables.mysql.Customer;
 import test.hibernate.tables.mysql.Email;
 import test.hibernate.tables.mysql.Product;
-
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
 
 public class TestCollection {
 	public static void main(String[] args) {

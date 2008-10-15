@@ -1,16 +1,18 @@
 package test.hibernate;
 
-import net.sf.hibernate.HibernateException;
-import net.sf.hibernate.Session;
-import net.sf.hibernate.SessionFactory;
-import net.sf.hibernate.cfg.Configuration;
+import org.hibernate.HibernateException;
+import org.hibernate.classic.Session;
+import org.hibernate.SessionFactory;
+import org.hibernate.cfg.Configuration;
 
 public class SessionUtils {
 	private final static String DB2_CFG_XML = "DB2.cfg.xml";
 	private final static String MYSQL_CFG_XML = "MySQL.cfg.xml";
+	private final static String MYSQL_REPL_CFG_XML = "MySQL.repl.cfg.xml";
 	
 	private static SessionManager SMDB2;
 	private static SessionManager SMMySQL;
+	private static SessionManager SMMySQLRepl;
 	
 	public static void init() throws HibernateException {
 		SMDB2 = new SessionManager(DB2_CFG_XML);
@@ -29,6 +31,12 @@ public class SessionUtils {
 		return SMMySQL.createSession();
 	}
 
+	public synchronized static Session getSessionMySQLRepl() throws HibernateException {
+		if (SMMySQLRepl == null)
+			SMMySQLRepl = new SessionManager(MYSQL_REPL_CFG_XML);
+		return SMMySQLRepl.getSession();
+	}
+
 	public synchronized static void closeSessionDB2() throws HibernateException {
 		if (SMDB2 != null)
 			SMDB2.closeSession();
@@ -39,20 +47,20 @@ public class SessionUtils {
 			SMMySQL.closeSession();
 	}
 	
-	public static void evictCacheDB2(Class clz) throws HibernateException {
+	public static void evictCacheDB2(Class<?> clz) throws HibernateException {
 		SMDB2.evict(clz);
 	}
 	
-	public static void evictCacheMySQL(Class clz) throws HibernateException {
+	public static void evictCacheMySQL(Class<?> clz) throws HibernateException {
 		SMMySQL.evict(clz);
 	}
 	
 	
 	private static class SessionManager {
 		private SessionFactory sf;
-		private ThreadLocal tlSession = new ThreadLocal();
-		private ThreadLocal tlCounter = new ThreadLocal() {
-			protected synchronized Object initialValue() {
+		private ThreadLocal<Session> tlSession = new ThreadLocal<Session>();
+		private ThreadLocal<Integer> tlCounter = new ThreadLocal<Integer>() {
+			protected synchronized Integer initialValue() {
 				return new Integer(0);
 			}
 		};
@@ -64,8 +72,8 @@ public class SessionUtils {
 		}
 		
 		private Session createSession() throws HibernateException {
-			Session sess = (Session) tlSession.get();
-			int count = ((Integer) tlCounter.get()).intValue();
+			Session sess = tlSession.get();
+			int count = tlCounter.get().intValue();
 			
 			if (sess == null || !sess.isOpen()) {
 				sess = sf.openSession();
@@ -99,8 +107,14 @@ public class SessionUtils {
 			tlCounter.set(new Integer(count));
 		}
 		
-		private void evict(Class clz) throws HibernateException {
+		private void evict(Class<?> clz) throws HibernateException {
 			sf.evict(clz);
+		}
+		
+		private Session getSession() {
+			Session sess = sf.getCurrentSession();
+			sess.beginTransaction();
+			return sess;
 		}
 	}
 }
