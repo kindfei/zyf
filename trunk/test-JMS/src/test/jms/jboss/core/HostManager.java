@@ -1,4 +1,4 @@
-package test.jms.jboss;
+package test.jms.jboss.core;
 
 import java.util.Iterator;
 import java.util.LinkedList;

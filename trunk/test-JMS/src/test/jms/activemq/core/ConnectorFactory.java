@@ -1,4 +1,4 @@
-package test.jms.activemq;
+package test.jms.activemq.core;
 
 import javax.jms.JMSException;
 

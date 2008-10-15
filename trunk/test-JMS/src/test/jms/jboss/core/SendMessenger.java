@@ -1,4 +1,4 @@
-package test.jms.jboss;
+package test.jms.jboss.core;
 
 import java.io.Serializable;
 import java.util.HashMap;

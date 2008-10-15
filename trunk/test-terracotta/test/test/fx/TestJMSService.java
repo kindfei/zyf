@@ -6,7 +6,7 @@ import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import test.jms.activemq.Sender;
+import test.jms.activemq.core.Sender;
 import fx.cluster.core.Service;
 import fx.cluster.core.ServiceFactory;
 import fx.cluster.core.ServiceMode;
