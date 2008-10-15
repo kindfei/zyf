@@ -1,4 +1,4 @@
-package test;
+package test.jms;
 
 import java.math.BigDecimal;
 import java.util.HashMap;
@@ -9,16 +9,16 @@ import javax.jms.MessageListener;
 import javax.jms.ObjectMessage;
 import javax.jms.TextMessage;
 
-import test.jms.jboss.BuildException;
-import test.jms.jboss.ConnectException;
-import test.jms.jboss.FailoverException;
-import test.jms.jboss.MessageAdapter;
-import test.jms.jboss.MessageReceiver;
-import test.jms.jboss.MessageSender;
-import test.jms.jboss.P2PMessageAdapter;
-import test.jms.jboss.PubMessageAdapter;
-import test.jms.jboss.RecvMessenger;
-import test.jms.jboss.SendMessenger;
+import test.jms.jboss.core.BuildException;
+import test.jms.jboss.core.ConnectException;
+import test.jms.jboss.core.FailoverException;
+import test.jms.jboss.core.MessageAdapter;
+import test.jms.jboss.core.MessageReceiver;
+import test.jms.jboss.core.MessageSender;
+import test.jms.jboss.core.P2PMessageAdapter;
+import test.jms.jboss.core.PubMessageAdapter;
+import test.jms.jboss.core.RecvMessenger;
+import test.jms.jboss.core.SendMessenger;
 
 public class TestJBoss {
 	

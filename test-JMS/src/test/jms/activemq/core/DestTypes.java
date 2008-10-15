@@ -1,4 +1,4 @@
-package test.jms.activemq;
+package test.jms.activemq.core;
 
 public enum DestTypes {
 	Queue, Topic

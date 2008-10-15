@@ -1,4 +1,4 @@
-package test.jms.jboss;
+package test.jms.jboss.core;
 
 public class ConnectException extends Exception {
 	private static final long serialVersionUID = -381686124151450713L;

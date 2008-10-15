@@ -1,4 +1,4 @@
-package test.jms.jboss;
+package test.jms.jboss.core;
 
 import java.util.ArrayList;
 import java.util.HashSet;

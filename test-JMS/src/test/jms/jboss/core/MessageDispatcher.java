@@ -1,4 +1,4 @@
-package test.jms.jboss;
+package test.jms.jboss.core;
 
 import javax.jms.Message;
 import javax.jms.MessageListener;
