@@ -2,9 +2,15 @@
 
 <tc:tc-config xmlns:tc="http://www.terracotta.org/config" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-4.xsd">
-
-	<servers>
 	
+	<tc-properties>
+		<property name="l2.l1reconnect.enabled" value="true" />
+		<property name="l2.l1reconnect.timeout.millis" value="5000" />
+		<property name="l2.nha.tcgroupcomm.reconnect.enabled" value="true" />
+		<property name="l2.nha.tcgroupcomm.reconnect.timeout" value="5000" />
+	</tc-properties>
+	
+	<servers>
 		<server host="localhost" name="server1">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
@@ -24,7 +30,6 @@
 				</garbage-collection>
 			</dso>
 		</server>
-		
 		<server host="10.4.6.218" name="server2">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
@@ -44,14 +49,12 @@
 				</garbage-collection>
 			</dso>
 		</server>
-		
 		<ha>
 			<mode>networked-active-passive</mode>
 			<networked-active-passive>
 				<election-time>5</election-time>
 			</networked-active-passive>
 		</ha>
-		
 	</servers>
 
 	<clients>
@@ -61,7 +64,6 @@
 
 	<application>
 		<dso>
-		
 			<instrumented-classes>
 				<include>
 					<class-expression>fx.cluster.core.ClusterHandler</class-expression>
@@ -92,7 +94,6 @@
 					<class-expression>test.cluster.tasks.*</class-expression>
 				</include>
 			</instrumented-classes>
-			
 			<locks>
 				<autolock>
 					<method-expression>* fx.cluster.core.ClusterHandlerFactory.getClusterHandler(..)</method-expression>
@@ -115,17 +116,14 @@
 					<lock-level>read</lock-level>
 				</autolock>
 			</locks>
-			
 			<roots>
 				<root>
 					<field-name>fx.cluster.core.ClusterHandlerFactory.instance</field-name>
 				</root>
 			</roots>
-			
 			<distributed-methods>
 				<method-expression>void fx.cluster.core.ClusterHandler.dmiTask(..)</method-expression>
 			</distributed-methods>
-			
 		</dso>
 	</application>
 
