@@ -9,7 +9,7 @@ import org.apache.commons.logging.LogFactory;
 import test.cluster.tasks.TestPerfTaskBean;
 
 import fx.cluster.core.ExecuteMode;
-import fx.cluster.core.Task;
+import fx.cluster.core.ClusterTask;
 import fx.cluster.core.TimerProcessor;
 
 public class TestPerfTimerProcessor extends TimerProcessor {
@@ -35,15 +35,15 @@ public class TestPerfTimerProcessor extends TimerProcessor {
 	}
 
 	@Override
-	public List<Task> masterProcess() {
-		List<Task> tasks = new ArrayList<Task>();
+	public List<ClusterTask> masterProcess() {
+		List<ClusterTask> tasks = new ArrayList<ClusterTask>();
 		TestPerfTaskBean bean = null;
 		
 		for (int i = 0; i < msgCount; i++) {
 			bean = new TestPerfTaskBean();
 			bean.setSeq(i);
 			bean.setContent(content);
-			tasks.add(new Task(ExecuteMode.TASK_QUEUE, bean));
+			tasks.add(new ClusterTask(ExecuteMode.TASK_QUEUE, bean));
 		}
 		
 		long st = System.currentTimeMillis();
@@ -53,7 +53,7 @@ public class TestPerfTimerProcessor extends TimerProcessor {
 	}
 
 	@Override
-	public void workerProcess(Task task) {
+	public void workerProcess(ClusterTask task) {
 		TestPerfTaskBean bean = (TestPerfTaskBean) task.getContent();
 		log.info(" Got task " + bean.getSeq());
 		long st = bean.getTime();

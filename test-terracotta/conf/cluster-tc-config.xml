@@ -11,7 +11,7 @@
 	</tc-properties>
 	
 	<servers>
-		<server host="localhost" name="server1">
+		<server host="10.4.6.218" name="server1">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
 			<l2-group-port>9530</l2-group-port>
@@ -30,7 +30,7 @@
 				</garbage-collection>
 			</dso>
 		</server>
-		<server host="10.4.6.218" name="server2">
+		<server host="localhost" name="server2">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
 			<l2-group-port>9530</l2-group-port>
@@ -78,14 +78,7 @@
 					<class-expression>fx.cluster.core.ClusterTaskQueue$Node</class-expression>
 				</include>
 				<include>
-					<class-expression>fx.cluster.core.Task</class-expression>
-				</include>
-				<include>
-					<class-expression>fx.cluster.core.GroupTaskFilter</class-expression>
-					<honor-transient>true</honor-transient>
-					<on-load>
-						<method>onload</method>
-					</on-load>
+					<class-expression>fx.cluster.core.ClusterTask</class-expression>
 				</include>
 				<include>
 					<class-expression>test.cluster.caches.*</class-expression>
@@ -100,14 +93,6 @@
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
-					<method-expression>* fx.cluster.core.TaskQueue.add(..)</method-expression>
-					<lock-level>write</lock-level>
-				</autolock>
-				<autolock>
-					<method-expression>void fx.cluster.core.GroupTaskFilter.run()</method-expression>
-					<lock-level>write</lock-level>
-				</autolock>
-				<autolock>
 					<method-expression>void test.cluster.caches.*.set*(..)</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
@@ -118,7 +103,7 @@
 			</locks>
 			<roots>
 				<root>
-					<field-name>fx.cluster.core.ClusterHandlerFactory.instance</field-name>
+					<field-name>fx.cluster.core.ClusterHandlerFactory.map</field-name>
 				</root>
 			</roots>
 			<distributed-methods>

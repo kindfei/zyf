@@ -8,24 +8,24 @@ import org.quartz.StatefulJob;
 
 import fx.cluster.core.ExecuteMode;
 import fx.cluster.core.QuartzProcessor;
-import fx.cluster.core.Task;
+import fx.cluster.core.ClusterTask;
 
 import test.cluster.tasks.TestTaskBean;
 
 public class TestQuartzProcessor extends QuartzProcessor implements StatefulJob {
 	private int i;
 
-	public List<Task> masterProcess(JobExecutionContext context) {
+	public List<ClusterTask> masterProcess(JobExecutionContext context) {
 		
-		Task task = new Task(ExecuteMode.TASK_QUEUE, new TestTaskBean(i++ + ""));
+		ClusterTask task = new ClusterTask(ExecuteMode.TASK_QUEUE, new TestTaskBean(i++ + ""));
 		
-		List<Task> list = new ArrayList<Task>();
+		List<ClusterTask> list = new ArrayList<ClusterTask>();
 		list.add(task);
 		
 		return list;
 	}
 
-	public void workerProcess(Task task) {
+	public void workerProcess(ClusterTask task) {
 		TestTaskBean bean = (TestTaskBean) task.getContent();
 		String content = bean.getStr();
 		System.out.println(Thread.currentThread().getName() + " - " + content);}

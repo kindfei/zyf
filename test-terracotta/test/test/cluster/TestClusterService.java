@@ -43,16 +43,6 @@ public class TestClusterService {
 		servive.shutdown();
 	}
 	
-	public static void testGroup() {
-		Service servive = ServiceFactory.getTimerDrivenService(ServiceMode.ACTIVE_STANDBY, new TestGroupTimerProcessor(), 500);
-		
-		servive.startup();
-		
-		CmdHelper.pause("Shutdown.........");
-		
-		servive.shutdown();
-	}
-	
 	public static void main(String[] args) {
 		testTimer();
 	}

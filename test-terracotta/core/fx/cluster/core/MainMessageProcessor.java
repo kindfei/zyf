@@ -12,14 +12,14 @@ import javax.jms.Message;
  */
 public abstract class MainMessageProcessor extends MessageProcessor {
 
-	public final List<Task> masterProcess(Message msg) {
+	public final List<ClusterTask> masterProcess(Message msg) {
 		mainProcess(msg);
 		return null;
 	}
 	
 	public abstract void mainProcess(Message msg);
 
-	public final void workerProcess(Task task) {
+	public final void workerProcess(ClusterTask task) {
 	}
 
 }

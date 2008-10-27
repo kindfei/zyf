@@ -10,9 +10,9 @@ import java.util.List;
  */
 public abstract class TimerProcessor extends AbstractProcessor<Object> {
 	
-	public final List<Task> masterProcess(Object obj) {
+	public final List<ClusterTask> masterProcess(Object obj) {
 		return masterProcess();
 	}
 	
-	public abstract List<Task> masterProcess();
+	public abstract List<ClusterTask> masterProcess();
 }

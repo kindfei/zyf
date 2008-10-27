@@ -9,21 +9,21 @@ import javax.jms.ObjectMessage;
 
 import fx.cluster.core.ExecuteMode;
 import fx.cluster.core.MessageProcessor;
-import fx.cluster.core.Task;
+import fx.cluster.core.ClusterTask;
 
 import test.cluster.tasks.TestTaskBean;
 
 public class TestMessageProcessor extends MessageProcessor {
 
-	public List<Task> masterProcess(Message msg) {
-		List<Task> list = null;
+	public List<ClusterTask> masterProcess(Message msg) {
+		List<ClusterTask> list = null;
 		
 		try {
 			Object obj = ((ObjectMessage) msg).getObject();
 			
-			Task task = new Task(ExecuteMode.TASK_QUEUE, obj);
+			ClusterTask task = new ClusterTask(ExecuteMode.TASK_QUEUE, obj);
 			
-			list = new ArrayList<Task>();
+			list = new ArrayList<ClusterTask>();
 			list.add(task);
 		} catch (JMSException e) {
 			e.printStackTrace();
@@ -32,7 +32,7 @@ public class TestMessageProcessor extends MessageProcessor {
 		return list;
 	}
 
-	public void workerProcess(Task task) {
+	public void workerProcess(ClusterTask task) {
 		TestTaskBean bean = (TestTaskBean) task.getContent();
 		String content = bean.getStr();
 		System.out.println(Thread.currentThread().getName() + " - " + content);
