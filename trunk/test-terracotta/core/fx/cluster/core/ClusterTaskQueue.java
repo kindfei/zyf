@@ -4,25 +4,39 @@ import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;
 import java.util.concurrent.locks.ReentrantLock;
 
+/**
+ * Cluster task queue
+ * @author zhangyf
+ *
+ */
 public class ClusterTaskQueue {
 	private final AtomicInteger count = new AtomicInteger(0);
     private transient Node head;
     private transient Node last;
 	private ReentrantLock putLock = new ReentrantLock();
-	private ReentrantLock takeLock = new ReentrantLock(true);
+	private ReentrantLock takeLock;
 	private ReentrantLock waitLock = new ReentrantLock();
 	private Condition notEmpty = waitLock.newCondition();
 	
-	ClusterTaskQueue() {
+	private boolean fairTake;
+	
+	ClusterTaskQueue(boolean fairTake) {
 		last = head = new Node(null);
+		
+		this.fairTake = fairTake;
+		takeLock =  new ReentrantLock(fairTake);
+	}
+	
+	boolean isFairTake() {
+		return fairTake;
 	}
 	
     static class Node {
-        volatile Task task;
+        volatile ClusterTask task;
         
         Node next;
         
-        Node(Task task) {
+        Node(ClusterTask task) {
         	this.task = task;
         }
     }
@@ -36,19 +50,19 @@ public class ClusterTaskQueue {
     	}
     }
     
-    private void insert(Task task) {
+    private void insert(ClusterTask task) {
         last = last.next = new Node(task);
     }
 
-    private Task extract() {
+    private ClusterTask extract() {
         Node first = head.next;
         head = first;
-        Task task = first.task;
+        ClusterTask task = first.task;
         first.task = null;
         return task;
     }
     
-    public void put(Task task) throws InterruptedException {
+    public void put(ClusterTask task) throws InterruptedException {
         if (task == null) throw new NullPointerException();
         int c = -1;
         final ReentrantLock putLock = this.putLock;
@@ -64,8 +78,8 @@ public class ClusterTaskQueue {
             signalNotEmpty();
     }
     
-    public Task take() throws InterruptedException {
-    	Task task;
+    public ClusterTask take() throws InterruptedException {
+    	ClusterTask task;
         final AtomicInteger count = this.count;
         final ReentrantLock takeLock = this.takeLock;
         takeLock.lockInterruptibly();
@@ -74,7 +88,7 @@ public class ClusterTaskQueue {
         		if (count.get() == 0) {
         			waitLock.lockInterruptibly();
 	        		try {
-	            		while (count.get() == 0)
+	            		if (count.get() == 0)
 	                		notEmpty.await();
 	        		} finally {
 		            	waitLock.unlock();

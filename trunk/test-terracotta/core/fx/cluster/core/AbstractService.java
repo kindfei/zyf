@@ -4,10 +4,10 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
-import java.util.concurrent.locks.Condition;
-import java.util.concurrent.locks.ReentrantLock;
+import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -25,8 +25,7 @@ public abstract class AbstractService<T> implements Service {
 	private ServiceMode serviceMode;
 	private int takerSize;
 	private boolean takerExecute;
-	private boolean fairTake;
-	private Processor<T> processor;
+	private AbstractProcessor<T> processor;
 	private String procName;
 
 	private ClusterHandler handler;
@@ -44,15 +43,15 @@ public abstract class AbstractService<T> implements Service {
 	 * @param fairTake whether use fair mode when take task from the queue
 	 * @param processor business implementation
 	 */
-	protected AbstractService(ServiceMode serviceMode, int takerSize, boolean takerExecute, boolean fairTake, Processor<T> processor) {
+	protected AbstractService(ServiceMode serviceMode, int takerSize, boolean takerExecute, boolean fairTake, AbstractProcessor<T> processor) {
 		this.serviceMode = serviceMode;
 		this.takerSize = takerSize;
 		this.takerExecute = takerExecute;
-		this.fairTake = fairTake;
 		this.processor = processor;
 		this.procName = processor.getClass().getName();
 		
-		handler = ClusterHandlerFactory.instance.getClusterHandler(procName);
+		handler = ClusterHandlerFactory.getClusterHandler(procName, fairTake);
+		processor.setHandler(handler);
 	}
 	
 	Processor<T> getProcessor() {
@@ -110,13 +109,41 @@ public abstract class AbstractService<T> implements Service {
 	}
 	
 	/**
+	 * WorkThreadFactory
+	 * @author zhangyf
+	 *
+	 */
+    private static class WorkThreadFactory implements ThreadFactory {
+        final ThreadGroup group;
+        final AtomicInteger threadNumber = new AtomicInteger(1);
+        final String namePrefix;
+
+        WorkThreadFactory(String name) {
+            SecurityManager s = System.getSecurityManager();
+            group = (s != null)? s.getThreadGroup() :
+                                 Thread.currentThread().getThreadGroup();
+            namePrefix = "pool-" + name + "-thread-";
+        }
+
+        public Thread newThread(Runnable r) {
+            Thread t = new Thread(group, r,
+                                  namePrefix + threadNumber.getAndIncrement(),
+                                  0);
+            t.setDaemon(true);
+            if (t.getPriority() != Thread.NORM_PRIORITY)
+                t.setPriority(Thread.NORM_PRIORITY);
+            return t;
+        }
+    }
+    
+	/**
 	 * Run startup operation.
 	 * @throws Exception
 	 */
 	private void runStartup() throws Exception {
 		threadPool = new ThreadPoolExecutor(0
 				, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS
-				, new SynchronousQueue<Runnable>());
+				, new SynchronousQueue<Runnable>(), new WorkThreadFactory(procName));
 		
 		TaskTaker taker = null;
 		for (int i = 0; i < takerSize; i++) {
@@ -163,7 +190,7 @@ public abstract class AbstractService<T> implements Service {
 			taker.end();
 		}
 		
-		threadPool.shutdown();
+//		threadPool.shutdown();
 		
 		log.info("Successfully stoped. processor=" + procName);
 	}
@@ -185,13 +212,13 @@ public abstract class AbstractService<T> implements Service {
 	 */
 	protected void process(T t) {
 		try {
-			List<Task> tasks = processor.masterProcess(t);
+			List<ClusterTask> tasks = processor.masterProcess(t);
 			
 			if (tasks == null) {
 				return;
 			}
 			
-			for (Task task : tasks) {
+			for (ClusterTask task : tasks) {
 				ExecuteMode executeMode = task.getExecuteMode();
 				switch (executeMode) {
 				case LOCAL_INVOKE:
@@ -227,7 +254,7 @@ public abstract class AbstractService<T> implements Service {
 		public void run() {
 			try {
 				while (isActive) {
-					Task task = handler.takeTask(fairTake);
+					ClusterTask task = handler.takeTask();
 					
 					if (takerExecute) {
 						execute(task);
@@ -251,21 +278,9 @@ public abstract class AbstractService<T> implements Service {
 	 * Execute worker process with the task.
 	 * @param task
 	 */
-	private void execute(Task task) {
+	void execute(ClusterTask task) {
 		try {
-			ReentrantLock groupLock = task.getGroupLock();
-			Condition finish = task.getFinish();
-			if (groupLock != null && finish != null) {
-				groupLock.lock();
-				try {
-					processor.workerProcess(task);
-				} finally {
-					finish.signalAll();
-					groupLock.unlock();
-				}
-			} else {
-				processor.workerProcess(task);
-			}
+			processor.workerProcess(task);
 		} catch (Throwable e) {
 			log.error("Worker process error. processor=" + procName, e);
 		}
@@ -275,7 +290,7 @@ public abstract class AbstractService<T> implements Service {
 	 * Local invoke worker process
 	 * @param task
 	 */
-	private synchronized void exeTask(final Task task) {
+	private synchronized void exeTask(final ClusterTask task) {
 		threadPool.execute(new Runnable() {
 			public void run() {
 				execute(task);
@@ -288,7 +303,7 @@ public abstract class AbstractService<T> implements Service {
 	 * @param task
 	 * @throws InterruptedException 
 	 */
-	private void putTask(Task task) throws InterruptedException {
+	private void putTask(ClusterTask task) throws InterruptedException {
 		handler.putTask(task);
 	}
 	
@@ -296,7 +311,7 @@ public abstract class AbstractService<T> implements Service {
 	 * Distributed invoke worker process
 	 * @param task
 	 */
-	private synchronized void dmiTask(Task task) {
+	private synchronized void dmiTask(ClusterTask task) {
 		handler.dmiTask(task);
 	}
 
