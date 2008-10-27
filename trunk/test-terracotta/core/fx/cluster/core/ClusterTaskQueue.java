@@ -62,7 +62,7 @@ public class ClusterTaskQueue {
         return task;
     }
     
-    public void put(ClusterTask task) throws InterruptedException {
+    public void putTask(ClusterTask task) throws InterruptedException {
         if (task == null) throw new NullPointerException();
         int c = -1;
         final ReentrantLock putLock = this.putLock;
@@ -78,7 +78,7 @@ public class ClusterTaskQueue {
             signalNotEmpty();
     }
     
-    public ClusterTask take() throws InterruptedException {
+    public ClusterTask takeTask() throws InterruptedException {
     	ClusterTask task;
         final AtomicInteger count = this.count;
         final ReentrantLock takeLock = this.takeLock;

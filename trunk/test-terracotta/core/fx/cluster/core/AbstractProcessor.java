@@ -8,22 +8,18 @@ package fx.cluster.core;
  */
 public abstract class AbstractProcessor<T> implements Processor<T> {
 	protected String procName;
-	private ClusterHandler handler;
+	private ClusterCache cache;
 	
 	protected AbstractProcessor() {
 		this.procName = this.getClass().getName();
-	}
-	
-	void setHandler(ClusterHandler handler) {
-		this.handler = handler;
+		cache = ClusterHandlerFactory.getClusterCache(procName);
 	}
 	
 	public final void setCacheValue(String key, Object value) {
-		if (handler != null) handler.setCacheValue(key, value);
+		cache.set(key, value);
 	}
 	
 	public final Object getCacheValue(String key) {
-		if (handler != null) return handler.getCacheValue(key);
-		return null;
+		return cache.get(key);
 	}
 }

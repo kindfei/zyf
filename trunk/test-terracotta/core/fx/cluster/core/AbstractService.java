@@ -25,10 +25,12 @@ public abstract class AbstractService<T> implements Service {
 	private ServiceMode serviceMode;
 	private int takerSize;
 	private boolean takerExecute;
-	private AbstractProcessor<T> processor;
+	private Processor<T> processor;
 	private String procName;
 
-	private ClusterHandler handler;
+	private ClusterLock lock;
+	private ClusterTaskQueue queue;
+	private ClusterExecutor executor;
 	
 	private Thread startupThread;
 
@@ -43,15 +45,16 @@ public abstract class AbstractService<T> implements Service {
 	 * @param fairTake whether use fair mode when take task from the queue
 	 * @param processor business implementation
 	 */
-	protected AbstractService(ServiceMode serviceMode, int takerSize, boolean takerExecute, boolean fairTake, AbstractProcessor<T> processor) {
+	protected AbstractService(ServiceMode serviceMode, int takerSize, boolean takerExecute, boolean fairTake, Processor<T> processor) {
 		this.serviceMode = serviceMode;
 		this.takerSize = takerSize;
 		this.takerExecute = takerExecute;
 		this.processor = processor;
 		this.procName = processor.getClass().getName();
 		
-		handler = ClusterHandlerFactory.getClusterHandler(procName, fairTake);
-		processor.setHandler(handler);
+		lock = ClusterHandlerFactory.getClusterLock(procName);
+		queue = ClusterHandlerFactory.getClusterTaskQueue(procName, fairTake);
+		executor = ClusterHandlerFactory.getClusterExecutor(procName);
 	}
 	
 	Processor<T> getProcessor() {
@@ -156,7 +159,7 @@ public abstract class AbstractService<T> implements Service {
 		switch (serviceMode) {
 		case ACTIVE_STANDBY:
 			log.info("Acquiring mutex... processor=" + procName);
-			handler.acquireMutex();
+			lock.acquireMutex();
 			log.info("Acquired mutex... processor=" + procName);
 			break;
 
@@ -181,7 +184,7 @@ public abstract class AbstractService<T> implements Service {
 
 		log.info("Releasing mutex... processor=" + procName);
 		try {
-			handler.releaseMutex();
+			lock.releaseMutex();
 		} catch (Throwable e) {
 		}
 		log.info("Released mutex... processor=" + procName);
@@ -254,7 +257,7 @@ public abstract class AbstractService<T> implements Service {
 		public void run() {
 			try {
 				while (isActive) {
-					ClusterTask task = handler.takeTask();
+					ClusterTask task = queue.takeTask();
 					
 					if (takerExecute) {
 						execute(task);
@@ -304,7 +307,7 @@ public abstract class AbstractService<T> implements Service {
 	 * @throws InterruptedException 
 	 */
 	private void putTask(ClusterTask task) throws InterruptedException {
-		handler.putTask(task);
+		queue.putTask(task);
 	}
 	
 	/**
@@ -312,7 +315,7 @@ public abstract class AbstractService<T> implements Service {
 	 * @param task
 	 */
 	private synchronized void dmiTask(ClusterTask task) {
-		handler.dmiTask(task);
+		executor.execute(task);
 	}
 
 }

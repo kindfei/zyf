@@ -43,10 +43,23 @@ public class TestClusterService {
 		servive.shutdown();
 	}
 	
-	public static void main(String[] args) {
-		testTimer();
+	public static void testDMI() {
+		Service servive1 = ServiceFactory.getTimerDrivenService(ServiceMode.ACTIVE_STANDBY, new TestDmiProcessor(), 1000);
+		Service servive2 = ServiceFactory.getTimerDrivenService(ServiceMode.ACTIVE_STANDBY, new TestLiProcessor(), 1000);
+		
+		servive1.startup();
+		servive2.startup();
+		
+		CmdHelper.pause("Shutdown.........");
+		
+		servive1.shutdown();
+		servive2.shutdown();
 	}
-
+	
+	public static void main(String[] args) {
+		testDMI();
+	}
+	
 }
 
 
