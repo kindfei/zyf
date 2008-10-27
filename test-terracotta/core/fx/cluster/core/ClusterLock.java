@@ -8,16 +8,19 @@ import java.util.concurrent.locks.ReentrantLock;
  * @author zhangyf
  *
  */
-public class ClusterLock extends ReentrantLock {
-	private static final long serialVersionUID = 3165239504946320587L;
+public class ClusterLock {
+	private ReentrantLock lock = new ReentrantLock();
 
-	@Override
-	public void lockInterruptibly() throws InterruptedException {
+	public void acquireMutex() throws InterruptedException {
 		while (!Thread.interrupted()) {
-			if (super.tryLock(5, TimeUnit.SECONDS)) {
+			if (lock.tryLock(5, TimeUnit.SECONDS)) {
 				return;
 			}
 		}
 		throw new InterruptedException();
+	}
+	
+	void releaseMutex() {
+		lock.unlock();
 	}
 }

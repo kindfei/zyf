@@ -6,7 +6,6 @@ package fx.cluster.core;
  *
  */
 public class ClusterTask {
-	
 	private ExecuteMode executeMode;
 	private Object content;
 	
@@ -22,5 +21,4 @@ public class ClusterTask {
 	public Object getContent() {
 		return content;
 	}
-	
 }

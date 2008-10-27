@@ -11,7 +11,7 @@
 	</tc-properties>
 	
 	<servers>
-		<server host="10.4.6.218" name="server1">
+		<server host="localhost" name="server1">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
 			<l2-group-port>9530</l2-group-port>
@@ -30,7 +30,7 @@
 				</garbage-collection>
 			</dso>
 		</server>
-		<server host="localhost" name="server2">
+		<server host="10.4.6.218" name="server2">
 			<dso-port>9510</dso-port>
 			<jmx-port>9520</jmx-port>
 			<l2-group-port>9530</l2-group-port>
@@ -66,9 +66,6 @@
 		<dso>
 			<instrumented-classes>
 				<include>
-					<class-expression>fx.cluster.core.ClusterHandler</class-expression>
-				</include>
-				<include>
 					<class-expression>fx.cluster.core.ClusterLock</class-expression>
 				</include>
 				<include>
@@ -76,6 +73,12 @@
 				</include>
 				<include>
 					<class-expression>fx.cluster.core.ClusterTaskQueue$Node</class-expression>
+				</include>
+				<include>
+					<class-expression>fx.cluster.core.ClusterExecutor</class-expression>
+				</include>
+				<include>
+					<class-expression>fx.cluster.core.ClusterCache</class-expression>
 				</include>
 				<include>
 					<class-expression>fx.cluster.core.ClusterTask</class-expression>
@@ -89,7 +92,7 @@
 			</instrumented-classes>
 			<locks>
 				<autolock>
-					<method-expression>* fx.cluster.core.ClusterHandlerFactory.getClusterHandler(..)</method-expression>
+					<method-expression>* fx.cluster.core.ClusterHandlerFactory.createHandler(..)</method-expression>
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
@@ -97,17 +100,26 @@
 					<lock-level>write</lock-level>
 				</autolock>
 				<autolock>
-					<method-expression>void test.cluster.caches.*.get*(..)</method-expression>
+					<method-expression>* test.cluster.caches.*.get*(..)</method-expression>
 					<lock-level>read</lock-level>
 				</autolock>
 			</locks>
 			<roots>
 				<root>
-					<field-name>fx.cluster.core.ClusterHandlerFactory.map</field-name>
+					<field-name>fx.cluster.core.ClusterHandlerFactory.lockMap</field-name>
+				</root>
+				<root>
+					<field-name>fx.cluster.core.ClusterHandlerFactory.queueMap</field-name>
+				</root>
+				<root>
+					<field-name>fx.cluster.core.ClusterHandlerFactory.executorMap</field-name>
+				</root>
+				<root>
+					<field-name>fx.cluster.core.ClusterHandlerFactory.cacheMap</field-name>
 				</root>
 			</roots>
 			<distributed-methods>
-				<method-expression>void fx.cluster.core.ClusterHandler.dmiTask(..)</method-expression>
+				<method-expression>* fx.cluster.core.ClusterExecutor.execute(..)</method-expression>
 			</distributed-methods>
 		</dso>
 	</application>
