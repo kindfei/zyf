@@ -7,11 +7,11 @@ import javax.jms.JMSException;
 import javax.jms.Message;
 import javax.jms.ObjectMessage;
 
-import fx.cluster.core.ExecuteMode;
-import fx.cluster.core.MessageProcessor;
-import fx.cluster.core.ClusterTask;
 
 import test.cluster.tasks.TestTaskBean;
+import test.core.cluster.ClusterTask;
+import test.core.cluster.ExecuteMode;
+import test.core.cluster.MessageProcessor;
 
 public class TestMessageProcessor extends MessageProcessor {
 

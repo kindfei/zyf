@@ -3,11 +3,11 @@ package test.cluster;
 import java.util.ArrayList;
 import java.util.List;
 
-import fx.cluster.core.ExecuteMode;
-import fx.cluster.core.ClusterTask;
-import fx.cluster.core.TimerProcessor;
 
 import test.cluster.tasks.TestTaskBean;
+import test.core.cluster.ClusterTask;
+import test.core.cluster.ExecuteMode;
+import test.core.cluster.TimerProcessor;
 
 public class TestTimerProcessor extends TimerProcessor {
 	private int i;

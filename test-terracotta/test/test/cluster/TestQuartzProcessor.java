@@ -6,11 +6,11 @@ import java.util.List;
 import org.quartz.JobExecutionContext;
 import org.quartz.StatefulJob;
 
-import fx.cluster.core.ExecuteMode;
-import fx.cluster.core.QuartzProcessor;
-import fx.cluster.core.ClusterTask;
 
 import test.cluster.tasks.TestTaskBean;
+import test.core.cluster.ClusterTask;
+import test.core.cluster.ExecuteMode;
+import test.core.cluster.QuartzProcessor;
 
 public class TestQuartzProcessor extends QuartzProcessor implements StatefulJob {
 	private int i;
