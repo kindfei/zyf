@@ -3,9 +3,10 @@ package test.cluster;
 import java.io.IOException;
 import java.util.Properties;
 
-import fx.cluster.core.Service;
-import fx.cluster.core.ServiceFactory;
-import fx.cluster.core.ServiceMode;
+import test.core.cluster.Service;
+import test.core.cluster.ServiceFactory;
+import test.core.cluster.ServiceMode;
+
 
 import zyf.helper.CmdHelper;
 

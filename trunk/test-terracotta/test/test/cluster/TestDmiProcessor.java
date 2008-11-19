@@ -4,9 +4,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 import test.cluster.tasks.TestTaskBean;
-import fx.cluster.core.ClusterTask;
-import fx.cluster.core.ExecuteMode;
-import fx.cluster.core.TimerProcessor;
+import test.core.cluster.ClusterTask;
+import test.core.cluster.ExecuteMode;
+import test.core.cluster.TimerProcessor;
 
 public class TestDmiProcessor extends TimerProcessor {
 	private int i;
