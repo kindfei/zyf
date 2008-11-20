@@ -7,16 +7,12 @@
 	<classpathentry kind="src" path="sample-messaging"/>
 	<classpathentry kind="src" path="sample-ActiveMQ"/>
 	<classpathentry kind="lib" path="conf"/>
-	<classpathentry kind="lib" path="/test/lib/jboss-4.0.5.GA/jbossall-client.jar" sourcepath="E:/Library/Sun/jms1.1/src/share"/>
-	<classpathentry kind="lib" path="/test/lib/jboss-4.0.5.GA/messaging-1.3.0.GA/jboss-messaging-client.jar"/>
-	<classpathentry kind="lib" path="/test/lib/jboss-4.0.5.GA/javassist.jar"/>
-	<classpathentry kind="lib" path="/test/lib/jboss-4.0.5.GA/jboss-remoting.jar"/>
-	<classpathentry kind="lib" path="/test/lib/jboss-4.0.5.GA/deployer/jboss-aop.jar"/>
-	<classpathentry kind="lib" path="/test/lib/jboss-4.0.5.GA/deployer/trove.jar"/>
 	<classpathentry kind="lib" path="/test/lib/mysql-connector-java-3.1.12-bin.jar"/>
 	<classpathentry kind="lib" path="/test/lib/Apache/log4j-1.2.13.jar"/>
 	<classpathentry kind="lib" path="/test/lib/Apache/commons/commons-logging.jar"/>
 	<classpathentry kind="lib" path="/test/lib/backport-util-concurrent.jar" sourcepath="E:/Library/backport-util-concurrent-3.1/src"/>
 	<classpathentry kind="lib" path="/test/lib/ActiveMQ/activemq-core-5.1.0.jar"/>
+	<classpathentry kind="lib" path="/test/lib/jboss-4.2.2.GA/jbossall-client.jar"/>
+	<classpathentry kind="lib" path="/test/lib/jboss-messaging-1.4.0.SP3/jboss-messaging-client.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
