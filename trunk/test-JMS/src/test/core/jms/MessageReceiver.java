@@ -5,7 +5,7 @@ import java.io.Serializable;
 import javax.jms.JMSException;
 import javax.jms.MessageListener;
 
-public interface Receiver {
+public interface MessageReceiver {
 	public Serializable receive() throws JMSException;
 	public void setMessageListener(MessageListener listener) throws JMSException;
 }
