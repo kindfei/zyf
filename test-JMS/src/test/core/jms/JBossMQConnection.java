@@ -17,7 +17,6 @@ import org.apache.commons.logging.LogFactory;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.Lock;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 
-
 public class JBossMQConnection implements MessageConnection {
 	private static final Log log = LogFactory.getLog(JBossMQConnection.class);
 	
