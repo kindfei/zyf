@@ -1,4 +1,4 @@
-package test.core.jms.jboss;
+package test.core.jms;
 
 import java.util.Hashtable;
 
@@ -17,11 +17,9 @@ import org.apache.commons.logging.LogFactory;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.Lock;
 import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 
-import test.core.jms.MessageDestination;
-import test.jms.jboss.core.HostManager;
 
-public class JbossConnection {
-	private static final Log log = LogFactory.getLog(JbossConnection.class);
+public class JBossMQConnection implements MessageConnection {
+	private static final Log log = LogFactory.getLog(JBossMQConnection.class);
 	
 	private String groupName;
 	private String user;
@@ -36,27 +34,28 @@ public class JbossConnection {
 	
 	private Lock lock = new ReentrantLock();
 	
-	private JbossConnection(String groupName, boolean isHA, String user, String password, String clientID) {
+	JBossMQConnection(String groupName, String user, String password, String clientID) throws MessageException {
 		this.groupName = groupName;
-		this.isHA = isHA;
 		this.user = user;
 		this.password = password;
 		this.clientID = clientID;
 		
-		hostManager = new HostManager(groupName);
+		hostManager = new HostManager(ProviderType.JBossMQ, groupName);
+		isHA = hostManager.isHA();
 		
-		connect(hostManager.getCurrentHost());
+		connect(hostManager.getCurrentURL());
 	}
 	
-	private void connect(String url) {
+	private void connect(String url) throws MessageException {
 		lock.lock();
 		try {
-			log.info("Connecting to " + url);
-			log.info("Group Name:        [" + groupName + "]");
-			log.info("High Availability: [" + isHA + "]");
-			log.info("User:              [" + user + "]");
-			log.info("Password:          [" + password + "]");
-			log.info("Client ID:         [" + clientID + "]");
+			log.info("JbossConnection connecting. URL=" + url);
+			
+			log.info("GroupName:        [" + groupName + "]");
+			log.info("HighAvailability: [" + isHA + "]");
+			log.info("User:             [" + user + "]");
+			log.info("Password:         [" + password + "]");
+			log.info("ClientID:         [" + clientID + "]");
 			
 			Hashtable<String, String> env = new Hashtable<String, String>();
 			env.put("java.naming.factory.initial", "org.jnp.interfaces.NamingContextFactory");
@@ -72,11 +71,16 @@ public class JbossConnection {
 			
 			context = ctx;
 			connection = conn;
-			log.info("Connected to " + url);
+			
+			log.info("JbossConnection connected. URL=" + url);
 		} catch (Exception e) {
-			log.error("Connect error.", e);
-			log.info("Reconnect begin.");
-			connect(hostManager.getNextHost());
+			if (isHA) {
+				log.error("JbossConnection connect error.", e);
+				log.info("JbossConnection reconnect begin...");
+				connect(hostManager.getNextURL());
+			} else {
+				throw new MessageException("JbossConnection connect error.", e);
+			}
 		} finally {
 			lock.unlock();
 		}
@@ -85,23 +89,33 @@ public class JbossConnection {
 	private class FailoverHandler implements ExceptionListener {
 		@Override
 		public void onException(JMSException exception) {
-			connect(hostManager.getNextHost());
+			try {
+				connect(hostManager.getNextURL());
+			} catch (MessageException e) {
+				log.error("Should never have happened.", e);
+			}
 		}
 	}
 
-	Session createSession() throws JMSException {
+	@Override
+	public Session createSession() throws MessageException {
 		lock.lock();
 		try {
 			return connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+		} catch (JMSException e) {
+			throw new MessageException("Create session error.", e);
 		} finally {
 			lock.unlock();
 		}
 	}
 
-	Destination createDestination(MessageDestination dest) throws NamingException {
+	@Override
+	public Destination createDestination(MessageDestination dest) throws MessageException {
 		lock.lock();
 		try {
 			return (Destination) context.lookup(dest.getStrDest());
+		} catch (NamingException e) {
+			throw new MessageException("Create destination error.", e);
 		} finally {
 			lock.unlock();
 		}

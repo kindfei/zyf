@@ -2,10 +2,8 @@ package test.core.jms;
 
 import java.io.Serializable;
 
-import javax.jms.JMSException;
-import javax.jms.MessageListener;
-
 public interface MessageReceiver {
-	public Serializable receive() throws JMSException;
-	public void setMessageListener(MessageListener listener) throws JMSException;
+	public Serializable receive() throws MessageException;
+	public void setMessageListener(MessageCallback listener, boolean isDeamon);
+	public void close();
 }
