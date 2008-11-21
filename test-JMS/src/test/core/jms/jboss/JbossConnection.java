@@ -1,8 +1,6 @@
 package test.core.jms.jboss;
 
-import java.util.HashSet;
 import java.util.Hashtable;
-import java.util.Set;
 
 import javax.jms.Connection;
 import javax.jms.ConnectionFactory;
@@ -37,7 +35,6 @@ public class JbossConnection {
 	private Connection connection;
 	
 	private Lock lock = new ReentrantLock();
-	private Set<JbossReceiver> rebuildTargets = new HashSet<JbossReceiver>();
 	
 	private JbossConnection(String groupName, boolean isHA, String user, String password, String clientID) {
 		this.groupName = groupName;
@@ -47,10 +44,20 @@ public class JbossConnection {
 		this.clientID = clientID;
 		
 		hostManager = new HostManager(groupName);
+		
+		connect(hostManager.getCurrentHost());
 	}
 	
 	private void connect(String url) {
+		lock.lock();
 		try {
+			log.info("Connecting to " + url);
+			log.info("Group Name:        [" + groupName + "]");
+			log.info("High Availability: [" + isHA + "]");
+			log.info("User:              [" + user + "]");
+			log.info("Password:          [" + password + "]");
+			log.info("Client ID:         [" + clientID + "]");
+			
 			Hashtable<String, String> env = new Hashtable<String, String>();
 			env.put("java.naming.factory.initial", "org.jnp.interfaces.NamingContextFactory");
 			env.put("java.naming.provider.url", url);
@@ -60,51 +67,43 @@ public class JbossConnection {
 			ConnectionFactory cf = (ConnectionFactory) ctx.lookup("ConnectionFactory");
 			Connection conn = cf.createConnection(user, password);
 			if (clientID != null) conn.setClientID(clientID);
-			if (isHA) conn.setExceptionListener(new ExceptionHandler(url));
+			if (isHA) conn.setExceptionListener(new FailoverHandler());
 			conn.start();
 			
 			context = ctx;
 			connection = conn;
-		} catch (NamingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		} catch (JMSException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+			log.info("Connected to " + url);
+		} catch (Exception e) {
+			log.error("Connect error.", e);
+			log.info("Reconnect begin.");
+			connect(hostManager.getNextHost());
+		} finally {
+			lock.unlock();
 		}
 	}
 	
-	private void reconnect() {
-		
-	}
-	
-	private class ExceptionHandler implements ExceptionListener {
-		private String url;
-		
-		private ExceptionHandler(String url) {
-			this.url = url;
-		}
-
+	private class FailoverHandler implements ExceptionListener {
 		@Override
 		public void onException(JMSException exception) {
-
+			connect(hostManager.getNextHost());
 		}
-		
-	}
-	
-	void setTarget(JbossReceiver receiver) {
-		rebuildTargets.add(receiver);
-	}
-	
-	void removeTarget(JbossReceiver receiver) {
-		rebuildTargets.remove(receiver);
 	}
 
 	Session createSession() throws JMSException {
-		return connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+		lock.lock();
+		try {
+			return connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+		} finally {
+			lock.unlock();
+		}
 	}
 
 	Destination createDestination(MessageDestination dest) throws NamingException {
-		return (Destination) context.lookup(dest.getStrDest());
+		lock.lock();
+		try {
+			return (Destination) context.lookup(dest.getStrDest());
+		} finally {
+			lock.unlock();
+		}
 	}
 }
