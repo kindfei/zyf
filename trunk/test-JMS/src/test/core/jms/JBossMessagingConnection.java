@@ -13,7 +13,6 @@ import javax.naming.NamingException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-
 public class JBossMessagingConnection implements MessageConnection {
 	private static final Log log = LogFactory.getLog(JBossMessagingConnection.class);
 
