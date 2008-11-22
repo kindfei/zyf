@@ -8,8 +8,8 @@ import org.apache.activemq.ActiveMQConnectionFactory;
 
 public class ActiveMQConnection extends AbstractConnection {
 	
-	ActiveMQConnection(String groupName, String clientID) throws MessageException {
-		super(ProviderType.ActiveMQ, groupName, clientID);
+	ActiveMQConnection(Provider provider, String clientID) throws MessageException {
+		super(provider, clientID);
 	}
 	
 	@Override
@@ -19,14 +19,14 @@ public class ActiveMQConnection extends AbstractConnection {
 	}
 
 	@Override
-	protected Destination createDestination(String strDest) throws Exception {
-		String type = strDest.split("/")[0];
+	protected Destination createDestination(String destName) throws Exception {
+		String type = destName.split("/")[0];
 		if (type.equals("queue")) {
-			return connection.createSession(false, Session.AUTO_ACKNOWLEDGE).createQueue(strDest);
+			return connection.createSession(false, Session.AUTO_ACKNOWLEDGE).createQueue(destName);
 		} else if (type.equals("topic")) {
-			return connection.createSession(false, Session.AUTO_ACKNOWLEDGE).createTopic(strDest);
+			return connection.createSession(false, Session.AUTO_ACKNOWLEDGE).createTopic(destName);
 		} else {
-			throw new IllegalArgumentException("Create destination error, invalid destination name. strDest=" + strDest);
+			throw new IllegalArgumentException("Create destination error, invalid destination name. destName=" + destName);
 		}
 	}
 }

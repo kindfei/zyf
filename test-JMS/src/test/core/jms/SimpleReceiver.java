@@ -6,8 +6,8 @@ import javax.jms.JMSException;
 
 public class SimpleReceiver extends AbstractReceiver {
 
-	SimpleReceiver(MessageDestination dest, String groupId, String messageSelector) throws MessageException {
-		super(dest, groupId, messageSelector);
+	SimpleReceiver(MessageDestination dest, String messageSelector) throws MessageException {
+		super(dest, messageSelector);
 	}
 
 	@Override

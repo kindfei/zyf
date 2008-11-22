@@ -27,26 +27,26 @@ public class ConnectionFactory {
 		}
 	}
 	
-	static synchronized MessageConnection getConnection(String groupId) throws MessageException {
-		MessageConnection conn = connectionMap.get(groupId);
+	static synchronized MessageConnection getConnection(Provider provider) throws MessageException {
+		MessageConnection conn = connectionMap.get(provider.getProviderId());
 		
 		if (conn == null) {
 			
 			switch (type) {
 			case JBossMQ:
-				conn = new JBossMQConnection(groupId, clientID);
+				conn = new JBossMQConnection(provider, clientID);
 				break;
 
 			case ActiveMQ:
-				conn = new ActiveMQConnection(groupId, clientID);
+				conn = new ActiveMQConnection(provider, clientID);
 				break;
 
 			case JBossMessaging:
-				conn = new JBossMessagingConnection(groupId, clientID);
+				conn = new JBossMessagingConnection(provider, clientID);
 				break;
 			}
 			
-			connectionMap.put(groupId, conn);
+			connectionMap.put(provider.getProviderId(), conn);
 		}
 		
 		return conn;

@@ -14,31 +14,30 @@ import edu.emory.mathcs.backport.java.util.concurrent.locks.ReentrantLock;
 
 public abstract class AbstractConnection implements MessageConnection {
 	private static final Log log = LogFactory.getLog(AbstractConnection.class);
+
+	private Provider provider;
 	
-	private ProviderType type;
-	private String groupName;
-	private String clientID;
+	private String providerId;
+	private ProviderType providerType;
+	private boolean manualHA;
 	private String user;
 	private String password;
-	private boolean manualHA;
-	
-	private ProviderManager hostManager;
+	private String clientID;
 	
 	protected Connection connection;
 	
 	private Lock lock = new ReentrantLock();
 	
-	AbstractConnection(ProviderType type, String groupName, String clientID) throws MessageException {
-		this.type = type;
-		this.groupName = groupName;
+	AbstractConnection(Provider provider, String clientID) throws MessageException {
+		this.provider = provider;
+		this.providerId = provider.getProviderId();
+		this.providerType = provider.getProviderType();
+		this.manualHA = provider.isManualHa();
+		this.user = provider.getUser();
+		this.password = provider.getPassword();
 		this.clientID = clientID;
 		
-		this.hostManager = new ProviderManager(type, groupName);
-		this.user = hostManager.getUser();
-		this.password = hostManager.getPassword();
-		this.manualHA = hostManager.isManualHa();
-		
-		connect(hostManager.getCurrentURL());
+		connect(provider.getCurrentURL());
 	}
 	
 	private void connect(String url) throws MessageException {
@@ -57,7 +56,7 @@ public abstract class AbstractConnection implements MessageConnection {
 			if (manualHA) {
 				log.error("MessageConnection connect error. " + getInfo(url), e);
 				log.info("reconnect begin...");
-				connect(hostManager.getNextURL());
+				connect(provider.getNextURL());
 			} else {
 				throw new MessageException("MessageConnection connect error. " + getInfo(url), e);
 			}
@@ -95,7 +94,7 @@ public abstract class AbstractConnection implements MessageConnection {
 			
 			log.info("reconnect begin...");
 			try {
-				connect(hostManager.getNextURL());
+				connect(provider.getNextURL());
 			} catch (MessageException e) {
 				log.error("Should never have happened.", e);
 			} finally {
@@ -108,13 +107,13 @@ public abstract class AbstractConnection implements MessageConnection {
 	    final String separator = ", ";
 	    StringBuilder info = new StringBuilder();
 	    info.append("MessageConnection[")
+	        .append("ProviderId=").append(this.providerId).append(separator)
+	        .append("ProviderType=").append(this.providerType).append(separator)
+	        .append("manualHA=").append(this.manualHA)
         	.append("URL=").append(url).append(separator)
-	        .append("type=").append(this.type).append(separator)
-	        .append("groupName=").append(this.groupName).append(separator)
 	        .append("user=").append(this.user).append(separator)
 	        .append("password=").append(this.password).append(separator)
 	        .append("clientID=").append(this.clientID).append(separator)
-	        .append("manualHA=").append(this.manualHA)
 	        .append("]");
 	    return info.toString();
 	}
@@ -135,7 +134,7 @@ public abstract class AbstractConnection implements MessageConnection {
 	public Destination createDestination(MessageDestination dest) throws MessageException {
 		lock.lock();
 		try {
-			return createDestination(dest.getStrDest());
+			return createDestination(dest.getDestName());
 		} catch (Exception e) {
 			throw new MessageException("Create destination error.", e);
 		} finally {
@@ -143,5 +142,5 @@ public abstract class AbstractConnection implements MessageConnection {
 		}
 	}
 	
-	protected abstract Destination createDestination(String strDest) throws Exception;
+	protected abstract Destination createDestination(String destName) throws Exception;
 }

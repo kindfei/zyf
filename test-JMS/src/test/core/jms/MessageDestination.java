@@ -4,12 +4,19 @@ public enum MessageDestination {
 	testQueue("queue/testQueue"),
 	testTopic("topic/testTopic");
 	
-	String strDest;
-	private MessageDestination(String strDest) {
-		this.strDest = strDest;
+	private String destName;
+	private Provider provider;
+	
+	private MessageDestination(String destName) {
+		this.destName = destName;
+		provider = new Provider(destName);
 	}
 	
-	public String getStrDest() {
-		return strDest;
+	public String getDestName() {
+		return destName;
+	}
+	
+	public Provider getProvider() {
+		return provider;
 	}
 }

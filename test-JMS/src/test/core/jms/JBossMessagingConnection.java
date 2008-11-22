@@ -10,8 +10,8 @@ import javax.naming.InitialContext;
 public class JBossMessagingConnection extends AbstractConnection {
 	private InitialContext context;
 	
-	JBossMessagingConnection(String groupName, String clientID) throws MessageException {
-		super(ProviderType.JBossMessaging, groupName, clientID);
+	JBossMessagingConnection(Provider provider, String clientID) throws MessageException {
+		super(provider, clientID);
 	}
 
 	@Override
@@ -31,7 +31,7 @@ public class JBossMessagingConnection extends AbstractConnection {
 	}
 
 	@Override
-	protected Destination createDestination(String strDest) throws Exception {
-		return (Destination) context.lookup(strDest);
+	protected Destination createDestination(String destName) throws Exception {
+		return (Destination) context.lookup(destName);
 	}
 }
