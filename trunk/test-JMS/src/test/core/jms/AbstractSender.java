@@ -21,10 +21,10 @@ public abstract class AbstractSender implements MessageSender {
 	
 	protected volatile boolean isClosed;
 	
-	protected AbstractSender(MessageDestination dest) throws MessageException {
+	protected AbstractSender(MessageDestination dest, String groupId) throws MessageException {
 		this.dest = dest;
 		
-		connection = ConnectionFactory.getConnection();
+		connection = ConnectionFactory.getConnection(groupId);
 		
 		init();
 	}
