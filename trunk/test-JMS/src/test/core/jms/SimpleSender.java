@@ -7,8 +7,8 @@ import javax.jms.JMSException;
 
 public class SimpleSender extends AbstractSender {
 
-	SimpleSender(MessageDestination dest, String groupId) throws MessageException {
-		super(dest, groupId);
+	SimpleSender(MessageDestination dest) throws MessageException {
+		super(dest);
 	}
 
 	@Override

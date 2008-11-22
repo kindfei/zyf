@@ -26,11 +26,11 @@ public abstract class AbstractReceiver implements MessageReceiver {
 	
 	protected volatile boolean isClosed;
 	
-	protected AbstractReceiver(MessageDestination dest, String groupId, String messageSelector) throws MessageException {
+	protected AbstractReceiver(MessageDestination dest, String messageSelector) throws MessageException {
 		this.dest = dest;
 		this.messageSelector = messageSelector;
 
-		connection = ConnectionFactory.getConnection(groupId);
+		connection = ConnectionFactory.getConnection(dest.getProvider());
 		
 		init();
 	}
