@@ -7,8 +7,8 @@ import javax.jms.JMSException;
 
 public class HaSender extends AbstractSender {
 	
-	HaSender(MessageDestination dest) throws MessageException {
-		super(dest);
+	HaSender(MessageDestination dest, String groupId) throws MessageException {
+		super(dest, groupId);
 	}
 
 	@Override
