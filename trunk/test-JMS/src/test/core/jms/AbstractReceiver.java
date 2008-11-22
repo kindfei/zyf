@@ -66,6 +66,10 @@ public abstract class AbstractReceiver implements MessageReceiver {
 					continue;
 				}
 				
+				if (msg == null) {
+					continue;
+				}
+				
 				listener.onMessage(msg);
 			}
 		}
