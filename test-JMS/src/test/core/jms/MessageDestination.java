@@ -9,7 +9,7 @@ public enum MessageDestination {
 	
 	private MessageDestination(String destName) {
 		this.destName = destName;
-		provider = new Provider(destName);
+		provider = Provider.getProvider(destName);
 	}
 	
 	public String getDestName() {

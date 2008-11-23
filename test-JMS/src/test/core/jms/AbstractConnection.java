@@ -3,6 +3,7 @@ package test.core.jms;
 import javax.jms.Connection;
 import javax.jms.Destination;
 import javax.jms.ExceptionListener;
+import javax.jms.InvalidClientIDException;
 import javax.jms.JMSException;
 import javax.jms.Session;
 
@@ -52,6 +53,8 @@ public abstract class AbstractConnection implements MessageConnection {
 			connection.start();
 			
 			log.info("MessageConnection successfully connected. " + getInfo(url));
+		} catch (InvalidClientIDException e) {
+			throw new MessageException("MessageConnection connect error, clientID [" + clientID + "] is already registered.", e);
 		} catch (Exception e) {
 			if (manualHA) {
 				log.error("MessageConnection connect error. " + getInfo(url), e);

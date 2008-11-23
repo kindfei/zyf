@@ -43,7 +43,7 @@ public abstract class AbstractReceiver implements MessageReceiver {
 		consumer = session.createConsumer(destination, messageSelector);
 	}
 	
-	public Serializable receiveMessage() throws JMSException {
+	protected Serializable receiveMessage() throws JMSException {
 		return ((ObjectMessage) consumer.receive()).getObject();
 	}
 	
