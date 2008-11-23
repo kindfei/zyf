@@ -3,8 +3,8 @@ package test.jms;
 import javax.jms.JMSException;
 import javax.jms.ObjectMessage;
 
-import test.jms.activemq.core.Receiver;
-import test.jms.activemq.core.Sender;
+import test.jms.activemq.Receiver;
+import test.jms.activemq.Sender;
 
 public class TestActiveMQ {
 	

@@ -1,4 +1,4 @@
-package test.jms.jboss.core;
+package test.jms.jboss;
 
 import java.io.FileInputStream;
 import java.io.FileNotFoundException;

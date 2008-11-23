@@ -10,6 +10,7 @@ import org.hibernate.Session;
 
 import com.mysql.jdbc.ReplicationDriver;
 
+import test.core.hibernate.SessionUtils;
 import test.hibernate.tables.mysql.repl.ZyfTest;
 import test.jdbc.MetaDataUtil;
 

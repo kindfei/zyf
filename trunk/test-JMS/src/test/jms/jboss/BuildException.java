@@ -1,4 +1,4 @@
-package test.jms.jboss.core;
+package test.jms.jboss;
 
 public class BuildException extends Exception {
 	private static final long serialVersionUID = -6967468626059900478L;
