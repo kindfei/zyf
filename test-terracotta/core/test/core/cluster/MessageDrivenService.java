@@ -26,7 +26,7 @@ public class MessageDrivenService extends AbstractService<Message> {
 	private int receiverSize;
 	private boolean receiverExecute;
 	
-	private test.jms.activemq.core.Receiver recv;
+	private test.jms.activemq.Receiver recv;
 	private List<MessageReceiver> receiverList = new ArrayList<MessageReceiver>();
 	
 	private ExecutorService threadPool;
@@ -40,7 +40,7 @@ public class MessageDrivenService extends AbstractService<Message> {
 	}
 
 	protected void init() throws JMSException {
-		recv = new test.jms.activemq.core.Receiver(destName);
+		recv = new test.jms.activemq.Receiver(destName);
 		
 		MessageReceiver receiver = null;
 		for (int i = 0; i < receiverSize; i++) {

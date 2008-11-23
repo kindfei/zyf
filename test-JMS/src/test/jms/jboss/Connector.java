@@ -1,4 +1,4 @@
-package test.jms.jboss.core;
+package test.jms.jboss;
 
 public interface Connector {
 	public void buildMessenger(Messenger target, String destName) throws BuildException, FailoverException, ConnectException;

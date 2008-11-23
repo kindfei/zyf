@@ -1,4 +1,4 @@
-package test.jms.jboss.core;
+package test.jms.jboss;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;

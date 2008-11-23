@@ -10,7 +10,7 @@ import test.core.cluster.Service;
 import test.core.cluster.ServiceFactory;
 import test.core.cluster.ServiceMode;
 import test.core.entry.ServiceEntry;
-import test.jms.activemq.core.Sender;
+import test.jms.activemq.Sender;
 
 public class TestJMSService extends ServiceEntry {
 	private String[] params;

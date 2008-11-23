@@ -9,6 +9,7 @@ import org.hibernate.Query;
 import org.hibernate.classic.Session;
 import org.hibernate.Transaction;
 
+import test.core.hibernate.SessionUtils;
 import test.hibernate.tables.db2.Product;
 import zyf.helper.CmdHelper;
 

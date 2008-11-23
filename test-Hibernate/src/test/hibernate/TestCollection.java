@@ -7,6 +7,7 @@ import java.util.Set;
 import org.hibernate.HibernateException;
 import org.hibernate.Session;
 
+import test.core.hibernate.SessionUtils;
 import test.hibernate.tables.mysql.Customer;
 import test.hibernate.tables.mysql.Email;
 import test.hibernate.tables.mysql.Product;

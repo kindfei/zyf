@@ -1,19 +1,20 @@
-package test.jms.activemq.core;
+package test.jms.activemq;
+
+import java.io.Serializable;
 
 import javax.jms.Destination;
 import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.MessageConsumer;
-import javax.jms.MessageListener;
+import javax.jms.MessageProducer;
+import javax.jms.ObjectMessage;
 import javax.jms.Session;
 
-public class Receiver {
+public class Sender {
 	private Connector connector;
 	private Session session;
 	private Destination dest;
-	private MessageConsumer consumer;
+	private MessageProducer producer;
 	
-	public Receiver(String destName) throws JMSException {
+	public Sender(String destName) throws JMSException {
 		connector = ConnectorFactory.createConnection();
 		session = connector.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		
@@ -26,19 +27,15 @@ public class Receiver {
 			throw new RuntimeException("Error destName format - " + destName);
 		}
 		
-		consumer = session.createConsumer(dest);
+		producer = session.createProducer(dest);
 	}
 	
-	public synchronized Message receive() throws JMSException {
-		return consumer.receive();
-	}
-	
-	public void setListener(MessageListener listener) throws JMSException {
-		consumer.setMessageListener(listener);
+	public void send(Serializable obj) throws JMSException {
+		ObjectMessage msg = session.createObjectMessage(obj);
+		producer.send(msg);
 	}
 	
 	public void close() throws JMSException {
-		consumer.close();
 		session.close();
 		connector.close();
 	}
