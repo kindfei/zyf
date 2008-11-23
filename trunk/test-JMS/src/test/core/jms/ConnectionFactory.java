@@ -6,14 +6,10 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class ConnectionFactory {
-	
-	private static ProviderType type;
 	private static String clientID;
 	private static Map<String, MessageConnection> connectionMap = new HashMap<String, MessageConnection>();
 	
 	static {
-		type = ProviderType.JBossMQ;
-		
 		String name = System.getProperty("processName");
 		if (name != null && !name.equals("")) {
 			StringBuffer sb = new StringBuffer();
@@ -32,7 +28,7 @@ public class ConnectionFactory {
 		
 		if (conn == null) {
 			
-			switch (type) {
+			switch (provider.getProviderType()) {
 			case JBossMQ:
 				conn = new JBossMQConnection(provider, clientID);
 				break;

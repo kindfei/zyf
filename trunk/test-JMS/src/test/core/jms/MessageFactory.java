@@ -11,7 +11,7 @@ public class MessageFactory {
 	}
 	
 	public static MessageReceiver createReceiver(MessageDestination dest, String messageSelector) throws MessageException {
-		if (dest.getProvider().getProviderId() == null) {
+		if (dest.getProvider() == null) {
 			throw new MessageException("Create message receiver error, no provider mapped to " + dest.toString());
 		}
 		
@@ -29,7 +29,7 @@ public class MessageFactory {
 	}
 	
 	public static MessageSender createSender(MessageDestination dest) throws MessageException {
-		if (dest.getProvider().getProviderId() == null) {
+		if (dest.getProvider() == null) {
 			throw new MessageException("Create message sender error, no provider mapped to " + dest.toString());
 		}
 		
