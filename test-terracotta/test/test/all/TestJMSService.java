@@ -2,7 +2,9 @@ package test.all;
 
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -40,9 +42,11 @@ public class TestJMSService extends ServiceEntry {
 		int msgSize = Integer.parseInt(params[5]);
 		
 		if (takerSize > 0) {
-			service = ServiceFactory.getMessageDrivenServiceWithoutWorker(ServiceMode.ALL_ACTIVE, new TestJMSProcessor(takerSize, msgCount, msgSize), MessageDestination.testQueue, takerSize);
+			service = ServiceFactory.getMessageDrivenServiceWithoutWorker(ServiceMode.ALL_ACTIVE,
+					new TestJMSProcessor(takerSize, msgCount, msgSize), MessageDestination.testQueue, takerSize);
 		} else {
-			service = ServiceFactory.getMessageDrivenServiceWithoutWorker(ServiceMode.ALL_ACTIVE, new TestJMSProcessor(takerSize, msgCount, msgSize), MessageDestination.testQueue);
+			service = ServiceFactory.getMessageDrivenServiceWithoutWorker(ServiceMode.ALL_ACTIVE,
+					new TestJMSProcessor(takerSize, msgCount, msgSize), MessageDestination.testQueue, "name = 'zhangyf'");
 		}
 		service.startup();
 		
@@ -98,7 +102,10 @@ public class TestJMSService extends ServiceEntry {
 				bean.setTime(st);
 				
 				for (JmsPerfBean b : beans) {
-					sender.send(b);
+					Map<String, Object> props = new HashMap<String, Object>();
+					props.put("name", "zhangyf");
+					props.put("age", new Integer(29));
+					sender.send(b, props);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();

@@ -25,6 +25,7 @@ public class MessageDrivenService extends AbstractService<Serializable> {
 	private static final Log log = LogFactory.getLog(MessageDrivenService.class);
 	
 	private MessageDestination dest;
+	private String selector;
 	private int receiverSize;
 	private boolean receiverExecute;
 	
@@ -34,15 +35,16 @@ public class MessageDrivenService extends AbstractService<Serializable> {
 	private ExecutorService threadPool;
 
 	MessageDrivenService(ServiceMode serviceMode, int takerSize, boolean takerExecute, boolean fairTake
-			, MessageProcessor processor, MessageDestination dest, int receiverSize, boolean receiverExecute) {
+			, MessageProcessor processor, MessageDestination dest, String selector, int receiverSize, boolean receiverExecute) {
 		super(serviceMode, takerSize, takerExecute, fairTake, processor);
 		this.dest = dest;
+		this.selector = selector;
 		this.receiverSize = receiverSize;
 		this.receiverExecute = receiverExecute;
 	}
 
 	protected void init() throws MessageException {
-		recv = MessageFactory.createReceiver(dest);
+		recv = MessageFactory.createReceiver(dest, selector);
 		
 		MessageReceiver receiver = null;
 		for (int i = 0; i < receiverSize; i++) {

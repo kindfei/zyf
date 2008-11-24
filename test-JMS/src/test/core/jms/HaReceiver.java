@@ -18,16 +18,16 @@ public class HaReceiver extends AbstractReceiver {
 	}
 
 	@Override
-	public Serializable receive() throws MessageException {
+	public Serializable receive(long timeout) throws MessageException {
 		try {
-			return receiveMessage();
+			return receiveMessage(timeout);
 		} catch (Exception e) {
 			if (isClosed) {
 				throw new MessageException("MessageReceiver is closed.", e);
 			}
 			try {
 				build();
-				return receiveMessage();
+				return receiveMessage(timeout);
 			} catch (Exception ex) {
 				throw new MessageException("Exception occurred when receive message.", ex);
 			}

@@ -43,8 +43,8 @@ public abstract class AbstractReceiver implements MessageReceiver {
 		consumer = session.createConsumer(destination, messageSelector);
 	}
 	
-	protected Serializable receiveMessage() throws JMSException {
-		return ((ObjectMessage) consumer.receive()).getObject();
+	protected Serializable receiveMessage(long timeout) throws JMSException {
+		return ((ObjectMessage) consumer.receive(timeout)).getObject();
 	}
 	
 	private class MsgHandler extends Thread {
@@ -66,17 +66,20 @@ public abstract class AbstractReceiver implements MessageReceiver {
 					continue;
 				}
 				
-				if (msg == null) {
-					continue;
+				if (msg != null) {
+					listener.onMessage(msg);
 				}
-				
-				listener.onMessage(msg);
 			}
 		}
 	}
 
 	@Override
-	public abstract Serializable receive() throws MessageException;
+	public Serializable receive() throws MessageException {
+		return receive(0);
+	}
+	
+	@Override
+	public abstract Serializable receive(long timeout) throws MessageException;
 
 	@Override
 	public void setMessageListener(MessageCallback listener, boolean isDeamon) {

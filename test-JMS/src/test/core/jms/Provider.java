@@ -13,7 +13,7 @@ public class Provider {
 	
 	static {
 		Provider provider1 = new Provider("provider1", ProviderType.valueOf("JBossMQ"), true, "jnp://localhost:1099", null, null);
-		Provider provider2 = new Provider("provider2", ProviderType.valueOf("JBossMQ"), true, "jnp://localhost:1099,jnp://10.4.6.218:1099", null, null);
+		Provider provider2 = new Provider("provider2", ProviderType.valueOf("JBossMQ"), true, "jnp://localhost:1099,jnp://localhost:1099", null, null);
 		Provider provider3 = new Provider("provider3", ProviderType.valueOf("ActiveMQ"), false, "tcp://localhost:61616", null, null);
 		Provider provider4 = new Provider("provider4", ProviderType.valueOf("ActiveMQ"), false, "failover://(tcp://localhost:61616,tcp://10.4.6.218:61616)", null, null);
 		Provider provider5 = new Provider("provider5", ProviderType.valueOf("JBossMessaging"), false, "jnp://localhost:1099", null, null);
