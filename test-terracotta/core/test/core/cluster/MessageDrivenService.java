@@ -1,5 +1,6 @@
 package test.core.cluster;
 
+import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.concurrent.ExecutorService;
@@ -7,45 +8,46 @@ import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadPoolExecutor;
 import java.util.concurrent.TimeUnit;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import test.core.jms.MessageDestination;
+import test.core.jms.MessageException;
+import test.core.jms.MessageFactory;
 
 /**
  * MessageDrivenService
  * @author zhangyf
  *
  */
-public class MessageDrivenService extends AbstractService<Message> {
+public class MessageDrivenService extends AbstractService<Serializable> {
 	
 	private static final Log log = LogFactory.getLog(MessageDrivenService.class);
 	
-	private String destName;
+	private MessageDestination dest;
 	private int receiverSize;
 	private boolean receiverExecute;
 	
-	private test.jms.activemq.Receiver recv;
+	private test.core.jms.MessageReceiver recv;
 	private List<MessageReceiver> receiverList = new ArrayList<MessageReceiver>();
 	
 	private ExecutorService threadPool;
 
 	MessageDrivenService(ServiceMode serviceMode, int takerSize, boolean takerExecute, boolean fairTake
-			, MessageProcessor processor, String destName, int receiverSize, boolean receiverExecute) {
+			, MessageProcessor processor, MessageDestination dest, int receiverSize, boolean receiverExecute) {
 		super(serviceMode, takerSize, takerExecute, fairTake, processor);
-		this.destName = destName;
+		this.dest = dest;
 		this.receiverSize = receiverSize;
 		this.receiverExecute = receiverExecute;
 	}
 
-	protected void init() throws JMSException {
-		recv = new test.jms.activemq.Receiver(destName);
+	protected void init() throws MessageException {
+		recv = MessageFactory.createReceiver(dest);
 		
 		MessageReceiver receiver = null;
 		for (int i = 0; i < receiverSize; i++) {
 			receiver = new MessageReceiver();
-			receiver.setName(destName + "-MessageReceiver" + i);
+			receiver.setName(dest + "-MessageReceiver" + i);
 			receiverList.add(receiver);
 			receiver.start();
 		}
@@ -55,11 +57,8 @@ public class MessageDrivenService extends AbstractService<Message> {
 		for (MessageReceiver receiver : receiverList) {
 			receiver.end();
 		}
-		try {
-			recv.close();
-		} catch (JMSException e) {
-			log.error("Close message receiver error.", e);
-		}
+		
+		recv.close();
 		
 		if (threadPool != null) {
 			threadPool.shutdown();
@@ -72,7 +71,7 @@ public class MessageDrivenService extends AbstractService<Message> {
 		public void run() {
 			try {
 				while(isActive) {
-					Message msg = recv.receive();
+					Serializable msg = recv.receive();
 					if (msg != null) {
 						if (receiverExecute) {
 							process(msg);
@@ -81,7 +80,7 @@ public class MessageDrivenService extends AbstractService<Message> {
 						}
 					}
 				}
-			} catch (JMSException e) {
+			} catch (MessageException e) {
 				log.error("Receive message error.", e);
 			}
 		}
@@ -91,7 +90,7 @@ public class MessageDrivenService extends AbstractService<Message> {
 		}
 	}
 	
-	private synchronized void execute(final Message msg) {
+	private synchronized void execute(final Serializable msg) {
 		if (threadPool == null) {
 			threadPool = new ThreadPoolExecutor(0
 					, Integer.MAX_VALUE, 60L, TimeUnit.SECONDS

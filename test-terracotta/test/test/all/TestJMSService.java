@@ -10,7 +10,10 @@ import test.core.cluster.Service;
 import test.core.cluster.ServiceFactory;
 import test.core.cluster.ServiceMode;
 import test.core.entry.ServiceEntry;
-import test.jms.activemq.Sender;
+import test.core.jms.MessageDestination;
+import test.core.jms.MessageException;
+import test.core.jms.MessageFactory;
+import test.core.jms.MessageSender;
 
 public class TestJMSService extends ServiceEntry {
 	private String[] params;
@@ -35,23 +38,22 @@ public class TestJMSService extends ServiceEntry {
 		int takerSize = Integer.parseInt(params[3]);
 		int msgCount = Integer.parseInt(params[4]);
 		int msgSize = Integer.parseInt(params[5]);
-		String destName = "queue/TestQueue";
 		
 		if (takerSize > 0) {
-			service = ServiceFactory.getMessageDrivenServiceWithoutWorker(ServiceMode.ALL_ACTIVE, new TestJMSProcessor(takerSize, msgCount, msgSize), destName, takerSize);
+			service = ServiceFactory.getMessageDrivenServiceWithoutWorker(ServiceMode.ALL_ACTIVE, new TestJMSProcessor(takerSize, msgCount, msgSize), MessageDestination.testQueue, takerSize);
 		} else {
-			service = ServiceFactory.getMessageDrivenServiceWithoutWorker(ServiceMode.ALL_ACTIVE, new TestJMSProcessor(takerSize, msgCount, msgSize), destName);
+			service = ServiceFactory.getMessageDrivenServiceWithoutWorker(ServiceMode.ALL_ACTIVE, new TestJMSProcessor(takerSize, msgCount, msgSize), MessageDestination.testQueue);
 		}
 		service.startup();
 		
-		if (sendMsg) startSender(destName, msgCount, msgSize);
+		if (sendMsg) startSender(MessageDestination.testQueue, msgCount, msgSize);
 		
 		return "Startup OK!";
 	}
 	
-	private void startSender(String destName, int msgCount, int msgSize) {
+	private void startSender(MessageDestination dest, int msgCount, int msgSize) {
 		timer = new Timer();
-		timer.schedule(new SendTask(destName, msgCount, msgSize), 0, 10 * 1000);
+		timer.schedule(new SendTask(dest, msgCount, msgSize), 0, 10 * 1000);
 	}
 	
 	public static void main(String[] args) {
@@ -60,27 +62,30 @@ public class TestJMSService extends ServiceEntry {
 	}
 	
 	private static class SendTask extends TimerTask {
-		private String destName;
 		private int msgCount;
 		
-		private int[] content;
+		private byte[] content;
+		private MessageSender sender;
 		
-		public SendTask(String destName, int msgCount, int msgSize) {
-			this.destName = destName;
+		public SendTask(MessageDestination dest, int msgCount, int msgSize) {
 			this.msgCount = msgCount;
 			
 			int size = 1024 * msgSize;
-			content = new int[size];
+			content = new byte[size];
 			for (int i = 0; i < size; i++) {
-				content[i] = i;
+				content[i] = 0;
+			}
+			
+			try {
+				sender = MessageFactory.createSender(dest);
+			} catch (MessageException e) {
+				e.printStackTrace();
 			}
 		}
 
 		@Override
 		public void run() {
 			try {
-				Sender sender = new Sender(destName);
-				
 				List<JmsPerfBean> beans = new ArrayList<JmsPerfBean>();
 				JmsPerfBean bean = null;
 				for (int i = 0; i < msgCount; i++) {

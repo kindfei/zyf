@@ -1,11 +1,11 @@
 package test.core.cluster;
 
-import javax.jms.Message;
+import java.io.Serializable;
 
 /**
  * MessageProcessor
  * @author zhangyf
  *
  */
-public abstract class MessageProcessor extends AbstractProcessor<Message> {
+public abstract class MessageProcessor extends AbstractProcessor<Serializable> {
 }

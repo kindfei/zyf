@@ -112,12 +112,11 @@ public abstract class AbstractConnection implements MessageConnection {
 	    info.append("MessageConnection[")
 	        .append("ProviderId=").append(this.providerId).append(separator)
 	        .append("ProviderType=").append(this.providerType).append(separator)
-	        .append("manualHA=").append(this.manualHA)
+	        .append("manualHA=").append(this.manualHA).append(separator)
         	.append("URL=").append(url).append(separator)
 	        .append("user=").append(this.user).append(separator)
 	        .append("password=").append(this.password).append(separator)
-	        .append("clientID=").append(this.clientID).append(separator)
-	        .append("]");
+	        .append("clientID=").append(this.clientID).append("]");
 	    return info.toString();
 	}
 

@@ -6,6 +6,7 @@ import java.util.Properties;
 import test.core.cluster.Service;
 import test.core.cluster.ServiceFactory;
 import test.core.cluster.ServiceMode;
+import test.core.jms.MessageDestination;
 
 
 import zyf.helper.CmdHelper;
@@ -35,7 +36,7 @@ public class TestClusterService {
 	}
 	
 	public static void testJMS() {
-		Service servive = ServiceFactory.getMessageDrivenService(ServiceMode.ALL_ACTIVE, new TestMessageProcessor(), "queue/TestQueue");
+		Service servive = ServiceFactory.getMessageDrivenService(ServiceMode.ALL_ACTIVE, new TestMessageProcessor(), MessageDestination.testQueue);
 		
 		servive.startup();
 		

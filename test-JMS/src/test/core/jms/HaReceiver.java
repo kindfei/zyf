@@ -2,8 +2,6 @@ package test.core.jms;
 
 import java.io.Serializable;
 
-import javax.jms.JMSException;
-
 public class HaReceiver extends AbstractReceiver {
 	
 	HaReceiver(MessageDestination dest, String messageSelector) throws MessageException {
@@ -23,15 +21,15 @@ public class HaReceiver extends AbstractReceiver {
 	public Serializable receive() throws MessageException {
 		try {
 			return receiveMessage();
-		} catch (JMSException e) {
+		} catch (Exception e) {
 			if (isClosed) {
 				throw new MessageException("MessageReceiver is closed.", e);
 			}
 			try {
 				build();
 				return receiveMessage();
-			} catch (JMSException je) {
-				throw new MessageException("Exception occurred when receive message.", je);
+			} catch (Exception ex) {
+				throw new MessageException("Exception occurred when receive message.", ex);
 			}
 		}
 	}

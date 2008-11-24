@@ -14,5 +14,8 @@
 	<classpathentry kind="lib" path="/test/lib/ActiveMQ/activemq-core-5.1.0.jar"/>
 	<classpathentry kind="lib" path="/test/lib/jboss-4.2.2.GA/jbossall-client.jar"/>
 	<classpathentry kind="lib" path="/test/lib/jboss-messaging-1.4.0.SP3/jboss-messaging-client.jar"/>
+	<classpathentry kind="lib" path="/test/lib/jboss-messaging-1.4.0.SP3/javassist.jar"/>
+	<classpathentry kind="lib" path="/test/lib/jboss-messaging-1.4.0.SP3/jboss-aop-jdk50.jar"/>
+	<classpathentry kind="lib" path="/test/lib/jboss-messaging-1.4.0.SP3/trove.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

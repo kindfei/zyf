@@ -15,7 +15,13 @@ public class ActiveMQConnection extends AbstractConnection {
 	@Override
 	protected Connection createConnection(String url, String user, String password) throws Exception {
 		ActiveMQConnectionFactory cf = new ActiveMQConnectionFactory(url);
-		return cf.createConnection(user, password);
+		Connection conn = null;
+		if (user == null || password == null) {
+			conn = cf.createConnection();
+		} else {
+			conn = cf.createConnection(user, password);
+		}
+		return conn;
 	}
 
 	@Override

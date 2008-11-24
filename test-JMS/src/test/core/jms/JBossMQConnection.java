@@ -23,7 +23,12 @@ public class JBossMQConnection extends AbstractConnection {
 		InitialContext ctx = new InitialContext(env);
 		
 		ConnectionFactory cf = (ConnectionFactory) ctx.lookup("ConnectionFactory");
-		Connection conn = cf.createConnection(user, password);
+		Connection conn = null;
+		if (user == null || password == null) {
+			conn = cf.createConnection();
+		} else {
+			conn = cf.createConnection(user, password);
+		}
 		
 		context = ctx;
 		
