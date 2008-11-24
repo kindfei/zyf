@@ -1,8 +1,6 @@
 package test.all;
 
-import javax.jms.JMSException;
-import javax.jms.Message;
-import javax.jms.ObjectMessage;
+import java.io.Serializable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -34,17 +32,13 @@ public class TestJMSProcessor extends MainMessageProcessor {
 	}
 
 	@Override
-	public void mainProcess(Message msg) {
-		try {
-			JmsPerfBean bean = (JmsPerfBean) ((ObjectMessage) msg).getObject();
-			log.info("Got msg " + bean.getSeq());
-			long st = bean.getTime();
-			if (st != 0) {
-				long cost= System.currentTimeMillis() - st;
-				log.info("nodeId=" + nodeId + ", takerSize=" + takerSize + ", msgCount=" + msgCount + ", msgSize=" + msgSize + "kb, time cost=" + cost + "ms.");
-			}
-		} catch (JMSException e) {
-			log.error(e.getMessage(), e);
+	public void mainProcess(Serializable msg) {
+		JmsPerfBean bean = (JmsPerfBean) msg;
+		log.info("Got msg " + bean.getSeq());
+		long st = bean.getTime();
+		if (st != 0) {
+			long cost= System.currentTimeMillis() - st;
+			log.info("nodeId=" + nodeId + ", takerSize=" + takerSize + ", msgCount=" + msgCount + ", msgSize=" + msgSize + "kb, time cost=" + cost + "ms.");
 		}
 	}
 

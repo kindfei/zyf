@@ -4,6 +4,8 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
+import test.core.jms.MessageDestination;
+
 /**
  * ServiceFactory
  * @author zhangyf
@@ -21,12 +23,12 @@ public class ServiceFactory {
 	 * 
 	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
 	 * @param processor the business implementation
-	 * @param destName the destination name of JMS for receive message
+	 * @param dest the destination of JMS for receive message
 	 * @return the service
 	 */
 	public synchronized static Service getMessageDrivenServiceWithoutWorker(ServiceMode serviceMode
-			, MainMessageProcessor processor, String destName) {
-		return getMessageDrivenService(serviceMode, 0, true, false, processor, destName, 1, false);
+			, MainMessageProcessor processor, MessageDestination dest) {
+		return getMessageDrivenService(serviceMode, 0, true, false, processor, dest, 1, false);
 	}
 	
 	/**
@@ -37,13 +39,13 @@ public class ServiceFactory {
 	 * 
 	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
 	 * @param processor the business implementation
-	 * @param destName the destination name of JMS for receive message
+	 * @param dest the destination of JMS for receive message
 	 * @param receiverSize how many threads to receive and process the message
 	 * @return the service
 	 */
 	public synchronized static Service getMessageDrivenServiceWithoutWorker(ServiceMode serviceMode
-			, MainMessageProcessor processor, String destName, int receiverSize) {
-		return getMessageDrivenService(serviceMode, 0, true, false, processor, destName, receiverSize, true);
+			, MainMessageProcessor processor, MessageDestination dest, int receiverSize) {
+		return getMessageDrivenService(serviceMode, 0, true, false, processor, dest, receiverSize, true);
 	}
 	
 	/**
@@ -54,12 +56,12 @@ public class ServiceFactory {
 	 * 
 	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
 	 * @param processor the business implementation
-	 * @param destName the destination name of JMS for receive message
+	 * @param dest the destination of JMS for receive message
 	 * @return the service
 	 */
 	public synchronized static Service getMessageDrivenService(ServiceMode serviceMode
-			, MessageProcessor processor, String destName) {
-		return getMessageDrivenService(serviceMode, 1, false, true, processor, destName, 1, false);
+			, MessageProcessor processor, MessageDestination dest) {
+		return getMessageDrivenService(serviceMode, 1, false, true, processor, dest, 1, false);
 	}
 	
 	/**
@@ -71,12 +73,12 @@ public class ServiceFactory {
 	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
 	 * @param takerSize how many threads to take and process the task
 	 * @param processor the business implementation
-	 * @param destName the destination name of JMS for receive message
+	 * @param dest the destination of JMS for receive message
 	 * @return the service
 	 */
 	public synchronized static Service getMessageDrivenService(ServiceMode serviceMode
-			, int takerSize, MessageProcessor processor, String destName) {
-		return getMessageDrivenService(serviceMode, takerSize, true, false, processor, destName, 1, false);
+			, int takerSize, MessageProcessor processor, MessageDestination dest) {
+		return getMessageDrivenService(serviceMode, takerSize, true, false, processor, dest, 1, false);
 	}
 	
 	/**
@@ -87,13 +89,13 @@ public class ServiceFactory {
 	 * 
 	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
 	 * @param processor the business implementation
-	 * @param destName the destination name of JMS for receive message
+	 * @param dest the destination of JMS for receive message
 	 * @param receiverSize how many threads to receive and process the message
 	 * @return the service
 	 */
 	public synchronized static Service getMessageDrivenService(ServiceMode serviceMode
-			, MessageProcessor processor, String destName, int receiverSize) {
-		return getMessageDrivenService(serviceMode, 1, false, true, processor, destName, receiverSize, true);
+			, MessageProcessor processor, MessageDestination dest, int receiverSize) {
+		return getMessageDrivenService(serviceMode, 1, false, true, processor, dest, receiverSize, true);
 	}
 	
 	/**
@@ -105,17 +107,17 @@ public class ServiceFactory {
 	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
 	 * @param takerSize how many threads to take and process the task
 	 * @param processor the business implementation
-	 * @param destName the destination name of JMS for receive message
+	 * @param dest the destination of JMS for receive message
 	 * @param receiverSize how many threads to receive and process the message
 	 * @return the service
 	 */
 	public synchronized static Service getMessageDrivenService(ServiceMode serviceMode
-			, int takerSize, MessageProcessor processor, String destName, int receiverSize) {
-		return getMessageDrivenService(serviceMode, takerSize, true, false, processor, destName, receiverSize, true);
+			, int takerSize, MessageProcessor processor, MessageDestination dest, int receiverSize) {
+		return getMessageDrivenService(serviceMode, takerSize, true, false, processor, dest, receiverSize, true);
 	}
 	
 	private synchronized static Service getMessageDrivenService(ServiceMode serviceMode, int takerSize, boolean takerExecute
-			, boolean fairTake, MessageProcessor processor, String destName, int receiverSize, boolean receiverExecute) {
+			, boolean fairTake, MessageProcessor processor, MessageDestination dest, int receiverSize, boolean receiverExecute) {
 		
 		String procName = processor.getClass().getName();
 		AbstractService<?> service = servMap.get(procName);
@@ -123,7 +125,7 @@ public class ServiceFactory {
 			return service;
 		}
 		
-		service = new MessageDrivenService(serviceMode, takerSize, takerExecute, fairTake, processor, destName, receiverSize, receiverExecute);
+		service = new MessageDrivenService(serviceMode, takerSize, takerExecute, fairTake, processor, dest, receiverSize, receiverExecute);
 		servMap.put(procName, service);
 		return service;
 	}

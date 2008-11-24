@@ -1,9 +1,7 @@
 package test.core.cluster;
 
+import java.io.Serializable;
 import java.util.List;
-
-import javax.jms.Message;
-
 
 /**
  * MainMessageProcessor
@@ -12,12 +10,12 @@ import javax.jms.Message;
  */
 public abstract class MainMessageProcessor extends MessageProcessor {
 
-	public final List<ClusterTask> masterProcess(Message msg) {
+	public final List<ClusterTask> masterProcess(Serializable msg) {
 		mainProcess(msg);
 		return null;
 	}
 	
-	public abstract void mainProcess(Message msg);
+	public abstract void mainProcess(Serializable msg);
 
 	public final void workerProcess(ClusterTask task) {
 	}
