@@ -28,7 +28,24 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getMessageDrivenServiceWithoutWorker(ServiceMode serviceMode
 			, MainMessageProcessor processor, MessageDestination dest) {
-		return getMessageDrivenService(serviceMode, 0, true, false, processor, dest, 1, false);
+		return getMessageDrivenService(serviceMode, 0, true, false, processor, dest, null, 1, false);
+	}
+	
+	/**
+	 * The <tt>MessageReceiver</tt> will creates new threads as needed to execute 
+	 * <tt>masterProcess</tt> when it got a message from JMS receiver.
+	 * <p>There is no <tt>TaskTaker</tt> to take task from task queue. So can not
+	 * add task to the task queue.
+	 * 
+	 * @param serviceMode ServiceMode.ACTIVE_STANDBY or ServiceMode.ALL_ACTIVE
+	 * @param processor the business implementation
+	 * @param dest the destination of JMS for receive message
+	 * @param selector the message selector
+	 * @return the service
+	 */
+	public synchronized static Service getMessageDrivenServiceWithoutWorker(ServiceMode serviceMode
+			, MainMessageProcessor processor, MessageDestination dest, String selector) {
+		return getMessageDrivenService(serviceMode, 0, true, false, processor, dest, selector, 1, false);
 	}
 	
 	/**
@@ -45,7 +62,7 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getMessageDrivenServiceWithoutWorker(ServiceMode serviceMode
 			, MainMessageProcessor processor, MessageDestination dest, int receiverSize) {
-		return getMessageDrivenService(serviceMode, 0, true, false, processor, dest, receiverSize, true);
+		return getMessageDrivenService(serviceMode, 0, true, false, processor, dest, null, receiverSize, true);
 	}
 	
 	/**
@@ -61,7 +78,7 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getMessageDrivenService(ServiceMode serviceMode
 			, MessageProcessor processor, MessageDestination dest) {
-		return getMessageDrivenService(serviceMode, 1, false, true, processor, dest, 1, false);
+		return getMessageDrivenService(serviceMode, 1, false, true, processor, dest, null, 1, false);
 	}
 	
 	/**
@@ -78,7 +95,7 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getMessageDrivenService(ServiceMode serviceMode
 			, int takerSize, MessageProcessor processor, MessageDestination dest) {
-		return getMessageDrivenService(serviceMode, takerSize, true, false, processor, dest, 1, false);
+		return getMessageDrivenService(serviceMode, takerSize, true, false, processor, dest, null, 1, false);
 	}
 	
 	/**
@@ -95,7 +112,7 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getMessageDrivenService(ServiceMode serviceMode
 			, MessageProcessor processor, MessageDestination dest, int receiverSize) {
-		return getMessageDrivenService(serviceMode, 1, false, true, processor, dest, receiverSize, true);
+		return getMessageDrivenService(serviceMode, 1, false, true, processor, dest, null, receiverSize, true);
 	}
 	
 	/**
@@ -113,11 +130,11 @@ public class ServiceFactory {
 	 */
 	public synchronized static Service getMessageDrivenService(ServiceMode serviceMode
 			, int takerSize, MessageProcessor processor, MessageDestination dest, int receiverSize) {
-		return getMessageDrivenService(serviceMode, takerSize, true, false, processor, dest, receiverSize, true);
+		return getMessageDrivenService(serviceMode, takerSize, true, false, processor, dest, null, receiverSize, true);
 	}
 	
 	private synchronized static Service getMessageDrivenService(ServiceMode serviceMode, int takerSize, boolean takerExecute
-			, boolean fairTake, MessageProcessor processor, MessageDestination dest, int receiverSize, boolean receiverExecute) {
+			, boolean fairTake, MessageProcessor processor, MessageDestination dest, String selector, int receiverSize, boolean receiverExecute) {
 		
 		String procName = processor.getClass().getName();
 		AbstractService<?> service = servMap.get(procName);
@@ -125,7 +142,7 @@ public class ServiceFactory {
 			return service;
 		}
 		
-		service = new MessageDrivenService(serviceMode, takerSize, takerExecute, fairTake, processor, dest, receiverSize, receiverExecute);
+		service = new MessageDrivenService(serviceMode, takerSize, takerExecute, fairTake, processor, dest, selector, receiverSize, receiverExecute);
 		servMap.put(procName, service);
 		return service;
 	}

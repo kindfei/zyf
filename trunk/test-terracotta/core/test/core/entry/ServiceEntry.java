@@ -9,6 +9,8 @@ import java.net.ServerSocket;
 import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -57,7 +59,17 @@ public abstract class ServiceEntry {
 				"Shutdown the service, send the shutdown command to the port that the service listen on.", 
 				new Commandable() {
 					public String execute() throws Exception {
-						return shutdown();
+						String result = null;
+						try {
+							result = shutdown();
+						} finally {
+							new Timer(true).schedule(new TimerTask() {
+								public void run() {
+									System.exit(0);
+								};
+							}, 5000);
+						}
+						return result;
 					}
 				}
 		));

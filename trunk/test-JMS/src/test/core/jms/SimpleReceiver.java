@@ -18,9 +18,9 @@ public class SimpleReceiver extends AbstractReceiver {
 	}
 
 	@Override
-	public Serializable receive() throws MessageException {
+	public Serializable receive(long timeout) throws MessageException {
 		try {
-			return receiveMessage();
+			return receiveMessage(timeout);
 		} catch (Exception e) {
 			throw new MessageException("Exception occurred when receive message.", e);
 		}

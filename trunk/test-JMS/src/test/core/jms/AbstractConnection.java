@@ -58,6 +58,10 @@ public abstract class AbstractConnection implements MessageConnection {
 		} catch (Exception e) {
 			if (manualHA) {
 				log.error("MessageConnection connect error. " + getInfo(url), e);
+				try {
+					Thread.sleep(5000);
+				} catch (InterruptedException ie) {
+				}
 				log.info("reconnect begin...");
 				connect(provider.getNextURL());
 			} else {
@@ -79,24 +83,23 @@ public abstract class AbstractConnection implements MessageConnection {
 		@Override
 		public void onException(JMSException exception) {
 			lock.lock();
-			
-			if (isClosed) return;
-			
-			log.error("MessageConnection on exception. " + getInfo(url), exception);
-			
 			try {
-				connection.stop();
-			} catch (JMSException e) {
-			}
-			try {
-				connection.close();
-			} catch (JMSException e) {
-			}
-			
-			isClosed = true;
-			
-			log.info("reconnect begin...");
-			try {
+				if (isClosed) return;
+				
+				log.error("MessageConnection on exception. " + getInfo(url), exception);
+				
+				try {
+					connection.stop();
+				} catch (JMSException e) {
+				}
+				try {
+					connection.close();
+				} catch (JMSException e) {
+				}
+				
+				isClosed = true;
+				
+				log.info("reconnect begin...");
 				connect(provider.getNextURL());
 			} catch (MessageException e) {
 				log.error("Should never have happened.", e);
