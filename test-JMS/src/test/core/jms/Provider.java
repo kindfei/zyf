@@ -52,37 +52,6 @@ public class Provider {
 		return providerType;
 	}
 	
-	String getCurrentURL() {
-		if (!manualHa) return url;
-		
-		String[] urls = url.split(",");
-		
-		return urls[0];
-	}
-	
-	String getNextURL() {
-		if (!manualHa) return url;
-		
-		String[] urls = url.split(",");
-		if (urls.length != 1) {
-			StringBuilder sb = new StringBuilder();
-			for (int i = 1; i < urls.length; i++) {
-				sb.append(urls[i]).append(",");
-			}
-			sb.append(urls[0]);
-			String newUrl = sb.toString();
-			
-			updateProvider(newUrl);
-			url = newUrl;
-		}
-		
-		return urls[1];
-	}
-	
-	private void updateProvider(String newUrl) {
-		
-	}
-	
 	String getUser() {
 		return user;
 	}
@@ -93,5 +62,38 @@ public class Provider {
 	
 	boolean isManualHa() {
 		return manualHa;
+	}
+	
+	String getURL() {
+		if (!manualHa) return url;
+		
+		String[] urls = url.split(",");
+		
+		return urls[0];
+	}
+	
+	String getNextURL() {
+		String[] urls = url.split(",");
+		if (urls.length > 1) {
+			StringBuilder sb = new StringBuilder();
+			for (int i = 1; i < urls.length; i++) {
+				sb.append(urls[i]).append(",");
+			}
+			sb.append(urls[0]);
+			String newUrl = sb.toString();
+			
+			try {
+				updateProvider(newUrl);
+				url = newUrl;
+				return urls[1];
+			} catch (Exception e) {
+				log.error("Update provider error.", e);
+			}
+		}
+		return urls[0];
+	}
+	
+	private void updateProvider(String newUrl) throws Exception {
+		
 	}
 }

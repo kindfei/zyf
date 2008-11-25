@@ -38,7 +38,7 @@ public abstract class AbstractConnection implements MessageConnection {
 		this.password = provider.getPassword();
 		this.clientID = clientID;
 		
-		connect(provider.getCurrentURL());
+		connect(provider.getURL());
 	}
 	
 	private void connect(String url) throws MessageException {
