@@ -15,6 +15,8 @@ import java.util.TimerTask;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import test.core.entry.ServiceDefinitions.ServiceInfo;
+
 /**
  * Service entry, help bootstrap and manage service.
  * @author zhangyf
@@ -26,6 +28,20 @@ public abstract class ServiceEntry {
 	private String ipAddress;
 	private int listenPort;
 	private List<Command> commands = new ArrayList<Command>();
+	
+	public ServiceEntry() {
+		String name = System.getProperty("PROCESS_NAME");
+		ServiceInfo info = ServiceDefinitions.getServiceInfo(name);
+		if (info == null) {
+			String strMsg = "There was no service definition. Make sure the service is configed in XML file.";
+			log.error(strMsg);
+			throw new IllegalArgumentException(strMsg);
+		}
+		this.listenPort = info.getPort();
+		this.ipAddress = info.getIp();
+		addBasicCmd();
+		addAnnotCmd();
+	}
 	
 	public ServiceEntry(int listenPort) {
 		this("127.0.0.1", listenPort);
