@@ -38,7 +38,7 @@ public abstract class AbstractReceiver implements MessageReceiver {
 	protected abstract void init() throws MessageException;
 	
 	protected void build() throws MessageException, JMSException {
-		session = connection.createSession();
+		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		Destination destination = connection.createDestination(dest);
 		consumer = session.createConsumer(destination, messageSelector);
 	}

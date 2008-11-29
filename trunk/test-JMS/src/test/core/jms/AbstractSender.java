@@ -32,7 +32,7 @@ public abstract class AbstractSender implements MessageSender {
 	protected abstract void init() throws MessageException;
 	
 	protected void build() throws MessageException, JMSException {
-		session = connection.createSession();
+		session = connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
 		Destination destination = connection.createDestination(dest);
 		producer = session.createProducer(destination);
 	}
