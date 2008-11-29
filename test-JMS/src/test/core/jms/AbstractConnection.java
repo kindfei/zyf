@@ -124,10 +124,10 @@ public abstract class AbstractConnection implements MessageConnection {
 	}
 
 	@Override
-	public Session createSession() throws MessageException {
+	public Session createSession(boolean transacted, int acknowledgeMode) throws MessageException {
 		lock.lock();
 		try {
-			return connection.createSession(false, Session.AUTO_ACKNOWLEDGE);
+			return connection.createSession(transacted, acknowledgeMode);
 		} catch (JMSException e) {
 			throw new MessageException("Create session error.", e);
 		} finally {
