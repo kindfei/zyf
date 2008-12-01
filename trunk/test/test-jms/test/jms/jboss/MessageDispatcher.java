@@ -1,9 +1,9 @@
 package test.jms.jboss;
 
+import java.util.concurrent.BlockingQueue;
+
 import javax.jms.Message;
 import javax.jms.MessageListener;
-
-import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 
 public class MessageDispatcher implements Runnable {
 	private BlockingQueue msgQueue;

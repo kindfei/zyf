@@ -1,5 +1,7 @@
 package test.jms.jboss;
 
+import java.util.concurrent.TimeUnit;
+
 import javax.jms.Connection;
 import javax.jms.Destination;
 import javax.jms.JMSException;
@@ -7,8 +9,6 @@ import javax.jms.Message;
 import javax.jms.MessageConsumer;
 import javax.jms.MessageListener;
 import javax.jms.Session;
-
-import edu.emory.mathcs.backport.java.util.concurrent.TimeUnit;
 
 public class RecvMessenger extends DefaultMessenger {
 	

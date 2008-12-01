@@ -1,4 +1,4 @@
-package test.basic.thread;
+package test;
 
 public class TestInterrupt implements Runnable {
 	public static void main(String[] args) {

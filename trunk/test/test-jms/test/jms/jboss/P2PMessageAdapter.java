@@ -1,10 +1,9 @@
 package test.jms.jboss;
 
 import java.util.HashMap;
+import java.util.concurrent.BlockingQueue;
 
 import javax.jms.Message;
-
-import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
 
 public class P2PMessageAdapter extends MessageAdapter {
 	
