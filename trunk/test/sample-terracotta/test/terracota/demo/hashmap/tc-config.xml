@@ -1,0 +1,23 @@
+<tc:tc-config xmlns:tc="http://www.terracotta.org/config"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-4.xsd">
+
+  <application>
+    <dso>  
+      <locks>
+        <autolock>
+           <method-expression>void test.terracota.demo.hashmap.Main.put(..) </method-expression>
+        </autolock>
+        <autolock>
+           <method-expression>void test.terracota.demo.hashmap.Main.list(..) </method-expression>
+           <lock-level>read</lock-level>
+        </autolock>
+      </locks>
+      <roots>
+        <root>
+          <field-name>test.terracota.demo.hashmap.Main.instance</field-name>
+        </root>
+      </roots>
+    </dso>
+  </application>
+</tc:tc-config>
