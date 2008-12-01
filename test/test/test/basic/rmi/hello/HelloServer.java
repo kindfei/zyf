@@ -6,7 +6,8 @@ import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.Set;
 
-import zyf.helper.CmdHelper;
+import core.helper.CmdHelper;
+
 
 public class HelloServer {
 	

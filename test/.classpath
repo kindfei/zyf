@@ -2,6 +2,10 @@
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="src" path="test"/>
+	<classpathentry kind="src" path="test-hibernate"/>
+	<classpathentry kind="src" path="test-jms"/>
+	<classpathentry kind="src" path="test-terracotta"/>
+	<classpathentry kind="src" path="core"/>
 	<classpathentry kind="lib" path="conf"/>
 	<classpathentry kind="lib" path="quartz"/>
 	<classpathentry kind="lib" path="log4j"/>
@@ -25,5 +29,63 @@
 	<classpathentry kind="lib" path="lib/iaik_jce_full.jar"/>
 	<classpathentry kind="lib" path="lib/skype/skype.jar" sourcepath="E:/Library/skype/src"/>
 	<classpathentry kind="lib" path="lib/jboss-4.2.2.GA/jbossall-client.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/tools/isorelax-20030108.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/tools/jaxme-0.3.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/tools/jaxme-js-0.3.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/tools/jaxme-xs-0.3.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/tools/jtidy-4aug2000r7-dev.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/tools/xalan-2.5.1.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/tools/xercesImpl-2.6.2.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/jaxen-1.1-beta-6.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/jaxme-api-0.3.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/jsr173_1.0_api.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/msv-20030807.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/pull-parser-2.1.10.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/relaxngDatatype-20030807.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/xpp3-1.1.3.3.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/xsdlib-20030807.jar"/>
+	<classpathentry kind="lib" path="lib/ActiveMQ/activemq-core-5.1.0.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.2.0.ga/c3p0-0.9.0.jar" sourcepath="E:/Library/c3p0-0.9.0/c3p0-0.9.0.src/src"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.2.0.ga/cglib-2.1.3.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.2.0.ga/commons-collections-2.1.1.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.2.0.ga/commons-logging-1.0.4.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.2.0.ga/concurrent-1.3.2.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.2.0.ga/dom4j-1.6.1.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.2.0.ga/ehcache-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.2.0.ga/hibernate3.jar" sourcepath="E:/Library/hibernate-3.2.0.ga/src"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.2.0.ga/jta.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.2.0.ga/log4j-1.2.11.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.2.0.ga/oscache-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.2.0.ga/xerces-2.6.2.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.2.0.ga/xml-apis.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-messaging-1.4.0.SP3/javassist.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-messaging-1.4.0.SP3/jboss-aop-jdk50.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-messaging-1.4.0.SP3/jboss-messaging-client.jar"/>
+	<classpathentry kind="lib" path="lib/jboss-messaging-1.4.0.SP3/trove.jar"/>
+	<classpathentry kind="lib" path="lib/mysql-connector-java-5.1.6-bin.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-beanutils.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-betwixt-0.7.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-chain-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-cli-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-codec-1.3.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-collections-3.1.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-configuration-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-dbcp-1.2.1.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-dbutils-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-digester-1.7.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-discovery.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-el.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-fileupload-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-io-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-jexl-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-jxpath-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-lang-2.1.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-math-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-net-1.4.1.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-pool-1.2.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-primitives-1.0.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-transaction-1.1.jar"/>
+	<classpathentry kind="lib" path="lib/Apache/commons/commons-validator-1.2.0.jar"/>
+	<classpathentry kind="lib" path="lib/java_memcached-release_2.0.1.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>

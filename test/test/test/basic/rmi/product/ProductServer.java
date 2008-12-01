@@ -5,7 +5,8 @@ import java.rmi.registry.LocateRegistry;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import zyf.helper.CmdHelper;
+import core.helper.CmdHelper;
+
 
 public class ProductServer {
 	public static void main(String args[]) {

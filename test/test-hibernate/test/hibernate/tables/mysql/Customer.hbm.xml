@@ -1,0 +1,80 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.2
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="test.hibernate.tables.mysql.Customer" 
+    table="customers"
+>
+
+    <id
+        name="customerId"
+        type="java.lang.String"
+        column="customer_id"
+    >
+    
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="customerName"
+        type="java.lang.String"
+        column="customer_name"
+        length="50"
+    />
+    <property
+        name="address"
+        type="java.lang.String"
+        column="address"
+        length="50"
+    />
+    <property
+        name="groupId"
+        type="java.lang.String"
+        column="group_id"
+        length="10"
+    />
+
+    <!-- Associations -->
+	<set name="emailSet" table="emails">
+		<key column="customer_id"/>
+		<element column="email" type="string"/>
+	</set>
+	
+	<set name="emailBeanSet">
+		<key column="customer_id"/>
+		<one-to-many class="test.hibernate.tables.mysql.Email"/>
+	</set>
+	
+	<map name="emailMap" table="emails">
+		<key column="customer_id"/>
+		<index column="email_id" type="string"/>
+		<element column="email" type="string"/>
+	</map>
+	
+	<array name="productBeans" table="customer_product">
+		<key column="customer_id"/>
+		<index column="id"/>
+		<many-to-many column="product_id" class="test.hibernate.tables.mysql.Product"/>
+	</array>
+	
+	<map name="productBeanMap" table="customer_product">
+		<key column="customer_id"/>
+		<index column="id" type="string"/>
+		<many-to-many column="product_id" class="test.hibernate.tables.mysql.Product"/>
+	</map>
+	
+	<many-to-one name="GroupBean" class="test.hibernate.tables.mysql.Group" column="group_id" insert="false" update="false"/>
+  
+
+</class>
+</hibernate-mapping>
