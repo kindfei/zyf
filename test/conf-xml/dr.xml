@@ -1,0 +1,130 @@
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>英极软件开发（大连）有限公司企业办公系统</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<link href="../../css/index.css" rel="stylesheet" type="text/css" />
+<script src="../../jscript/Calendar.js"></script>
+
+<style type="text/css">
+<!--
+.style2 {color: #FF0000}
+.style3 {color: #000000}
+-->
+</style>
+
+
+<link href="../../css/styleoa.css" rel="stylesheet" type="text/css" />
+</head>
+<body>
+<form action="./" name="myform" method="get" >
+<input type="hidden" name="module" value="Project_Pinfo" />
+<input type="hidden" name="act" value="Search" />
+<table width="95%" border="0" align="center" cellpadding="3" cellspacing="1" style="margin-top:10px;">
+  <tr>
+    <td height="30" colspan="6" id="indextitle">个人日报查询</td>
+    </tr>
+  <tr>
+    <td width="125" align="right" nowrap="nowrap" class="lefttd">职员姓名：</td>
+    <td width="149" nowrap="nowrap" class="righttd"><input name="user_name" type="text" class="textfield" /></td>
+    <td width="109"   align="right" nowrap="nowrap" class="lefttd">所属部门：</td>
+    <td width="134" nowrap="nowrap" class="righttd"><select name="depart" class="textfield">
+<option value='all'>全部</option><option value="1" >研发一部</option>
+<option value="2" >研发二部</option>
+<option value="3" >研发三部</option>
+<option value="4" >研发四部</option>
+<option value="5" >研发五部</option>
+<option value="6" >研发六部</option>
+<option value="11" >系统维护和管理部</option>
+<option value="12" >人力资源课</option>
+<option value="13" >总务部</option>
+<option value="14" >总经理办公室</option>
+<option value="15" >安全保卫科</option>
+<option value="25" >开发本部</option>
+<option value="26" >管理本部</option>
+<option value="29" >董事长</option>
+<option value="30" >财务部</option>
+<option value="31" >总经理</option>
+<option value="33" >翻译课</option>
+<option value="35" >测试课</option>
+<option value="37" >质量管理课</option>
+<option value="38" >财务处理中心</option>
+<option value="39" >技术服务中心</option>
+<option value="40" >上海分公司</option>
+<option value="41" >其他</option>
+<option value="42" >汽车队</option>
+<option value="43" >经营发展本部</option>
+<option value="44" >对外联络部</option>
+<option value="45" >国际市场部</option>
+<option value="46" >国内市场部</option>
+<option value="47" >技术支持部</option>
+<option value="48" >计算机信息技术培训中心</option>
+</select>
+</td>
+    <td width="64" align="right" nowrap="nowrap" class="lefttd" >时间段：</td>
+    <td width="348" nowrap="nowrap" class="righttd"><input name="s_time" type="text" class="textfield" size="20" onClick="new Calendar().show(this);"  readonly="readonly"/>
+      ~
+      <input name="e_time" type="text" class="textfield" size="20" onClick="new Calendar().show(this);"  readonly="readonly"/></td>
+  </tr>
+  <tr>
+    <td height="40" colspan="6"align="center" bgcolor="#FFFFFF"><input type="hidden" value="" name="m_flag"><input type="submit" class="btn" value="查询" />
+      &nbsp;
+      <input type="reset" class="btn" value="重置" />    </td>
+  </tr>
+</table>
+</form>
+<table width="100%" border="0" align="center" cellpadding="0" cellspacing="0">
+  <tr>
+    <td align="center">
+<table width="95%" border="0" cellpadding="2" cellspacing="1">
+  <tr>
+    <td colspan="12"><a href="./?module=Project_Pinfo&act=Before">[补写个人日报]</a></td>
+  </tr>
+  <tr>
+  <td height="30" colspan="8" bgcolor="#FFFFFF" id="indextitle">查询结果</td>
+  </tr>
+  <tr>
+    <td width="70" rowspan="1" align="center" bgcolor="#FFFFFF" id="listtitle"><span class="style3">姓名</span></td>
+	<td width="20%" align="center" bgcolor="#FFFFFF" id="listtitle"><span class="style3">所属部门</span></td>
+    <td width="20%" align="center" bgcolor="#FFFFFF" id="listtitle"><span class="style3">日报填写时间</span></td>
+	<td align="center" bgcolor="#FFFFFF" id="listtitle"><span class="style3">日报概要</span><span class="style3"></span></td>
+	</tr>
+  <tr>
+    <td width="50" align="center" bgcolor="#FFFFFF" class="righttd">李卫</td>
+	<td width="10%" align="center" bgcolor="#FFFFFF" class="righttd">研发四部</td>
+	<td align="center" bgcolor="#FFFFFF" class="righttd">2007-12-26 07:15:45</a></td>
+    <td align="center" bgcolor="#FFFFFF" class="righttd"><a href="?module=Project_Pinfo&act=ShowSearchDaily&daily_id=23721">Fx2.0实系统每日运营监控</a></td>
+	</tr>
+  <tr>
+    <td width="50" align="center" bgcolor="#FFFFFF" class="righttd">李科</td>
+	<td width="10%" align="center" bgcolor="#FFFFFF" class="righttd">研发四部</td>
+	<td align="center" bgcolor="#FFFFFF" class="righttd">2007-12-26 07:11:20</a></td>
+    <td align="center" bgcolor="#FFFFFF" class="righttd"><a href="?module=Project_Pinfo&act=ShowSearchDaily&daily_id=23720">Fx2.0实系统每日运营监控
+4.2开始每天数据查询
+130caplex备...</a></td>
+	</tr>
+  <tr>
+    <td width="50" align="center" bgcolor="#FFFFFF" class="righttd">刘云飞</td>
+	<td width="10%" align="center" bgcolor="#FFFFFF" class="righttd">研发四部</td>
+	<td align="center" bgcolor="#FFFFFF" class="righttd">2007-12-26 12:32:40</a></td>
+    <td align="center" bgcolor="#FFFFFF" class="righttd"><a href="?module=Project_Pinfo&act=ShowSearchDaily&daily_id=23741">邮件问题对应</a></td>
+	</tr>
+  <tr>
+    <td width="50" align="center" bgcolor="#FFFFFF" class="righttd">潘军</td>
+	<td width="10%" align="center" bgcolor="#FFFFFF" class="righttd">研发四部</td>
+	<td align="center" bgcolor="#FFFFFF" class="righttd">2007-12-26 06:01:32</a></td>
+    <td align="center" bgcolor="#FFFFFF" class="righttd"><a href="?module=Project_Pinfo&act=ShowSearchDaily&daily_id=23719">Fx2.0/Fxv/Fxinfo/Credit系统每日运营监控</a></td>
+	</tr>
+  <tr>
+    <td width="50" align="center" bgcolor="#FFFFFF" class="righttd">王猛</td>
+	<td width="10%" align="center" bgcolor="#FFFFFF" class="righttd">研发四部</td>
+	<td align="center" bgcolor="#FFFFFF" class="righttd">2007-12-26 08:54:52</a></td>
+    <td align="center" bgcolor="#FFFFFF" class="righttd"><a href="?module=Project_Pinfo&act=ShowSearchDaily&daily_id=23724">检索 管理 coding</a></td>
+	</tr>
+   </table>
+	</td>
+  </tr>
+</table>
+
+
+</body>
+</html>

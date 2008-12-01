@@ -7,9 +7,13 @@
 	<classpathentry kind="src" path="test-terracotta"/>
 	<classpathentry kind="src" path="core"/>
 	<classpathentry kind="lib" path="conf"/>
-	<classpathentry kind="lib" path="quartz"/>
-	<classpathentry kind="lib" path="log4j"/>
-	<classpathentry kind="lib" path="secconf"/>
+	<classpathentry kind="lib" path="conf-quartz"/>
+	<classpathentry kind="lib" path="conf-log4j"/>
+	<classpathentry kind="lib" path="conf-security"/>
+	<classpathentry kind="lib" path="conf-hibernate"/>
+	<classpathentry kind="lib" path="conf-jms"/>
+	<classpathentry kind="lib" path="conf-terracotta"/>
+	<classpathentry kind="lib" path="conf-xml"/>
 	<classpathentry kind="lib" path="lib/activation.jar"/>
 	<classpathentry kind="lib" path="lib/activemq-core-5.1.0.jar"/>
 	<classpathentry kind="lib" path="lib/commons-beanutils.jar"/>
