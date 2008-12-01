@@ -1,0 +1,26 @@
+<howto>
+h1.  LinkedBlockingQueue Example
+
+h2.  Summary
+
+This example shows how to send messages across VMs (threads) using a [LinkedBlockingQueue|http://java.sun.com/j2se/1.5.0/docs/api/java/util/concurrent/LinkedBlockingQueue.html].
+
+This example will show pushing Date objects through the queue.  The first node to start will listen for Date objects, and print them when received.  Subsequent nodes will create a new Date and push it in to the queue.
+
+h2.  How to run
+
+*Node 1:*
+{code}
+$ javac *.java
+$ start-tc-server &amp;
+$ dso-java Main
+Waiting...
+(after starting other node...)
+Received Date: Sun Dec 09 15:16:26 PST 2007
+{code}
+
+*Node 2:*
+{code}
+$ dso-java Main
+{code}
+</howto>

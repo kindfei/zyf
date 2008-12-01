@@ -1,6 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="sample-dom4j"/>
+	<classpathentry kind="src" path="sample-JBoss"/>
+	<classpathentry kind="src" path="sample-ActiveMQ"/>
+	<classpathentry kind="src" path="sample-Sun"/>
+	<classpathentry kind="src" path="sample-messaging"/>
+	<classpathentry kind="src" path="sample-terracotta"/>
 	<classpathentry kind="src" path="test"/>
 	<classpathentry kind="src" path="test-hibernate"/>
 	<classpathentry kind="src" path="test-jms"/>
@@ -67,5 +73,6 @@
 	<classpathentry kind="lib" path="lib/spring-framework-2.5.6/spring.jar"/>
 	<classpathentry kind="lib" path="lib/swt-M20060921-0945/swt.jar"/>
 	<classpathentry kind="lib" path="lib/iaik_jce_full.jar"/>
+	<classpathentry kind="lib" path="lib/dom4j-1.6.1/tools/isorelax-20030108.jar"/>
 	<classpathentry kind="output" path="bin"/>
 </classpath>
