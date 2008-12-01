@@ -1,4 +1,4 @@
-package test.concurrent;
+package test;
 
 public class TestVolatileFields {
 	static int i;

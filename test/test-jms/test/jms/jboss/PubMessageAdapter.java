@@ -1,11 +1,10 @@
 package test.jms.jboss;
 
 import java.util.Iterator;
+import java.util.concurrent.BlockingQueue;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.jms.Message;
-
-import edu.emory.mathcs.backport.java.util.concurrent.BlockingQueue;
-import edu.emory.mathcs.backport.java.util.concurrent.ConcurrentHashMap;
 
 public class PubMessageAdapter extends MessageAdapter {
 	
