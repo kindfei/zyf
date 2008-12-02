@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE log4j:configuration SYSTEM "log4j.dtd">
+
+<log4j:configuration xmlns:log4j="http://jakarta.apache.org/log4j/" debug="false">
+
+	<!-- ConsoleAppender -->
+	<appender name="console" class="org.apache.log4j.ConsoleAppender">
+		<param name="Target" value="System.out" />
+		<param name="Threshold" value="info" />
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="[%p] [%t %c{1}] %m%n" />
+		</layout>
+	</appender>
+
+	<!-- DailyRollingFileAppender -->
+	<appender name="infolog" class="org.apache.log4j.DailyRollingFileAppender">
+		<param name="File" value="info.log" />
+		<param name="Threshold" value="info" />
+		<param name="Append" value="true" />
+		<param name="DatePattern" value="'.'yyyy-MM-dd" />
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p %t [%c] %m%n" />
+		</layout>
+	</appender>
+
+	<!-- RollingFileAppender -->
+	<appender name="debuglog" class="org.apache.log4j.RollingFileAppender">
+		<param name="File" value="debug.log" />
+		<param name="Threshold" value="debug" />
+		<param name="Append" value="true" />
+		<param name="MaxFileSize" value="10MB" />
+		<param name="MaxBackupIndex" value="10" />
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{ISO8601} %-5p %t [%c] %m%n" />
+		</layout>
+	</appender>
+
+	<!-- FileAppender -->
+	<appender name="errorlog" class="org.apache.log4j.FileAppender">
+		<param name="File" value="error.log" />
+		<param name="Threshold" value="error" />
+		<param name="Append" value="true" />
+
+		<layout class="org.apache.log4j.PatternLayout">
+			<param name="ConversionPattern" value="%d{yyyy/MM/dd HH:mm:ss.SSS} %-5p %t [%c#%M:%L] %m%n" />
+		</layout>
+	</appender>
+	
+	<!-- logger -->
+	<!--
+	<category name="test">
+		<level value="info" />
+	</category>
+	
+	<logger name="test">
+		<level value="info" />
+	</logger>
+	-->
+
+	<root>
+		<level value="info" />
+		<appender-ref ref="console" />
+	</root>
+
+</log4j:configuration>
