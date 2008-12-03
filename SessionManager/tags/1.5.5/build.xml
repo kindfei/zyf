@@ -1,0 +1,65 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<project name="Test" default="main" basedir=".">
+
+	<property name="lib.dir" value="lib"/>
+	<property name="src.dir" value="src"/>
+	<property name="class.dir" value="class"/>
+	<property name="SessionManager.jar" value="${lib.dir}/SessionManager.jar"/>
+	<property name="startup.clz" value="zyf/sm/Startup.clz"/>
+	<property name="startup.code" value="${lib.dir}/startup.code"/>
+	<property name="encrypt.classes" value="
+		zyf
+		"/>
+
+	<target name="main" depends="clean,compile,encrypt,deploy,package"/>
+	
+	<path id="class.path">
+		<pathelement location="${class.dir}" />
+		<fileset dir="${lib.dir}">
+			<include name="**/*.jar"/>
+		</fileset>
+	</path>
+	
+	<target name="clean">
+		<delete dir="${class.dir}"/>
+		<delete file="${SessionManager.jar}"/>
+		<mkdir dir="${class.dir}"/>
+	</target>
+
+	<target name="compile">
+		<javac srcdir="${src.dir}" destdir="${class.dir}" nowarn="true">
+			<classpath>
+				<path refid="class.path"/>
+			</classpath>
+		</javac>
+	</target>
+	
+	<target name="encrypt">       
+		<java classname="helper.SourceConvert">
+			<arg value="${class.dir}"/>
+			<arg line="${encrypt.classes}"/>
+			<classpath>
+				<path refid="class.path"/>
+			</classpath>
+		</java>
+	</target>
+	
+	<target name="deploy">
+		<copy overwrite="true" file="${class.dir}/${startup.clz}" tofile="${startup.code}"/>
+		<delete file="${class.dir}/${startup.clz}"/>
+	</target>
+	
+	<target name="package">
+		<jar destfile="${SessionManager.jar}" basedir="${class.dir}" includes="zyf/**">
+			<fileset dir="." includes="icon/*.gif"/>
+			<fileset dir="." includes="icon/*.ico"/>
+		</jar>
+	</target>
+
+	<target name="delete">
+		<delete>
+			<fileset dir="${class.dir}" includes="**/*"/>
+		</delete>
+	</target>
+
+</project>
