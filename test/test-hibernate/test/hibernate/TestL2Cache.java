@@ -45,7 +45,7 @@ public class TestL2Cache {
 					updateProductLeverage(CmdHelper.input("productId"), CmdHelper.input("leverage"));
 					break;
 				case 5:
-					SessionUtils.evictCacheMySQL(Product.class);
+					SessionUtils.MySQL.evict(Product.class);
 					break;
 				default:
 					break a;
@@ -57,7 +57,7 @@ public class TestL2Cache {
 	}
 	
 	private static Product loadProduct(String id) throws HibernateException {
-		Session session = SessionUtils.createSessionMySQL();
+		Session session = SessionUtils.MySQL.createSession();
 		Product bean = (Product) session.load(Product.class, id);
 		System.out.println(bean);
 		session.close();
@@ -65,7 +65,7 @@ public class TestL2Cache {
 	}
 	
 	private static Product getProduct(String id) throws HibernateException {
-		Session session = SessionUtils.createSessionMySQL();
+		Session session = SessionUtils.MySQL.createSession();
 		Product bean = (Product) session.get(Product.class, id);
 		System.out.println(bean);
 		session.close();
@@ -73,7 +73,7 @@ public class TestL2Cache {
 	}
 	
 	private static Product[] findProduct(String id) throws HibernateException {
-		Session session = SessionUtils.createSessionMySQL();
+		Session session = SessionUtils.MySQL.createSession();
 		List list = session.find("from Product t where t.productId = ?", id, Hibernate.STRING);
 		for (Iterator iter = list.iterator(); iter.hasNext();) {
 			Product bean = (Product) iter.next();
@@ -86,7 +86,7 @@ public class TestL2Cache {
 	}
 	
 	private static Product[] queryProduct(String name) throws HibernateException {
-		Session session = SessionUtils.createSessionMySQL();
+		Session session = SessionUtils.MySQL.createSession();
 		
 		Query q = session.createQuery("from Product t where t.productName = :name");
 		q.setString("name", name);
@@ -104,7 +104,7 @@ public class TestL2Cache {
 	}
 	
 	private static void updateProductLeverage(String id, String leverage) throws HibernateException {
-		Session session = SessionUtils.createSessionMySQL();
+		Session session = SessionUtils.MySQL.createSession();
 		Product bean = (Product) session.get(Product.class, id);
 		bean.setLeverage(new Integer(leverage));
 		session.beginTransaction().commit();
