@@ -1,33 +1,53 @@
-<?xml version='1.0' encoding='utf-8'?>
-<!DOCTYPE hibernate-configuration PUBLIC 
-	"-//Hibernate/Hibernate Configuration DTD//EN"
-	"http://hibernate.sourceforge.net/hibernate-configuration-2.0.dtd">
-<hibernate-configuration>
+<!DOCTYPE hibernate-configuration PUBLIC
+	"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+	"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
 
+<hibernate-configuration>
 	<session-factory>
 
-		<property name="dialect">net.sf.hibernate.dialect.MySQLDialect</property>
+		<!-- Query Language -->
+		<property name="query.substitutions">yes 'Y', no 'N'</property>
+
+		<!-- Platforms -->
+		<property name="dialect">org.hibernate.dialect.MySQLDialect</property>
 		<property name="connection.driver_class">com.mysql.jdbc.Driver</property>
-		<property name="connection.username">root</property>
-		<property name="connection.password">123456</property> 
 		<property name="connection.url">jdbc:mysql://localhost/test</property>
-        <property name="show_sql">true</property>
+		<property name="connection.username">root</property>
+		<property name="connection.password">123456</property>
+
+		<!-- C3P0 Connection Pool -->
+		<property name="c3p0.max_size">2</property>
+		<property name="c3p0.min_size">2</property>
+		<property name="c3p0.timeout">5000</property>
+		<property name="c3p0.max_statements">100</property>
+		<property name="c3p0.idle_test_period">3000</property>
+		<property name="c3p0.acquire_increment">2</property>
+		<property name="c3p0.validate">false</property>
 		
-		<!--
-		<property name="hibernate.cache.provider_class">net.sf.hibernate.cache.EhCacheProvider</property>
-		<property name="hibernate.cache.provider_class">net.sf.hibernate.cache.TreeCacheProvider</property>
-		<property name="hibernate.cache.provider_class">net.sf.hibernate.cache.HashtableCacheProvider</property>
-		-->
-		<property name="hibernate.cache.provider_class">net.sf.hibernate.cache.EhCacheProvider</property>
-		<property name="hibernate.cache.use_query_cache">true</property>
-        
+		<!-- Transaction API -->
+		<property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+
+		<!-- Miscellaneous Settings -->
+		<property name="show_sql">true</property>
+		<property name="format_sql">true</property>
+		<property name="max_fetch_depth">1</property>
+
+		<!-- JDBC Settings -->
+		<property name="jdbc.batch_versioned_data">true</property>
+		<property name="jdbc.use_streams_for_binary">true</property>
+
+		<!-- Second-level Cache -->
+		<property name="cache.region_prefix">hibernate.test</property>
+		<property name="cache.provider_class">org.hibernate.cache.HashtableCacheProvider</property>
+
+		<!-- mapping -->
 		<mapping resource="test/hibernate/tables/mysql/Customer.hbm.xml" />
 		<mapping resource="test/hibernate/tables/mysql/Email.hbm.xml" />
 		<mapping resource="test/hibernate/tables/mysql/Product.hbm.xml" />
 		<mapping resource="test/hibernate/tables/mysql/CustomerProduct.hbm.xml" />
 		<mapping resource="test/hibernate/tables/mysql/Group.hbm.xml" />
-		
-		<class-cache class="test.hibernate.tables.mysql.Product" usage="read-write"/>
 
+		<!-- cache -->
+		<class-cache class="test.hibernate.tables.mysql.Product" usage="read-write" />
 	</session-factory>
 </hibernate-configuration>
