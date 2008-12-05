@@ -1,8 +1,6 @@
 package test.hibernate.tables.mysql;
 
 import java.io.Serializable;
-import java.util.Map;
-import java.util.Set;
 import org.apache.commons.lang.builder.ToStringBuilder;
 
 
@@ -21,36 +19,12 @@ public class Customer implements Serializable {
     /** nullable persistent field */
     private String groupId;
 
-    /** nullable persistent field */
-    private test.hibernate.tables.mysql.Group GroupBean;
-
-    /** persistent field */
-    private Map emailMap;
-
-    /** persistent field */
-    private Map productBeanMap;
-
-    /** persistent field */
-    private Set emailSet;
-
-    /** persistent field */
-    private Set emailBeanSet;
-
-    /** persistent field */
-    private test.hibernate.tables.mysql.Product[] productBeans;
-
     /** full constructor */
-    public Customer(String customerId, String customerName, String address, String groupId, test.hibernate.tables.mysql.Group GroupBean, Map emailMap, Map productBeanMap, Set emailSet, Set emailBeanSet, test.hibernate.tables.mysql.Product[] productBeans) {
+    public Customer(String customerId, String customerName, String address, String groupId) {
         this.customerId = customerId;
         this.customerName = customerName;
         this.address = address;
         this.groupId = groupId;
-        this.GroupBean = GroupBean;
-        this.emailMap = emailMap;
-        this.productBeanMap = productBeanMap;
-        this.emailSet = emailSet;
-        this.emailBeanSet = emailBeanSet;
-        this.productBeans = productBeans;
     }
 
     /** default constructor */
@@ -58,13 +32,8 @@ public class Customer implements Serializable {
     }
 
     /** minimal constructor */
-    public Customer(String customerId, Map emailMap, Map productBeanMap, Set emailSet, Set emailBeanSet, test.hibernate.tables.mysql.Product[] productBeans) {
+    public Customer(String customerId) {
         this.customerId = customerId;
-        this.emailMap = emailMap;
-        this.productBeanMap = productBeanMap;
-        this.emailSet = emailSet;
-        this.emailBeanSet = emailBeanSet;
-        this.productBeans = productBeans;
     }
 
     public String getCustomerId() {
@@ -97,54 +66,6 @@ public class Customer implements Serializable {
 
     public void setGroupId(String groupId) {
         this.groupId = groupId;
-    }
-
-    public test.hibernate.tables.mysql.Group getGroupBean() {
-        return this.GroupBean;
-    }
-
-    public void setGroupBean(test.hibernate.tables.mysql.Group GroupBean) {
-        this.GroupBean = GroupBean;
-    }
-
-    public Map getEmailMap() {
-        return this.emailMap;
-    }
-
-    public void setEmailMap(Map emailMap) {
-        this.emailMap = emailMap;
-    }
-
-    public Map getProductBeanMap() {
-        return this.productBeanMap;
-    }
-
-    public void setProductBeanMap(Map productBeanMap) {
-        this.productBeanMap = productBeanMap;
-    }
-
-    public Set getEmailSet() {
-        return this.emailSet;
-    }
-
-    public void setEmailSet(Set emailSet) {
-        this.emailSet = emailSet;
-    }
-
-    public Set getEmailBeanSet() {
-        return this.emailBeanSet;
-    }
-
-    public void setEmailBeanSet(Set emailBeanSet) {
-        this.emailBeanSet = emailBeanSet;
-    }
-
-    public test.hibernate.tables.mysql.Product[] getProductBeans() {
-        return this.productBeans;
-    }
-
-    public void setProductBeans(test.hibernate.tables.mysql.Product[] productBeans) {
-        this.productBeans = productBeans;
     }
 
     public String toString() {

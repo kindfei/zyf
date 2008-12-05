@@ -12,37 +12,52 @@
 -->
 
 <class 
-    name="test.hibernate.tables.mysql.Customer" 
-    table="customers"
+    name="test.hibernate.tables.mysql.JmsProvider" 
+    table="jms_provider"
     lazy="false"
 >
 
     <id
-        name="customerId"
+        name="providerId"
         type="java.lang.String"
-        column="customer_id"
+        column="PROVIDER_ID"
     >
     
         <generator class="assigned" />
     </id>
 
     <property
-        name="customerName"
+        name="providerType"
         type="java.lang.String"
-        column="customer_name"
-        length="50"
+        column="PROVIDER_TYPE"
+        not-null="true"
+        length="20"
     />
     <property
-        name="address"
-        type="java.lang.String"
-        column="address"
-        length="50"
+        name="manualHa"
+        type="int"
+        column="MANUAL_HA"
+        not-null="true"
+        length="1"
     />
     <property
-        name="groupId"
+        name="url"
         type="java.lang.String"
-        column="group_id"
-        length="10"
+        column="URL"
+        not-null="true"
+        length="200"
+    />
+    <property
+        name="user"
+        type="java.lang.String"
+        column="USER"
+        length="20"
+    />
+    <property
+        name="password"
+        type="java.lang.String"
+        column="PASSWORD"
+        length="20"
     />
 
     <!-- Associations -->

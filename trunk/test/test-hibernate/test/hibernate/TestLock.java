@@ -16,13 +16,11 @@ import org.hibernate.Transaction;
 import core.helper.CmdHelper;
 import core.hibernate.SessionUtils;
 
-import test.hibernate.tables.db2.Product;
+import test.hibernate.tables.mysql.Product;
 
 public class TestLock {
 	public static void main(String[] args) {
 		try {
-			SessionUtils.createSessionDB2();
-			
 			String[] opts = {
 					"Load Product RS", 
 					"Get Product RS", 
@@ -83,7 +81,7 @@ public class TestLock {
 				selectProduct(CmdHelper.input("productName"));
 				break;
 			case 13:
-				SessionUtils.createSessionDB2().clear();
+				SessionUtils.MySQL.createSession().clear();
 				break;
 			default:
 				break a;
@@ -93,7 +91,7 @@ public class TestLock {
 			e.printStackTrace();
 		} finally {
 			try {
-				SessionUtils.closeSessionDB2();
+				SessionUtils.MySQL.closeSession();
 			} catch (HibernateException e) {
 				e.printStackTrace();
 			}
@@ -101,26 +99,26 @@ public class TestLock {
 	}
 	
 	private static Product loadProduct(String id) throws Exception {
-		Session session = SessionUtils.createSessionDB2();
+		Session session = SessionUtils.MySQL.createSession();
 		Transaction tx = session.beginTransaction();
 		session.connection().setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 		Product bean = (Product) session.load(Product.class, id, LockMode.UPGRADE);
 		System.out.println(bean);
 		CmdHelper.pause("commit");
 		tx.commit();
-		SessionUtils.closeSessionDB2();
+		SessionUtils.MySQL.closeSession();
 		return bean;
 	}
 	
 	private static Product getProduct(String id) throws Exception {
-		Session session = SessionUtils.createSessionDB2();
+		Session session = SessionUtils.MySQL.createSession();
 		Transaction tx = session.beginTransaction();
 		session.connection().setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 		Product bean = (Product) session.get(Product.class, id, LockMode.UPGRADE);
 		System.out.println(bean);
 		CmdHelper.pause("commit");
 		tx.commit();
-		SessionUtils.closeSessionDB2();
+		SessionUtils.MySQL.closeSession();
 		return bean;
 	}
 	
@@ -141,7 +139,7 @@ public class TestLock {
 	}
 	
 	private static void queryProduct(String name, int il) throws Exception {
-		Session session = SessionUtils.createSessionDB2();
+		Session session = SessionUtils.MySQL.createSession();
 		session.connection().setTransactionIsolation(il);
 		Transaction tx = session.beginTransaction();
 		
@@ -157,11 +155,11 @@ public class TestLock {
 		
 		CmdHelper.pause("commit");
 		tx.commit();
-		SessionUtils.closeSessionDB2();
+		SessionUtils.MySQL.closeSession();
 	}
 	
 	private static void findProduct(String id) throws Exception {
-		Session session = SessionUtils.createSessionDB2();
+		Session session = SessionUtils.MySQL.createSession();
 		Transaction tx = session.beginTransaction();
 		
 		List list = session.find("from Product t where t.productId = ?", id, Hibernate.STRING);
@@ -172,7 +170,7 @@ public class TestLock {
 		
 		CmdHelper.pause("commit");
 		tx.commit();
-		SessionUtils.closeSessionDB2();
+		SessionUtils.MySQL.closeSession();
 	}
 	
 	private static void sqlQueryProductRR(String name) throws Exception {
@@ -192,7 +190,7 @@ public class TestLock {
 	}
 	
 	private static void sqlQueryProduct(String name, String il) throws Exception {
-		Session session = SessionUtils.createSessionDB2();
+		Session session = SessionUtils.MySQL.createSession();
 		Transaction tx = session.beginTransaction();
 		Query q = session.createSQLQuery("select {p.*} from PRODUCTS {p} where PRODUCT_NAME = ? for update with " + il, "p", Product.class);
 		q.setString(0, name);
@@ -205,11 +203,11 @@ public class TestLock {
 		
 		CmdHelper.pause("commit");
 		tx.commit();
-		SessionUtils.closeSessionDB2();
+		SessionUtils.MySQL.closeSession();
 	}
 	
 	private static void updateProductLeverage(String id, String leverage) throws Exception {
-		Session session = SessionUtils.createSessionDB2();
+		Session session = SessionUtils.MySQL.createSession();
 		Transaction tx = session.beginTransaction();
 		
 		Product bean = (Product) session.get(Product.class, id);
@@ -217,11 +215,11 @@ public class TestLock {
 		
 		CmdHelper.pause("commit");
 		tx.commit();
-		SessionUtils.closeSessionDB2();
+		SessionUtils.MySQL.closeSession();
 	}
 	
 	private static void selectProduct(String name) throws Exception {
-		Session session = SessionUtils.createSessionDB2();
+		Session session = SessionUtils.MySQL.createSession();
 		Connection conn = session.connection();
 		conn.setAutoCommit(false);
 		
@@ -237,6 +235,6 @@ public class TestLock {
 
 		CmdHelper.pause("commit");
 		conn.commit();
-		SessionUtils.closeSessionDB2();
+		SessionUtils.MySQL.closeSession();
 	}
 }

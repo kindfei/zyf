@@ -1,7 +1,7 @@
 <?xml version="1.0"?>
 <!DOCTYPE hibernate-mapping PUBLIC
-    "-//Hibernate/Hibernate Mapping DTD 2.0//EN"
-    "http://hibernate.sourceforge.net/hibernate-mapping-2.0.dtd" >
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
     
 <hibernate-mapping>
 <!-- 
@@ -12,30 +12,26 @@
 -->
 
 <class 
-    name="test.hibernate.tables.db2.Product" 
-    table="PRODUCTS"
+    name="test.hibernate.tables.mysql.JmsDestination" 
+    table="jms_destination"
+    lazy="false"
 >
 
     <id
-        name="productId"
+        name="destinationName"
         type="java.lang.String"
-        column="PRODUCT_ID"
+        column="DESTINATION_NAME"
     >
     
         <generator class="assigned" />
     </id>
 
     <property
-        name="productName"
+        name="providerId"
         type="java.lang.String"
-        column="PRODUCT_NAME"
-        length="50"
-    />
-    <property
-        name="leverage"
-        type="java.lang.Integer"
-        column="LEVERAGE"
-        length="5"
+        column="PROVIDER_ID"
+        not-null="true"
+        length="20"
     />
 
     <!-- Associations -->
