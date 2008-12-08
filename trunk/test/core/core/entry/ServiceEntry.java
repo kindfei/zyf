@@ -7,8 +7,8 @@ import java.io.PrintWriter;
 import java.lang.reflect.Method;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.HashMap;
+import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -20,26 +20,28 @@ import org.apache.commons.logging.LogFactory;
  * @author zhangyf
  *
  */
-public abstract class ServiceEntry {
+public abstract class ServiceEntry extends EntryMBean {
 	private static Log log = LogFactory.getLog(ServiceEntry.class);
 
-	private String ipAddress;
-	private int listenPort;
-	private List<Command> commands = new ArrayList<Command>();
+	private ServiceDefinition definition;
 	
-	public ServiceEntry(int listenPort) {
-		this("127.0.0.1", listenPort);
-	}
+	private Map<String, Command> commands = new HashMap<String, Command>();
 	
-	public ServiceEntry(String ipAddress, int listenPort) {
-		this.listenPort = listenPort;
-		this.ipAddress = ipAddress;
+	public ServiceEntry() {
+		String serviceName = System.getProperty("SERVICE_NAME");
+		definition = ServiceDefinition.getServiceDefinition(serviceName);
+		if (definition == null) {
+			definition = ServiceDefinition.getDefWithClassName(this.getClass().getName());
+		}
+		if (definition == null) {
+			throw new RuntimeException("No service definition for serviceName=" + serviceName + ", className=" + this.getClass().getName());
+		}
 		addBasicCmd();
 		addAnnotCmd();
 	}
 	
 	public void addCommand(NormalCommand command) {
-		commands.add(command);
+		commands.put(command.getKey(), command);
 	}
 	
 	public abstract String startup() throws Exception;
@@ -49,7 +51,7 @@ public abstract class ServiceEntry {
 		addCommand(new NormalCommand("startup", CommandType.STARTUP, 
 				"Startup the service, and listen command on the specified port.", 
 				new Commandable() {
-					public String execute() throws Exception {
+					public Object execute(Object[] params) throws Exception {
 						return startup();
 					}
 				}
@@ -58,10 +60,10 @@ public abstract class ServiceEntry {
 		addCommand(new NormalCommand("shutdown", CommandType.REMOTE, 
 				"Shutdown the service, send the shutdown command to the port that the service listen on.", 
 				new Commandable() {
-					public String execute() throws Exception {
-						String result = null;
+					public Object execute(Object[] params) throws Exception {
 						try {
-							result = shutdown();
+							if (definition.isStartJMX()) stopServer();
+							return shutdown();
 						} finally {
 							new Timer(true).schedule(new TimerTask() {
 								public void run() {
@@ -69,7 +71,6 @@ public abstract class ServiceEntry {
 								};
 							}, 5000);
 						}
-						return result;
 					}
 				}
 		));
@@ -80,7 +81,7 @@ public abstract class ServiceEntry {
 		for (Method method : methods) {
 			CMD cmd = method.getAnnotation(CMD.class);
 			if (cmd != null) {
-				commands.add(new RelfectionCommand(cmd.key(), cmd.type(), cmd.description(), this, method));
+				commands.put(cmd.key(), new RelfectionCommand(cmd.key(), cmd.type(), cmd.description(), this, method));
 			}
 		}
 	}
@@ -100,6 +101,7 @@ public abstract class ServiceEntry {
 			switch (type) {
 			case STARTUP:
 				startListener();
+				if (definition.isStartJMX()) startServer();
 				execute(command);
 				break;
 
@@ -112,35 +114,34 @@ public abstract class ServiceEntry {
 				break;
 			}
 		} catch (IllegalArgumentException e) {
-			errorLog(e.getMessage(), e);
+			log.error(e.getMessage(), e);
 			printHelp();
 		} catch (IOException e) {
-			errorLog("Start command listener error.", e);
+			log.error("Start command listener error.", e);
 		} catch (Throwable e) {
-			errorLog("Unknown error occurred when execute command.", e);
+			log.error("Unknown error occurred when execute command.", e);
 		}
 	}
 	
 	private Command search(String key) {
-		for (Command command : commands) {
-			if (command.getKey().equals(key)) {
-				return command;
-			}
-		}
+		Command command = commands.get(key);
 		
-		throw new IllegalArgumentException("No such command matched. Unsupported Command = " + key);
+		if (command == null)
+			throw new IllegalArgumentException("No such command matched. Unsupported Command = " + key);
+		
+		return command;
 	}
 	
 	private String execute(Command command) {
 		String result = null;
 		String key = command.getKey();
 		try {
-			result = command.execute();
-			result = "Execute OK. command=" + key + ", result=" + result;
-			infoLog(result);
+			Object obj = command.execute(null);
+			result = "Execute OK. command=" + key + ", result=" + obj;
+			log.info(result);
 		} catch (Throwable e) {
 			result = "Execute error. command=" + key + ", error=" + e.getMessage();
-			errorLog(result, e);
+			log.error(result, e);
 		}
 		return result;
 	}
@@ -151,7 +152,7 @@ public abstract class ServiceEntry {
 			
 			public void run() {
 				try {
-					ServerSocket serverSocket = new ServerSocket(listenPort);
+					ServerSocket serverSocket = new ServerSocket(definition.getListenPort());
 					
 					while (true) {
 						final Socket socket = serverSocket.accept();
@@ -178,7 +179,7 @@ public abstract class ServiceEntry {
 		BufferedReader reader = null;
 		PrintWriter writer = null;
 		try {
-			socket = new Socket(ipAddress, listenPort);
+			socket = new Socket(definition.getIpAddress(), definition.getListenPort());
 			isr = new InputStreamReader(socket.getInputStream());
 			reader = new BufferedReader(isr);
 			writer = new PrintWriter(socket.getOutputStream());
@@ -187,9 +188,9 @@ public abstract class ServiceEntry {
 			writer.flush();
 			String result = reader.readLine();
 			
-			infoLog(result);
+			log.info(result);
 		} catch (Throwable e) {
-			errorLog("Send command to remote service error.", e);
+			log.error("Send command to remote service error.", e);
 		} finally {
 			if (writer != null) writer.close();
 			if (reader != null) try {reader.close();} catch (IOException e) {};
@@ -198,7 +199,7 @@ public abstract class ServiceEntry {
 		}
 	}
 	
-	void onCommand(Socket socket) {
+	private void onCommand(Socket socket) {
 		InputStreamReader isr = null;
 		BufferedReader reader = null;
 		PrintWriter writer = null;
@@ -217,14 +218,14 @@ public abstract class ServiceEntry {
 				result = execute(command);
 				
 			} catch (IllegalArgumentException e) {
-				errorLog(e.getMessage(), e);
+				log.error(e.getMessage(), e);
 				result = e.getMessage();
 			}
 			
 			writer.println(result);
 			writer.flush();
 		} catch (Throwable e) {
-			errorLog("Receive remote command error.", e);
+			log.error("Receive remote command error.", e);
 		} finally {
 			if (writer != null) writer.close();
 			if (reader != null) try {reader.close();} catch (IOException e) {};
@@ -234,22 +235,12 @@ public abstract class ServiceEntry {
 	}
 	
 	private void printHelp() {
-		infoLog("Supported Commands:");
+		log.info("Supported Commands:");
 		
-		for (Command command : commands) {
+		for (Command command : commands.values()) {
 			String key = command.getKey();
 			String desc = command.getDescription();
-			infoLog(key + " - " + desc);
+			log.info(key + " - " + desc);
 		}
-	}
-	
-	private void errorLog(String msg, Throwable e) {
-		log.error(msg, e);
-//		System.err.println(msg);
-	}
-	
-	private void infoLog(String msg) {
-		log.info(msg);
-//		System.out.println(msg);
 	}
 }
