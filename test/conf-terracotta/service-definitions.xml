@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<services>
+	<service name="TestService" class="test.entry.TestService" ip="127.0.0.1" port="6000" jmx="true" />
+	<service name="TestJMSService" class="test.all.TestJMSService" ip="127.0.0.1" port="6000" jmx="true" />
+	<service name="TestPerfService" class="test.all.TestPerfService" ip="127.0.0.1" port="6000" jmx="true" />
+</services>
