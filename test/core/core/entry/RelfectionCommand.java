@@ -32,12 +32,7 @@ public class RelfectionCommand implements Command {
 		return description;
 	}
 
-	public String execute() throws Exception {
-		Object result = method.invoke(instance, new Object[0]);
-		if (result != null) {
-			return result.toString();
-		} else {
-			return null;
-		}
+	public Object execute(Object[] params) throws Exception {
+		return method.invoke(instance, params);
 	}
 }

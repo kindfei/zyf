@@ -1,5 +1,5 @@
 package core.entry;
 
 public interface Commandable {
-	public String execute() throws Exception;
+	public Object execute(Object[] params) throws Exception;
 }
