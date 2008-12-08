@@ -17,14 +17,12 @@ import core.jms.MessageException;
 import core.jms.MessageFactory;
 import core.jms.MessageSender;
 
-
 public class TestJMSService extends ServiceEntry {
 	private String[] params;
 	private Service service;
 	private Timer timer;
 
-	public TestJMSService(int listenPort, String[] params) {
-		super(listenPort);
+	public TestJMSService(String[] params) {
 		this.params = params;
 	}
 
@@ -62,7 +60,7 @@ public class TestJMSService extends ServiceEntry {
 	}
 	
 	public static void main(String[] args) {
-		TestJMSService inst = new TestJMSService(Integer.parseInt(args[1]), args);
+		TestJMSService inst = new TestJMSService(args);
 		inst.process(args[0]);
 	}
 	
