@@ -9,14 +9,22 @@ import core.entry.Commandable;
 import core.entry.NormalCommand;
 import core.entry.ServiceEntry;
 
-
-
 public class TestService extends ServiceEntry {
 	private Timer timer;
 	private int counter;
-
-	protected TestService(int listenPort) {
-		super(listenPort);
+	
+	public TestService() {
+		
+	}
+	
+	public TestService(int i) {
+		System.out.println(i);
+	}
+	
+	public TestService(String[] args) {
+		for (String str : args) {
+			System.out.println(str);
+		}
 	}
 
 	public String shutdown() throws Exception {
@@ -36,6 +44,7 @@ public class TestService extends ServiceEntry {
 		return "Startup OK!";
 	}
 	
+	@CMD(key = "stat", type = CommandType.REMOTE)
 	public String status() throws Exception {
 		return counter + "";
 	}
@@ -51,10 +60,10 @@ public class TestService extends ServiceEntry {
 	}
 	
 	public static void main(String[] args) {
-		final TestService test = new TestService(1234);
+		final TestService test = new TestService();
 		
 		test.addCommand(new NormalCommand("status", CommandType.REMOTE, new Commandable() {
-			public String execute() throws Exception {
+			public String execute(Object[] params) throws Exception {
 				return test.status();
 			}
 		}));

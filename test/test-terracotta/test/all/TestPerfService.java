@@ -9,8 +9,7 @@ public class TestPerfService extends ServiceEntry {
 	private Service service;
 	private String[] params;
 
-	public TestPerfService(int listenPort, String[] params) {
-		super(listenPort);
+	public TestPerfService(String[] params) {
 		this.params = params;
 	}
 
@@ -37,7 +36,7 @@ public class TestPerfService extends ServiceEntry {
 	}
 	
 	public static void main(String[] args) {
-		TestPerfService inst = new TestPerfService(Integer.parseInt(args[1]), args);
+		TestPerfService inst = new TestPerfService(args);
 		inst.process(args[0]);
 	}
 }
