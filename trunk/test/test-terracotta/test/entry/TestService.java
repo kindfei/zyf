@@ -8,9 +8,13 @@ import core.entry.CommandType;
 import core.entry.Commandable;
 import core.entry.NormalCommand;
 import core.entry.ServiceEntry;
+import core.jmx.ATTRIBUTE;
+import core.jmx.OPERATION;
 
 public class TestService extends ServiceEntry {
 	private Timer timer;
+	
+	@ATTRIBUTE(description = "Times counter.")
 	private int counter;
 	
 	public TestService() {
@@ -44,16 +48,19 @@ public class TestService extends ServiceEntry {
 		return "Startup OK!";
 	}
 	
+	@OPERATION(description = "Get the value of counter.")
 	@CMD(key = "stat", type = CommandType.REMOTE)
 	public String status() throws Exception {
 		return counter + "";
 	}
 	
+	@OPERATION(description = "Restart the count.")
 	@CMD(key = "refresh", type = CommandType.REMOTE)
 	public void refresh() {
 		counter = 0;
 	}
 	
+	@OPERATION(description = "Assign value to counter.")
 	@CMD(key = "set", type = CommandType.REMOTE)
 	public void setValue(int i) {
 		counter = i;
@@ -63,7 +70,7 @@ public class TestService extends ServiceEntry {
 		final TestService test = new TestService();
 		
 		test.addCommand(new NormalCommand("status", CommandType.REMOTE, new Commandable() {
-			public String execute(Object[] params) throws Exception {
+			public String execute() throws Exception {
 				return test.status();
 			}
 		}));
