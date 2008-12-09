@@ -30,7 +30,7 @@ public class NormalCommand implements Command {
 		return description;
 	}
 
-	public Object execute(Object[] params) throws Exception {
-		return commandable.execute(params);
+	public Object execute() throws Exception {
+		return commandable.execute();
 	}
 }

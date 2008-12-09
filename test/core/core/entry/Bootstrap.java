@@ -15,12 +15,11 @@ public class Bootstrap {
 				throw new IllegalArgumentException("Illegal Argument Length.");
 			}
 			
-			String serviceName = System.getProperty("SERVICE_NAME");
-			if (serviceName == null) {
-				throw new RuntimeException("No service definition for serviceName=" + serviceName);
+			ServiceDefinition def = ServiceDefinition.getServiceDefinition();
+			if (def == null) {
+				throw new RuntimeException("No service definition.");
 			}
 			
-			ServiceDefinition def = ServiceDefinition.getServiceDefinition(serviceName);
 			String className = def.getClassName();
 			Class<?> clazz = Class.forName(className);
 			

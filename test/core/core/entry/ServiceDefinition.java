@@ -22,6 +22,7 @@ public class ServiceDefinition {
 	private String ipAddress;
 	private int listenPort;
 	private boolean startJMX;
+	private int registerPort;
 	
 	private static Map<String, ServiceDefinition> definitions = new HashMap<String, ServiceDefinition>();
 	
@@ -39,8 +40,9 @@ public class ServiceDefinition {
 				String ipAddress = attributes.getValue("ip");
 				int listenPort = Integer.parseInt(attributes.getValue("port"));
 				boolean startJMX = Boolean.parseBoolean(attributes.getValue("jmx"));
+				int registerPort = Integer.parseInt(attributes.getValue("rmi"));
 				
-				ServiceDefinition definition = new ServiceDefinition(serviceName, className, ipAddress, listenPort, startJMX);
+				ServiceDefinition definition = new ServiceDefinition(serviceName, className, ipAddress, listenPort, startJMX, registerPort);
 				
 				definitions.put(serviceName, definition);
 			}
@@ -60,8 +62,8 @@ public class ServiceDefinition {
 		}
 	}
 	
-	static ServiceDefinition getServiceDefinition(String serviceName) {
-		return definitions.get(serviceName);
+	public static ServiceDefinition getServiceDefinition() {
+		return definitions.get(System.getProperty("SERVICE_NAME"));
 	}
 	
 	static ServiceDefinition getDefWithClassName(String className) {
@@ -74,12 +76,13 @@ public class ServiceDefinition {
 	}
 
 	private ServiceDefinition(String serviceName, String className,
-			String ipAddress, int listenPort, boolean startJMX) {
+			String ipAddress, int listenPort, boolean startJMX, int registerPort) {
 		this.serviceName = serviceName;
 		this.className = className;
 		this.ipAddress = ipAddress;
 		this.listenPort = listenPort;
 		this.startJMX = startJMX;
+		this.registerPort = registerPort;
 	}
 
 	public String getServiceName() {
@@ -100,5 +103,9 @@ public class ServiceDefinition {
 
 	public boolean isStartJMX() {
 		return startJMX;
+	}
+
+	public int getRegisterPort() {
+		return registerPort;
 	}
 }
