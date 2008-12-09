@@ -1,5 +1,6 @@
 package core.entry;
 
+import java.lang.management.ManagementFactory;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.Method;
 import java.rmi.registry.LocateRegistry;
@@ -19,7 +20,6 @@ import javax.management.MBeanInfo;
 import javax.management.MBeanNotificationInfo;
 import javax.management.MBeanOperationInfo;
 import javax.management.MBeanServer;
-import javax.management.MBeanServerFactory;
 import javax.management.NotificationBroadcasterSupport;
 import javax.management.ObjectName;
 import javax.management.ReflectionException;
@@ -68,7 +68,7 @@ public class EntryMBean extends NotificationBroadcasterSupport implements Dynami
 	}
 	
 	protected void startServer() throws Exception {
-		MBeanServer mbs = MBeanServerFactory.createMBeanServer();
+		MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
 		
 		String mbeanObjectNameStr = mbs.getDefaultDomain() + ":type=" + dClassName + ",name=1";
 		ObjectName mbeanObjectName = ObjectName.getInstance(mbeanObjectNameStr);
