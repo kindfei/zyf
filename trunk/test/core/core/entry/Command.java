@@ -8,6 +8,6 @@ public interface Command {
 	
 	public String getDescription();
 	
-	public Object execute(Object[] params) throws Exception;
+	public Object execute() throws Exception;
 	
 }

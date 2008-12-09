@@ -15,12 +15,15 @@ import java.util.TimerTask;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
+import core.jmx.ConnectorServer;
+import core.jmx.ManagementBeanServer;
+
 /**
  * Service entry, help bootstrap and manage service.
  * @author zhangyf
  *
  */
-public abstract class ServiceEntry extends EntryMBean {
+public abstract class ServiceEntry {
 	private static Log log = LogFactory.getLog(ServiceEntry.class);
 
 	private ServiceDefinition definition;
@@ -28,16 +31,17 @@ public abstract class ServiceEntry extends EntryMBean {
 	private Map<String, Command> commands = new HashMap<String, Command>();
 	
 	public ServiceEntry() {
-		String serviceName = System.getProperty("SERVICE_NAME");
-		definition = ServiceDefinition.getServiceDefinition(serviceName);
+		definition = ServiceDefinition.getServiceDefinition();
 		if (definition == null) {
 			definition = ServiceDefinition.getDefWithClassName(this.getClass().getName());
 		}
 		if (definition == null) {
-			throw new RuntimeException("No service definition for serviceName=" + serviceName + ", className=" + this.getClass().getName());
+			throw new RuntimeException("No service definition. className=" + this.getClass().getName());
 		}
 		addBasicCmd();
 		addAnnotCmd();
+		
+		ManagementBeanServer.register(this);
 	}
 	
 	public void addCommand(NormalCommand command) {
@@ -51,7 +55,7 @@ public abstract class ServiceEntry extends EntryMBean {
 		addCommand(new NormalCommand("startup", CommandType.STARTUP, 
 				"Startup the service, and listen command on the specified port.", 
 				new Commandable() {
-					public Object execute(Object[] params) throws Exception {
+					public Object execute() throws Exception {
 						return startup();
 					}
 				}
@@ -60,9 +64,9 @@ public abstract class ServiceEntry extends EntryMBean {
 		addCommand(new NormalCommand("shutdown", CommandType.REMOTE, 
 				"Shutdown the service, send the shutdown command to the port that the service listen on.", 
 				new Commandable() {
-					public Object execute(Object[] params) throws Exception {
+					public Object execute() throws Exception {
 						try {
-							if (definition.isStartJMX()) stopServer();
+							if (definition.isStartJMX()) ConnectorServer.stopServer();
 							return shutdown();
 						} finally {
 							new Timer(true).schedule(new TimerTask() {
@@ -101,7 +105,7 @@ public abstract class ServiceEntry extends EntryMBean {
 			switch (type) {
 			case STARTUP:
 				startListener();
-				if (definition.isStartJMX()) startServer();
+				if (definition.isStartJMX()) ConnectorServer.startServer();
 				execute(command);
 				break;
 
@@ -136,7 +140,7 @@ public abstract class ServiceEntry extends EntryMBean {
 		String result = null;
 		String key = command.getKey();
 		try {
-			Object obj = command.execute(null);
+			Object obj = command.execute();
 			result = "Execute OK. command=" + key + ", result=" + obj;
 			log.info(result);
 		} catch (Throwable e) {
