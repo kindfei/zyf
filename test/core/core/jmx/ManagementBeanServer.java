@@ -25,9 +25,7 @@ public class ManagementBeanServer {
 			
 			String mbeanObjectNameStr = null;
 			if (name == null) {
-				String p = instance.getClass().getPackage().getName();
-				String n = instance.getClass().getSimpleName();
-				mbeanObjectNameStr = domain + ":type=" + p + ",name=" + n;
+				mbeanObjectNameStr = domain + ":type=" + instance.getClass().getName() + ",name=" + System.identityHashCode(mbean);
 			} else {
 				mbeanObjectNameStr = domain + ":type=" + instance.getClass().getName() + ",name=" + name + "(" + System.identityHashCode(mbean) + ")";
 			}
