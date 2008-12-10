@@ -10,9 +10,9 @@ public class TestActiveMQ {
 	
 	public static void main(String[] args) {
 //		testSend();
-//		testRecv();
+		testRecv();
 		
-		testBoth();
+//		testBoth();
 	}
 	
 	public static void testBoth() {
@@ -78,7 +78,8 @@ public class TestActiveMQ {
 			try {
 				for (int i = 0; isActive; i++) {
 					sender.send(i + "");
-					Thread.sleep(1000);
+//					System.out.println("sent " + i + "");
+//					Thread.sleep(1000);
 				}
 			} catch (Exception e) {
 				e.printStackTrace();
@@ -110,8 +111,9 @@ public class TestActiveMQ {
 					ObjectMessage msg = (ObjectMessage) receiver.receive();
 					if (msg != null)
 						System.out.println(getName() + " - " + msg.getObject());
+//					Thread.sleep(1000 * 60 * 1);
 				}
-			} catch (JMSException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 			}
 		}

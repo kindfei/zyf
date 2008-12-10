@@ -8,7 +8,6 @@ import java.util.Iterator;
 import java.util.Map;
 
 import javax.management.Attribute;
-import javax.management.AttributeChangeNotification;
 import javax.management.AttributeList;
 import javax.management.AttributeNotFoundException;
 import javax.management.DynamicMBean;
@@ -37,7 +36,7 @@ public class CommonDynamicMBean extends NotificationBroadcasterSupport implement
 	private MBeanAttributeInfo[] dAttributes = null;
 	private MBeanConstructorInfo[] dConstructors = null;
 	private MBeanOperationInfo[] dOperations = null;
-	private MBeanNotificationInfo[] dNotifications = new MBeanNotificationInfo[1];
+	private MBeanNotificationInfo[] dNotifications = null;
 	
 	private MBeanInfo dMBeanInfo = null;
 
@@ -50,11 +49,6 @@ public class CommonDynamicMBean extends NotificationBroadcasterSupport implement
 
 		this.dAttributes = getAttributes();
 		this.dOperations = getOperations();
-		
-		dNotifications[0] = new MBeanNotificationInfo(
-				new String[] { AttributeChangeNotification.ATTRIBUTE_CHANGE },
-				AttributeChangeNotification.class.getName(),
-				"This notification is emitted when the attributes changed.");
 
 		this.dMBeanInfo = new MBeanInfo(dClassName, dDescription, dAttributes, dConstructors, dOperations, dNotifications);
 	}

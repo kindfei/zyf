@@ -46,11 +46,6 @@ public class ServiceDefinition {
 				
 				definitions.put(serviceName, definition);
 			}
-			
-			public void characters(char[] ch, int start, int length) throws SAXException {
-				String text = new String(ch, start, length).trim();
-				if (!text.equals("")) System.out.println("Text: [" + text + "]");
-			}
 		};
 		
 		SAXParserFactory factory = SAXParserFactory.newInstance();

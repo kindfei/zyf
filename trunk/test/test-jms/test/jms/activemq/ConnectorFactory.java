@@ -8,7 +8,7 @@ public class ConnectorFactory {
 	
 	public static synchronized Connector createConnection() throws JMSException {
 		if (connector == null) {
-			connector = new Connector("tcp://localhost:61616");
+			connector = new Connector("tcp://10.4.6.206:61616");
 		}
 		connector.start();
 		return connector;
