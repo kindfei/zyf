@@ -2,6 +2,5 @@
 
 <services>
 	<service name="TestService" class="test.entry.TestService" ip="127.0.0.1" port="6000" jmx="true" rmi="16000" />
-	<service name="TestJMSService" class="test.all.TestJMSService" ip="127.0.0.1" port="6001" jmx="true" rmi="16001" />
-	<service name="TestPerfService" class="test.all.TestPerfService" ip="127.0.0.1" port="6002" jmx="true" rmi="16002" />
+	<service name="TestTimerEntry" class="test.all.TestTimerEntry" ip="127.0.0.1" port="6001" jmx="true" rmi="16001" />
 </services>
