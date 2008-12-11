@@ -8,7 +8,10 @@ import java.lang.annotation.Target;
 @Target(ElementType.FIELD)
 @Retention(RetentionPolicy.RUNTIME)
 public @interface ATTRIBUTE {
-	public boolean isReadable() default true;
-	public boolean isWritable () default true;
+	public String name() default "";
+	public String type() default "";
 	public String description() default "No description";
+	public boolean isReadable() default true;
+	public boolean isWritable() default false;
+	public boolean isToString() default false;
 }

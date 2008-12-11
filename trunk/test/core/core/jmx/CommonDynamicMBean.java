@@ -5,6 +5,7 @@ import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.List;
 import java.util.Map;
 
 import javax.management.Attribute;
@@ -29,14 +30,14 @@ public class CommonDynamicMBean extends NotificationBroadcasterSupport implement
 	private static Log log = LogFactory.getLog(CommonDynamicMBean.class);
 	
 	private Object instance;
-	private String dClassName;
+	private String className;
 	
-	private String dDescription = "Common implementation of a dynamic MBean.";
+	private String description = "Common implementation of a dynamic MBean.";
 
-	private MBeanAttributeInfo[] dAttributes = null;
-	private MBeanConstructorInfo[] dConstructors = null;
-	private MBeanOperationInfo[] dOperations = null;
-	private MBeanNotificationInfo[] dNotifications = null;
+	private List<MBeanAttributeInfo> attributeList = new ArrayList<MBeanAttributeInfo>();
+	private List<MBeanConstructorInfo> constructorList = new ArrayList<MBeanConstructorInfo>();
+	private List<MBeanOperationInfo> operationList = new ArrayList<MBeanOperationInfo>();
+	private List<MBeanNotificationInfo> notificationList = new ArrayList<MBeanNotificationInfo>();
 	
 	private MBeanInfo dMBeanInfo = null;
 
@@ -45,56 +46,68 @@ public class CommonDynamicMBean extends NotificationBroadcasterSupport implement
 	
 	public CommonDynamicMBean(Object instance) {
 		this.instance = instance;
-		this.dClassName = instance.getClass().getName();
+		this.className = instance.getClass().getName();
 
-		this.dAttributes = getAttributes();
-		this.dOperations = getOperations();
+		init(instance.getClass());
 
-		this.dMBeanInfo = new MBeanInfo(dClassName, dDescription, dAttributes, dConstructors, dOperations, dNotifications);
+		this.dMBeanInfo = new MBeanInfo(
+				className,
+				description,
+				attributeList.toArray(new MBeanAttributeInfo[0]),
+				constructorList.toArray(new MBeanConstructorInfo[0]),
+				operationList.toArray(new MBeanOperationInfo[0]),
+				notificationList.toArray(new MBeanNotificationInfo[0]));
 	}
 	
-	private MBeanAttributeInfo[] getAttributes() {
-		ArrayList<MBeanAttributeInfo> attributeList = new ArrayList<MBeanAttributeInfo>();
-		Field[] fields = instance.getClass().getDeclaredFields();
+	private void init(Class<?> clazz) {
+		initAttributeList(clazz);
+		initOperationList(clazz);
+		
+		Class<?> superClass = clazz.getSuperclass();
+		if (superClass == null) return;
+		init(superClass);
+	}
+	
+	private void initAttributeList(Class<?> clazz) {
+		Field[] fields = clazz.getDeclaredFields();
 		for (Field field : fields) {
 			ATTRIBUTE attr = field.getAnnotation(ATTRIBUTE.class);
 			if (attr != null) {
-				attributeList.add(new MBeanAttributeInfo(field.getName(), field.getType().getName(), attr.description(), attr.isReadable(), attr.isWritable(), false));
-				attributes.put(field.getName(), new RelfectionAttribute(instance, field));
+				RelfectionAttribute ra = new RelfectionAttribute(instance, field, attr);
+				attributeList.add(ra.getInfo());
+				attributes.put(field.getName(), ra);
 			}
 		}
-		return attributeList.toArray(new MBeanAttributeInfo[attributeList.size()]);
 	}
 	
-	private MBeanOperationInfo[] getOperations() {
-		ArrayList<MBeanOperationInfo> operationList = new ArrayList<MBeanOperationInfo>();
-		Method[] methods = instance.getClass().getDeclaredMethods();
+	private void initOperationList(Class<?> clazz) {
+		Method[] methods = clazz.getDeclaredMethods();
 		for (Method method : methods) {
 			OPERATION oper = method.getAnnotation(OPERATION.class);
 			if (oper != null) {
-				operationList.add(new MBeanOperationInfo(oper.description(), method));
-				operations.put(method.getName(), new RelfectionOperation(instance, method));
+				RelfectionOperation ro = new RelfectionOperation(instance, method, oper);
+				operationList.add(ro.getInfo());
+				operations.put(method.getName(), ro);
 			}
 		}
-		return operationList.toArray(new MBeanOperationInfo[operationList.size()]);
 	}
 
 	@Override
 	public Object getAttribute(String attribute) throws AttributeNotFoundException, MBeanException, ReflectionException {
 		if (attribute == null) {
 			throw new RuntimeOperationsException(new IllegalArgumentException("Attribute name cannot be null"),
-					"Cannot invoke a getter of " + dClassName + " with null attribute name");
+					"Cannot invoke a getter of " + className + " with null attribute name");
 		}
 		
 		RelfectionAttribute ra = attributes.get(attribute);
 		if (ra == null) {
-			throw new AttributeNotFoundException("Cannot find " + attribute + " attribute in " + dClassName);
+			throw new AttributeNotFoundException("Cannot find " + attribute + " attribute in " + className);
 		}
 		
 		try {
 			return ra.get();
 		} catch (Exception e) {
-			throw new MBeanException(e, "Get " + attribute + " attribute error in " + dClassName);
+			throw new MBeanException(e, "Get " + attribute + " attribute error in " + className);
 		}
 	}
 
@@ -102,24 +115,24 @@ public class CommonDynamicMBean extends NotificationBroadcasterSupport implement
 	public void setAttribute(Attribute attribute) throws AttributeNotFoundException, InvalidAttributeValueException, MBeanException, ReflectionException {
 		if (attribute == null) {
 			throw new RuntimeOperationsException(new IllegalArgumentException("Attribute cannot be null"),
-					"Cannot invoke a setter of " + dClassName + " with null attribute");
+					"Cannot invoke a setter of " + className + " with null attribute");
 		}
 		String name = attribute.getName();
 		Object value = attribute.getValue();
 		if (name == null) {
 			throw new RuntimeOperationsException(new IllegalArgumentException("Attribute name cannot be null"),
-					"Cannot invoke the setter of " + dClassName + " with null attribute name");
+					"Cannot invoke the setter of " + className + " with null attribute name");
 		}
 		
 		RelfectionAttribute ra = attributes.get(name);
 		if (ra == null) {
-			throw new AttributeNotFoundException("Attribute " + name + " not found in " + dClassName);
+			throw new AttributeNotFoundException("Attribute " + name + " not found in " + className);
 		}
 		
 		try {
 			ra.set(value);
 		} catch (Exception e) {
-			throw new MBeanException(e, "Set " + attribute + " attribute error in " + dClassName);
+			throw new MBeanException(e, "Set " + attribute + " attribute error in " + className);
 		}
 	}
 
@@ -127,7 +140,7 @@ public class CommonDynamicMBean extends NotificationBroadcasterSupport implement
 	public AttributeList getAttributes(String[] attributes) {
 		if (attributes == null) {
 			throw new RuntimeOperationsException(new IllegalArgumentException("attributeNames[] cannot be null"),
-					"Cannot invoke a getter of " + dClassName);
+					"Cannot invoke a getter of " + className);
 		}
 		
 		AttributeList resultList = new AttributeList();
@@ -150,7 +163,7 @@ public class CommonDynamicMBean extends NotificationBroadcasterSupport implement
 	public AttributeList setAttributes(AttributeList attributes) {
 		if (attributes == null) {
 			throw new RuntimeOperationsException(new IllegalArgumentException("AttributeList attributes cannot be null"),
-					"Cannot invoke a setter of " + dClassName);
+					"Cannot invoke a setter of " + className);
 		}
 		AttributeList resultList = new AttributeList();
 
@@ -177,18 +190,18 @@ public class CommonDynamicMBean extends NotificationBroadcasterSupport implement
 		
 		if (actionName == null) {
 			throw new RuntimeOperationsException(new IllegalArgumentException("Operation name cannot be null"),
-					"Cannot invoke a null operation in " + dClassName);
+					"Cannot invoke a null operation in " + className);
 		}
 		
 		RelfectionOperation ro = operations.get(actionName);
 		if (ro == null) {
-			throw new ReflectionException(new NoSuchMethodException(actionName), "Cannot find the operation " + actionName + " in " + dClassName);
+			throw new ReflectionException(new NoSuchMethodException(actionName), "Cannot find the operation " + actionName + " in " + className);
 		}
 		
 		try {
 			return ro.invoke(params);
 		} catch (Exception e) {
-			throw new MBeanException(e, "Invoke the operation " + actionName + " error in " + dClassName);
+			throw new MBeanException(e, "Invoke the operation " + actionName + " error in " + className);
 		}
 	}
 

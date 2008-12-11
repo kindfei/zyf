@@ -23,11 +23,14 @@ public class ConnectorServer {
 		try {
 			int port = ServiceDefinition.getServiceDefinition().getRegisterPort();
 			LocateRegistry.createRegistry(port);
-			JMXServiceURL url = new JMXServiceURL("service:jmx:rmi:///jndi/rmi://localhost:" + port + "/server");
+			String str = "service:jmx:rmi:///jndi/rmi://localhost:" + port + "/server";
+			JMXServiceURL url = new JMXServiceURL(str);
 			Map<String, Object> environment = null;
 			connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, environment, ManagementBeanServer.getMBeanServer());
 			
 			connectorServer.start();
+			
+			log.info("JMXConnectorServer started. url=" + str);
 		} catch (Exception e) {
 			log.error("Start JMXConnectorServer error.", e);
 			connectorServer = null;
