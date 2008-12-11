@@ -23,13 +23,13 @@ public class ManagementBeanServer {
 		try {
 			CommonDynamicMBean mbean = new CommonDynamicMBean(instance);
 			
-			String mbeanObjectNameStr = null;
+			String str = domain + ":type=" + instance.getClass().getName() + ",name=";
 			if (name == null) {
-				mbeanObjectNameStr = domain + ":type=" + instance.getClass().getName() + ",name=" + System.identityHashCode(mbean);
+				str += System.identityHashCode(mbean);
 			} else {
-				mbeanObjectNameStr = domain + ":type=" + instance.getClass().getName() + ",name=" + name + "(" + System.identityHashCode(mbean) + ")";
+				str += name + "(" + System.identityHashCode(mbean) + ")";
 			}
-			ObjectName mbeanObjectName = ObjectName.getInstance(mbeanObjectNameStr);
+			ObjectName mbeanObjectName = ObjectName.getInstance(str);
 			mbs.registerMBean(mbean, mbeanObjectName);
 		} catch (Exception e) {
 			log.error("Register MBean error. instance=" + instance + " name=" + name, e);
