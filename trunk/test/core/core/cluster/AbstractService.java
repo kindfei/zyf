@@ -2,7 +2,6 @@ package core.cluster;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.concurrent.ExecutorService;
 import java.util.concurrent.SynchronousQueue;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.ThreadPoolExecutor;
@@ -11,6 +10,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+
+import core.jmx.ATTRIBUTE;
+import core.jmx.ManagementBeanServer;
+import core.jmx.OPERATION;
 
 /**
  * Basic service operation control
@@ -22,10 +25,18 @@ public abstract class AbstractService<T> implements Service {
 	
 	private static final Log log = LogFactory.getLog(AbstractService.class);
 	
+	@ATTRIBUTE(isToString = true)
 	private ServiceMode serviceMode;
+
+	@ATTRIBUTE
 	private int takerSize;
+
+	@ATTRIBUTE
 	private boolean takerExecute;
+
 	private Processor<T> processor;
+
+	@ATTRIBUTE
 	private String procName;
 
 	private ClusterLock lock;
@@ -34,8 +45,13 @@ public abstract class AbstractService<T> implements Service {
 	
 	private Thread startupThread;
 
-	private ExecutorService threadPool;
+	private ThreadPoolExecutor threadPool;
+	
+	@ATTRIBUTE
 	private List<TaskTaker> takerList = new ArrayList<TaskTaker>();
+
+	@ATTRIBUTE(isToString = true)
+	private volatile ServiceStatus status = ServiceStatus.CREATED;
 	
 	/**
 	 * Create Service
@@ -55,10 +71,28 @@ public abstract class AbstractService<T> implements Service {
 		lock = ClusterHandlerFactory.getClusterLock(procName);
 		queue = ClusterHandlerFactory.getClusterTaskQueue(procName, fairTake);
 		executor = ClusterHandlerFactory.getClusterExecutor(procName);
+		
+		ManagementBeanServer.register(this, procName);
+		ManagementBeanServer.register(processor);
 	}
 	
 	Processor<T> getProcessor() {
 		return processor;
+	}
+	
+	@OPERATION
+	String taskThreadPoolStatus() {
+		StringBuilder sb = new StringBuilder();
+		sb.append("PoolSize=").append(threadPool.getPoolSize()).append("\n");
+		sb.append("ActiveCount=").append(threadPool.getActiveCount()).append("\n");
+		sb.append("CompletedTaskCount=").append(threadPool.getCompletedTaskCount()).append("\n");
+		sb.append("TaskCount=").append(threadPool.getTaskCount());
+		
+		return sb.toString();
+	}
+	
+	public ServiceStatus getStatus() {
+		return status;
 	}
 	
 	/**
@@ -70,11 +104,15 @@ public abstract class AbstractService<T> implements Service {
 			return;
 		}
 		
+		status = ServiceStatus.STARTING;
+		
 		startupThread = new Thread() {
 
 			public void run() {
 				try {
 					runStartup();
+					
+					status = ServiceStatus.RUNNING;
 					
 					synchronized (this) {
 						this.wait();
@@ -92,6 +130,7 @@ public abstract class AbstractService<T> implements Service {
 					log.error("Shutdown error. processor=" + procName, e);
 				}
 				
+				status = ServiceStatus.STOPPED;
 				startupThread = null;
 			}
 			
@@ -107,6 +146,7 @@ public abstract class AbstractService<T> implements Service {
 	public synchronized void shutdown() {
 		if (startupThread == null) {
 			log.info("The service have never started. processor=" + procName);
+			return;
 		}
 		startupThread.interrupt();
 	}
@@ -159,7 +199,9 @@ public abstract class AbstractService<T> implements Service {
 		switch (serviceMode) {
 		case ACTIVE_STANDBY:
 			log.info("Acquiring mutex... processor=" + procName);
+			status = ServiceStatus.BLOCKING;
 			lock.acquireMutex();
+			status = ServiceStatus.STARTING;
 			log.info("Acquired mutex... processor=" + procName);
 			break;
 
@@ -247,10 +289,10 @@ public abstract class AbstractService<T> implements Service {
 	 * @author zhangyf
 	 *
 	 */
-	private class TaskTaker extends Thread {
+	public class TaskTaker extends Thread {
 		private volatile boolean isActive = true;
 		
-		public TaskTaker() {
+		private TaskTaker() {
 			this.setDaemon(true);
 		}
 		
@@ -274,6 +316,16 @@ public abstract class AbstractService<T> implements Service {
 		
 		public void end() {
 			isActive = false;
+		}
+		
+		@Override
+		public String toString() {
+			StringBuilder sb = new StringBuilder();
+			sb.append("[name = ").append(this.getName());
+			sb.append(",isActive = ").append(this.isActive);
+			sb.append(",isAlive = ").append(this.isAlive());
+			sb.append("]");
+			return sb.toString();
 		}
 	}
 	

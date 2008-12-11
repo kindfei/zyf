@@ -6,6 +6,8 @@ package core.cluster;
  *
  */
 public interface Service {
+	
+	public ServiceStatus getStatus();
 
 	/**
 	 * Startup the service

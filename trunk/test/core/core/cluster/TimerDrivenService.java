@@ -3,6 +3,8 @@ package core.cluster;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import core.jmx.ATTRIBUTE;
+
 /**
  * TimerDrivenService
  * @author zhangyf
@@ -10,11 +12,12 @@ import java.util.TimerTask;
  */
 public class TimerDrivenService extends AbstractService<Object> {
 	
-	private int period;
+	@ATTRIBUTE
+	private long period;
 	private Timer timer;
 
 	TimerDrivenService(ServiceMode serviceMode, int takerSize, boolean takerExecute
-			, boolean fairTake, TimerProcessor processor, int period) {
+			, boolean fairTake, TimerProcessor processor, long period) {
 		super(serviceMode, takerSize, takerExecute, fairTake, processor);
 		this.period = period;
 	}
