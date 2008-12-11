@@ -158,7 +158,7 @@ public class ServiceFactory {
 	 * @return the service
 	 */
 	public synchronized static Service getTimerDrivenService(ServiceMode serviceMode
-			, TimerProcessor processor, int period) {
+			, TimerProcessor processor, long period) {
 		return getTimerDrivenService(serviceMode, 1, false, true, processor, period);
 	}
 	
@@ -173,12 +173,12 @@ public class ServiceFactory {
 	 * @return the service
 	 */
 	public synchronized static Service getTimerDrivenService(ServiceMode serviceMode
-			, int takerSize, TimerProcessor processor, int period) {
+			, int takerSize, TimerProcessor processor, long period) {
 		return getTimerDrivenService(serviceMode, takerSize, true, false, processor, period);
 	}
 	
 	private synchronized static Service getTimerDrivenService(ServiceMode serviceMode, int takerSize
-			, boolean takerExecute, boolean fairTake, TimerProcessor processor, int period) {
+			, boolean takerExecute, boolean fairTake, TimerProcessor processor, long period) {
 		
 		String procName = processor.getClass().getName();
 		AbstractService<?> service = servMap.get(procName);
