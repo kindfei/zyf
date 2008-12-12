@@ -41,8 +41,8 @@ public class CommonDynamicMBean extends NotificationBroadcasterSupport implement
 	
 	private MBeanInfo dMBeanInfo = null;
 
-	private Map<String, RelfectionAttribute> attributes = new HashMap<String, RelfectionAttribute>();
-	private Map<String, RelfectionOperation> operations = new HashMap<String, RelfectionOperation>();
+	private Map<String, ReflectionAttribute> attributes = new HashMap<String, ReflectionAttribute>();
+	private Map<String, ReflectionOperation> operations = new HashMap<String, ReflectionOperation>();
 	
 	public CommonDynamicMBean(Object instance) {
 		this.instance = instance;
@@ -64,8 +64,11 @@ public class CommonDynamicMBean extends NotificationBroadcasterSupport implement
 		initOperationList(clazz);
 		
 		Class<?> superClass = clazz.getSuperclass();
-		if (superClass == null) return;
-		init(superClass);
+		if (superClass != null) {
+			if (superClass != Object.class) {
+				init(superClass);
+			}
+		}
 	}
 	
 	private void initAttributeList(Class<?> clazz) {
@@ -73,9 +76,18 @@ public class CommonDynamicMBean extends NotificationBroadcasterSupport implement
 		for (Field field : fields) {
 			ATTRIBUTE attr = field.getAnnotation(ATTRIBUTE.class);
 			if (attr != null) {
-				RelfectionAttribute ra = new RelfectionAttribute(instance, field, attr);
-				attributeList.add(ra.getInfo());
-				attributes.put(field.getName(), ra);
+				ReflectionAttribute ra = new ReflectionAttribute(instance, field, attr);
+				String name = ra.getName();
+				if (attributes.containsKey(name)) {
+					name = clazz.getSimpleName() + "." + name;
+					String tmpName = name;
+					for (int i = 1; attributes.containsKey(tmpName); i++) {
+						tmpName = name + i;
+					}
+					name = tmpName;
+				}
+				attributeList.add(ra.getInfo(name));
+				attributes.put(name, ra);
 			}
 		}
 	}
@@ -85,9 +97,18 @@ public class CommonDynamicMBean extends NotificationBroadcasterSupport implement
 		for (Method method : methods) {
 			OPERATION oper = method.getAnnotation(OPERATION.class);
 			if (oper != null) {
-				RelfectionOperation ro = new RelfectionOperation(instance, method, oper);
-				operationList.add(ro.getInfo());
-				operations.put(method.getName(), ro);
+				ReflectionOperation ro = new ReflectionOperation(instance, method, oper);
+				String name = ro.getName();
+				if (operations.containsKey(name)) {
+					name = clazz.getSimpleName() + "." + name;
+					String tmpName = name;
+					for (int i = 1; operations.containsKey(tmpName); i++) {
+						tmpName = name + i;
+					}
+					name = tmpName;
+				}
+				operationList.add(ro.getInfo(name));
+				operations.put(name, ro);
 			}
 		}
 	}
@@ -99,7 +120,7 @@ public class CommonDynamicMBean extends NotificationBroadcasterSupport implement
 					"Cannot invoke a getter of " + className + " with null attribute name");
 		}
 		
-		RelfectionAttribute ra = attributes.get(attribute);
+		ReflectionAttribute ra = attributes.get(attribute);
 		if (ra == null) {
 			throw new AttributeNotFoundException("Cannot find " + attribute + " attribute in " + className);
 		}
@@ -124,7 +145,7 @@ public class CommonDynamicMBean extends NotificationBroadcasterSupport implement
 					"Cannot invoke the setter of " + className + " with null attribute name");
 		}
 		
-		RelfectionAttribute ra = attributes.get(name);
+		ReflectionAttribute ra = attributes.get(name);
 		if (ra == null) {
 			throw new AttributeNotFoundException("Attribute " + name + " not found in " + className);
 		}
@@ -193,7 +214,7 @@ public class CommonDynamicMBean extends NotificationBroadcasterSupport implement
 					"Cannot invoke a null operation in " + className);
 		}
 		
-		RelfectionOperation ro = operations.get(actionName);
+		ReflectionOperation ro = operations.get(actionName);
 		if (ro == null) {
 			throw new ReflectionException(new NoSuchMethodException(actionName), "Cannot find the operation " + actionName + " in " + className);
 		}

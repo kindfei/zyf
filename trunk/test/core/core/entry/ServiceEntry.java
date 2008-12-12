@@ -85,7 +85,7 @@ public abstract class ServiceEntry {
 		for (Method method : methods) {
 			CMD cmd = method.getAnnotation(CMD.class);
 			if (cmd != null) {
-				commands.put(cmd.key(), new RelfectionCommand(cmd.key(), cmd.type(), cmd.description(), this, method));
+				commands.put(cmd.key(), new ReflectionCommand(cmd.key(), cmd.type(), cmd.description(), this, method));
 			}
 		}
 	}

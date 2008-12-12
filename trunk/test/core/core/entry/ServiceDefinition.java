@@ -1,7 +1,10 @@
 package core.entry;
 
+import java.util.Collection;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.Set;
+import java.util.concurrent.ConcurrentHashMap;
 
 import javax.xml.parsers.SAXParser;
 import javax.xml.parsers.SAXParserFactory;
@@ -23,28 +26,36 @@ public class ServiceDefinition {
 	private int listenPort;
 	private boolean startJMX;
 	private int registerPort;
+	private Map<String, String> props = new ConcurrentHashMap<String, String>();
 	
 	private static Map<String, ServiceDefinition> definitions = new HashMap<String, ServiceDefinition>();
 	
 	static {
 		DefaultHandler handler = new DefaultHandler() {
+			private ServiceDefinition current;
+			
 			public void startElement(String uri, String localName
 					, String qName, Attributes attributes) throws SAXException {
 				
-				if (!qName.equals("service")) {
-					return;
+				if (qName.equals("service")) {
+					String serviceName = attributes.getValue("name");
+					String className = attributes.getValue("class");
+					String ipAddress = attributes.getValue("ip");
+					int listenPort = Integer.parseInt(attributes.getValue("port"));
+					boolean startJMX = Boolean.parseBoolean(attributes.getValue("jmx"));
+					int registerPort = Integer.parseInt(attributes.getValue("rmi"));
+					
+					ServiceDefinition definition = new ServiceDefinition(serviceName,
+							className, ipAddress, listenPort, startJMX, registerPort);
+					
+					current = definition;
+					definitions.put(serviceName, definition);
+				} else if (qName.equals("property")) {
+					String key = attributes.getValue("key");
+					String value = attributes.getValue("value");
+					
+					current.setProperty(key, value);
 				}
-				
-				String serviceName = attributes.getValue("name");
-				String className = attributes.getValue("class");
-				String ipAddress = attributes.getValue("ip");
-				int listenPort = Integer.parseInt(attributes.getValue("port"));
-				boolean startJMX = Boolean.parseBoolean(attributes.getValue("jmx"));
-				int registerPort = Integer.parseInt(attributes.getValue("rmi"));
-				
-				ServiceDefinition definition = new ServiceDefinition(serviceName, className, ipAddress, listenPort, startJMX, registerPort);
-				
-				definitions.put(serviceName, definition);
 			}
 		};
 		
@@ -102,5 +113,21 @@ public class ServiceDefinition {
 
 	public int getRegisterPort() {
 		return registerPort;
+	}
+	
+	private void setProperty(String key, String value) {
+		props.put(key, value);
+	}
+	
+	public String getProperty(String key) {
+		return props.get(key);
+	}
+	
+	public Collection<String> propertyValues() {
+		return props.values();
+	}
+	
+	public Set<String> perpertyKeySet() {
+		return props.keySet();
 	}
 }

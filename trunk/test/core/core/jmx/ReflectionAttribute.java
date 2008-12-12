@@ -7,23 +7,27 @@ import java.util.Map.Entry;
 
 import javax.management.MBeanAttributeInfo;
 
-public class RelfectionAttribute {
+public class ReflectionAttribute {
 	private Object instance;
 	private Field field;
+	
+	private String name;
+	private String type;
+	private boolean isReadable;
+	private boolean isWritable;
+	private String description;
 	private boolean isToString;
 	
-	private MBeanAttributeInfo info;
-	
-	RelfectionAttribute(Object instance, Field field, ATTRIBUTE attr) {
+	ReflectionAttribute(Object instance, Field field, ATTRIBUTE attr) {
 		this.instance = instance;
 		this.field = field;
-		this.isToString = attr.isToString();
 		
-		String name = attr.name();
-		String type = attr.type();
-		boolean isReadable = attr.isReadable();
-		boolean isWritable = attr.isWritable();
-		String description = attr.description();
+		this.name = attr.name();
+		this.type = attr.type();
+		this.isReadable = attr.isReadable();
+		this.isWritable = attr.isWritable();
+		this.description = attr.description();
+		this.isToString = attr.isToString();
 		
 		if (name.equals("")) {
 			name = field.getName();
@@ -33,23 +37,33 @@ public class RelfectionAttribute {
 			type = field.getType().getName();
 		}
 		
-		info = new MBeanAttributeInfo(
-				name,
+		field.setAccessible(true);
+	}
+	
+	String getName() {
+		return name;
+	}
+	
+	MBeanAttributeInfo getInfo() {
+		return getInfo(null);
+	}
+	
+	MBeanAttributeInfo getInfo(String superName) {
+		return new MBeanAttributeInfo(
+				superName == null ? name : superName,
 				type,
 				description,
 				isReadable,
 				isWritable,
 				false);
-		
-		field.setAccessible(true);
-	}
-	
-	MBeanAttributeInfo getInfo() {
-		return info;
 	}
 
 	Object get() throws IllegalArgumentException, IllegalAccessException {
 		Object value = field.get(instance);
+		
+		if (value == null) {
+			return value;
+		}
 		
 		if (Map.class.isAssignableFrom(value.getClass())) {
 			Map<?, ?> map = (Map<?, ?>) value;
