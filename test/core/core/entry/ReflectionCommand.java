@@ -2,7 +2,7 @@ package core.entry;
 
 import java.lang.reflect.Method;
 
-public class RelfectionCommand implements Command {
+public class ReflectionCommand implements Command {
 	private String key;
 	private CommandType type;
 	private String description;
@@ -10,7 +10,7 @@ public class RelfectionCommand implements Command {
 	private Object instance;
 	private Method method;
 	
-	public RelfectionCommand(String key, CommandType type, String description
+	public ReflectionCommand(String key, CommandType type, String description
 			, Object instance, Method method) {
 		super();
 		this.key = key;
