@@ -41,7 +41,7 @@ public abstract class ServiceEntry {
 		addBasicCmd();
 		addAnnotCmd();
 		
-		ManagementBeanServer.register(this);
+		ManagementBeanServer.annotatedRegister(this, null);
 	}
 	
 	public void addCommand(NormalCommand command) {

@@ -72,8 +72,8 @@ public abstract class AbstractService<T> implements Service {
 		queue = ClusterHandlerFactory.getClusterTaskQueue(procName, fairTake);
 		executor = ClusterHandlerFactory.getClusterExecutor(procName);
 		
-		ManagementBeanServer.register(this, procName);
-		ManagementBeanServer.register(processor);
+		ManagementBeanServer.annotatedRegister(this, procName);
+		ManagementBeanServer.annotatedRegister(processor, null);
 	}
 	
 	Processor<T> getProcessor() {
