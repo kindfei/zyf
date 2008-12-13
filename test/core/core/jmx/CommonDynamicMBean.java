@@ -19,14 +19,13 @@ import javax.management.MBeanException;
 import javax.management.MBeanInfo;
 import javax.management.MBeanNotificationInfo;
 import javax.management.MBeanOperationInfo;
-import javax.management.NotificationBroadcasterSupport;
 import javax.management.ReflectionException;
 import javax.management.RuntimeOperationsException;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class CommonDynamicMBean extends NotificationBroadcasterSupport implements DynamicMBean {
+public class CommonDynamicMBean implements DynamicMBean {
 	private static Log log = LogFactory.getLog(CommonDynamicMBean.class);
 	
 	private Object instance;
