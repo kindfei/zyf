@@ -25,8 +25,8 @@ import javax.management.RuntimeOperationsException;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class CommonDynamicMBean implements DynamicMBean {
-	private static Log log = LogFactory.getLog(CommonDynamicMBean.class);
+public class AnnotatedMBean implements DynamicMBean {
+	private static Log log = LogFactory.getLog(AnnotatedMBean.class);
 	
 	private Object instance;
 	private String className;
@@ -43,7 +43,7 @@ public class CommonDynamicMBean implements DynamicMBean {
 	private Map<String, ReflectionAttribute> attributes = new HashMap<String, ReflectionAttribute>();
 	private Map<String, ReflectionOperation> operations = new HashMap<String, ReflectionOperation>();
 	
-	public CommonDynamicMBean(Object instance) {
+	public AnnotatedMBean(Object instance) {
 		this.instance = instance;
 		this.className = instance.getClass().getName();
 

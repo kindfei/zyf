@@ -12,7 +12,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import core.jmx.ATTRIBUTE;
-import core.jmx.ManagementBeanServer;
+import core.jmx.BeanServer;
 import core.jmx.OPERATION;
 
 /**
@@ -47,7 +47,6 @@ public abstract class AbstractService<T> implements Service {
 
 	private ThreadPoolExecutor threadPool;
 	
-	@ATTRIBUTE
 	private List<TaskTaker> takerList = new ArrayList<TaskTaker>();
 
 	@ATTRIBUTE(isToString = true)
@@ -72,8 +71,8 @@ public abstract class AbstractService<T> implements Service {
 		queue = ClusterHandlerFactory.getClusterTaskQueue(procName, fairTake);
 		executor = ClusterHandlerFactory.getClusterExecutor(procName);
 		
-		ManagementBeanServer.annotatedRegister(this, procName);
-		ManagementBeanServer.annotatedRegister(processor, null);
+		BeanServer.annotatedRegister(this, procName);
+		BeanServer.annotatedRegister(processor, null);
 	}
 	
 	Processor<T> getProcessor() {

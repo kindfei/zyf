@@ -16,7 +16,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
 import core.jmx.ConnectorServer;
-import core.jmx.ManagementBeanServer;
+import core.jmx.BeanServer;
 
 /**
  * Service entry, help bootstrap and manage service.
@@ -41,7 +41,7 @@ public abstract class ServiceEntry {
 		addBasicCmd();
 		addAnnotCmd();
 		
-		ManagementBeanServer.annotatedRegister(this, null);
+		BeanServer.annotatedRegister(this, null);
 	}
 	
 	public void addCommand(NormalCommand command) {
@@ -75,6 +75,26 @@ public abstract class ServiceEntry {
 								};
 							}, 5000);
 						}
+					}
+				}
+		));
+		
+		addCommand(new NormalCommand("startjmx", CommandType.REMOTE, 
+				"Startup the JMX server.", 
+				new Commandable() {
+					public String execute() throws Exception {
+						ConnectorServer.startServer();
+						return "JMX server is started.";
+					}
+				}
+		));
+		
+		addCommand(new NormalCommand("stopjmx", CommandType.REMOTE, 
+				"Shutdown the JMX server.", 
+				new Commandable() {
+					public String execute() throws Exception {
+						ConnectorServer.stopServer();
+						return "JMX server is stopped.";
 					}
 				}
 		));
