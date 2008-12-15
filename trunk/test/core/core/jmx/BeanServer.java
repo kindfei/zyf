@@ -10,7 +10,7 @@ import javax.management.StandardMBean;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 
-public class ManagementBeanServer {
+public class BeanServer {
 	private static final Log log = LogFactory.getLog(ConnectorServer.class);
 	
 	private static final MBeanServer mbs = ManagementFactory.getPlatformMBeanServer();
@@ -19,7 +19,7 @@ public class ManagementBeanServer {
 	
 	public static void annotatedRegister(Object instance, String name) {
 		try {
-			CommonDynamicMBean mbean = new CommonDynamicMBean(instance);
+			AnnotatedMBean mbean = new AnnotatedMBean(instance);
 			ObjectName mbeanObjectName = createObjectName(instance, name);
 			mbs.registerMBean(mbean, mbeanObjectName);
 			

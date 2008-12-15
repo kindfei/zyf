@@ -10,7 +10,7 @@
 		<property key="6" value="F"/>
 		<property key="7" value="G"/>
 	</service>
-	<service name="TestTimerEntry" class="test.all.TestTimerEntry" ip="127.0.0.1" port="6001" jmx="true" rmi="16001">
+	<service name="TestTimerEntry" class="test.all.TestTimerEntry" ip="127.0.0.1" port="6001" jmx="false" rmi="16001">
 		<property key="A" value="1"/>
 		<property key="B" value="2"/>
 		<property key="C" value="3"/>

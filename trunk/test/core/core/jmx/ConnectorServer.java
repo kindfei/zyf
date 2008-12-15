@@ -1,8 +1,9 @@
 package core.jmx;
 
+import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
-import java.util.Map;
 
+import javax.management.MBeanServer;
 import javax.management.remote.JMXConnectorServer;
 import javax.management.remote.JMXConnectorServerFactory;
 import javax.management.remote.JMXServiceURL;
@@ -15,31 +16,45 @@ import core.entry.ServiceDefinition;
 public class ConnectorServer {
 	private static Log log = LogFactory.getLog(ConnectorServer.class);
 	
+	private static String strUrl;
+	
 	private static JMXConnectorServer connectorServer;
+	
+	static {
+		int port = ServiceDefinition.getServiceDefinition().getRegisterPort();
+		try {
+			LocateRegistry.createRegistry(port);
+		} catch (RemoteException e) {
+			log.error("Create Registry error. port=" + port, e);
+		}
+		
+		strUrl = "service:jmx:rmi:///jndi/rmi://localhost:" + port + "/server";
+	}
 	
 	public static synchronized void startServer() {
 		if (connectorServer != null) return;
 		
 		try {
-			int port = ServiceDefinition.getServiceDefinition().getRegisterPort();
-			LocateRegistry.createRegistry(port);
-			String str = "service:jmx:rmi:///jndi/rmi://localhost:" + port + "/server";
-			JMXServiceURL url = new JMXServiceURL(str);
-			Map<String, Object> environment = null;
-			connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, environment, ManagementBeanServer.getMBeanServer());
-			
+			JMXServiceURL url = new JMXServiceURL(strUrl);
+			MBeanServer mbeanServer = BeanServer.getMBeanServer();
+			JMXConnectorServer connectorServer = JMXConnectorServerFactory.newJMXConnectorServer(url, null, mbeanServer);
 			connectorServer.start();
 			
-			log.info("JMXConnectorServer started. url=" + str);
+			ConnectorServer.connectorServer = connectorServer;
+			
+			log.info("JMXConnectorServer started. url=" + strUrl);
 		} catch (Exception e) {
 			log.error("Start JMXConnectorServer error.", e);
-			connectorServer = null;
 		}
 	}
 	
 	public static synchronized void stopServer() {
+		if (connectorServer == null) return;
+		
 		try {
 			connectorServer.stop();
+			
+			log.info("JMXConnectorServer stopped. url=" + strUrl);
 		} catch (Exception e) {
 			log.error("Stop JMXConnectorServer error.", e);
 		} finally {
