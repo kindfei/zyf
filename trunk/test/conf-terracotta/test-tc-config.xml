@@ -58,6 +58,9 @@
 						<method>onload</method>
 					</on-load>
 				</include>
+				<include>
+					<class-expression>test.terracota.*</class-expression>
+				</include>
 			</instrumented-classes>
 			<locks>
 				<autolock>
@@ -128,6 +131,11 @@
 				<root>
 					<field-name>
 						test.terracota.TestCachePerf.instance
+					</field-name>
+				</root>
+				<root>
+					<field-name>
+						test.terracota.TestQueue.queue
 					</field-name>
 				</root>
 			</roots>
