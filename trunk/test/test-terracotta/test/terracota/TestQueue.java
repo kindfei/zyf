@@ -8,6 +8,7 @@ import java.util.concurrent.locks.ReentrantLock;
 public class TestQueue {
 //	private static LinkedBlockingQueue<Object> queue = new LinkedBlockingQueue<Object>();
 	private static Queue<Object> queue = new Queue<Object>();
+//	private static TaskQueue<Object> queue = new TaskQueue<Object>();
 
 	static class Taker extends Thread {
 		private boolean active = true;
@@ -221,7 +222,101 @@ class Case {
 	}
 
 	public void signal() {
-		if (head.next == null) return;
-		extract().signal();
+		Condition c = null;
+		do {
+			if (head.next == null) return;
+			c = extract();
+		} while (!lock.hasWaiters(c));
+		c.signal();
+	}
+}
+
+class TaskQueue<E> {
+	private final AtomicInteger count = new AtomicInteger(0);
+	private Node<E> head;
+	private Node<E> last;
+	private ReentrantLock putLock = new ReentrantLock();
+	private ReentrantLock takeLock = new ReentrantLock(true);
+	private ReentrantLock waitLock = new ReentrantLock();
+	private Condition notEmpty = waitLock.newCondition();
+
+	TaskQueue() {
+		last = head = new Node<E>(null);
+	}
+
+	static class Node<T> {
+		volatile T task;
+
+		Node<T> next;
+
+		Node(T task) {
+			this.task = task;
+		}
+	}
+
+	private void signalNotEmpty() {
+		waitLock.lock();
+		try {
+			notEmpty.signal();
+		} finally {
+			waitLock.unlock();
+		}
+	}
+
+	private void insert(E task) {
+		last = last.next = new Node<E>(task);
+	}
+
+	private E extract() {
+		Node<E> first = head.next;
+		head = first;
+		E task = first.task;
+		first.task = null;
+		return task;
+	}
+
+	public void put(E task) throws InterruptedException {
+		if (task == null)
+			throw new NullPointerException();
+		int c = -1;
+		final ReentrantLock putLock = this.putLock;
+		final AtomicInteger count = this.count;
+		putLock.lockInterruptibly();
+		try {
+			insert(task);
+			c = count.getAndIncrement();
+		} finally {
+			putLock.unlock();
+		}
+		if (c == 0)
+			signalNotEmpty();
+	}
+
+	public E take() throws InterruptedException {
+		E task;
+		final AtomicInteger count = this.count;
+		final ReentrantLock takeLock = this.takeLock;
+		takeLock.lockInterruptibly();
+		try {
+			try {
+        		if (count.get() == 0) {
+        			waitLock.lockInterruptibly();
+	        		try {
+	            		if (count.get() == 0)
+	                		notEmpty.await();
+	        		} finally {
+		            	waitLock.unlock();
+	        		}
+        		}
+			} catch (InterruptedException e) {
+				throw e;
+			}
+
+			task = extract();
+			count.getAndDecrement();
+		} finally {
+			takeLock.unlock();
+		}
+		return task;
 	}
 }
