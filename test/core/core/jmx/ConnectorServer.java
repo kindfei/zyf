@@ -28,7 +28,7 @@ public class ConnectorServer {
 			log.error("Create Registry error. port=" + port, e);
 		}
 		
-		strUrl = "service:jmx:rmi:///jndi/rmi://localhost:" + port + "/server";
+		strUrl = "service:jmx:rmi:///jndi/rmi://localhost:" + port + "/jmx";
 	}
 	
 	public static synchronized void startServer() {
@@ -42,7 +42,7 @@ public class ConnectorServer {
 			
 			ConnectorServer.connectorServer = connectorServer;
 			
-			log.info("JMXConnectorServer started. url=" + strUrl);
+			log.info("JMXConnectorServer is started. url=" + strUrl);
 		} catch (Exception e) {
 			log.error("Start JMXConnectorServer error.", e);
 		}
@@ -54,7 +54,7 @@ public class ConnectorServer {
 		try {
 			connectorServer.stop();
 			
-			log.info("JMXConnectorServer stopped. url=" + strUrl);
+			log.info("JMXConnectorServer is stopped. url=" + strUrl);
 		} catch (Exception e) {
 			log.error("Stop JMXConnectorServer error.", e);
 		} finally {
