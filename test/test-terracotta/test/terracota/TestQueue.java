@@ -222,12 +222,10 @@ class Case {
 	}
 
 	public void signal() {
-		Condition c = null;
 		do {
 			if (head.next == null) return;
-			c = extract();
-		} while (!lock.hasWaiters(c));
-		c.signal();
+			extract().signal();
+		} while (!lock.hasQueuedThreads());
 	}
 }
 
