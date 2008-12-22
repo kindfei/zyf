@@ -1,5 +1,7 @@
 package core.jmx;
 
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 
@@ -28,7 +30,13 @@ public class ConnectorServer {
 			log.error("Create Registry error. port=" + port, e);
 		}
 		
-		strUrl = "service:jmx:rmi:///jndi/rmi://localhost:" + port + "/jmx";
+		String hostName = "localhost";
+		try {
+			hostName = InetAddress.getLocalHost().getHostName();
+		} catch (UnknownHostException e) {
+		}
+		
+		strUrl = "service:jmx:rmi://" + hostName + ":" + port + "/jndi/rmi://" + hostName + ":" + port + "/jmxrmi";
 	}
 	
 	public static synchronized void startServer() {
