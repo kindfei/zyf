@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="src" path="sample-RMI"/>
 	<classpathentry kind="src" path="sample-dom4j"/>
 	<classpathentry kind="src" path="sample-JBossMQ"/>
 	<classpathentry kind="src" path="sample-ActiveMQ"/>
