@@ -56,7 +56,7 @@ public class TestC3p0 {
 		
 		@Override
 		public void run() {
-			Session session = SessionUtils.MySQL.createSession();
+			Session session = SessionUtils.MySQL.getSession();
 			
 			Transaction tx = session.getTransaction();
 			
