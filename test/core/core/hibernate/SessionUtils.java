@@ -29,7 +29,7 @@ public class SessionUtils {
 			sf = cfg.buildSessionFactory();
 		}
 		
-		public Session createSession() throws HibernateException {
+		public Session getSession() throws HibernateException {
 			Session sess = tlSession.get();
 			int count = tlCounter.get().intValue();
 			
@@ -69,10 +69,8 @@ public class SessionUtils {
 			sf.evict(clz);
 		}
 		
-		public Session getSession() {
-			Session sess = sf.getCurrentSession();
-			sess.beginTransaction();
-			return sess;
+		public Session getCurrentSession() {
+			return sf.getCurrentSession();
 		}
 	}
 }

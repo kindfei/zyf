@@ -26,6 +26,9 @@
 		
 		<!-- Transaction API -->
 		<property name="transaction.factory_class">org.hibernate.transaction.JDBCTransactionFactory</property>
+		<property name="transaction.auto_close_session">false</property>
+		
+		<property name="current_session_context_class">thread</property>
 
 		<!-- Miscellaneous Settings -->
 		<property name="show_sql">true</property>

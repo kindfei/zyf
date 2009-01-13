@@ -49,7 +49,7 @@ public class TestL1Cache {
 				updateProductLeverage(CmdHelper.input("productId"), CmdHelper.input("leverage"));
 				break;
 			case 6:
-				SessionUtils.MySQL.createSession().clear();
+				SessionUtils.MySQL.getSession().clear();
 				break;
 			default:
 				break a;
@@ -67,7 +67,7 @@ public class TestL1Cache {
 	}
 	
 	private static Product loadProduct(String id) throws Exception {
-		Session session = SessionUtils.MySQL.createSession();
+		Session session = SessionUtils.MySQL.getSession();
 		Product bean = (Product) session.load(Product.class, id);
 		System.out.println(bean);
 		SessionUtils.MySQL.closeSession();
@@ -75,7 +75,7 @@ public class TestL1Cache {
 	}
 	
 	private static Product getProduct(String id) throws Exception {
-		Session session = SessionUtils.MySQL.createSession();
+		Session session = SessionUtils.MySQL.getSession();
 		Product bean = (Product) session.get(Product.class, id);
 		System.out.println(bean);
 		SessionUtils.MySQL.closeSession();
@@ -83,7 +83,7 @@ public class TestL1Cache {
 	}
 	
 	private static void queryProduct(String name) throws Exception {
-		Session session = SessionUtils.MySQL.createSession();
+		Session session = SessionUtils.MySQL.getSession();
 		
 		Query q = session.createQuery("from Product t where t.productName = :name order by t.productId desc");
 		q.setString("name", name);
@@ -98,7 +98,7 @@ public class TestL1Cache {
 	}
 	
 	private static void findProduct(String id) throws Exception {
-		Session session = SessionUtils.MySQL.createSession();
+		Session session = SessionUtils.MySQL.getSession();
 		
 		List list = session.find("from Product t where t.productId = ?", id, Hibernate.STRING);
 		for (Iterator iter = list.iterator(); iter.hasNext();) {
@@ -110,7 +110,7 @@ public class TestL1Cache {
 	}
 	
 	private static void sqlQueryProduct(String name) throws Exception {
-		Session session = SessionUtils.MySQL.createSession();
+		Session session = SessionUtils.MySQL.getSession();
 		
 		Query q = session.createSQLQuery("select {p.*} from PRODUCTS {p} where PRODUCT_NAME = ?", "p", Product.class);
 		q.setString(0, name);
@@ -125,7 +125,7 @@ public class TestL1Cache {
 	}
 	
 	private static void updateProductLeverage(String id, String leverage) throws Exception {
-		Session session = SessionUtils.MySQL.createSession();
+		Session session = SessionUtils.MySQL.getSession();
 		Transaction tx = session.beginTransaction();
 		
 		Product bean = (Product) session.get(Product.class, id);

@@ -81,7 +81,7 @@ public class TestLock {
 				selectProduct(CmdHelper.input("productName"));
 				break;
 			case 13:
-				SessionUtils.MySQL.createSession().clear();
+				SessionUtils.MySQL.getSession().clear();
 				break;
 			default:
 				break a;
@@ -99,7 +99,7 @@ public class TestLock {
 	}
 	
 	private static Product loadProduct(String id) throws Exception {
-		Session session = SessionUtils.MySQL.createSession();
+		Session session = SessionUtils.MySQL.getSession();
 		Transaction tx = session.beginTransaction();
 		session.connection().setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 		Product bean = (Product) session.load(Product.class, id, LockMode.UPGRADE);
@@ -111,7 +111,7 @@ public class TestLock {
 	}
 	
 	private static Product getProduct(String id) throws Exception {
-		Session session = SessionUtils.MySQL.createSession();
+		Session session = SessionUtils.MySQL.getSession();
 		Transaction tx = session.beginTransaction();
 		session.connection().setTransactionIsolation(Connection.TRANSACTION_REPEATABLE_READ);
 		Product bean = (Product) session.get(Product.class, id, LockMode.UPGRADE);
@@ -139,7 +139,7 @@ public class TestLock {
 	}
 	
 	private static void queryProduct(String name, int il) throws Exception {
-		Session session = SessionUtils.MySQL.createSession();
+		Session session = SessionUtils.MySQL.getSession();
 		session.connection().setTransactionIsolation(il);
 		Transaction tx = session.beginTransaction();
 		
@@ -159,7 +159,7 @@ public class TestLock {
 	}
 	
 	private static void findProduct(String id) throws Exception {
-		Session session = SessionUtils.MySQL.createSession();
+		Session session = SessionUtils.MySQL.getSession();
 		Transaction tx = session.beginTransaction();
 		
 		List list = session.find("from Product t where t.productId = ?", id, Hibernate.STRING);
@@ -190,7 +190,7 @@ public class TestLock {
 	}
 	
 	private static void sqlQueryProduct(String name, String il) throws Exception {
-		Session session = SessionUtils.MySQL.createSession();
+		Session session = SessionUtils.MySQL.getSession();
 		Transaction tx = session.beginTransaction();
 		Query q = session.createSQLQuery("select {p.*} from PRODUCTS {p} where PRODUCT_NAME = ? for update with " + il, "p", Product.class);
 		q.setString(0, name);
@@ -207,7 +207,7 @@ public class TestLock {
 	}
 	
 	private static void updateProductLeverage(String id, String leverage) throws Exception {
-		Session session = SessionUtils.MySQL.createSession();
+		Session session = SessionUtils.MySQL.getSession();
 		Transaction tx = session.beginTransaction();
 		
 		Product bean = (Product) session.get(Product.class, id);
@@ -219,7 +219,7 @@ public class TestLock {
 	}
 	
 	private static void selectProduct(String name) throws Exception {
-		Session session = SessionUtils.MySQL.createSession();
+		Session session = SessionUtils.MySQL.getSession();
 		Connection conn = session.connection();
 		conn.setAutoCommit(false);
 		
