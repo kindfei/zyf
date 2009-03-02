@@ -74,6 +74,8 @@ public class MainShell {
 	private Image cutIcon;
 	private Image pasteIcon;
 	private Image refreshIcon;
+	private Image collapseAllIcon;
+	private Image expandAllIcon;
 	private Image editIcon;
 	private Image deleteIcon;
 	
@@ -81,15 +83,17 @@ public class MainShell {
         display = new Display();
         
     	folderIcon = new Image(display, Helper.getResource("icon/folder.gif"));
-    	folderOpenIcon = new Image(display, Helper.getResource("icon/folder_open.gif"));
+    	folderOpenIcon = new Image(display, Helper.getResource("icon/folderopen.gif"));
     	fileIcon = new Image(display, Helper.getResource("icon/file.gif"));
 
-    	newFileIcon = new Image(display, Helper.getResource("icon/new_file.gif"));
-    	newFolderIcon = new Image(display, Helper.getResource("icon/new_folder.gif"));
+    	newFileIcon = new Image(display, Helper.getResource("icon/newfile.gif"));
+    	newFolderIcon = new Image(display, Helper.getResource("icon/newfolder.gif"));
     	copyIcon = new Image(display, Helper.getResource("icon/copy.gif"));
     	cutIcon = new Image(display, Helper.getResource("icon/cut.gif"));
     	pasteIcon = new Image(display, Helper.getResource("icon/paste.gif"));
     	refreshIcon = new Image(display, Helper.getResource("icon/refresh.gif"));
+    	collapseAllIcon = new Image(display, Helper.getResource("icon/collapseall.gif"));
+    	expandAllIcon = new Image(display, Helper.getResource("icon/expandall.gif"));
     	editIcon = new Image(display, Helper.getResource("icon/edit.gif"));
     	deleteIcon = new Image(display, Helper.getResource("icon/delete.gif"));
     	
@@ -397,6 +401,24 @@ public class MainShell {
 			}
 		});
 	    
+	    MenuItem collapseAll = new MenuItem(menu, SWT.CASCADE);
+	    collapseAll.setText("Collapse All");
+	    collapseAll.setImage(collapseAllIcon);
+	    collapseAll.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				collapseAll();
+			}
+		});
+	    
+	    MenuItem expandAll = new MenuItem(menu, SWT.CASCADE);
+	    expandAll.setText("Expand All");
+	    expandAll.setImage(expandAllIcon);
+	    expandAll.addListener(SWT.Selection, new Listener() {
+			public void handleEvent(Event event) {
+				expandAll();
+			}
+		});
+	    
 	    new MenuItem(menu, SWT.SEPARATOR);
 	    
 	    MenuItem edit = new MenuItem(menu, SWT.CASCADE);
@@ -449,9 +471,8 @@ public class MainShell {
             		item = new TreeItem((TreeItem)parent, SWT.NULL);
             		item.setText(element.attribute("name").getText());
             		item.setData("folder");
-            		item.setImage(folderOpenIcon);
+            		item.setImage(folderIcon);
                     documentWalk(element, item);
-                    item.setExpanded(true);
             	} else {
             		ConnectionInfo info = new ConnectionInfo();
             		info.setName(element.attribute("name").getText());
@@ -569,6 +590,30 @@ public class MainShell {
 	private void refresh() {
 		rootItem.dispose();
 		setItem();
+	}
+	
+	private void collapseAll() {
+		setExpandedAll(false);
+	}
+	
+	private void expandAll() {
+		setExpandedAll(true);
+	}
+	
+	private void setExpandedAll(boolean expanded) {
+		TreeItem[] items = rootItem.getItems();
+		for (int i=0; i < items.length; i++) {
+			TreeItem item = items[i];
+			Object obj = item.getData();
+			if (obj instanceof String) {
+				item.setExpanded(expanded);
+				if (expanded) {
+					item.setImage(folderOpenIcon);
+				} else {
+					item.setImage(folderIcon);
+				}
+			}
+		}
 	}
 	
 	private void add() {
