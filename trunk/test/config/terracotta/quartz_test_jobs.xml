@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quartz xmlns="http://www.opensymphony.com/quartz/JobSchedulingData"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        overwrite-existing-jobs="true">
+  <job>
+    <job-detail>
+      <name>TestJob</name>
+      <group>Group1</group>
+      <job-class>test.cluster.TestQuartzProcessor</job-class>
+      <job-data-map allows-transient-data="true">
+      	<entry>
+      		<key>testkey</key>
+      		<value>testValue</value>
+      	</entry>
+      </job-data-map>
+    </job-detail>
+    <trigger>
+      <cron>
+        <name>TestTrigger</name>
+        <group>Group1</group>
+        <job-name>TestJob</job-name>
+        <job-group>Group1</job-group>
+        <cron-expression>*/2 * * ? * *</cron-expression>
+     </cron>
+    </trigger>
+  </job>
+</quartz>

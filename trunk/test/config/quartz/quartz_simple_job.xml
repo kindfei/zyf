@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<quartz xmlns="http://www.opensymphony.com/quartz/JobSchedulingData"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+        overwrite-existing-jobs="true">
+  <job>
+    <job-detail>
+      <name>MyJob</name>
+      <group>G1</group>
+      <job-class>test.quartz.SimpleJob</job-class>
+      <job-data-map allows-transient-data="true">
+      	<entry>
+      		<key>append</key>
+      		<value>111111111111111</value>
+      	</entry>
+      </job-data-map>
+    </job-detail>
+    <trigger>
+      <cron>
+        <name>MyTrigger</name>
+        <group>G1</group>
+        <job-name>MyJob</job-name>
+        <job-group>G1</job-group>
+        <cron-expression>00,10,20,30,40,50 * * ? * MON-FRI</cron-expression>
+     </cron>
+    </trigger>
+  </job>
+</quartz>
