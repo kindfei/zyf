@@ -1,0 +1,31 @@
+<tc:tc-config xmlns:tc="http://www.terracotta.org/config"
+  xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+  xsi:schemaLocation="http://www.terracotta.org/schema/terracotta-4.xsd">
+
+  <servers>
+    <server>
+      <logs>terracotta/server/logs</logs>
+      <data>terracotta/server/data</data>
+      <statistics>terracotta/server/logs</statistics>
+      <dso><persistence><mode>permanent-store</mode></persistence></dso>
+    </server>
+  </servers>
+  <clients>
+    <logs>terracotta/clients/client-%D/logs</logs>
+    <statistics>terracotta/clients/client-%D/statistics</statistics>
+  </clients>
+  <application>
+    <dso>  
+      <locks>
+        <autolock>
+           <method-expression>void test.terracota.demo.dirtyread.Main.count(..)</method-expression>
+        </autolock>
+      </locks>
+      <roots>
+        <root>
+          <field-name>test.terracota.demo.dirtyread.Main.instance</field-name>
+        </root>
+      </roots>
+    </dso>
+  </application>
+</tc:tc-config>
