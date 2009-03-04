@@ -1,0 +1,67 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.2
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="test.hibernate.tables.mysql.JmsProvider" 
+    table="jms_provider"
+    lazy="false"
+>
+
+    <id
+        name="providerId"
+        type="java.lang.String"
+        column="PROVIDER_ID"
+    >
+    
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="providerType"
+        type="java.lang.String"
+        column="PROVIDER_TYPE"
+        not-null="true"
+        length="20"
+    />
+    <property
+        name="manualHa"
+        type="int"
+        column="MANUAL_HA"
+        not-null="true"
+        length="1"
+    />
+    <property
+        name="url"
+        type="java.lang.String"
+        column="URL"
+        not-null="true"
+        length="200"
+    />
+    <property
+        name="user"
+        type="java.lang.String"
+        column="USER"
+        length="20"
+    />
+    <property
+        name="password"
+        type="java.lang.String"
+        column="PASSWORD"
+        length="20"
+    />
+
+    <!-- Associations -->
+  
+
+</class>
+</hibernate-mapping>
