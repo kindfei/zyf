@@ -1,26 +1,27 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
+	<classpathentry kind="src" path="src/core"/>
+	<classpathentry kind="src" path="src/sample-ActiveMQ"/>
+	<classpathentry kind="src" path="src/sample-dom4j"/>
+	<classpathentry kind="src" path="src/sample-JBossMQ"/>
+	<classpathentry kind="src" path="src/sample-JMS"/>
+	<classpathentry kind="src" path="src/sample-JMX"/>
+	<classpathentry kind="src" path="src/sample-messaging"/>
+	<classpathentry kind="src" path="src/sample-RMI"/>
+	<classpathentry kind="src" path="src/sample-terracotta"/>
+	<classpathentry kind="src" path="src/test"/>
+	<classpathentry kind="src" path="src/test-hibernate"/>
+	<classpathentry kind="src" path="src/test-jms"/>
+	<classpathentry kind="src" path="src/test-jmx"/>
+	<classpathentry kind="src" path="src/test-terracotta"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="src" path="sample-RMI"/>
-	<classpathentry kind="src" path="sample-dom4j"/>
-	<classpathentry kind="src" path="sample-JBossMQ"/>
-	<classpathentry kind="src" path="sample-ActiveMQ"/>
-	<classpathentry kind="src" path="sample-JMS"/>
-	<classpathentry kind="src" path="sample-messaging"/>
-	<classpathentry kind="src" path="sample-terracotta"/>
-	<classpathentry kind="src" path="test"/>
-	<classpathentry kind="src" path="test-hibernate"/>
-	<classpathentry kind="src" path="test-jms"/>
-	<classpathentry kind="src" path="test-terracotta"/>
-	<classpathentry kind="src" path="core"/>
-	<classpathentry kind="src" path="sample-JMX"/>
-	<classpathentry kind="lib" path="conf"/>
-	<classpathentry kind="lib" path="conf-quartz"/>
-	<classpathentry kind="lib" path="conf-log4j"/>
-	<classpathentry kind="lib" path="conf-security"/>
-	<classpathentry kind="lib" path="conf-hibernate"/>
-	<classpathentry kind="lib" path="conf-jms"/>
-	<classpathentry kind="lib" path="conf-terracotta"/>
+	<classpathentry kind="lib" path="config/hibernate"/>
+	<classpathentry kind="lib" path="config/jms"/>
+	<classpathentry kind="lib" path="config/log4j"/>
+	<classpathentry kind="lib" path="config/quartz"/>
+	<classpathentry kind="lib" path="config/security"/>
+	<classpathentry kind="lib" path="config/terracotta"/>
+	<classpathentry kind="lib" path="config/test"/>
 	<classpathentry kind="lib" path="lib/activation.jar"/>
 	<classpathentry kind="lib" path="lib/commons-beanutils.jar"/>
 	<classpathentry kind="lib" path="lib/commons-email-1.0.jar"/>
@@ -39,7 +40,7 @@
 	<classpathentry kind="lib" path="lib/hibernate-3.2/antlr-2.7.6.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate-3.2/asm.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate-3.2/asm-attrs.jar"/>
-	<classpathentry kind="lib" path="lib/hibernate-3.2/c3p0-0.9.0.jar"/>
+	<classpathentry kind="lib" path="lib/hibernate-3.2/c3p0-0.9.0.jar" sourcepath="E:/library/c3p0-0.9.1.2/c3p0-0.9.1.2.src/src/classes"/>
 	<classpathentry kind="lib" path="lib/hibernate-3.2/cglib-2.1.3.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate-3.2/commons-collections-2.1.1.jar"/>
 	<classpathentry kind="lib" path="lib/hibernate-3.2/commons-logging-1.0.4.jar"/>
@@ -87,5 +88,5 @@
 	<classpathentry kind="lib" path="lib/swt-M20060921-0945/swt.jar"/>
 	<classpathentry kind="lib" path="lib/spring-framework-2.5.6/spring.jar"/>
 	<classpathentry kind="lib" path="lib/activemq-all-5.1.0.jar"/>
-	<classpathentry kind="output" path="bin"/>
+	<classpathentry kind="output" path="classes"/>
 </classpath>
