@@ -1,8 +1,10 @@
 package core.cache;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 public class IndexedCacheImpl<K, V> extends CacheImpl<K, V> implements IndexedCache<K, V> {
 	
@@ -30,6 +32,25 @@ public class IndexedCacheImpl<K, V> extends CacheImpl<K, V> implements IndexedCa
 	@Override
 	public Index<K, V> getIndex(String name) {
 		return indexMap.get(name);
+	}
+	
+	@Override
+	public List<V> fetch(Set<K> set) {
+		lock.readLock().lock();
+		try {
+			List<V> list = new ArrayList<V>(set.size());
+			for (K key : set) {
+				Element<K, V> e = get(key);
+				if (e == null) {
+					throw new RuntimeException("Cache is not consistent with index.");
+				}
+				list.add(e.getValue());
+			}
+			
+			return list;
+		} finally {
+			lock.readLock().unlock();
+		}
 	}
 	
 	@Override
