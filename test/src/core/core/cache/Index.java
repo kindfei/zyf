@@ -62,7 +62,6 @@ public class Index<K, V> {
 						cache.put(new Element<K, V>(builder.getKey(value), value));
 					}
 					element.setInitialized(true);
-					return values;
 				}
 			} finally {
 				lock.unlock();
@@ -73,6 +72,10 @@ public class Index<K, V> {
 	}
 	
 	private IndexElement getElement(Object... conditions) {
+		if (conditions.length == 0) {
+			throw new IllegalArgumentException("Have no condition to be specified.");
+		}
+		
 		Object obj = this.rootMap;
 		ConditionMap map = null;
 		for (int i = 0; i < conditions.length; i++) {
@@ -93,14 +96,23 @@ public class Index<K, V> {
 	private class ConditionMap extends ConcurrentHashMap<Object, Object> {
 		private static final long serialVersionUID = -5204391047193649905L;
 		
+		private Object nullKey = new Object();
+		
 		@Override
 		public Object putIfAbsent(Object key, Object value) {
+			if (key == null) key = nullKey;
 			Object obj = super.putIfAbsent(key, value);
 			if (obj == null) {
 				return value;
 			} else {
 				return obj;
 			}
+		}
+		
+		@Override
+		public Object get(Object key) {
+			if (key == null) key = nullKey;
+			return super.get(key);
 		}
 	}
 

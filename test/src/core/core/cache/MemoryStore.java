@@ -71,6 +71,7 @@ public class MemoryStore<K, V> implements Store<K, V> {
 		return new ArrayList<K>(map.keySet());
 	}
 	
+	@Override
 	public List<Element<K, V>> getValues() {
 		return new ArrayList<Element<K, V>>(map.values());
 	}
