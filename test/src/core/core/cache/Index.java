@@ -1,6 +1,5 @@
 package core.cache;
 
-import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
@@ -70,16 +69,7 @@ public class Index<K, V> {
 			}
 		}
 		
-		List<V> list = new ArrayList<V>(element.getKeySize());
-		for (K key : element.getKeySet()) {
-			Element<K, V> e = cache.get(key);
-			if (e == null) {
-				throw new RuntimeException("Cache is not consistent with index.");
-			}
-			list.add(e.getValue());
-		}
-		
-		return list;
+		return cache.fetch(element.getKeySet());
 	}
 	
 	private IndexElement getElement(Object... conditions) {
@@ -130,20 +120,16 @@ public class Index<K, V> {
 			this.initialized = initialized;
 		}
 
-		public synchronized boolean addKey(K key) {
+		public boolean addKey(K key) {
 			return set.add(key);
 		}
 		
-		public synchronized Set<K> getKeySet() {
-			return new HashSet<K>(set);
+		public Set<K> getKeySet() {
+			return set;
 		}
 		
-		public synchronized boolean removeKey(K key) {
+		public boolean removeKey(K key) {
 			return set.remove(key);
-		}
-		
-		public int getKeySize() {
-			return set.size();
 		}
 	}
 }
