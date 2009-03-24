@@ -16,16 +16,17 @@ public class IndexedCacheImpl<K, V> extends CacheImpl<K, V> implements IndexedCa
 
 	@Override
 	public void addIndex(Index<K, V> index) {
-		lock.writeLock().lock();
+		lock.readLock().lock();
 		try {
 			List<Element<K, V>> elements = store.getValues();
 			for (Element<K, V> element : elements) {
 				index.add(element.getValue());
 			}
 			
+			index.setCache(this);
 			indexMap.put(index.getName(), index);
 		} finally {
-			lock.writeLock().unlock();
+			lock.readLock().unlock();
 		}
 	}
 

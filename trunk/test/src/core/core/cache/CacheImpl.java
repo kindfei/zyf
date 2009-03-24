@@ -67,27 +67,25 @@ public class CacheImpl<K, V> implements Cache<K, V> {
 
 	@Override
 	public Element<K, V> get(K key) {
-		Element<K, V> element = null;
-		
 		lock.readLock().lock();
 		try {
-			element = store.get(key);
+			Element<K, V> element = store.get(key);
+			
+			if (element == null) {
+				if (loader != null) {
+					V value = loader.load(key);
+					if (value == null) {
+						return null;
+					}
+					element = new Element<K, V>(key, value);
+					put(element);
+				}
+			}
+
+			return element;
 		} finally {
 			lock.readLock().unlock();
 		}
-		
-		if (element == null) {
-			if (loader != null) {
-				V value = loader.load(key);
-				if (value == null) {
-					return null;
-				}
-				element = new Element<K, V>(key, value);
-				put(element);
-			}
-		}
-
-		return element;
 	}
 
 	@Override
@@ -147,11 +145,11 @@ public class CacheImpl<K, V> implements Cache<K, V> {
 
 	@Override
 	public List<K> getKeys() {
-		lock.writeLock().lock();
+		lock.readLock().lock();
 		try {
 			return store.getKeys();
 		} finally {
-			lock.writeLock().unlock();
+			lock.readLock().unlock();
 		}
 	}
 
