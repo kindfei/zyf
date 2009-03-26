@@ -25,7 +25,7 @@ public class LfuMemoryStore<K, V> extends MemoryStore<K, V> {
 
 	private void removeLfuElement(Element<K, V> elementJustAdded) {
 		Element<K, V> element = findRelativelyUnused(elementJustAdded);
-		remove(element.getKey());
+		cache.remove(element.getKey());
 	}
 
 	private Element<K, V> findRelativelyUnused(Element<K, V> elementJustAdded) {

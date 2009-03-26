@@ -18,10 +18,15 @@ public class Index<K, V> {
 	
 	private ReentrantLock lock = new ReentrantLock();
 	
-	public Index(String name, IndexKeyBuilder<K, V> builder, IndexedCacheLoader<V> loader, boolean needInitialize) {
+	public Index(String name, IndexKeyBuilder<K, V> builder) {
+		this(name, builder, false, null);
+	}
+	
+	public Index(String name, IndexKeyBuilder<K, V> builder, boolean needInitialize, IndexedCacheLoader<V> loader) {
+		this.name = name;
 		this.builder = builder;
-		this.loader = loader;
 		this.needInitialize = needInitialize;
+		this.loader = loader;
 	}
 	
 	void setCache(IndexedCache<K, V> cache) {

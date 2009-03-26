@@ -19,7 +19,7 @@ public class FifoMemoryStore<K, V> extends MemoryStore<K, V> {
     
     private void removeFirstElement() {
         Element<K, V> element = getFirstElement();
-        remove(element.getKey());
+        cache.remove(element.getKey());
     }
     
     private Element<K, V> getFirstElement() {

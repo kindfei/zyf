@@ -64,6 +64,16 @@ public class CacheImpl<K, V> implements Cache<K, V> {
 	public StoreEvictionPolicy getPolicy() {
 		return policy;
 	}
+	
+	@Override
+	public ElementComparator<V> getComparator() {
+		return comparator;
+	}
+	
+	@Override
+	public CacheLoader<K, V> getCacheLoader() {
+		return loader;
+	}
 
 	@Override
 	public Element<K, V> get(K key) {
@@ -73,11 +83,10 @@ public class CacheImpl<K, V> implements Cache<K, V> {
 			
 			if (element == null) {
 				if (loader != null) {
-					V value = loader.load(key);
-					if (value == null) {
+					element = loader.load(key);
+					if (element == null) {
 						return null;
 					}
-					element = new Element<K, V>(key, value);
 					put(element);
 				}
 			}
