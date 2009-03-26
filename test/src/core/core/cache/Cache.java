@@ -10,6 +10,8 @@ public interface Cache<K, V> {
 	public long getTimeToLive();
 	public long getTimeToIdle();
 	public StoreEvictionPolicy getPolicy();
+	public ElementComparator<V> getComparator();
+	public CacheLoader<K, V> getCacheLoader();
 
 	public Element<K, V> get(K key);
 	public void put(Element<K, V> element);

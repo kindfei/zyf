@@ -1,5 +1,5 @@
 package core.cache;
 
 public interface CacheLoader<K, V> {
-	public V load(K key);
+	public Element<K, V> load(K key);
 }

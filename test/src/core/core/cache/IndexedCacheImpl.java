@@ -14,6 +14,11 @@ public class IndexedCacheImpl<K, V> extends CacheImpl<K, V> implements IndexedCa
 		super(name, Integer.MAX_VALUE, 0, 0, StoreEvictionPolicy.FIFO);
 	}
 
+	public IndexedCacheImpl(String name, int maxElements, long timeToLive,
+			long timeToIdle, StoreEvictionPolicy policy) {
+		super(name, maxElements, timeToLive, timeToIdle, policy);
+	}
+
 	@Override
 	public void addIndex(Index<K, V> index) {
 		lock.readLock().lock();
