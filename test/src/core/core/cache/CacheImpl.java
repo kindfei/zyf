@@ -74,37 +74,19 @@ public class CacheImpl<K, V> implements Cache<K, V> {
 	public CacheLoader<K, V> getCacheLoader() {
 		return loader;
 	}
-
+	
 	@Override
-	public Element<K, V> get(K key) {
-		lock.readLock().lock();
-		try {
-			Element<K, V> element = store.get(key);
-			
-			if (element == null) {
-				if (loader != null) {
-					element = loader.load(key);
-					if (element == null) {
-						return null;
-					}
-					put(element);
-				}
-			}
+	public void put(K key, V value) {
+		Element<K, V> element = new Element<K, V>(key, value);
 
-			return element;
-		} finally {
-			lock.readLock().unlock();
-		}
-	}
-
-	@Override
-	public void put(Element<K, V> element) {
-		element.resetAccessStatistics();
-
-		if (!element.isCreated()) element.setCreateTime(System.currentTimeMillis());
+		element.setCreateTime(System.currentTimeMillis());
 		element.setTimeToLive(timeToLive);
 		element.setTimeToIdle(timeToIdle);
 		
+		put(element);
+	}
+	
+	protected void put(Element<K, V> element) {
 		lock.writeLock().lock();
 		try {
 			if (comparator != null) {
@@ -153,6 +135,43 @@ public class CacheImpl<K, V> implements Cache<K, V> {
 	}
 
 	@Override
+	public V get(K key) {
+		Element<K, V> element = null;
+		
+		lock.readLock().lock();
+		try {
+			element = store.get(key);
+			
+			if (element == null && loader != null) {
+				element = new FutureElement<K, V>(key, this);
+				put(element);
+			}
+		} finally {
+			lock.readLock().unlock();
+		}
+		
+		if (element == null && loader != null) {
+			FutureElement<K, V> futureElement = null;
+			
+			lock.writeLock().lock();
+			try {
+				element = store.get(key);
+				
+				if (element == null) {
+					element = futureElement = new FutureElement<K, V>(key, this);
+					put(element);
+				}
+			} finally {
+				lock.writeLock().unlock();
+			}
+			
+			futureElement.run();
+		}
+
+		return element.getValue();
+	}
+
+	@Override
 	public List<K> getKeys() {
 		lock.readLock().lock();
 		try {
@@ -186,9 +205,8 @@ public class CacheImpl<K, V> implements Cache<K, V> {
 	public boolean isValueInCache(V value) {
 		List<K> keys = getKeys();
 		for (K key : keys) {
-			Element<K, V> element = get(key);
-			if (element != null) {
-				Object elementValue = element.getValue();
+			V elementValue = get(key);
+			if (elementValue != null) {
 				if (elementValue == value) {
 					return true;
 				} else if (elementValue.equals(value)) {

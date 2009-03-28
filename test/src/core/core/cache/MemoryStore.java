@@ -47,16 +47,6 @@ public class MemoryStore<K, V> implements Store<K, V> {
 	}
 
 	@Override
-	public Element<K, V> get(K key) {
-		Element<K, V> element = map.get(key);
-		if (element != null && !element.updateAccessStatistics()) {
-			cache.remove(key);
-			element = null;
-		}
-		return element;
-	}
-
-	@Override
 	public Element<K, V> remove(K key) {
 		return map.remove(key);
 	}
@@ -64,6 +54,16 @@ public class MemoryStore<K, V> implements Store<K, V> {
 	@Override
 	public void removeAll() {
 		map.clear();
+	}
+
+	@Override
+	public Element<K, V> get(K key) {
+		Element<K, V> element = map.get(key);
+		if (element != null && !element.updateAccessStatistics()) {
+			cache.remove(key);
+			element = null;
+		}
+		return element;
 	}
 
 	@Override

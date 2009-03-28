@@ -8,7 +8,6 @@ public class Element<K, V> {
 	private long timeToLive;
 	private long timeToIdle;
 	private long creationTime;
-	private boolean created;
 	
 	private long lastAccessTime;
 	private long hitCount;
@@ -28,11 +27,6 @@ public class Element<K, V> {
 
 	public void setCreateTime(long createTime) {
 		this.creationTime = createTime;
-		created = true;
-	}
-	
-	boolean isCreated() {
-		return created;
 	}
 
 	public K getKey() {

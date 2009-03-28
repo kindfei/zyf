@@ -64,7 +64,7 @@ public class Index<K, V> {
 				if (!element.isInitialized()) {
 					List<V> values = loader.load(conditions);
 					for (V value : values) {
-						cache.put(new Element<K, V>(builder.getKey(value), value));
+						cache.put(builder.getKey(value), value);
 					}
 					element.setInitialized(true);
 				}
