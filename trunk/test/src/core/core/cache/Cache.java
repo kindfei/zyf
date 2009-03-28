@@ -13,10 +13,10 @@ public interface Cache<K, V> {
 	public ElementComparator<V> getComparator();
 	public CacheLoader<K, V> getCacheLoader();
 
-	public Element<K, V> get(K key);
-	public void put(Element<K, V> element);
+	public void put(K key, V value);
 	public boolean remove(K key);
 	public void removeAll();
+	public V get(K key);
 	public List<K> getKeys();
 	public int getSize();
 	public boolean isKeyInCache(K key);

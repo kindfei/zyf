@@ -46,11 +46,11 @@ public class IndexedCacheImpl<K, V> extends CacheImpl<K, V> implements IndexedCa
 		try {
 			List<V> list = new ArrayList<V>(set.size());
 			for (K key : set) {
-				Element<K, V> e = get(key);
-				if (e == null) {
+				V value = get(key);
+				if (value == null) {
 					throw new RuntimeException("Cache is not consistent with index.");
 				}
-				list.add(e.getValue());
+				list.add(value);
 			}
 			
 			return list;
