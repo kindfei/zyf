@@ -1,4 +1,4 @@
-package org.zyf.cache;
+package org.zyf.cache.index;
 
 import java.util.Comparator;
 import java.util.List;
