@@ -12,7 +12,7 @@ public class Element<K, V> {
 	private long lastAccessTime;
 	private long hitCount;
 
-	public Element(K key, V value) {
+	Element(K key, V value) {
 		this.key = key;
 		this.value = value;
 	}
@@ -62,7 +62,7 @@ public class Element<K, V> {
 		hitCount = 0;
 	}
 
-	boolean updateAccessStatistics() {
+	public boolean updateAccessStatistics() {
 		if (isExpired()) {
 			return false;
 		}
@@ -71,7 +71,7 @@ public class Element<K, V> {
 		return true;
 	}
 
-	boolean isExpired() {
+	public boolean isExpired() {
 		if (timeToLive == 0 && timeToIdle == 0) {
 			return false;
 		}

@@ -1,22 +1,27 @@
 package org.zyf.cache;
 
 import java.util.List;
+import java.util.Map;
+
+import org.zyf.cache.store.StoreEvictionPolicy;
 
 public interface Cache<K, V> {
-	public void setComparator(ElementValidator<V> comparator);
-	public void setCacheLoader(CacheLoader<K, V> loader);
 	public String getName();
 	public int getMaxElements();
 	public long getTimeToLive();
 	public long getTimeToIdle();
 	public StoreEvictionPolicy getPolicy();
-	public ElementValidator<V> getComparator();
-	public CacheLoader<K, V> getCacheLoader();
+	public ElementValidator<V> getValidator();
+	public CacheLoader<K, V> getLoader();
+	
+	public CacheStatistics getStatistics();
 
 	public void put(K key, V value);
+	public void putAll(Map<K, V> values);
 	public boolean remove(K key);
 	public void removeAll();
 	public V get(K key);
+	public List<V> getAll(List<K> keys);
 	public List<K> getKeys();
 	public List<V> getValues();
 	public int getSize();

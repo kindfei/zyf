@@ -1,4 +1,4 @@
-package org.zyf.cache;
+package org.zyf.cache.index;
 
 public class Condition {
 	private Object key;

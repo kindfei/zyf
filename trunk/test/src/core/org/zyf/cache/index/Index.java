@@ -1,9 +1,9 @@
-package org.zyf.cache;
+package org.zyf.cache.index;
 
 import java.util.List;
 
 public interface Index<K, V> {
 	public String getName();
-	void setCache(Cache<K, V> cache);
+	public IndexableCacheLoader<V> getLoader();
 	public List<V> query(Object... conditions);
 }
