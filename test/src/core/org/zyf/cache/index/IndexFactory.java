@@ -1,5 +1,5 @@
 package org.zyf.cache.index;
 
-public class IndexElement {
+public class IndexFactory {
 
 }

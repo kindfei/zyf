@@ -5,11 +5,11 @@ import java.util.List;
 import java.util.Map;
 
 import org.zyf.cache.Cache;
-import org.zyf.cache.Element;
+import org.zyf.cache.DefaultElement;
 
 public class AbstractStore<K, V> implements Store<K, V> {
 
-	protected Map<K, Element<K, V>> map;
+	protected Map<K, DefaultElement<K, V>> map;
 	protected Cache<K, V> cache;
 	
 	AbstractStore(Cache<K, V> cache) {
@@ -36,8 +36,8 @@ public class AbstractStore<K, V> implements Store<K, V> {
 	}
 
 	@Override
-	public Element<K, V> put(Element<K, V> element) {
-		Element<K, V> preElement = null;
+	public DefaultElement<K, V> put(DefaultElement<K, V> element) {
+		DefaultElement<K, V> preElement = null;
 		if (element != null) {
 			preElement = map.put(element.getKey(), element);
 			doPut();
@@ -46,7 +46,7 @@ public class AbstractStore<K, V> implements Store<K, V> {
 	}
 
 	@Override
-	public boolean putIfAbsent(Element<K, V> element) {
+	public boolean putIfAbsent(DefaultElement<K, V> element) {
 		// TODO Auto-generated method stub
 		return false;
 	}
@@ -56,7 +56,7 @@ public class AbstractStore<K, V> implements Store<K, V> {
 	}
 
 	@Override
-	public Element<K, V> remove(K key) {
+	public DefaultElement<K, V> remove(K key) {
 		return map.remove(key);
 	}
 
@@ -66,8 +66,8 @@ public class AbstractStore<K, V> implements Store<K, V> {
 	}
 
 	@Override
-	public Element<K, V> get(K key) {
-		Element<K, V> element = map.get(key);
+	public DefaultElement<K, V> get(K key) {
+		DefaultElement<K, V> element = map.get(key);
 		if (element != null && !element.updateAccessStatistics()) {
 //TODO			cache.remove(key);
 			element = null;
@@ -81,8 +81,8 @@ public class AbstractStore<K, V> implements Store<K, V> {
 	}
 	
 	@Override
-	public List<Element<K, V>> getValues() {
-		return new ArrayList<Element<K, V>>(map.values());
+	public List<DefaultElement<K, V>> getValues() {
+		return new ArrayList<DefaultElement<K, V>>(map.values());
 	}
 
 	@Override
