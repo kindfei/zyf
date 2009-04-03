@@ -3,7 +3,7 @@ package org.zyf.cache.store;
 import java.util.Map;
 
 import org.zyf.cache.Cache;
-import org.zyf.cache.Element;
+import org.zyf.cache.DefaultElement;
 
 public class LruMemoryStore<K, V> extends AbstractStore<K, V> {
 
@@ -12,7 +12,7 @@ public class LruMemoryStore<K, V> extends AbstractStore<K, V> {
 		map = new SpoolingLinkedHashMap();
 	}
 
-	public final class SpoolingLinkedHashMap extends java.util.LinkedHashMap<K, Element<K,V>> {
+	public final class SpoolingLinkedHashMap extends java.util.LinkedHashMap<K, DefaultElement<K,V>> {
 
 		private static final long serialVersionUID = 8103440809510633465L;
 		
@@ -23,13 +23,13 @@ public class LruMemoryStore<K, V> extends AbstractStore<K, V> {
 			super(INITIAL_CAPACITY, GROWTH_FACTOR, true);
 		}
 
-		protected final boolean removeEldestEntry(Map.Entry<K, Element<K,V>> eldest) {
-			Element<K,V> element = eldest.getValue();
+		protected final boolean removeEldestEntry(Map.Entry<K, DefaultElement<K,V>> eldest) {
+			DefaultElement<K,V> element = eldest.getValue();
 			removeLeastRecentlyUsedElement(element);
 			return false;
 		}
 
-		private void removeLeastRecentlyUsedElement(Element<K,V> element) {
+		private void removeLeastRecentlyUsedElement(DefaultElement<K,V> element) {
 			if (element.isExpired() || isFull()) {
 				cache.remove(element.getKey());
 			}

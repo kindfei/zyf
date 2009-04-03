@@ -7,7 +7,7 @@ import java.util.List;
 import java.util.Random;
 
 import org.zyf.cache.Cache;
-import org.zyf.cache.Element;
+import org.zyf.cache.DefaultElement;
 
 public class LfuMemoryStore<K, V> extends AbstractStore<K, V> {
 
@@ -17,30 +17,30 @@ public class LfuMemoryStore<K, V> extends AbstractStore<K, V> {
 
 	LfuMemoryStore(Cache<K, V> cache) {
 		super(cache);
-		map = new HashMap<K, Element<K, V>>();
+		map = new HashMap<K, DefaultElement<K, V>>();
 	}
 
-	protected void doPut(Element<K, V> elementJustAdded) {
+	protected void doPut(DefaultElement<K, V> elementJustAdded) {
 		if (isFull()) {
 			removeLfuElement(elementJustAdded);
 		}
 	}
 
-	private void removeLfuElement(Element<K, V> elementJustAdded) {
-		Element<K, V> element = findRelativelyUnused(elementJustAdded);
+	private void removeLfuElement(DefaultElement<K, V> elementJustAdded) {
+		DefaultElement<K, V> element = findRelativelyUnused(elementJustAdded);
 		cache.remove(element.getKey());
 	}
 
-	private Element<K, V> findRelativelyUnused(Element<K, V> elementJustAdded) {
-		List<Element<K, V>> elements = sampleElements(map.size());
-		Element<K, V> element = leastHit(elements, elementJustAdded);
+	private DefaultElement<K, V> findRelativelyUnused(DefaultElement<K, V> elementJustAdded) {
+		List<DefaultElement<K, V>> elements = sampleElements(map.size());
+		DefaultElement<K, V> element = leastHit(elements, elementJustAdded);
 		return map.get(element.getKey());
 	}
 
-	private List<Element<K, V>> sampleElements(int size) {
+	private List<DefaultElement<K, V>> sampleElements(int size) {
 		int[] offsets = generateRandomSample(size);
-		List<Element<K, V>> elements = new ArrayList<Element<K, V>>(offsets.length);
-		Iterator<Element<K, V>> iterator = map.values().iterator();
+		List<DefaultElement<K, V>> elements = new ArrayList<DefaultElement<K, V>>(offsets.length);
+		Iterator<DefaultElement<K, V>> iterator = map.values().iterator();
 		for (int i = 0; i < offsets.length; i++) {
 			for (int j = 0; j < offsets[i]; j++) {
 				iterator.next();
@@ -68,14 +68,14 @@ public class LfuMemoryStore<K, V> extends AbstractStore<K, V> {
 		}
 	}
 
-	private Element<K, V> leastHit(List<Element<K, V>> sampledElements,
-			Element<K, V> justAdded) {
+	private DefaultElement<K, V> leastHit(List<DefaultElement<K, V>> sampledElements,
+			DefaultElement<K, V> justAdded) {
 		// edge condition when Memory Store configured to size 0
 		if (sampledElements.size() == 1 && justAdded != null) {
 			return justAdded;
 		}
-		Element<K, V> lowestElement = null;
-		for (Element<K, V> element : sampledElements) {
+		DefaultElement<K, V> lowestElement = null;
+		for (DefaultElement<K, V> element : sampledElements) {
 			if (lowestElement == null) {
 				if (!element.equals(justAdded)) {
 					lowestElement = element;

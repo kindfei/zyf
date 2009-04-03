@@ -4,6 +4,6 @@ import java.util.List;
 
 public interface Index<K, V> {
 	public String getName();
-	public IndexableCacheLoader<V> getLoader();
+	public IndexKeyBuilder<K, V> getBuilder();
 	public List<V> query(Object... conditions);
 }

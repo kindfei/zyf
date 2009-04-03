@@ -5,32 +5,32 @@ import java.util.LinkedHashMap;
 import java.util.Set;
 
 import org.zyf.cache.Cache;
-import org.zyf.cache.Element;
+import org.zyf.cache.DefaultElement;
 
 public class FifoMemoryStore<K, V> extends AbstractStore<K, V> {
 
 	FifoMemoryStore(Cache<K, V> cache) {
 		super(cache);
-		map = new LinkedHashMap<K, Element<K, V>>();
+		map = new LinkedHashMap<K, DefaultElement<K, V>>();
 	}
 	
-    protected final void doPut(Element<K, V> element) {
+    protected final void doPut(DefaultElement<K, V> element) {
         if (isFull()) {
             removeFirstElement();
         }
     }
     
     private void removeFirstElement() {
-        Element<K, V> element = getFirstElement();
+        DefaultElement<K, V> element = getFirstElement();
         cache.remove(element.getKey());
     }
     
-    private Element<K, V> getFirstElement() {
+    private DefaultElement<K, V> getFirstElement() {
         if (map.size() == 0) {
             return null;
         }
 
-        Element<K, V> element = null;
+        DefaultElement<K, V> element = null;
 
         Set<K> keySet = map.keySet();
         Iterator<K> itr = keySet.iterator();
