@@ -34,12 +34,15 @@ public class TreeIndexImpl<K, V> implements CacheIndex<K, V>, TreeIndex<K, V> {
 	}
 	
 	public void add(V value) {
-		IndexKeySet keySet = getKeySet(builder.getConditions(value));
+		IndexKeySet keySet = getKeySet(true, builder.getConditions(value));
 		keySet.addKey(builder.getKey(value));
 	}
 	
 	public boolean evict(V value) {
-		IndexKeySet keySet = getKeySet(builder.getConditions(value));
+		IndexKeySet keySet = getKeySet(false, builder.getConditions(value));
+		if (keySet == null) {
+			return false;
+		}
 		return keySet.removeKey(builder.getKey(value));
 	}
 	
@@ -64,12 +67,12 @@ public class TreeIndexImpl<K, V> implements CacheIndex<K, V>, TreeIndex<K, V> {
 			throw new RuntimeException("Index is not assembled.");
 		}
 		
-		IndexKeySet keySet = getKeySet(conditions);
+		IndexKeySet keySet = getKeySet(false, conditions);
 		
 		return cache.getAll(keySet.getKeys());
 	}
 	
-	private IndexKeySet getKeySet(Object... conditions) {
+	private IndexKeySet getKeySet(boolean createNew, Object... conditions) {
 		if (conditions.length == 0) {
 			throw new IllegalArgumentException("Have no condition to be specified.");
 		}
@@ -81,10 +84,14 @@ public class TreeIndexImpl<K, V> implements CacheIndex<K, V>, TreeIndex<K, V> {
 			obj = map.get(conditions[i]);
 			
 			if (obj == null) {
-				if (i == conditions.length - 1) {
-					obj = map.putIfAbsent(conditions[i], new IndexKeySet());
+				if (createNew) {
+					if (i == conditions.length - 1) {
+						obj = map.putIfAbsent(conditions[i], new IndexKeySet());
+					} else {
+						obj = map.putIfAbsent(conditions[i], new ConditionMap(comparators[i]));
+					}
 				} else {
-					obj = map.putIfAbsent(conditions[i], new ConditionMap(comparators[i]));
+					return null;
 				}
 			}
 		}
@@ -92,8 +99,52 @@ public class TreeIndexImpl<K, V> implements CacheIndex<K, V>, TreeIndex<K, V> {
 	}
 
 	public List<V> rangeQuery(RangedCondition... conditions) {
-		// TODO Auto-generated method stub
-		return null;
+		if (cache == null) {
+			throw new RuntimeException("Index is not assembled.");
+		}
+		
+		List<Object> keySets = getKeySet(conditions);
+		
+		List<K> keys = new ArrayList<K>();
+		for (Object indexKeySet : keySets) {
+			keys.addAll(((IndexKeySet) indexKeySet).getKeys());
+		}
+		
+		return cache.getAll(keys);
+	}
+	
+	private List<Object> getKeySet(RangedCondition... conditions) {
+		if (conditions.length == 0) {
+			throw new IllegalArgumentException("Have no condition to be specified.");
+		}
+		
+		List<Object> objs = new ArrayList<Object>();
+		objs.add(this.rootMap);
+		List<Object> maps = new ArrayList<Object>();
+		for (int i = 0; i < conditions.length; i++) {
+			maps = objs;
+			
+			if (conditions[i].getKey() != null) {
+				objs = new ArrayList<Object>();
+				for (Object tmp : maps) {
+					ConditionMap map = (ConditionMap) tmp;
+					Object obj = map.get(conditions[i].getKey());
+					if (obj != null) {
+						objs.add(map.get(conditions[i].getKey()));
+					}
+				}
+			} else if (conditions[i].getFromKey() != null && conditions[i].getToKey() != null) {
+				objs = new ArrayList<Object>();
+				for (Object tmp : maps) {
+					ConditionMap map = (ConditionMap) tmp;
+					objs.addAll(map.subMap(conditions[i].getFromKey(), conditions[i].getToKey()));
+				}
+			} else {
+				throw new IllegalArgumentException("Have no condition to be specified.");
+			}
+		}
+		
+		return objs;
 	}
 
 	private class ConditionMap {
