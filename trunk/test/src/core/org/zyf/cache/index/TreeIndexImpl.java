@@ -11,7 +11,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.zyf.cache.Cache;
 
-public class TreeIndexImpl<K, V> implements CacheIndex<K, V>, TreeIndex<K, V> {
+public class TreeIndexImpl<K, V> implements TreeIndex<K, V> {
 	
 	private ConditionMap rootMap;
 	
@@ -105,7 +105,12 @@ public class TreeIndexImpl<K, V> implements CacheIndex<K, V>, TreeIndex<K, V> {
 		
 		List<Object> keySets = getKeySet(conditions);
 		
+		if (keySets == null) {
+			return new ArrayList<V>();
+		}
+		
 		List<K> keys = new ArrayList<K>();
+		
 		for (Object indexKeySet : keySets) {
 			keys.addAll(((IndexKeySet) indexKeySet).getKeys());
 		}
@@ -120,7 +125,9 @@ public class TreeIndexImpl<K, V> implements CacheIndex<K, V>, TreeIndex<K, V> {
 		
 		List<Object> objs = new ArrayList<Object>();
 		objs.add(this.rootMap);
+		
 		List<Object> maps = new ArrayList<Object>();
+		
 		for (int i = 0; i < conditions.length; i++) {
 			maps = objs;
 			
@@ -130,17 +137,21 @@ public class TreeIndexImpl<K, V> implements CacheIndex<K, V>, TreeIndex<K, V> {
 					ConditionMap map = (ConditionMap) tmp;
 					Object obj = map.get(conditions[i].getKey());
 					if (obj != null) {
-						objs.add(map.get(conditions[i].getKey()));
+						objs.add(obj);
 					}
 				}
 			} else if (conditions[i].getFromKey() != null && conditions[i].getToKey() != null) {
 				objs = new ArrayList<Object>();
 				for (Object tmp : maps) {
 					ConditionMap map = (ConditionMap) tmp;
-					objs.addAll(map.subMap(conditions[i].getFromKey(), conditions[i].getToKey()));
+					objs.addAll(map.get(conditions[i].getFromKey(), conditions[i].getToKey()));
 				}
 			} else {
 				throw new IllegalArgumentException("Have no condition to be specified.");
+			}
+			
+			if (objs.size() == 0) {
+				return null;
 			}
 		}
 		
@@ -180,7 +191,7 @@ public class TreeIndexImpl<K, V> implements CacheIndex<K, V>, TreeIndex<K, V> {
 			}
 		}
 		
-		public List<Object> subMap(Object fromKey, Object toKey) {
+		public List<Object> get(Object fromKey, Object toKey) {
 			lock.readLock().lock();
 			try {
 				NavigableMap<Object, Object> subMap = map.subMap(fromKey, true, toKey, false);

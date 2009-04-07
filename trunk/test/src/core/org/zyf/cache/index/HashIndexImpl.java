@@ -14,7 +14,7 @@ import java.util.concurrent.locks.ReentrantReadWriteLock;
 
 import org.zyf.cache.Cache;
 
-public class HashIndexImpl<K, V> implements CacheIndex<K, V>, HashIndex<K, V> {
+public class HashIndexImpl<K, V> implements HashIndex<K, V> {
 	private ConditionMap rootMap = new ConditionMap();
 	
 	private String name;
@@ -22,10 +22,6 @@ public class HashIndexImpl<K, V> implements CacheIndex<K, V>, HashIndex<K, V> {
 	private IndexInitializer<V> initializer;
 	
 	private Cache<K, V> cache;
-	
-	public HashIndexImpl(String name, IndexKeyBuilder<K, V> builder) {
-		this(name, builder, null);
-	}
 	
 	public HashIndexImpl(String name, IndexKeyBuilder<K, V> builder, IndexInitializer<V> initializer) {
 		this.name = name;
