@@ -56,7 +56,7 @@ public class CmdHelper {
 	}
 	
 	public static int options(String[] opts) {
-		StringBuffer msg = new StringBuffer();
+		StringBuffer msg = new StringBuffer("\n");
 		for (int i = 0; i < opts.length; i++) {
 			msg.append(i).append(". ").append(opts[i]).append("\n");
 		}

@@ -1,4 +1,4 @@
-package test;
+package test.concurrent.jdk;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
