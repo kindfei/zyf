@@ -1,19 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
 	<classpathentry kind="src" path="src/core"/>
-	<classpathentry kind="src" path="src/sample-ActiveMQ"/>
-	<classpathentry kind="src" path="src/sample-dom4j"/>
-	<classpathentry kind="src" path="src/sample-JBossMQ"/>
-	<classpathentry kind="src" path="src/sample-JMS"/>
-	<classpathentry kind="src" path="src/sample-JMX"/>
-	<classpathentry kind="src" path="src/sample-messaging"/>
-	<classpathentry kind="src" path="src/sample-RMI"/>
-	<classpathentry kind="src" path="src/sample-terracotta"/>
 	<classpathentry kind="src" path="src/test"/>
 	<classpathentry kind="src" path="src/test-hibernate"/>
 	<classpathentry kind="src" path="src/test-jms"/>
 	<classpathentry kind="src" path="src/test-jmx"/>
 	<classpathentry kind="src" path="src/test-terracotta"/>
+	<classpathentry kind="src" path="src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="config/hibernate"/>
 	<classpathentry kind="lib" path="config/jms"/>
