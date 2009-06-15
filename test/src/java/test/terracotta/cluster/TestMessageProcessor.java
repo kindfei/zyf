@@ -8,8 +8,7 @@ import org.zyf.cluster.ClusterTask;
 import org.zyf.cluster.ExecuteMode;
 import org.zyf.cluster.MessageProcessor;
 
-
-import test.cluster.tasks.TestTaskBean;
+import test.terracotta.cluster.tasks.TestTaskBean;
 
 public class TestMessageProcessor extends MessageProcessor {
 

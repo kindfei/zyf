@@ -6,8 +6,7 @@ import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
 import org.zyf.cluster.MainMessageProcessor;
 
-
-import test.all.TestJMSService.JmsPerfBean;
+import test.terracotta.all.TestJMSService.JmsPerfBean;
 
 
 public class TestJMSProcessor extends MainMessageProcessor {
