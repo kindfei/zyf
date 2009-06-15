@@ -9,8 +9,7 @@ import org.zyf.cluster.ClusterTask;
 import org.zyf.cluster.ExecuteMode;
 import org.zyf.cluster.TimerProcessor;
 
-
-import test.cluster.tasks.TestPerfTaskBean;
+import test.terracotta.cluster.tasks.TestPerfTaskBean;
 
 
 public class TestPerfTimerProcessor extends TimerProcessor {
