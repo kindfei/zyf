@@ -1,11 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <classpath>
-	<classpathentry kind="src" path="src/core"/>
-	<classpathentry kind="src" path="src/test"/>
-	<classpathentry kind="src" path="src/test-hibernate"/>
-	<classpathentry kind="src" path="src/test-jms"/>
-	<classpathentry kind="src" path="src/test-jmx"/>
-	<classpathentry kind="src" path="src/test-terracotta"/>
 	<classpathentry kind="src" path="src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
 	<classpathentry kind="lib" path="config/hibernate"/>
