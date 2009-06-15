@@ -1,0 +1,52 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.2
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="test.hibernate.tables.mysql.Customer" 
+    table="customers"
+    lazy="false"
+>
+
+    <id
+        name="customerId"
+        type="java.lang.String"
+        column="customer_id"
+    >
+    
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="customerName"
+        type="java.lang.String"
+        column="customer_name"
+        length="50"
+    />
+    <property
+        name="address"
+        type="java.lang.String"
+        column="address"
+        length="50"
+    />
+    <property
+        name="groupId"
+        type="java.lang.String"
+        column="group_id"
+        length="10"
+    />
+
+    <!-- Associations -->
+  
+
+</class>
+</hibernate-mapping>

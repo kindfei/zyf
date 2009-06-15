@@ -1,4 +1,4 @@
-package test.basic.awt;
+package test.basic.basic.awt;
 
 import java.awt.Color;
 import java.awt.Font;
