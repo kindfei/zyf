@@ -1,4 +1,4 @@
-package core.cluster;
+package org.zyf.cluster;
 
 import java.io.Serializable;
 import java.util.ArrayList;
@@ -10,10 +10,10 @@ import java.util.concurrent.TimeUnit;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.zyf.jms.MessageDestination;
+import org.zyf.jms.MessageException;
+import org.zyf.jms.MessageFactory;
 
-import core.jms.MessageDestination;
-import core.jms.MessageException;
-import core.jms.MessageFactory;
 
 
 /**
@@ -30,7 +30,7 @@ public class MessageDrivenService extends AbstractService<Serializable> {
 	private int receiverSize;
 	private boolean receiverExecute;
 	
-	private core.jms.MessageReceiver recv;
+	private org.zyf.jms.MessageReceiver recv;
 	private List<MessageReceiver> receiverList = new ArrayList<MessageReceiver>();
 	
 	private ExecutorService threadPool;

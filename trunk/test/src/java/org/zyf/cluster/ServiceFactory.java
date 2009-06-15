@@ -1,10 +1,11 @@
-package core.cluster;
+package org.zyf.cluster;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Properties;
 
-import core.jms.MessageDestination;
+import org.zyf.jms.MessageDestination;
+
 
 
 /**

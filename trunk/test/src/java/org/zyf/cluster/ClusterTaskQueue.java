@@ -1,4 +1,4 @@
-package core.cluster;
+package org.zyf.cluster;
 
 import java.util.concurrent.atomic.AtomicInteger;
 import java.util.concurrent.locks.Condition;

@@ -1,4 +1,4 @@
-package core.entry;
+package org.zyf.entry;
 
 import java.util.Collection;
 import java.util.HashMap;

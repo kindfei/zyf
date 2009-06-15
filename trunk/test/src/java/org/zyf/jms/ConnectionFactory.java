@@ -1,4 +1,4 @@
-package core.jms;
+package org.zyf.jms;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;

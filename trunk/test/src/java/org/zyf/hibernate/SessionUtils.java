@@ -1,4 +1,4 @@
-package core.hibernate;
+package org.zyf.hibernate;
 
 import org.hibernate.HibernateException;
 import org.hibernate.classic.Session;

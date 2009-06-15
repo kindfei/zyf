@@ -1,4 +1,4 @@
-package core.jms;
+package org.zyf.jms;
 
 import javax.jms.Connection;
 import javax.jms.Destination;

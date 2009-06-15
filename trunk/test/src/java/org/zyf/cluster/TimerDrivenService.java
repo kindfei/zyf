@@ -1,9 +1,10 @@
-package core.cluster;
+package org.zyf.cluster;
 
 import java.util.Timer;
 import java.util.TimerTask;
 
-import core.jmx.ATTRIBUTE;
+import org.zyf.jmx.ATTRIBUTE;
+
 
 /**
  * TimerDrivenService

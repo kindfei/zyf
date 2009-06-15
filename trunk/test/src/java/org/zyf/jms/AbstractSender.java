@@ -1,4 +1,4 @@
-package core.jms;
+package org.zyf.jms;
 
 import java.io.Serializable;
 import java.util.Map;

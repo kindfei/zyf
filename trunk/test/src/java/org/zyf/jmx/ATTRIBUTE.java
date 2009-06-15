@@ -1,4 +1,4 @@
-package core.jmx;
+package org.zyf.jmx;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
