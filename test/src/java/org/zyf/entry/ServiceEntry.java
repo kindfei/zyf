@@ -1,4 +1,4 @@
-package core.entry;
+package org.zyf.entry;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -14,9 +14,9 @@ import java.util.TimerTask;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.zyf.jmx.BeanServer;
+import org.zyf.jmx.ConnectorServer;
 
-import core.jmx.ConnectorServer;
-import core.jmx.BeanServer;
 
 /**
  * Service entry, help bootstrap and manage service.

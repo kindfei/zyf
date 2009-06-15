@@ -1,4 +1,4 @@
-package core.entry;
+package org.zyf.entry;
 
 public class NormalCommand implements Command {
 	private String key;

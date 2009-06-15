@@ -1,4 +1,4 @@
-package core.jmx;
+package org.zyf.jmx;
 
 import java.lang.annotation.Annotation;
 import java.lang.reflect.InvocationTargetException;

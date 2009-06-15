@@ -1,4 +1,4 @@
-package tool;
+package org.zyf.utils;
 
 import java.io.BufferedReader;
 import java.io.File;

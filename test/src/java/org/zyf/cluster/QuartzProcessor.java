@@ -1,4 +1,4 @@
-package core.cluster;
+package org.zyf.cluster;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.JobExecutionException;

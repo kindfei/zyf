@@ -1,4 +1,4 @@
-package core.cluster;
+package org.zyf.cluster;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -10,10 +10,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.zyf.jmx.ATTRIBUTE;
+import org.zyf.jmx.BeanServer;
+import org.zyf.jmx.OPERATION;
 
-import core.jmx.ATTRIBUTE;
-import core.jmx.BeanServer;
-import core.jmx.OPERATION;
 
 /**
  * Basic service operation control

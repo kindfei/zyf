@@ -1,4 +1,4 @@
-package core.entry;
+package org.zyf.entry;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

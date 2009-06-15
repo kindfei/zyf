@@ -1,4 +1,4 @@
-package core.jms;
+package org.zyf.jms;
 
 import java.util.HashMap;
 import java.util.Map;

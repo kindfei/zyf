@@ -1,4 +1,4 @@
-package core.entry;
+package org.zyf.entry;
 
 public interface Command {
 

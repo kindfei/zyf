@@ -1,4 +1,4 @@
-package core.cluster;
+package org.zyf.cluster;
 
 public enum ServiceStatus {
 	CREATED,

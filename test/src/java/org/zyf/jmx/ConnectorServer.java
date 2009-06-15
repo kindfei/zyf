@@ -1,4 +1,4 @@
-package core.jmx;
+package org.zyf.jmx;
 
 import java.net.InetAddress;
 import java.net.UnknownHostException;
@@ -12,8 +12,8 @@ import javax.management.remote.JMXServiceURL;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
+import org.zyf.entry.ServiceDefinition;
 
-import core.entry.ServiceDefinition;
 
 public class ConnectorServer {
 	private static Log log = LogFactory.getLog(ConnectorServer.class);

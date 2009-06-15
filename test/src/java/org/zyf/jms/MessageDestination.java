@@ -1,4 +1,4 @@
-package core.jms;
+package org.zyf.jms;
 
 public enum MessageDestination {
 	testQueue("queue/testQueue"),

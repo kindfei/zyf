@@ -1,4 +1,4 @@
-package core.cluster;
+package org.zyf.cluster;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.locks.ReentrantLock;

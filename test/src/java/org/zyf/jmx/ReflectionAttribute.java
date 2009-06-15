@@ -1,4 +1,4 @@
-package core.jmx;
+package org.zyf.jmx;
 
 import java.lang.reflect.Field;
 import java.util.List;
