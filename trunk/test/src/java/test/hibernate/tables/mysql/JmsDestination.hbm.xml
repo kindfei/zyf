@@ -1,0 +1,41 @@
+<?xml version="1.0"?>
+<!DOCTYPE hibernate-mapping PUBLIC
+    "-//Hibernate/Hibernate Mapping DTD 3.0//EN"
+    "http://hibernate.sourceforge.net/hibernate-mapping-3.0.dtd" >
+    
+<hibernate-mapping>
+<!-- 
+    Created by the Middlegen Hibernate plugin 2.2
+
+    http://boss.bekk.no/boss/middlegen/
+    http://www.hibernate.org/
+-->
+
+<class 
+    name="test.hibernate.tables.mysql.JmsDestination" 
+    table="jms_destination"
+    lazy="false"
+>
+
+    <id
+        name="destinationName"
+        type="java.lang.String"
+        column="DESTINATION_NAME"
+    >
+    
+        <generator class="assigned" />
+    </id>
+
+    <property
+        name="providerId"
+        type="java.lang.String"
+        column="PROVIDER_ID"
+        not-null="true"
+        length="20"
+    />
+
+    <!-- Associations -->
+  
+
+</class>
+</hibernate-mapping>

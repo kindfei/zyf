@@ -1,4 +1,4 @@
-package test.basic.inheritance;
+package test.basic.basic.inheritance;
 
 public class ClassName {
 	public static void main(String[] args) {
