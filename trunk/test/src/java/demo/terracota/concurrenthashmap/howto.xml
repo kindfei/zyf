@@ -1,0 +1,28 @@
+<howto>
+h1.  Map Example
+
+h2.  Summary
+
+This example shows how to cluster a Map using Terracotta.  Note that the map used in this example is a java.util.concurrent.ConcurrentHashMap.  As in standard Java, the ConcurrentHashMap structure in Terracotta is automatically locked, and requires no external synchronization.
+
+If you use a java.util.HashMap, you will need to provide synchronization on your own.  For more information on writing your own synchronization, look at the Synchronization recipe or the HashMap recipe.
+
+h2.  How to run
+
+*Node 1:*
+{code}
+$ javac *.java
+$ start-tc-server &amp;
+$ dso-java Main
+Enter name> Fred
+$ dso-java Main
+Enter name> Jane
+{code}
+
+*Node 2:*
+{code}
+$ dso-java Main list
+Jane : Sun Dec 09 15:20:21 PST 2007
+Fred : Sun Dec 09 15:19:50 PST 2007
+{code}
+</howto>

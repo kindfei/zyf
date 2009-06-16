@@ -1,0 +1,30 @@
+<howto>
+h1.  Single Resource Example
+
+h2.  Summary
+
+This example shows how to make one and only one node manage a resource.  When that node leaves the cluster, another node will acquire the resource.
+
+This particular example is creating a resource that is local to the VM that acquires the lock.  It would be easy to make the resource clustered, simply remove the transient keyword from the definition.
+
+h2.  How to run
+
+*Node 1:*
+{code}
+$ javac *.java
+$ start-tc-server &amp;
+$ dso-java Main
+I'm waiting for the lock...
+I'm creating the resource
+(wait for the other node to join)
+(press Ctrl-c)
+{code}
+
+*Node 2:*
+{code}
+$ dso-java Main
+I'm waiting for the lock...
+(after pressing Ctrl-c on the first node)
+I'm creating the resource
+{code}
+</howto>

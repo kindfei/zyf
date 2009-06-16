@@ -1,0 +1,30 @@
+<howto>
+h1.  Listener Example
+
+h2.  Summary
+
+This example shows a clustered listener pattern.  It uses a local (transient) set of listeners, and DMI to distribute the fireChanged() method.
+
+h2.  How to run
+
+*Node 1:*
+{code}
+$ javac *.java
+$ start-tc-server &amp;
+$ dso-java Main
+Press return to count...  Main was updated.  Count is 1
+Main was updated.  Count is 2
+Main was updated.  Count is 3
+{code}
+
+*Node 2:*
+{code}
+$ dso-java Main
+Press return to count...
+Main was updated.  Count is 1
+Press return to count...
+Main was updated.  Count is 2
+Press return to count...
+Main was updated.  Count is 3
+{code}
+</howto>
