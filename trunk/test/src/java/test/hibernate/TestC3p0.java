@@ -2,8 +2,9 @@ package test.hibernate;
 
 import org.hibernate.Session;
 import org.hibernate.Transaction;
-import org.zyf.hibernate.SessionUtils;
-import org.zyf.utils.CmdHelper;
+
+import zyf.hibernate.SessionUtils;
+import zyf.utils.CmdHelper;
 
 
 

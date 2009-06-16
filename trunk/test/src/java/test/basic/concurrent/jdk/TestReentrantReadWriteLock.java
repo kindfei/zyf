@@ -2,7 +2,7 @@ package test.basic.concurrent.jdk;
 
 import java.util.concurrent.locks.ReentrantReadWriteLock;
 
-import org.zyf.utils.CmdHelper;
+import zyf.utils.CmdHelper;
 
 
 public class TestReentrantReadWriteLock {

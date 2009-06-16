@@ -3,13 +3,13 @@ package test.terracotta.entry;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.zyf.entry.CMD;
-import org.zyf.entry.CommandType;
-import org.zyf.entry.Commandable;
-import org.zyf.entry.NormalCommand;
-import org.zyf.entry.ServiceEntry;
-import org.zyf.jmx.ATTRIBUTE;
-import org.zyf.jmx.OPERATION;
+import zyf.entry.CMD;
+import zyf.entry.CommandType;
+import zyf.entry.Commandable;
+import zyf.entry.NormalCommand;
+import zyf.entry.ServiceEntry;
+import zyf.jmx.ATTRIBUTE;
+import zyf.jmx.OPERATION;
 
 
 public class TestService extends ServiceEntry {

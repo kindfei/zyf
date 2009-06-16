@@ -5,7 +5,7 @@ import java.rmi.registry.LocateRegistry;
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import org.zyf.utils.CmdHelper;
+import zyf.utils.CmdHelper;
 
 
 

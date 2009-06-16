@@ -7,7 +7,7 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import org.zyf.utils.CmdHelper;
+import zyf.utils.CmdHelper;
 
 
 import com.mysql.jdbc.Driver;

@@ -3,7 +3,7 @@ package test.terracotta.tc;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
 
-import org.zyf.utils.CmdHelper;
+import zyf.utils.CmdHelper;
 
 
 

@@ -5,11 +5,11 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-import org.zyf.cluster.ClusterTask;
-import org.zyf.cluster.ExecuteMode;
-import org.zyf.cluster.TimerProcessor;
-import org.zyf.jmx.ATTRIBUTE;
-import org.zyf.jmx.OPERATION;
+import zyf.cluster.ClusterTask;
+import zyf.cluster.ExecuteMode;
+import zyf.cluster.TimerProcessor;
+import zyf.jmx.ATTRIBUTE;
+import zyf.jmx.OPERATION;
 
 
 public class TestTimerProcessor extends TimerProcessor {
