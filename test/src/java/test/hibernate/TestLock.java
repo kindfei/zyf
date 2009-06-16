@@ -12,12 +12,12 @@ import org.hibernate.LockMode;
 import org.hibernate.Query;
 import org.hibernate.classic.Session;
 import org.hibernate.Transaction;
-import org.zyf.hibernate.SessionUtils;
-import org.zyf.utils.CmdHelper;
 
 
 
 import test.hibernate.tables.mysql.Product;
+import zyf.hibernate.SessionUtils;
+import zyf.utils.CmdHelper;
 
 public class TestLock {
 	public static void main(String[] args) {

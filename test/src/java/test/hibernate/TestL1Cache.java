@@ -8,12 +8,12 @@ import org.hibernate.HibernateException;
 import org.hibernate.Query;
 import org.hibernate.classic.Session;
 import org.hibernate.Transaction;
-import org.zyf.hibernate.SessionUtils;
-import org.zyf.utils.CmdHelper;
 
 
 
 import test.hibernate.tables.mysql.Product;
+import zyf.hibernate.SessionUtils;
+import zyf.utils.CmdHelper;
 
 public class TestL1Cache {
 	public static void main(String[] args) {

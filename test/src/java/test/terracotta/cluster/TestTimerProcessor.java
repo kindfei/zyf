@@ -3,11 +3,11 @@ package test.terracotta.cluster;
 import java.util.ArrayList;
 import java.util.List;
 
-import org.zyf.cluster.ClusterTask;
-import org.zyf.cluster.ExecuteMode;
-import org.zyf.cluster.TimerProcessor;
 
 import test.terracotta.cluster.tasks.TestTaskBean;
+import zyf.cluster.ClusterTask;
+import zyf.cluster.ExecuteMode;
+import zyf.cluster.TimerProcessor;
 
 public class TestTimerProcessor extends TimerProcessor {
 	private int i;

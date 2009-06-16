@@ -1,9 +1,9 @@
 package test.terracotta.all;
 
-import org.zyf.cluster.Service;
-import org.zyf.cluster.ServiceFactory;
-import org.zyf.cluster.ServiceMode;
-import org.zyf.entry.ServiceEntry;
+import zyf.cluster.Service;
+import zyf.cluster.ServiceFactory;
+import zyf.cluster.ServiceMode;
+import zyf.entry.ServiceEntry;
 
 public class TestPerfService extends ServiceEntry {
 	private Service service;

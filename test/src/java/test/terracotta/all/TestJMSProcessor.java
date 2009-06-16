@@ -4,9 +4,9 @@ import java.io.Serializable;
 
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
-import org.zyf.cluster.MainMessageProcessor;
 
 import test.terracotta.all.TestJMSService.JmsPerfBean;
+import zyf.cluster.MainMessageProcessor;
 
 
 public class TestJMSProcessor extends MainMessageProcessor {

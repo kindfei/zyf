@@ -3,11 +3,11 @@ package test.terracotta.cluster;
 import java.io.IOException;
 import java.util.Properties;
 
-import org.zyf.cluster.Service;
-import org.zyf.cluster.ServiceFactory;
-import org.zyf.cluster.ServiceMode;
-import org.zyf.jms.MessageDestination;
-import org.zyf.utils.CmdHelper;
+import zyf.cluster.Service;
+import zyf.cluster.ServiceFactory;
+import zyf.cluster.ServiceMode;
+import zyf.jms.MessageDestination;
+import zyf.utils.CmdHelper;
 
 
 

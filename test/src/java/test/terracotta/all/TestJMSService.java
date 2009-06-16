@@ -8,14 +8,14 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import org.zyf.cluster.Service;
-import org.zyf.cluster.ServiceFactory;
-import org.zyf.cluster.ServiceMode;
-import org.zyf.entry.ServiceEntry;
-import org.zyf.jms.MessageDestination;
-import org.zyf.jms.MessageException;
-import org.zyf.jms.MessageFactory;
-import org.zyf.jms.MessageSender;
+import zyf.cluster.Service;
+import zyf.cluster.ServiceFactory;
+import zyf.cluster.ServiceMode;
+import zyf.entry.ServiceEntry;
+import zyf.jms.MessageDestination;
+import zyf.jms.MessageException;
+import zyf.jms.MessageFactory;
+import zyf.jms.MessageSender;
 
 
 public class TestJMSService extends ServiceEntry {

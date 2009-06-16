@@ -5,11 +5,11 @@ import java.util.List;
 
 import org.quartz.JobExecutionContext;
 import org.quartz.StatefulJob;
-import org.zyf.cluster.ClusterTask;
-import org.zyf.cluster.ExecuteMode;
-import org.zyf.cluster.QuartzProcessor;
 
 import test.terracotta.cluster.tasks.TestTaskBean;
+import zyf.cluster.ClusterTask;
+import zyf.cluster.ExecuteMode;
+import zyf.cluster.QuartzProcessor;
 
 public class TestQuartzProcessor extends QuartzProcessor implements StatefulJob {
 	private int i;
