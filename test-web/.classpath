@@ -2,9 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="WEB-INF/src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry kind="var" path="TOMCAT_HOME/lib/servlet-api.jar"/>
-	<classpathentry kind="var" path="TOMCAT_HOME/lib/jasper.jar"/>
-	<classpathentry kind="var" path="TOMCAT_HOME/lib/jsp-api.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/antlr.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/commons-beanutils.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/commons-digester.jar"/>
@@ -23,5 +20,10 @@
 	<classpathentry kind="lib" path="WEB-INF/lib/flex-messaging-proxy.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/flex-messaging-remoting.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/hsqldb.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/servlet-api.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/jasper.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/jsp-api.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/el-api.jar"/>
+	<classpathentry kind="var" path="TOMCAT_HOME/lib/annotations-api.jar"/>
 	<classpathentry kind="output" path="WEB-INF/classes"/>
 </classpath>
