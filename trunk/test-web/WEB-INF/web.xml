@@ -4,7 +4,7 @@
 	xsi:schemaLocation="http://java.sun.com/xml/ns/j2ee http://java.sun.com/xml/ns/j2ee/web-app_2_4.xsd"
 	version="2.4">
 
-	<display-name>Struts Test Application</display-name>
+	<display-name>Test Application</display-name>
 
 	<session-config>
 		<session-timeout>180</session-timeout>
@@ -53,7 +53,7 @@
             <param-name>services.configuration.file</param-name>
             <param-value>/WEB-INF/flex/services-config.xml</param-value>
         </init-param>
-        <load-on-startup>1</load-on-startup>
+        <load-on-startup>4</load-on-startup>
     </servlet>
     <servlet-mapping>
         <servlet-name>MessageBrokerServlet</servlet-name>
