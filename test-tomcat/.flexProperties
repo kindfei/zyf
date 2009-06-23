@@ -1,2 +1,2 @@
 <?xml version="1.0" encoding="UTF-8" standalone="no"?>
-<flexProperties flexServerType="8" serverContextRoot="/" serverRoot="D:/workspaces/workspace-zyf/test-tomcat" serverRootURL="http://localhost:8080/test" toolCompile="true" useServerFlexSDK="false" version="1"/>
+<flexProperties flexServerType="8" serverContextRoot="/test" serverRoot="D:/workspaces/workspace-zyf/test-tomcat" serverRootURL="http://localhost:8080/test" toolCompile="true" useServerFlexSDK="false" version="1"/>
