@@ -8,7 +8,7 @@
 			
 			private function messageHandler(message:IMessage):void
 			{
-				pushedValue.text = ""+ message.body;	
+				pushedValue.text = "" + message.body;	
 			}
 			
 		]]>
@@ -20,5 +20,41 @@
 	<mx:Button label="Unsubscribe from 'feed' destination" click="consumer.unsubscribe()" enabled="{consumer.subscribed}"/>
 
 	<mx:TextInput id="pushedValue"/>
+	
+	<mx:Script>
+		<![CDATA[
+			private var stream:URLStream = new URLStream();
+			
+			private function receive():void
+			{
+				var request:URLRequest = new URLRequest("http://localhost/test/servlet/test.servlet.PushServlet");
+				
+				stream.addEventListener(ProgressEvent.PROGRESS, progressHandler);
+				
+				try {
+					stream.load(request);
+				} catch (error:Error) {
+					trace("Unable to load requested URL.");
+				}
+			}
+			
+			private function progressHandler(event:Event):void {
+				while(stream.bytesAvailable > 0) {
+					receivedValue.text = "" + stream.readUTFBytes(stream.bytesAvailable);
+				}
+			}
+
+			private function stopReceive():void
+			{
+				stream.close();
+			}
+			
+		]]>
+	</mx:Script>
+	
+	<mx:Button label="Start Receive" click="receive()" enabled="true"/>
+	<mx:Button label="Stop Receive" click="stopReceive()" enabled="true"/>
+
+	<mx:TextInput id="receivedValue"/>
 		
 </mx:Application>
