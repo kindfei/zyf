@@ -9,9 +9,7 @@
 		<service-include file-path="proxy-config.xml" />
 		<service-include file-path="messaging-config.xml" />
 
-		<service
-			class="flex.samples.runtimeconfig.EmployeeRuntimeRemotingDestination"
-			id="runtime-employee-ro" />
+		<service class="flex.samples.runtimeconfig.EmployeeRuntimeRemotingDestination" id="runtime-employee-ro" />
 
 		<!-- 
 			Application level default channels. Application level default channels are 
@@ -34,8 +32,7 @@
 			</roles>
 		</security-constraint>
 
-		<login-command
-			class="flex.messaging.security.TomcatLoginCommand" server="Tomcat" />
+		<login-command class="flex.messaging.security.TomcatLoginCommand" server="Tomcat" />
 		<!-- Uncomment the correct app server
 			<login-command class="flex.messaging.security.TomcatLoginCommand" server="JBoss">
 			<login-command class="flex.messaging.security.JRunLoginCommand" server="JRun"/>
@@ -46,71 +43,81 @@
 
 	<channels>
 
-		<channel-definition id="my-streaming-amf"
-			class="mx.messaging.channels.StreamingAMFChannel">
-			<endpoint
-				url="http://{server.name}:{server.port}/{context.root}/messagebroker/streamingamf"
+		<!-- streaming -->
+		<channel-definition id="my-streaming-amf" class="mx.messaging.channels.StreamingAMFChannel">
+			<endpoint url="http://{server.name}:{server.port}/{context.root}/messagebroker/streamingamf"
 				class="flex.messaging.endpoints.StreamingAMFEndpoint" />
+			<properties>
+				<!-- 
+				<connect-timeout-seconds>10</connect-timeout-seconds>
+				<idle-timeout-minutes>0</idle-timeout-minutes>
+				<max-streaming-clients>10</max-streaming-clients>
+				<server-to-client-heartbeat-millis>5000</server-to-client-heartbeat-millis> -->
+				<user-agent-settings>
+					<user-agent match-on="MSIE" kickstart-bytes="2048" max-streaming-connections-per-session="2" />
+					<user-agent match-on="Firefox" kickstart-bytes="0" max-streaming-connections-per-session="2" />
+				</user-agent-settings>
+			</properties>
 		</channel-definition>
 
-		<channel-definition id="my-amf"
-			class="mx.messaging.channels.AMFChannel">
-			<endpoint
-				url="http://{server.name}:{server.port}/{context.root}/messagebroker/amf"
+		<!-- non-polling -->
+		<channel-definition id="my-amf" class="mx.messaging.channels.AMFChannel">
+			<endpoint url="http://{server.name}:{server.port}/{context.root}/messagebroker/amf"
 				class="flex.messaging.endpoints.AMFEndpoint" />
 			<properties>
 				<polling-enabled>false</polling-enabled>
 			</properties>
 		</channel-definition>
 
-		<channel-definition id="my-secure-amf"
-			class="mx.messaging.channels.SecureAMFChannel">
-			<endpoint
-				url="https://{server.name}:{server.port}/{context.root}/messagebroker/amfsecure"
+		<!-- polling -->
+		<channel-definition id="my-polling-amf" class="mx.messaging.channels.AMFChannel">
+			<endpoint url="http://{server.name}:{server.port}/{context.root}/messagebroker/amfpolling"
+				class="flex.messaging.endpoints.AMFEndpoint" />
+			<properties>
+				<!-- polling -->
+				<polling-enabled>true</polling-enabled>
+				<polling-interval-seconds>4</polling-interval-seconds>
+				
+				<!-- long polling
+				<polling-enabled>true</polling-enabled>
+				<polling-interval-seconds>0</polling-interval-seconds>
+				<wait-interval-millis>60000</wait-interval-millis>
+				<client-wait-interval-millis>3000</client-wait-interval-millis>
+				<max-waiting-poll-requests>100</max-waiting-poll-requests> -->
+				
+			</properties>
+		</channel-definition>
+
+
+		<channel-definition id="my-secure-amf" class="mx.messaging.channels.SecureAMFChannel">
+			<endpoint url="https://{server.name}:{server.port}/{context.root}/messagebroker/amfsecure"
 				class="flex.messaging.endpoints.SecureAMFEndpoint" />
 			<properties>
 				<add-no-cache-headers>false</add-no-cache-headers>
 			</properties>
 		</channel-definition>
 
-		<channel-definition id="my-polling-amf"
-			class="mx.messaging.channels.AMFChannel">
-			<endpoint
-				url="http://{server.name}:{server.port}/{context.root}/messagebroker/amfpolling"
-				class="flex.messaging.endpoints.AMFEndpoint" />
-			<properties>
-				<polling-enabled>true</polling-enabled>
-				<polling-interval-seconds>4</polling-interval-seconds>
-			</properties>
-		</channel-definition>
 
-		<channel-definition id="my-http"
-			class="mx.messaging.channels.HTTPChannel">
-			<endpoint
-				url="http://{server.name}:{server.port}/{context.root}/messagebroker/http"
+		<channel-definition id="my-http" class="mx.messaging.channels.HTTPChannel">
+			<endpoint url="http://{server.name}:{server.port}/{context.root}/messagebroker/http"
 				class="flex.messaging.endpoints.HTTPEndpoint" />
 		</channel-definition>
 
-		<channel-definition id="my-secure-http"
-			class="mx.messaging.channels.SecureHTTPChannel">
-			<endpoint
-				url="https://{server.name}:{server.port}/{context.root}/messagebroker/httpsecure"
+		<channel-definition id="my-secure-http" class="mx.messaging.channels.SecureHTTPChannel">
+			<endpoint url="https://{server.name}:{server.port}/{context.root}/messagebroker/httpsecure"
 				class="flex.messaging.endpoints.SecureHTTPEndpoint" />
 			<properties>
 				<add-no-cache-headers>false</add-no-cache-headers>
 			</properties>
 		</channel-definition>
 
-		<channel-definition id="per-client-qos-polling-amf"
-			class="mx.messaging.channels.AMFChannel">
-			<endpoint
-				url="http://{server.name}:{server.port}/{context.root}/messagebroker/qosamfpolling"
+		<channel-definition id="per-client-qos-polling-amf" class="mx.messaging.channels.AMFChannel">
+			<endpoint url="http://{server.name}:{server.port}/{context.root}/messagebroker/qosamfpolling"
 				class="flex.messaging.endpoints.AMFEndpoint" />
 			<properties>
 				<polling-enabled>true</polling-enabled>
 				<polling-interval-millis>500</polling-interval-millis>
-				<flex-client-outbound-queue-processor
-					class="flex.samples.qos.CustomDelayQueueProcessor">
+				<flex-client-outbound-queue-processor class="flex.samples.qos.CustomDelayQueueProcessor">
 					<properties>
 						<flush-delay>5000</flush-delay>
 					</properties>
@@ -122,8 +129,7 @@
 
 	<logging>
 		<!-- You may also use flex.messaging.log.ServletLogTarget -->
-		<target class="flex.messaging.log.ConsoleTarget"
-			level="Error">
+		<target class="flex.messaging.log.ConsoleTarget" level="Error">
 			<properties>
 				<prefix>[BlazeDS]</prefix>
 				<includeDate>false</includeDate>
@@ -143,18 +149,10 @@
 		<redeploy>
 			<enabled>true</enabled>
 			<watch-interval>20</watch-interval>
-			<watch-file>
-				{context.root}/WEB-INF/flex/services-config.xml
-			</watch-file>
-			<watch-file>
-				{context.root}/WEB-INF/flex/proxy-config.xml
-			</watch-file>
-			<watch-file>
-				{context.root}/WEB-INF/flex/remoting-config.xml
-			</watch-file>
-			<watch-file>
-				{context.root}/WEB-INF/flex/messaging-config.xml
-			</watch-file>
+			<watch-file>{context.root}/WEB-INF/flex/services-config.xml</watch-file>
+			<watch-file>{context.root}/WEB-INF/flex/proxy-config.xml</watch-file>
+			<watch-file>{context.root}/WEB-INF/flex/remoting-config.xml</watch-file>
+			<watch-file>{context.root}/WEB-INF/flex/messaging-config.xml</watch-file>
 			<touch-file>{context.root}/WEB-INF/web.xml</touch-file>
 		</redeploy>
 	</system>
