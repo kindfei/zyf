@@ -1,13 +1,10 @@
 <?xml version="1.0" encoding="UTF-8"?>
-<service id="proxy-service"
-	class="flex.messaging.services.HTTPProxyService">
+<service id="proxy-service" class="flex.messaging.services.HTTPProxyService">
 
 	<properties>
 		<connection-manager>
 			<max-total-connections>100</max-total-connections>
-			<default-max-connections-per-host>
-				2
-			</default-max-connections-per-host>
+			<default-max-connections-per-host>2</default-max-connections-per-host>
 		</connection-manager>
 
 		<allow-lax-ssl>true</allow-lax-ssl>
@@ -19,10 +16,8 @@
 	</default-channels>
 
 	<adapters>
-		<adapter-definition id="http-proxy"
-			class="flex.messaging.services.http.HTTPProxyAdapter" default="true" />
-		<adapter-definition id="soap-proxy"
-			class="flex.messaging.services.http.SOAPProxyAdapter" />
+		<adapter-definition id="http-proxy" class="flex.messaging.services.http.HTTPProxyAdapter" default="true" />
+		<adapter-definition id="soap-proxy" class="flex.messaging.services.http.SOAPProxyAdapter" />
 	</adapters>
 
 	<destination id="DefaultHTTP">
@@ -37,9 +32,7 @@
 
 	<destination id="ws-catalog">
 		<properties>
-			<wsdl>
-				http://livecycledata.org/services/ProductWS?wsdl
-			</wsdl>
+			<wsdl>http://livecycledata.org/services/ProductWS?wsdl</wsdl>
 			<soap>*</soap>
 		</properties>
 		<adapter ref="soap-proxy" />
