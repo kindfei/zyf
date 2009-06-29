@@ -48,11 +48,11 @@
 			<endpoint url="http://{server.name}:{server.port}/{context.root}/messagebroker/streamingamf"
 				class="flex.messaging.endpoints.StreamingAMFEndpoint" />
 			<properties>
-				<!-- 
+				<!--  -->
 				<connect-timeout-seconds>10</connect-timeout-seconds>
 				<idle-timeout-minutes>0</idle-timeout-minutes>
 				<max-streaming-clients>10</max-streaming-clients>
-				<server-to-client-heartbeat-millis>5000</server-to-client-heartbeat-millis> -->
+				<server-to-client-heartbeat-millis>5000</server-to-client-heartbeat-millis>
 				<user-agent-settings>
 					<user-agent match-on="MSIE" kickstart-bytes="2048" max-streaming-connections-per-session="2" />
 					<user-agent match-on="Firefox" kickstart-bytes="0" max-streaming-connections-per-session="2" />
