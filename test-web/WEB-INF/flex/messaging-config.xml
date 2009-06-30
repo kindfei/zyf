@@ -15,6 +15,7 @@
 	<destination id="feed">
 		<!-- Destination specific channel configuration can be defined if needed -->
 		<channels>
+			<channel ref="my-streaming-amf-https" />
 			<channel ref="my-streaming-amf" />
 		</channels>
 
