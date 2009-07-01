@@ -6,7 +6,7 @@ import javax.servlet.http.HttpServletResponseWrapper;
 
 import flex.messaging.client.FlexClient;
 
-public class SecureStreamingAMFEndpoint extends flex.messaging.endpoints.StreamingAMFEndpoint {
+public class StreamingAMFEndpoint extends flex.messaging.endpoints.StreamingAMFEndpoint {
 	
 	protected void handleFlexClientStreamingOpenRequest(HttpServletRequest req,
 			HttpServletResponse res, FlexClient flexClient) {
@@ -22,5 +22,5 @@ public class SecureStreamingAMFEndpoint extends flex.messaging.endpoints.Streami
 		
 		super.handleFlexClientStreamingOpenRequest(req, wrapper, flexClient);
 	}
-	
+
 }
