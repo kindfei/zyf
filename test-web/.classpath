@@ -2,11 +2,6 @@
 <classpath>
 	<classpathentry kind="src" path="WEB-INF/src/java"/>
 	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/source-blazeds-common"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/source-blazeds-core"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/source-blazeds-opt"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/source-blazeds-proxy"/>
-	<classpathentry combineaccessrules="false" kind="src" path="/source-blazeds-remoting"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/antlr.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/commons-beanutils.jar"/>
 	<classpathentry kind="lib" path="WEB-INF/lib/commons-digester.jar"/>
