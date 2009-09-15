@@ -72,7 +72,7 @@ public class EnumerationGeneratorVAD implements IEditorActionDelegate {
 				}
 			}
 
-			if (theType != null && theType.isClass()) {
+			if (theType != null && theType.isEnum()) {
 				SourceManipulator.createEnumerationWithJavaDoc(theType);
 
 				if (PREF_STORE.getBoolean(PreferenceConstants.ENUMERATION_AUTOSAVE)) {

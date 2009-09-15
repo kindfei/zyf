@@ -82,7 +82,7 @@ public class SourceManipulator {
 	/**
 	 * 
 	 */
-	private static final Pattern FIELD_PAT = Pattern.compile(".*private*;.*");
+	private static final Pattern FIELD_PAT = Pattern.compile("[^;}\n]*private[^;()]*;");
 
 	/**
 	 * Writes the toString implementation alongwith it's JavaDoc into the
@@ -230,21 +230,23 @@ public class SourceManipulator {
 
 			impl = CLSS_PAT.matcher(impl).replaceAll(elemName);
 			
-			Matcher matcher = FIELD_PAT.matcher(impl);
+			Matcher fieldMatcher = FIELD_PAT.matcher(impl);
 			
-			String fieldImpl = "";
+			StringBuilder fieldsImpl = new StringBuilder(javaDoc);
 			
-			if (matcher.find()) {
-				impl = matcher.replaceAll("");
-				fieldImpl = matcher.group();
+			while (fieldMatcher.find()) {
+				fieldsImpl.append(fieldMatcher.group()).append("\n");
 			}
+			
+			impl = fieldMatcher.replaceAll("");
 
-			String field = INDENT_PAT.matcher(new StringBuffer(javaDoc).append(fieldImpl).toString()).replaceAll(getIndentation(type));;
+			String field = INDENT_PAT.matcher(fieldsImpl.toString()).replaceAll(getIndentation(type));;
 			String methods = INDENT_PAT.matcher(impl).replaceAll(getIndentation(type));
 
 			IJavaElement position = determinePosition(type);
 
 			type.createField(field, position, true, monitor);
+			
 			type.createMethod(methods, position, true, monitor);
 
 		} catch (JavaModelException e) {

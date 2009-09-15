@@ -242,7 +242,7 @@ public class PreferenceConstants {
 	/**
 	 * Mode constant for string.
 	 */
-	public static final String STRING = "string";
+	public static final String TO_STRING_BUILDER = "tostringbuilder";
 
 	/**
 	 * Mode constant for string buffer.
@@ -262,7 +262,7 @@ public class PreferenceConstants {
 	/**
 	 * Label for string.
 	 */
-	public static final String STRING_LABEL = Messages.getString("preferences.tostring.string");
+	public static final String TO_STRING_BUILDER_LABEL = Messages.getString("preferences.tostring.tostringbulder");
 
 	/**
 	 * Label for string buffer.

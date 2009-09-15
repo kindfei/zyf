@@ -30,14 +30,19 @@ import com.emcom.jtools.internal.Util;
  */
 public class ToStringPreferencesPage extends FieldEditorPreferencePage implements IWorkbenchPreferencePage {
 	/**
-	 * Represents String Buffer.
+	 * Represents ToStringBuilder.
 	 */
-	private static final String STRING_BUFFER = "StringBuffer";
+	private static final String TO_STRING_BUILDER = "new ToStringBuilder";
+	
+	/**
+	 * Represents StringBuffer.
+	 */
+	private static final String STRING_BUFFER = "new StringBuffer";
 
 	/**
-	 * Represents String Builder.
+	 * Represents StringBuilder.
 	 */
-	private static final String STRING_BUILDER = "StringBuilder";
+	private static final String STRING_BUILDER = "new StringBuilder";
 
 	/**
 	 * Contains the text for displaying the JavaDoc in a <tt>SourceViewer</tt>.
@@ -72,7 +77,7 @@ public class ToStringPreferencesPage extends FieldEditorPreferencePage implement
 	 * {@inheritDoc}
 	 */
 	public void init(IWorkbench workbench) {
-		this.prefStore.setDefault(PreferenceConstants.MODE, PreferenceConstants.STRING);
+		this.prefStore.setDefault(PreferenceConstants.MODE, PreferenceConstants.TO_STRING_BUILDER);
 		this.prefStore.setDefault(PreferenceConstants.TOSTRING_SORT, false);
 		this.prefStore.setDefault(PreferenceConstants.TOSTRING_AUTOSAVE, false);
 		this.prefStore.setDefault(PreferenceConstants.TOSTRING_OVERWRITE, true);
@@ -119,12 +124,9 @@ public class ToStringPreferencesPage extends FieldEditorPreferencePage implement
 	 */
 	protected void performDefaults() {
 		super.performDefaults();
-		
-		// add type condition
-		String type = prefStore.getString(PreferenceConstants.MODE);
 
 		String javadoc = Util.getDefaultToStringJavaDoc();
-		String body = Util.getDefaultToStringImplementation(type);
+		String body = Util.getDefaultToStringImplementation();
 
 		this.javaDocDocument.set(javadoc);
 		this.bodyDocument.set(body);
@@ -160,7 +162,7 @@ public class ToStringPreferencesPage extends FieldEditorPreferencePage implement
 
 		RadioGroupFieldEditor rgfe = new RadioGroupFieldEditor(PreferenceConstants.MODE,
 				PreferenceConstants.MODE_LABEL, 3, new String[][] {
-						{ PreferenceConstants.STRING_LABEL, PreferenceConstants.STRING },
+						{ PreferenceConstants.TO_STRING_BUILDER_LABEL, PreferenceConstants.TO_STRING_BUILDER },
 						{ PreferenceConstants.STRING_BUFFER_LABEL, PreferenceConstants.STRING_BUFFER },
 						{ PreferenceConstants.STRING_BUILDER_LABEL, PreferenceConstants.STRING_BUILDER } }, parent,
 				true);
@@ -182,11 +184,11 @@ public class ToStringPreferencesPage extends FieldEditorPreferencePage implement
 		boolean isChanged = !event.getNewValue().equals(event.getOldValue());
 
 		// changed and string selected... populate appropriate values.
-		if (isChanged && PreferenceConstants.STRING.equals(event.getNewValue())) {
+		if (isChanged && PreferenceConstants.TO_STRING_BUILDER.equals(event.getNewValue())) {
 			String body = this.prefStore.getString(PreferenceConstants.TOSTRING_BODY_STORE_KEY);
 
-			if (Util.isNullString(body) || Util.contains(body, STRING_BUFFER) || Util.contains(body, STRING_BUILDER)) {
-				body = Util.getDefaultToStringImplementation(PreferenceConstants.STRING);
+			if (Util.isNullString(body) || !Util.contains(body, TO_STRING_BUILDER)) {
+				body = Util.getDefaultToStringImplementation(PreferenceConstants.TO_STRING_BUILDER);
 			}
 
 			this.bodyDocument.set(body);
@@ -195,7 +197,7 @@ public class ToStringPreferencesPage extends FieldEditorPreferencePage implement
 		else if (isChanged && PreferenceConstants.STRING_BUFFER.equals(event.getNewValue())) {
 			String body = this.prefStore.getString(PreferenceConstants.TOSTRING_BODY_STORE_KEY);
 
-			if (Util.isNullString(body) || Util.contains(body, STRING_BUILDER) || !Util.contains(body, STRING_BUFFER)) {
+			if (Util.isNullString(body) || !Util.contains(body, STRING_BUFFER)) {
 				body = Util.getDefaultToStringImplementation(PreferenceConstants.STRING_BUFFER);
 			}
 
@@ -205,7 +207,7 @@ public class ToStringPreferencesPage extends FieldEditorPreferencePage implement
 		else if (isChanged && PreferenceConstants.STRING_BUILDER.equals(event.getNewValue())) {
 			String body = this.prefStore.getString(PreferenceConstants.TOSTRING_BODY_STORE_KEY);
 
-			if (Util.isNullString(body) || Util.contains(body, STRING_BUFFER) || !Util.contains(body, STRING_BUILDER)) {
+			if (Util.isNullString(body) || !Util.contains(body, STRING_BUILDER)) {
 				body = Util.getDefaultToStringImplementation(PreferenceConstants.STRING_BUILDER);
 			}
 

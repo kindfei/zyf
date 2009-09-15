@@ -48,7 +48,7 @@ public class EnumerationGeneratorOAD implements IObjectActionDelegate {
 			IType type = compUnit.findPrimaryType();
 
 			try {
-				if (type != null && type.isClass()) {
+				if (type != null && type.isEnum()) {
 					SourceManipulator.createEnumerationWithJavaDoc(type);
 				} else {
 					failed++;
