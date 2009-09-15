@@ -9,6 +9,11 @@ package com.emcom.jtools;
  */
 public class JToolsException extends RuntimeException {
 	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -3910659982938746497L;
+
+	/**
 	 * Constructs a <tt>JToolsException</tt> instance.
 	 */
 	public JToolsException() {
