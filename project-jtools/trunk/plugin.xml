@@ -35,13 +35,13 @@
                id="tostring.viewerContribution.action"/>
          <action
                label="Generate E&amp;xternalizable"
-               icon="icons/constructor.gif"
+               icon="icons/externalizable.gif"
                class="com.emcom.jtools.actions.ExternalizableGeneratorVAD"
                menubarPath="generate.viewer/externalizable"
                id="externalizable.viewerContribution.action"/>
          <action
                label="Generate &amp;Enumeration"
-               icon="icons/constructor.gif"
+               icon="icons/enumeration.gif"
                class="com.emcom.jtools.actions.EnumerationGeneratorVAD"
                menubarPath="generate.viewer/enumeration"
                id="enumeration.viewerContribution.action"/>
@@ -67,13 +67,13 @@
                id="tostring.objectContribution.action"/>
          <action
                label="Generate &amp;Externalizable"
-               icon="icons/constructor.gif"
+               icon="icons/externalizable.gif"
                class="com.emcom.jtools.actions.ExternalizableGeneratorOAD"
                menubarPath="generate.object/externalizable"
                id="externalizable.objectContribution.action"/>
          <action
                label="Generate &amp;Enumeration"
-               icon="icons/constructor.gif"
+               icon="icons/enumeration.gif"
                class="com.emcom.jtools.actions.EnumerationGeneratorOAD"
                menubarPath="generate.object/enumeration"
                id="enumeration.objectContribution.action"/>
