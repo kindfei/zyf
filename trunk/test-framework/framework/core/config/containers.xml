@@ -1,0 +1,9 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<containers>
+
+    <container name="component-container" class="jp.emcom.adv.n225.core.container.ComponentContainer"/>
+
+    <container name="classloader-container" class="jp.emcom.adv.n225.core.container.ClassLoaderContainer"/>
+
+</containers>
