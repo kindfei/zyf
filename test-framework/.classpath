@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="framework/core/src"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="lib" path="/common/lib/logging/log4j-1.2.15.jar"/>
+	<classpathentry kind="lib" path="/common/lib/logging/perf4j-0.9.10.jar"/>
+	<classpathentry kind="lib" path="/common/lib/logging/slf4j-api-1.5.6.jar"/>
+	<classpathentry kind="lib" path="/common/lib/logging/slf4j-ext-1.5.6.jar"/>
+	<classpathentry kind="lib" path="/common/lib/logging/slf4j-log4j12-1.5.6.jar"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>

@@ -1,0 +1,9 @@
+<component>
+    <resource-loader name="main" type="component"/>
+    
+    <classpath type="jar" location="build/lib/*"/>
+    <classpath type="dir" location="config"/>
+    <classpath type="jar" location="lib/*"/>
+    
+    <service-resource type="model" loader="main" location="servicedef/services.xml"/>
+</component>

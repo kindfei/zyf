@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component-loader>
+    <load-components parent-directory="framework"/>
+    <load-components parent-directory="application"/>
+</component-loader>
