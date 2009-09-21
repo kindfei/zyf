@@ -331,7 +331,7 @@ public class Startup implements Runnable {
 
 			coreLib = getHomeProp(props, "core.lib", "core/lib");
 
-			coreJar = getHomeProp(props, "core.jar", "core/jar");
+			coreJar = getHomeProp(props, "core.jar", "core/build/lib");
 
 			containerConfig = getHomeProp(props, "container.config", "core/config/containers.xml");
 

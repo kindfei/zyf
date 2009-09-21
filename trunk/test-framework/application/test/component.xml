@@ -1,9 +1,12 @@
-<component>
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component name="test"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <resource-loader name="main" type="component"/>
     
     <classpath type="jar" location="build/lib/*"/>
     <classpath type="dir" location="config"/>
     <classpath type="jar" location="lib/*"/>
     
-    <service-resource type="model" loader="main" location="servicedef/services.xml"/>
+    <service-resource type="model" loader="main" location="service/services.xml"/>
 </component>
