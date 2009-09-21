@@ -141,7 +141,7 @@ public class ComponentContainer implements Container {
                 for (String sub: parentPath.list()) {
                     try {
                         File componentPath = new File(parentPath.getCanonicalPath() + "/" + sub); //TODO
-                        if (componentPath.isDirectory() && !sub.equals("CVS") && !sub.equals(".svn")) {
+                        if (componentPath.isDirectory()) {
                             // make sure we have a component configuraton file
                             String componentLocation = componentPath.getCanonicalPath();
                             File configFile = new File(componentLocation + "/component.xml");//TODO
