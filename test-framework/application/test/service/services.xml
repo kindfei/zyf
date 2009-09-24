@@ -10,12 +10,13 @@
 	<bean id="testService" class="jp.emcom.adv.n225.test.service.TestService">
 	</bean>
 	
-	<bean id="messgingDispatcher" class="jp.emcom.adv.n225.core.service.MessgingDispatcher">
+	<bean id="sayHelloAdapter" class="jp.emcom.adv.n225.core.service.MessgingAdapter">
+		<property name="destination" value="sayHelloDestination" />
 	</bean>
 
 	<aop:config>
-		<aop:aspect ref="messgingDispatcher">
-			<aop:around pointcut="execution(* jp.emcom.adv.n225.test.service.TestService.sayHello(String))" method="dispatch"/>
+		<aop:aspect ref="sayHelloAdapter">
+			<aop:around pointcut="execution(* jp.emcom.adv.n225.test.service.TestService.sayHello(String))" method="runSync" />
 		</aop:aspect>
 	</aop:config>
 
