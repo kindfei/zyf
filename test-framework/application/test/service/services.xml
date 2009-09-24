@@ -7,130 +7,16 @@
            http://www.springframework.org/schema/tx 
            http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
 	
-    <!-- DataSource -->
-    <bean id="abstractDataSource" abstract="true" class="com.mchange.v2.c3p0.ComboPooledDataSource">
-        <property name="driverClass" value="com.mysql.jdbc.ReplicationDriver"/>
-        <property name="minPoolSize" value="0"/>
-        <property name="acquireIncrement" value="2"/>
-        <property name="numHelperThreads" value="5"/>
-        <property name="maxStatements" value="0"/> <!-- disable caching -->
-        <property name="maxStatementsPerConnection" value="0"/> <!-- disable caching -->
-        <property name="maxIdleTime" value="2000"/> <!-- 2000 seconds -->
-        <property name="checkoutTimeout" value="10000"/> <!-- 10 seconds -->
-        <property name="idleConnectionTestPeriod" value="300"/> <!-- 300 seconds -->
-        <property name="connectionTesterClassName" value="jp.emcom.adv.n225.core.utils.c3p0.MysqlReplicationConnectionTester"/>
-    </bean>
-    
-	<bean id="mainDataSource" parent="abstractDataSource">
-	    <property name="user" value="root"/>
-		<property name="password" value="123456"/>
-		<property name="maxPoolSize" value="10"/>
-		<property name="jdbcUrl">
-		    <value><![CDATA[jdbc:mysql://localhost,localhost/MAIN?useUnicode=true&characterEncoding=ms932&useLocalSessionState=true]]></value>
-		</property>
-	</bean>
-	
-	<bean id="historyDataSource" parent="abstractDataSource">
-	    <property name="user" value="root"/>
-		<property name="password" value="123456"/>
-		<property name="maxPoolSize" value="10"/>
-		<property name="jdbcUrl">
-		    <value><![CDATA[jdbc:mysql://localhost,localhost/HISTORY?useUnicode=true&characterEncoding=ms932&useLocalSessionState=true]]></value>
-		</property>
-	</bean>
-	
-    <!-- SessionFactory -->
-    <bean id="abstractSessionFactory" abstract="true" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean">
-		<property name="hibernateProperties">
-			<props>
-				<prop key="hibernate.show_sql">false</prop>
-				<prop key="hibernate.format_sql">false</prop>
-				<prop key="hibernate.jdbc.fetch_size">25</prop>
-				<prop key="hibernate.jdbc.batch_size">25</prop>
-				<prop key="hibernate.dialect">org.hibernate.dialect.MySQLDialect</prop>
-		    </props>
-		</property>
-	</bean>
-	
-    <bean id="mainSessionFactory" parent="abstractSessionFactory">
-		<property name="dataSource" ref="mainDataSource" />
-		<property name="annotatedClasses">
-			<list>
-			    <value>jp.emcom.adv.n225.test.core.service.fixture.dao.po.Product</value>
-			    <value>jp.emcom.adv.n225.test.core.service.fixture.dao.po.Leverage</value>
-			</list>
-		</property>
-	</bean>
-	
-	<bean id="historySessionFactory" parent="abstractSessionFactory">
-		<property name="dataSource" ref="historyDataSource" />
-		<property name="annotatedClasses">
-			<list>
-			    <value>jp.emcom.adv.n225.test.core.service.fixture.dao.po.Contract</value>
-			</list>
-		</property>
-	</bean>
-	
-	<!-- TransactionManager -->
-	<bean id="abstractTransactionManager" abstract="true" class="org.springframework.orm.hibernate3.HibernateTransactionManager">
-	    <property name="rollbackOnCommitFailure" value="true" />
-	</bean>
-	
-	<bean id="mainTransactionManager" parent="abstractTransactionManager">
-		<property name="sessionFactory" ref="mainSessionFactory" />
-	</bean>
-	
-	<bean id="historyTransactionManager" parent="abstractTransactionManager">
-		<property name="sessionFactory" ref="historySessionFactory" />
-	</bean>
-	
-	<!-- Dao -->
-	<bean class="jp.emcom.adv.n225.core.utils.spring.dao.HibernateDaoPostProcessor">
-	    <property name="sessionFactories">
-	        <map>
-	            <entry key="main" value-ref="mainSessionFactory"/>
-	            <entry key="history" value-ref="historySessionFactory"/>
-	        </map>
-	    </property>
-	</bean>
-	
-	<bean id="productDao" class="jp.emcom.adv.n225.test.core.service.fixture.dao.impl.ProductDaoImpl"/>
-	
-	<bean id="leverageDao" class="jp.emcom.adv.n225.test.core.service.fixture.dao.impl.LeverageDaoImpl"/>
-
-	<bean id="contractDao" class="jp.emcom.adv.n225.test.core.service.fixture.dao.impl.ContractDaoImpl"/>
-	
 	<!-- Service -->
-	<bean id="productService" class="jp.emcom.adv.n225.test.core.service.fixture.service.impl.ProductServiceImpl">
-	    <property name="productDao" ref="productDao" />
+	<bean id="testService" class="jp.emcom.adv.n225.test.service.TestService">
 	</bean>
 	
-	<bean id="leverageService" class="jp.emcom.adv.n225.test.core.service.fixture.service.impl.LeverageServiceImpl">
-	    <property name="leverageDao" ref="leverageDao" />
+	<bean id="messgingDispatcher" class="jp.emcom.adv.n225.core.service.MessgingDispatcher">
 	</bean>
 	
-	<bean id="productLeverageService" class="jp.emcom.adv.n225.test.core.service.fixture.service.impl.ProductLeverageServiceImpl">
-	    <property name="productService" ref="productService" />
-	    <property name="leverageService" ref="leverageService" />
-	</bean>
-
-	<bean id="contractService" class="jp.emcom.adv.n225.test.core.service.fixture.service.impl.ContractServiceImpl">
-	    <property name="contractDao" ref="contractDao" />
-	</bean>
-	
-    <!-- Transaction -->
-	<bean class="jp.emcom.adv.n225.core.utils.spring.tx.TransactionAspect">
-	    <property name="verbose" value="false" />
-	    <property name="transactionManagers">
-	        <map>
-	            <entry key="main" value-ref="mainTransactionManager"/>
-	            <entry key="history" value-ref="historyTransactionManager"/>
-	        </map>
-	    </property>
-	</bean>
-	
-	<bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator">
-        <property name="exposeProxy" value="true"/>
-        <property name="proxyTargetClass" value="true"/>
-    </bean>
+	<aop:config>
+		<aop:aspect ref="messgingDispatcher">
+			<aop:around pointcut="execution(public * *(..))" method="dispatch"/>
+		</aop:aspect>
+	</aop:config>
 </beans>
