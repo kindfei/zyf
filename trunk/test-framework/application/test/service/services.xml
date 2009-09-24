@@ -6,17 +6,17 @@
            http://www.springframework.org/schema/aop/spring-aop-2.0.xsd
            http://www.springframework.org/schema/tx 
            http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
-	
-	<!-- Service -->
+
 	<bean id="testService" class="jp.emcom.adv.n225.test.service.TestService">
 	</bean>
 	
 	<bean id="messgingDispatcher" class="jp.emcom.adv.n225.core.service.MessgingDispatcher">
 	</bean>
-	
+
 	<aop:config>
 		<aop:aspect ref="messgingDispatcher">
-			<aop:around pointcut="execution(public * *(..))" method="dispatch"/>
+			<aop:around pointcut="execution(* jp.emcom.adv.n225.test.service.TestService.sayHello(String))" method="dispatch"/>
 		</aop:aspect>
 	</aop:config>
+
 </beans>
