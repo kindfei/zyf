@@ -1,9 +1,27 @@
 package jp.emcom.adv.n225.core.service;
 
-import org.aspectj.lang.ProceedingJoinPoint;
+import java.lang.annotation.Inherited;
 
-public class MessgingDispatcher {
-	public void dispatch(ProceedingJoinPoint pjp, String name) {
-		System.out.println("around: name=" + name);
+import org.aspectj.lang.ProceedingJoinPoint;
+import org.springframework.beans.factory.DisposableBean;
+import org.springframework.beans.factory.InitializingBean;
+
+public class MessgingDispatcher implements InitializingBean, DisposableBean {
+	
+	public Object dispatch(ProceedingJoinPoint pjp) throws Throwable {
+		System.out.println("around: name=" + pjp.getArgs()[0]);
+		
+		return pjp.proceed();
 	}
+
+	public void afterPropertiesSet() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+
+	public void destroy() throws Exception {
+		// TODO Auto-generated method stub
+		
+	}
+	
 }
