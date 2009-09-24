@@ -11,7 +11,7 @@
 	<classpathentry combineaccessrules="false" kind="src" path="/common"/>
 	<classpathentry combineaccessrules="false" kind="src" path="/core"/>
 	<classpathentry kind="lib" path="/common/lib/spring/spring-2.5.5-aop.jar"/>
-	<classpathentry kind="lib" path="/common/lib/spring/spring-2.5.5.jar"/>
+	<classpathentry kind="lib" path="/common/lib/spring/spring-2.5.5.jar" sourcepath="E:/library/spring-framework-2.5.5/src"/>
 	<classpathentry kind="lib" path="/common/lib/spring/xbean-spring-3.4.jar"/>
 	<classpathentry kind="lib" path="/common/lib/aspectj/aspectjrt-1.6.5.jar"/>
 	<classpathentry kind="lib" path="/common/lib/aspectj/aspectjweaver-1.6.5.jar"/>
