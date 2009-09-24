@@ -6,7 +6,7 @@ import org.aspectj.lang.ProceedingJoinPoint;
 import org.springframework.beans.factory.DisposableBean;
 import org.springframework.beans.factory.InitializingBean;
 
-public class MessgingDispatcher implements InitializingBean, DisposableBean {
+public class MessagingDispatcher implements InitializingBean, DisposableBean {
 	
 	public Object dispatch(ProceedingJoinPoint pjp) throws Throwable {
 		System.out.println("around: name=" + pjp.getArgs()[0]);
