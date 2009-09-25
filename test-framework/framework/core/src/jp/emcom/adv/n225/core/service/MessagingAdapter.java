@@ -7,6 +7,7 @@ import jp.emcom.adv.n225.test.messaging.Destination;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
+import org.springframework.aop.MethodMatcher;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -17,10 +18,9 @@ public class MessagingAdapter extends ProxyFactoryBean implements ServiceAdapter
 		DisposableBean, MethodInterceptor {
 
 	private Destination destination;
-
 	private boolean isSyncRun;
-
 	private String expression;
+	private MethodMatcher matcher;
 
 	public void setDestination(Destination destination) {
 		this.destination = destination;
@@ -40,18 +40,11 @@ public class MessagingAdapter extends ProxyFactoryBean implements ServiceAdapter
 		// TODO start message receiver
 	}
 
-	public void destroy() throws Exception {
-		// TODO stop message receiver
-	}
-
-	public void onMessage(Serializable msg) {
-		
-		this.getObject();
-	}
-
 	private void initProxyFactoryBean() {
 		AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
 		pointcut.setExpression(expression);
+		
+		matcher = pointcut.getMethodMatcher();
 
 		DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(pointcut, this);
 		this.addAdvisor(advisor);
@@ -59,7 +52,21 @@ public class MessagingAdapter extends ProxyFactoryBean implements ServiceAdapter
 		this.setProxyTargetClass(true);
 	}
 
-	public Object runSync(Method method, Object[] args) throws Throwable {
+	public void destroy() throws Exception {
+		// TODO stop message receiver
+	}
+
+	public Object invoke(MethodInvocation mi) throws Throwable {
+		Object[] args = mi.getArguments();
+
+		if (isSyncRun) {
+			return runSync(args);
+		} else {
+			return runAsync(args);
+		}
+	}
+
+	public Object runSync(Object[] args) throws Throwable {
 
 		// TODO send message in order
 
@@ -68,25 +75,36 @@ public class MessagingAdapter extends ProxyFactoryBean implements ServiceAdapter
 		return null; // TODO return result
 	}
 
-	public Object runAsync(Method method, Object[] args) throws Throwable {
+	public Object runAsync(Object[] args) throws Throwable {
 
 		// TODO send message in order
 
 		return null;
 	}
 
-	@Override
-	public Object invoke(MethodInvocation mi) throws Throwable {
-		Object[] args = mi.getArguments();
+	public void onMessage(Serializable msg) {
 		
-		Method method = mi.getMethod();
-
-		System.out.println("succeed!!!!!!!!!!!!!!!!!");
-
-		if (isSyncRun) {
-			return runSync(method, args);
-		} else {
-			return runAsync(method, args);
+		Class<?> cls = this.getTargetClass();
+		
+		Method[] methods = cls.getDeclaredMethods();
+		
+		Method targetMethod = null;
+		
+		for (Method method : methods) {
+			if (matcher.matches(method, cls)) {
+				targetMethod = method;
+				break;
+			}
+		}
+		
+		try {
+			Object result = targetMethod.invoke(this.getObject(), (Object[]) msg);
+			
+			//TODO send back the result.
+			
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
 		}
 	}
 
