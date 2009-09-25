@@ -21,7 +21,7 @@ public class TestService {
 	}
 	
 	public static void main(String[] args) {
-		ApplicationContext context = new FileSystemXmlApplicationContext("D:/workspaces/workspace/test-framework/application/test/service/services.xml");
+		ApplicationContext context = new FileSystemXmlApplicationContext("E:/workspaces/workspace-zyf/test-framework/application/test/service/services.xml");
 		
 		TestService t = (TestService) context.getBean("sayHiAdapter");
 
