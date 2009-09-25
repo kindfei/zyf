@@ -2,16 +2,11 @@ package jp.emcom.adv.n225.core.service;
 
 import java.io.Serializable;
 import java.lang.reflect.Method;
-import java.util.Arrays;
-import java.util.List;
 
 import jp.emcom.adv.n225.test.messaging.Destination;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
-import org.springframework.aop.ClassFilter;
-import org.springframework.aop.MethodMatcher;
-import org.springframework.aop.Pointcut;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -50,7 +45,8 @@ public class MessagingAdapter extends ProxyFactoryBean implements ServiceAdapter
 	}
 
 	public void onMessage(Serializable msg) {
-		// TODO
+		
+		this.getObject();
 	}
 
 	private void initProxyFactoryBean() {
@@ -63,7 +59,7 @@ public class MessagingAdapter extends ProxyFactoryBean implements ServiceAdapter
 		this.setProxyTargetClass(true);
 	}
 
-	public Object runSync(Object[] args) throws Throwable {
+	public Object runSync(Method method, Object[] args) throws Throwable {
 
 		// TODO send message in order
 
@@ -72,7 +68,7 @@ public class MessagingAdapter extends ProxyFactoryBean implements ServiceAdapter
 		return null; // TODO return result
 	}
 
-	public Object runAsync(Object[] args) throws Throwable {
+	public Object runAsync(Method method, Object[] args) throws Throwable {
 
 		// TODO send message in order
 
@@ -82,13 +78,15 @@ public class MessagingAdapter extends ProxyFactoryBean implements ServiceAdapter
 	@Override
 	public Object invoke(MethodInvocation mi) throws Throwable {
 		Object[] args = mi.getArguments();
+		
+		Method method = mi.getMethod();
 
 		System.out.println("succeed!!!!!!!!!!!!!!!!!");
 
 		if (isSyncRun) {
-			return runSync(args);
+			return runSync(method, args);
 		} else {
-			return runAsync(args);
+			return runAsync(method, args);
 		}
 	}
 
