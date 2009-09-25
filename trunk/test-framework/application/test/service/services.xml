@@ -10,14 +10,10 @@
 	<bean id="testService" class="jp.emcom.adv.n225.test.service.TestService">
 	</bean>
 	
-	<bean id="sayHelloAdapter" class="jp.emcom.adv.n225.core.service.MessgingAdapter">
+	<bean id="sayHelloAdapter" class="jp.emcom.adv.n225.core.service.MessagingAdapter">
 		<property name="destination" value="sayHelloDestination" />
+		<property name="targetName" value="testService" />
+		<property name="singleton" value="true" />
 	</bean>
-
-	<aop:config>
-		<aop:aspect ref="sayHelloAdapter">
-			<aop:around pointcut="execution(* jp.emcom.adv.n225.test.service.TestService.sayHello(String))" method="runSync" />
-		</aop:aspect>
-	</aop:config>
 
 </beans>
