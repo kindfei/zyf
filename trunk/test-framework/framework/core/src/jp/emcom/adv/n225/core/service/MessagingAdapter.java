@@ -21,9 +21,21 @@ public class MessagingAdapter extends ProxyFactoryBean implements ServiceAdapter
 	private Destination destination;
 	
 	private boolean isSyncRun;
+	
+	private String methodName;
+	
+	private String[] args;
 
 	public void setDestination(Destination destination) {
 		this.destination = destination;
+	}
+
+	public void setSyncRun(boolean isSyncRun) {
+		this.isSyncRun = isSyncRun;
+	}
+
+	public void setMethodName(String methodName) {
+		this.methodName = methodName;
 	}
 
 	public void afterPropertiesSet() throws Exception {
