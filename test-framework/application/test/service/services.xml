@@ -12,6 +12,7 @@
 	
 	<bean id="sayHelloAdapter" class="jp.emcom.adv.n225.core.service.MessagingAdapter">
 		<property name="destination" value="sayHelloDestination" />
+		<property name="methodName" value="sayHello" />
 		<property name="targetName" value="testService" />
 		<property name="singleton" value="true" />
 	</bean>
