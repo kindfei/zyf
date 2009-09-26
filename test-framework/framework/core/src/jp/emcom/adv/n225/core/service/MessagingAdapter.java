@@ -8,11 +8,12 @@ import java.lang.reflect.Method;
 
 import jp.emcom.adv.common.messaging.MessageHandler;
 import jp.emcom.adv.common.messaging.MessagingException;
+import jp.emcom.adv.common.messaging.Publisher;
+import jp.emcom.adv.common.messaging.Subscriber;
 import jp.emcom.adv.common.messaging.Destination.Domain;
+import jp.emcom.adv.common.messaging.impl.DefaultMessengerFactory;
 import jp.emcom.adv.common.messaging.impl.jms.JmsDestination;
 import jp.emcom.adv.common.messaging.impl.jms.JmsProvider;
-import jp.emcom.adv.common.messaging.impl.jms.transport.JmsPublisherTransport;
-import jp.emcom.adv.common.messaging.impl.jms.transport.JmsSubscriberTransport;
 import jp.emcom.adv.n225.test.messaging.Destination;
 
 import org.aopalliance.intercept.MethodInterceptor;
@@ -36,55 +37,102 @@ public class MessagingAdapter extends ProxyFactoryBean implements InitializingBe
 	private final static Logger log = LoggerFactory.getLogger(MessagingAdapter.class);
 
 	private String expression;
+	private DefaultMessengerFactory factory;
 	private Destination destination;
+	private Domain domain;
+	private Domain replyDomain;
 	private boolean isSyncRun;
 	private boolean isHost;
 
-	private JmsPublisherTransport<InvocationWrapper> publisher;
-	private JmsSubscriberTransport<InvocationWrapper> subscriber;
+	private Publisher<InvocationWrapper> publisher;
+	private Subscriber<InvocationWrapper> subscriber;
 
+	/*
+	 * inject properties
+	 */
+
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
+	
+	public void setFactory(DefaultMessengerFactory factory) {
+		this.factory = factory;
+	}
+	
 	public void setDestination(Destination destination) {
 		this.destination = destination;
+	}
+
+	public void setDomain(Domain domain) {
+		this.domain = domain;
+	}
+
+	public void setReplyDomain(Domain replyDomain) {
+		this.replyDomain = replyDomain;
 	}
 
 	public void setSyncRun(boolean isSyncRun) {
 		this.isSyncRun = isSyncRun;
 	}
 
-	public void setExpression(String expression) {
-		this.expression = expression;
-	}
-
 	public void setHost(boolean isHost) {
 		this.isHost = isHost;
 	}
 
+	/**
+	 * InitializingBean implementation
+	 */
 	public void afterPropertiesSet() throws Exception {
 		initProxyFactoryBean();
-
-		JmsDestination dest = new JmsDestination(destination.toString(), Domain.queue, new JmsProvider());
-		publisher = new JmsPublisherTransport<InvocationWrapper>(dest);
-		if (isHost) {
-			subscriber = new JmsSubscriberTransport<InvocationWrapper>(dest);
-			subscriber.addMessageHandler(this);
-		}
+		initMessaging();
 	}
 
+	/**
+	 * Initialize ProxyFactoryBean
+	 */
 	private void initProxyFactoryBean() {
-		AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
-		pointcut.setExpression(expression);
+		AspectJExpressionPointcut pointcut = null;
+		if (expression != null) {
+			pointcut = new AspectJExpressionPointcut();
+			pointcut.setExpression(expression);
+		}
 
-		DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(pointcut, this);
+		DefaultPointcutAdvisor advisor = null;
+		if (pointcut != null) {
+			advisor = new DefaultPointcutAdvisor(pointcut, this);
+		} else {
+			advisor = new DefaultPointcutAdvisor(this);
+		}
+		
 		this.addAdvisor(advisor);
 		
 		this.setProxyTargetClass(true);
 	}
 
-	public void destroy() throws Exception {
-		if (publisher != null) publisher.disconnect();
-		if (subscriber != null) subscriber.disconnect();
+	/**
+	 * Initialize messaging
+	 */
+	private void initMessaging() {
+		JmsDestination dest = new JmsDestination(destination.toString(), domain, new JmsProvider(), replyDomain);
+		
+		publisher = factory.getPublisher(dest);
+		if (isHost) {
+			subscriber = factory.getSubscriber(dest);
+			subscriber.addMessageHandler(this);
+		}
 	}
 
+	/**
+	 * DisposableBean implementation
+	 */
+	public void destroy() throws Exception {
+		if (publisher != null) publisher.stop(0);
+		if (subscriber != null) subscriber.stop(0);
+	}
+
+	/**
+	 * MethodInterceptor implementation
+	 */
 	public Object invoke(MethodInvocation mi) throws Throwable {
 		InvocationWrapper msg = new InvocationWrapper(mi);
 		
@@ -102,6 +150,9 @@ public class MessagingAdapter extends ProxyFactoryBean implements InitializingBe
 		}
 	}
 
+	/**
+	 * MessageHandler implementation
+	 */
 	public void onMessage(InvocationWrapper invoker) {
 		try {
 			Object result = invoker.invoke(this.getTargetSource().getTarget());
@@ -118,6 +169,11 @@ public class MessagingAdapter extends ProxyFactoryBean implements InitializingBe
 	}
 }
 
+/**
+ * Invocation Wrapper
+ * @author zhangyf
+ *
+ */
 class InvocationWrapper implements Externalizable {
 	private String methodName;
 	private Class<?>[] parameterTypes;

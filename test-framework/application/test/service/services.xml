@@ -24,4 +24,12 @@
 		<property name="destination" value="sayHiDestination" />
 	</bean>
 
+	<bean id="sayHelloAdapter" class="jp.emcom.adv.n225.core.service.MessagingAdapter">
+		<property name="targetName" value="testService" />
+		<property name="expression" value="execution(* jp.emcom.adv.n225.test.service.TestService.*())" />
+		<property name="destination" value="sayHelloDestination" />
+		<property name="syncRun" value="true" />
+		<property name="host" value="true" />
+	</bean>
+
 </beans>
