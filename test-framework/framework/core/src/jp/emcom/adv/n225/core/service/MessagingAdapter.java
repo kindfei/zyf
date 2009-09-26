@@ -9,11 +9,13 @@ import java.lang.reflect.Method;
 import jp.emcom.adv.common.messaging.MessageHandler;
 import jp.emcom.adv.common.messaging.MessagingException;
 import jp.emcom.adv.common.messaging.Publisher;
-import jp.emcom.adv.common.messaging.Subscriber;
+import jp.emcom.adv.common.messaging.RepliableMessage;
 import jp.emcom.adv.common.messaging.Destination.Domain;
 import jp.emcom.adv.common.messaging.impl.DefaultMessengerFactory;
 import jp.emcom.adv.common.messaging.impl.jms.JmsDestination;
 import jp.emcom.adv.common.messaging.impl.jms.JmsProvider;
+import jp.emcom.adv.common.messaging.utils.mdb.AbstractMessageDrivenBean;
+import jp.emcom.adv.common.messaging.utils.mdb.MessageDrivenBean;
 import jp.emcom.adv.n225.test.messaging.Destination;
 
 import org.aopalliance.intercept.MethodInterceptor;
@@ -43,9 +45,9 @@ public class MessagingAdapter extends ProxyFactoryBean implements InitializingBe
 	private Domain replyDomain;
 	private boolean isSyncRun;
 	private boolean isHost;
+	private AbstractMessageDrivenBean<InvocationWrapper> messageDrivenBean;
 
 	private Publisher<InvocationWrapper> publisher;
-	private Subscriber<InvocationWrapper> subscriber;
 
 	/*
 	 * inject properties
@@ -77,6 +79,10 @@ public class MessagingAdapter extends ProxyFactoryBean implements InitializingBe
 
 	public void setHost(boolean isHost) {
 		this.isHost = isHost;
+	}
+
+	public void setMessageDrivenBean(AbstractMessageDrivenBean<InvocationWrapper> messageDrivenBean) {
+		this.messageDrivenBean = messageDrivenBean;
 	}
 
 	/**
@@ -115,10 +121,16 @@ public class MessagingAdapter extends ProxyFactoryBean implements InitializingBe
 	private void initMessaging() {
 		JmsDestination dest = new JmsDestination(destination.toString(), domain, new JmsProvider(), replyDomain);
 		
+		// init publisher
 		publisher = factory.getPublisher(dest);
+		
+		// init subscriber
 		if (isHost) {
-			subscriber = factory.getSubscriber(dest);
-			subscriber.addMessageHandler(this);
+			if (messageDrivenBean == null) {
+				messageDrivenBean = new MessageDrivenBean<InvocationWrapper>();
+			}
+			
+			// TODO
 		}
 	}
 
@@ -127,17 +139,18 @@ public class MessagingAdapter extends ProxyFactoryBean implements InitializingBe
 	 */
 	public void destroy() throws Exception {
 		if (publisher != null) publisher.stop(0);
-		if (subscriber != null) subscriber.stop(0);
+		if (messageDrivenBean != null) messageDrivenBean.stop(0);
 	}
 
 	/**
 	 * MethodInterceptor implementation
 	 */
 	public Object invoke(MethodInvocation mi) throws Throwable {
+		
 		InvocationWrapper msg = new InvocationWrapper(mi);
 		
 		publisher.send(msg);
-
+		
 		if (isSyncRun) {
 			// TODO wait for reply result
 			
@@ -153,11 +166,15 @@ public class MessagingAdapter extends ProxyFactoryBean implements InitializingBe
 	/**
 	 * MessageHandler implementation
 	 */
+	@SuppressWarnings("unchecked")
 	public void onMessage(InvocationWrapper invoker) {
 		try {
 			Object result = invoker.invoke(this.getTargetSource().getTarget());
 			
-			//TODO send back the result.
+			// send back the result.
+			RepliableMessage<Object> replier = (RepliableMessage<Object>) invoker;
+			
+			replier.reply(result);
 			
 		} catch (Exception e) {
 			log.error("Service invoke error. expression=" + expression, e);
@@ -192,9 +209,10 @@ class InvocationWrapper implements Externalizable {
 		return method.invoke(target, arguments);
 	}
 	
-	/**
+	/*
 	 * Externalizable
 	 */
+	
 	public void writeExternal(ObjectOutput out) throws IOException {
 		out.writeObject(methodName);
 		out.writeObject(parameterTypes);
