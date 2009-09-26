@@ -1,6 +1,9 @@
 package jp.emcom.adv.n225.core.service;
 
-import java.io.Serializable;
+import java.io.Externalizable;
+import java.io.IOException;
+import java.io.ObjectInput;
+import java.io.ObjectOutput;
 import java.lang.reflect.Method;
 
 import jp.emcom.adv.common.messaging.MessageHandler;
@@ -16,7 +19,6 @@ import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
-import org.springframework.aop.MethodMatcher;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -28,8 +30,8 @@ import org.springframework.beans.factory.InitializingBean;
  * @author zhangyf
  *
  */
-public class MessagingAdapter extends ProxyFactoryBean implements ServiceAdapter, InitializingBean,
-		DisposableBean, MethodInterceptor, MessageHandler<Serializable> {
+public class MessagingAdapter extends ProxyFactoryBean implements InitializingBean,
+		DisposableBean, MethodInterceptor, MessageHandler<InvocationWrapper> {
 	
 	private final static Logger log = LoggerFactory.getLogger(MessagingAdapter.class);
 
@@ -37,11 +39,9 @@ public class MessagingAdapter extends ProxyFactoryBean implements ServiceAdapter
 	private Destination destination;
 	private boolean isSyncRun;
 	private boolean isHost;
-	
-	private MethodMatcher matcher;
 
-	private JmsPublisherTransport<Serializable> publisher;
-	private JmsSubscriberTransport<Serializable> subscriber;
+	private JmsPublisherTransport<InvocationWrapper> publisher;
+	private JmsSubscriberTransport<InvocationWrapper> subscriber;
 
 	public void setDestination(Destination destination) {
 		this.destination = destination;
@@ -63,9 +63,9 @@ public class MessagingAdapter extends ProxyFactoryBean implements ServiceAdapter
 		initProxyFactoryBean();
 
 		JmsDestination dest = new JmsDestination(destination.toString(), Domain.queue, new JmsProvider());
-		publisher = new JmsPublisherTransport<Serializable>(dest);
+		publisher = new JmsPublisherTransport<InvocationWrapper>(dest);
 		if (isHost) {
-			subscriber = new JmsSubscriberTransport<Serializable>(dest);
+			subscriber = new JmsSubscriberTransport<InvocationWrapper>(dest);
 			subscriber.addMessageHandler(this);
 		}
 	}
@@ -73,7 +73,6 @@ public class MessagingAdapter extends ProxyFactoryBean implements ServiceAdapter
 	private void initProxyFactoryBean() {
 		AspectJExpressionPointcut pointcut = new AspectJExpressionPointcut();
 		pointcut.setExpression(expression);
-		matcher = pointcut.getMethodMatcher();
 
 		DefaultPointcutAdvisor advisor = new DefaultPointcutAdvisor(pointcut, this);
 		this.addAdvisor(advisor);
@@ -87,48 +86,25 @@ public class MessagingAdapter extends ProxyFactoryBean implements ServiceAdapter
 	}
 
 	public Object invoke(MethodInvocation mi) throws Throwable {
-		Object[] args = mi.getArguments();
+		InvocationWrapper msg = new InvocationWrapper(mi);
+		
+		publisher.send(msg);
 
 		if (isSyncRun) {
-			return runSync(args);
+			// TODO wait for reply result
+			
+			// TODO return result
+			return null;
 		} else {
-			return runAsync(args);
+			
+			//TODO return send OK
+			return null;
 		}
 	}
 
-	public Object runSync(Object[] args) throws Throwable {
-
-		publisher.send(args);
-
-		// TODO wait for reply result
-
-		return null; // TODO return result
-	}
-
-	public Object runAsync(Object[] args) throws Throwable {
-
-		publisher.send(args);
-		
-		return null;
-	}
-
-	public void onMessage(Serializable msg) {
-		
-		Class<?> cls = this.getTargetClass();
-		
-		Method[] methods = cls.getDeclaredMethods();
-		
-		Method targetMethod = null;
-		
-		for (Method method : methods) {
-			if (matcher.matches(method, cls)) {
-				targetMethod = method;
-				break;
-			}
-		}
-		
+	public void onMessage(InvocationWrapper invoker) {
 		try {
-			Object result = targetMethod.invoke(this.getTargetSource().getTarget(), (Object[]) msg);
+			Object result = invoker.invoke(this.getTargetSource().getTarget());
 			
 			//TODO send back the result.
 			
@@ -140,5 +116,39 @@ public class MessagingAdapter extends ProxyFactoryBean implements ServiceAdapter
 	public void onException(MessagingException e) {
 		log.error("Service host listen message error. expression=" + expression, e);
 	}
+}
 
+class InvocationWrapper implements Externalizable {
+	private String methodName;
+	private Class<?>[] parameterTypes;
+	private Object[] arguments;
+
+	public InvocationWrapper(MethodInvocation mi) {
+		Method method = mi.getMethod();
+		
+		this.methodName = method.getName();
+		this.parameterTypes = method.getParameterTypes();
+		this.arguments = mi.getArguments();
+	}
+
+	public Object invoke(Object target) throws Exception {
+		Method method = target.getClass().getMethod(methodName, parameterTypes);
+		return method.invoke(target, arguments);
+	}
+	
+	/**
+	 * Externalizable
+	 */
+	public void writeExternal(ObjectOutput out) throws IOException {
+		out.writeObject(methodName);
+		out.writeObject(parameterTypes);
+		out.writeObject(arguments);
+	}
+	
+	public void readExternal(ObjectInput in) throws IOException,
+			ClassNotFoundException {
+		methodName = (String) in.readObject();
+		parameterTypes = (Class<?>[]) in.readObject();
+		arguments = (Object[]) in.readObject();
+	}
 }
