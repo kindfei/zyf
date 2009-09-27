@@ -16,10 +16,11 @@ import java.net.Socket;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Properties;
+import java.util.concurrent.atomic.AtomicBoolean;
 
 /**
  * 
- * @author alex
+ * @author zhangyf
  * 
  */
 public class Startup implements Runnable {
@@ -37,24 +38,24 @@ public class Startup implements Runnable {
 
 	private Thread serverThread;
 
-	private boolean serverStopping = false;
+	private AtomicBoolean serverStopping = new AtomicBoolean(false);
 
-	private boolean serverRunning = true;
+	private AtomicBoolean serverRunning = new AtomicBoolean(true);
 
 	private List<StartupLoader> loaders;
 
 	/**
-	 * @throws IOException 
-     * 
-     */
+	 * 
+	 * @throws IOException
+	 */
 	public void start() throws IOException {
 		init(true);
 		startServer();
 	}
 
 	/**
-     * 
-     */
+	 * 
+	 */
 	public void stop() {
 		shutdownServer();
 	}
@@ -83,7 +84,7 @@ public class Startup implements Runnable {
 		for (StartupLoader loader : loaders) {
 			try {
 				loader.start();
-			} catch (StartupException e) {
+			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(99);
 			}
@@ -91,9 +92,9 @@ public class Startup implements Runnable {
 	}
 
 	private void shutdownServer() {
-		if (serverStopping)
+		if (!serverStopping.compareAndSet(false, true)) {
 			return;
-		serverStopping = true;
+		}
 		if (loaders != null && loaders.size() > 0) {
 			for (StartupLoader loader : loaders) {
 				try {
@@ -103,7 +104,7 @@ public class Startup implements Runnable {
 				}
 			}
 		}
-		serverRunning = false;
+		serverRunning.set(false);
 	}
 
 	private void init(boolean fullInit) throws IOException {
@@ -174,7 +175,7 @@ public class Startup implements Runnable {
 	}
 
 	public void run() {
-		while (serverRunning) {
+		while (serverRunning.get()) {
 			try {
 				Socket clientSocket = serverSocket.accept();
 				System.out.println("Received connection from - " + clientSocket.getInetAddress() + " : " + clientSocket.getPort());
@@ -193,14 +194,14 @@ public class Startup implements Runnable {
 		String request = reader.readLine();
 
 		PrintWriter writer = new PrintWriter(client.getOutputStream(), true);
-		writer.println(processRequest(request, client));
+		writer.println(processRequest(request));
 		writer.flush();
 
 		writer.close();
 		reader.close();
 	}
 
-	private String processRequest(String request, Socket client) {
+	private String processRequest(String request) {
 		if (request != null) {
 			String key = request.substring(0, request.indexOf(':'));
 			String command = request.substring(request.indexOf(':') + 1);
@@ -208,14 +209,14 @@ public class Startup implements Runnable {
 				return "FAIL";
 			} else {
 				if (command.equals(Startup.SHUTDOWN_COMMAND)) {
-					if (serverStopping)
+					if (serverStopping.get()) {
 						return "IN-PROGRESS";
-					Thread t = new Thread() {
+					}
+					new Thread() {
 						public void run() {
 							shutdownServer();
 						}
-					};
-					t.start();
+					}.start();
 					return "OK";
 				}
 				return "FAIL";
@@ -287,7 +288,7 @@ public class Startup implements Runnable {
 
 	/**
 	 * 
-	 * @author alex
+	 * @author zhangyf
 	 * 
 	 */
 	public static class Config {
@@ -323,17 +324,17 @@ public class Startup implements Runnable {
 				adminPort = 0;
 			}
 
-			adminKey = getProp(props, "admin.key", "NA");
+			adminKey = getProp(props, "admin.key", "");
 
 			useShutdownHook = "true".equalsIgnoreCase(getProp(props, "enable.hook", "true"));
 
-			coreConfig = getHomeProp(props, "core.config", "core/config");
+			coreConfig = getHomeProp(props, "core.config", "framework/core/config");
 
-			coreLib = getHomeProp(props, "core.lib", "core/lib");
+			coreLib = getHomeProp(props, "core.lib", "framework/core/lib");
 
-			coreJar = getHomeProp(props, "core.jar", "core/build/lib");
+			coreJar = getHomeProp(props, "core.jar", "framework/core/build/lib");
 
-			containerConfig = getHomeProp(props, "container.config", "core/config/containers.xml");
+			containerConfig = getHomeProp(props, "container.config", "framework/core/config/containers.xml");
 
 			loaders = new ArrayList<String>();
 			int currentPosition = 1;

@@ -1,22 +1,18 @@
 package jp.emcom.adv.n225.core.component;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import jp.emcom.adv.n225.core.util.UtilURL;
 import jp.emcom.adv.n225.core.util.UtilXml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
  * 
- * @author alex
+ * @author zhangyf
  * 
  */
 public class ComponentLoaderConfig {
@@ -27,14 +23,14 @@ public class ComponentLoaderConfig {
 
 	protected static List<ComponentDef> componentsToLoad = null;
 
-	public static List<ComponentDef> getRootComponents(String configFile) throws ComponentException {
+	public static List<ComponentDef> getRootComponents(String configFile) throws Exception {
 		if (componentsToLoad == null) {
 			synchronized (ComponentLoaderConfig.class) {
 				if (componentsToLoad == null) {
 					if (configFile == null) {
 						configFile = COMPONENT_LOAD_XML_FILENAME;
 					}
-					URL xmlUrl = UtilURL.fromResource(configFile);
+					URL xmlUrl = UtilURL.fromResource(configFile); // TODO
 					ComponentLoaderConfig.componentsToLoad = ComponentLoaderConfig.getComponentsFromConfig(xmlUrl);
 				}
 			}
@@ -42,25 +38,17 @@ public class ComponentLoaderConfig {
 		return componentsToLoad;
 	}
 
-	public static List<ComponentDef> getComponentsFromConfig(URL configUrl) throws ComponentException {
+	public static List<ComponentDef> getComponentsFromConfig(URL configUrl) throws Exception {
 		if (configUrl == null) {
-			throw new ComponentException("Component config file does not exist: " + configUrl);
+			throw new Exception("Component config file does not exist: " + configUrl);
 		}
 
-		List<ComponentDef> componentsFromConfig = null;
-		Document document = null;
-		try {
-			document = UtilXml.readXmlDocument(configUrl);
-		} catch (SAXException e) {
-			throw new ComponentException("Error reading the component config file: " + configUrl, e);
-		} catch (ParserConfigurationException e) {
-			throw new ComponentException("Error reading the component config file: " + configUrl, e);
-		} catch (IOException e) {
-			throw new ComponentException("Error reading the component config file: " + configUrl, e);
-		}
-
+		Document document = UtilXml.readXmlDocument(configUrl);
 		Element root = document.getDocumentElement();
 		List<? extends Element> toLoad = UtilXml.childElementList(root);
+
+		List<ComponentDef> componentsFromConfig = null;
+
 		if (toLoad != null && toLoad.size() > 0) {
 			componentsFromConfig = new LinkedList<ComponentDef>();
 			for (Element element : toLoad) {
@@ -78,7 +66,7 @@ public class ComponentLoaderConfig {
 		public ComponentDef(Element element) {
 			if ("load-component".equals(element.getNodeName())) {
 				name = element.getAttribute("component-name");
-				location = element.getAttribute("component-location"); //TODO
+				location = element.getAttribute("component-location"); // TODO
 				type = SINGLE_COMPONENT;
 			} else if ("load-components".equals(element.getNodeName())) {
 				name = null;

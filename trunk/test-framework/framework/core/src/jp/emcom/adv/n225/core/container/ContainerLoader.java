@@ -5,100 +5,74 @@ import java.util.LinkedList;
 import java.util.List;
 
 import jp.emcom.adv.n225.core.start.Startup;
-import jp.emcom.adv.n225.core.start.StartupException;
 import jp.emcom.adv.n225.core.start.StartupLoader;
 
+/**
+ * 
+ * @author zhangyf
+ * 
+ */
 public class ContainerLoader implements StartupLoader {
-	
+
 	private String configFile;
-	
+
 	private List<Container> loadedContainers = new LinkedList<Container>();
 
-	public void load(Startup.Config config) throws StartupException {
+	public void load(Startup.Config config) throws Exception {
 		this.configFile = config.containerConfig;
-		
-		Collection<ContainerConfig.Container> containers = null;
-        try {
-            containers = ContainerConfig.getContainers(configFile);
-        } catch (ContainerException e) {
-            throw new StartupException(e);
-        }
-        
-        if (containers != null) {
-            for (ContainerConfig.Container containerCfg: containers) {
-                Container tmpContainer = loadContainer(containerCfg);
-                loadedContainers.add(tmpContainer);
-            }
-        }
+
+		Collection<ContainerConfig.Container> containers = ContainerConfig.getContainers(configFile);
+
+		if (containers != null) {
+			for (ContainerConfig.Container containerCfg : containers) {
+				loadedContainers.add(loadContainer(containerCfg));
+			}
+		}
 	}
-	
-    private Container loadContainer(ContainerConfig.Container containerCfg) throws StartupException {
-        // load the container class
-        ClassLoader loader = Thread.currentThread().getContextClassLoader();
-        if (loader == null) {
-            loader = ClassLoader.getSystemClassLoader();
-        }
-        Class<?> containerClass = null;
-        try {
-            containerClass = loader.loadClass(containerCfg.className);
-        } catch (ClassNotFoundException e) {
-            throw new StartupException("Cannot locate container class", e);
-        }
-        if (containerClass == null) {
-            throw new StartupException("Component container class not loaded");
-        }
 
-        // create a new instance of the container object
-        Container containerObj = null;
-        try {
-            containerObj = (Container) containerClass.newInstance();
-        } catch (InstantiationException e) {
-            throw new StartupException("Cannot create " + containerCfg.name, e);
-        } catch (IllegalAccessException e) {
-            throw new StartupException("Cannot create " + containerCfg.name, e);
-        } catch (ClassCastException e) {
-            throw new StartupException("Cannot create " + containerCfg.name, e);
-        }
+	private Container loadContainer(ContainerConfig.Container containerCfg) throws Exception {
+		// load the container class
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		if (loader == null) {
+			loader = ClassLoader.getSystemClassLoader();
+		}
 
-        if (containerObj == null) {
-            throw new StartupException("Unable to create instance of component container");
-        }
+		Class<?> containerClass = loader.loadClass(containerCfg.className);
 
-        // initialize the container object
-        try {
-            containerObj.init(configFile);
-        } catch (ContainerException e) {
-            throw new StartupException("Cannot init() " + containerCfg.name, e);
-        } catch (java.lang.AbstractMethodError e) {
-            throw new StartupException("Cannot init() " + containerCfg.name, e);
-        }
+		if (containerClass == null) {
+			throw new Exception("Component container class not loaded");
+		}
 
-        return containerObj;
-    }
+		// create a new instance of the container object
+		Container containerObj = (Container) containerClass.newInstance();
 
-	public void start() throws StartupException {
+		if (containerObj == null) {
+			throw new Exception("Unable to create instance of component container");
+		}
+
+		// initialize the container object
+		containerObj.init(configFile);
+
+		return containerObj;
+	}
+
+	public void start() throws Exception {
 		// start each container object
-        for (Container container: loadedContainers) {
-            try {
-                container.start();
-            } catch (ContainerException e) {
-                throw new StartupException("Cannot start() " + container.getClass().getName(), e);
-            } catch (java.lang.AbstractMethodError e) {
-                throw new StartupException("Cannot start() " + container.getClass().getName(), e);
-            }
-        }
+		for (Container container : loadedContainers) {
+			container.start();
+		}
 	}
 
-	public void unload() throws StartupException {
+	public void unload() throws Exception {
 		// shutting down in reverse order
-        for (int i = loadedContainers.size(); i > 0; i--) {
-            Container container = loadedContainers.get(i-1);
-            try {
-                container.stop();
-            } catch (ContainerException e) {
-            	//TODO do not throw
-            }
-        }
+		for (int i = loadedContainers.size(); i > 0; i--) {
+			Container container = loadedContainers.get(i - 1);
+			try {
+				container.stop();
+			} catch (Exception e) {
+				e.printStackTrace();
+			}
+		}
 	}
 
 }

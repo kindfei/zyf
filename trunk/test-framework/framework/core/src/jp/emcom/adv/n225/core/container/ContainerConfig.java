@@ -1,232 +1,124 @@
 package jp.emcom.adv.n225.core.container;
 
-import java.io.IOException;
 import java.net.URL;
 import java.util.Collection;
 import java.util.LinkedHashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.Map;
-
-import javax.xml.parsers.ParserConfigurationException;
 
 import jp.emcom.adv.n225.core.util.UtilURL;
 import jp.emcom.adv.n225.core.util.UtilXml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
-import org.xml.sax.SAXException;
 
 /**
  * 
- * @author alex
- *
+ * @author zhangyf
+ * 
  */
 public class ContainerConfig {
 
-    protected static Map<String, Container> containers = new LinkedHashMap<String, Container>();
+	protected static Map<String, Container> containers = new LinkedHashMap<String, Container>();
 
-    public static Container getContainer(String containerName, String configFile) throws ContainerException {
-        Container container = containers.get(containerName);
-        if (container == null) {
-            synchronized (ContainerConfig.class) {
-                container = containers.get(containerName);
-                if (container == null) {
-                    if (configFile == null) {
-                        throw new ContainerException("Container config file cannot be null");
-                    }
-                    new ContainerConfig(configFile);
-                    container = (Container) containers.get(containerName);
-                }
-            }
-            if (container == null) {
-                throw new ContainerException("No container found with the name : " + containerName);
-            }
-        }
-        return container;
-    }
+	public static Container getContainer(String containerName, String configFile) throws Exception {
+		Container container = containers.get(containerName);
+		if (container == null) {
+			synchronized (ContainerConfig.class) {
+				container = containers.get(containerName);
+				if (container == null) {
+					if (configFile == null) {
+						throw new Exception("Container config file cannot be null");
+					}
+					new ContainerConfig(configFile);
+					container = containers.get(containerName);
+				}
+			}
+			if (container == null) {
+				throw new Exception("No container found with the name: " + containerName);
+			}
+		}
+		return container;
+	}
 
-    public static Collection<Container> getContainers(String configFile) throws ContainerException {
-        if (containers.size() == 0) {
-            synchronized (ContainerConfig.class) {
-                if (containers.size() == 0) {
-                    if (configFile == null) {
-                        throw new ContainerException("Container config file cannot be null");
-                    }
-                    new ContainerConfig(configFile);
-                }
-            }
-            if (containers.size() == 0) {
-                throw new ContainerException("No containers loaded; problem with configuration");
-            }
-        }
-        return containers.values();
-    }
+	public static Collection<Container> getContainers(String configFile) throws Exception {
+		if (containers.size() == 0) {
+			synchronized (ContainerConfig.class) {
+				if (containers.size() == 0) {
+					if (configFile == null) {
+						throw new Exception("Container config file cannot be null");
+					}
+					new ContainerConfig(configFile);
+				}
+			}
+			if (containers.size() == 0) {
+				throw new Exception("No containers loaded, problem with configuration");
+			}
+		}
+		return containers.values();
+	}
 
-    public static String getPropertyValue(ContainerConfig.Container parentProp, String name, String defaultValue) {
-        ContainerConfig.Container.Property prop = parentProp.getProperty(name);
-        if (prop == null || prop.value == null || prop.value.length() == 0) {
-            return defaultValue;
-        } else {
-            return prop.value;
-        }
-    }
+	protected ContainerConfig(String configFileLocation) throws Exception {
+		// load the config file
+		URL xmlUrl = UtilURL.fromResource(configFileLocation);
+		if (xmlUrl == null) {
+			throw new Exception("Could not find " + configFileLocation + " master container configuration");
+		}
 
-    public static int getPropertyValue(ContainerConfig.Container parentProp, String name, int defaultValue) {
-        ContainerConfig.Container.Property prop = parentProp.getProperty(name);
-        if (prop == null || prop.value == null || prop.value.length() == 0) {
-            return defaultValue;
-        } else {
-            int num = defaultValue;
-            try {
-                num = Integer.parseInt(prop.value);
-            } catch (Exception e) {
-                return defaultValue;
-            }
-            return num;
-        }
-    }
+		// read the document
+		Document containerDocument = UtilXml.readXmlDocument(xmlUrl);
 
-    public static boolean getPropertyValue(ContainerConfig.Container parentProp, String name, boolean defaultValue) {
-        ContainerConfig.Container.Property prop = parentProp.getProperty(name);
-        if (prop == null || prop.value == null || prop.value.length() == 0) {
-            return defaultValue;
-        } else {
-            return "true".equalsIgnoreCase(prop.value);
-        }
-    }
+		// root element
+		Element root = containerDocument.getDocumentElement();
 
-    public static String getPropertyValue(ContainerConfig.Container.Property parentProp, String name, String defaultValue) {
-        ContainerConfig.Container.Property prop = parentProp.getProperty(name);
-        if (prop == null || prop.value == null || prop.value.length() == 0) {
-            return defaultValue;
-        } else {
-            return prop.value;
-        }
-    }
+		// containers
+		for (Element curElement : UtilXml.childElementList(root, "container")) {
+			Container container = new Container(curElement);
+			containers.put(container.name, container);
+		}
+	}
 
-    public static int getPropertyValue(ContainerConfig.Container.Property parentProp, String name, int defaultValue) {
-        ContainerConfig.Container.Property prop = parentProp.getProperty(name);
-        if (prop == null || prop.value == null || prop.value.length() == 0) {
-            return defaultValue;
-        } else {
-            int num = defaultValue;
-            try {
-                num = Integer.parseInt(prop.value);
-            } catch (Exception e) {
-                return defaultValue;
-            }
-            return num;
-        }
-    }
+	public static class Container {
+		public String name;
+		public String className;
+		public Map<String, Property> properties;
 
-    public static boolean getPropertyValue(ContainerConfig.Container.Property parentProp, String name, boolean defaultValue) {
-        ContainerConfig.Container.Property prop = parentProp.getProperty(name);
-        if (prop == null || prop.value == null || prop.value.length() == 0) {
-            return defaultValue;
-        } else {
-            return "true".equalsIgnoreCase(prop.value);
-        }
-    }
+		public Container(Element element) {
+			this.name = element.getAttribute("name");
+			this.className = element.getAttribute("class");
 
-    protected ContainerConfig() {
-    }
+			properties = new LinkedHashMap<String, Property>();
+			for (Element curElement : UtilXml.childElementList(element, "property")) {
+				Property property = new Property(curElement);
+				properties.put(property.name, property);
+			}
+		}
 
-    protected ContainerConfig(String configFileLocation) throws ContainerException {
-        // load the config file
-        URL xmlUrl = UtilURL.fromResource(configFileLocation);
-        if (xmlUrl == null) {
-            throw new ContainerException("Could not find " + configFileLocation + " master container configuration");
-        }
+		public Property getProperty(String name) {
+			return properties.get(name);
+		}
 
-        // read the document
-        Document containerDocument = null;
-        try {
-            containerDocument = UtilXml.readXmlDocument(xmlUrl);
-        } catch (SAXException e) {
-            throw new ContainerException("Error reading the container config file: " + xmlUrl, e);
-        } catch (ParserConfigurationException e) {
-            throw new ContainerException("Error reading the container config file: " + xmlUrl, e);
-        } catch (IOException e) {
-            throw new ContainerException("Error reading the container config file: " + xmlUrl, e);
-        }
+		public static class Property {
+			public String name;
+			public String value;
+			public Map<String, Property> properties;
 
-        // root element
-        Element root = containerDocument.getDocumentElement();
+			public Property(Element element) {
+				this.name = element.getAttribute("name");
+				this.value = element.getAttribute("value");
+				if (value == null || value.length() == 0) {
+					this.value = UtilXml.childElementValue(element, "property-value");
+				}
 
-        // containers
-        for (Element curElement: UtilXml.childElementList(root, "container")) {
-            Container container = new Container(curElement);
-            containers.put(container.name, container);
-        }
-    }
+				properties = new LinkedHashMap<String, Property>();
+				for (Element curElement : UtilXml.childElementList(element, "property")) {
+					Property property = new Property(curElement);
+					properties.put(property.name, property);
+				}
+			}
 
-    public static class Container {
-        public String name;
-        public String className;
-        public Map<String, Property> properties;
-
-        public Container(Element element) {
-            this.name = element.getAttribute("name");
-            this.className = element.getAttribute("class");
-
-            properties = new LinkedHashMap<String, Property>();
-            for (Element curElement: UtilXml.childElementList(element, "property")) {
-                Property property = new Property(curElement);
-                properties.put(property.name, property);
-            }
-        }
-
-        public Property getProperty(String name) {
-            return properties.get(name);
-        }
-
-        public List<Property> getPropertiesWithValue(String value) {
-            List<Property> props = new LinkedList<Property>();
-            if (properties != null && properties.size() > 0) {
-                for (Property p: properties.values()) {
-                    if (p != null && value.equals(p.value)) {
-                        props.add(p);
-                    }
-                }
-            }
-            return props;
-        }
-
-        public static class Property {
-            public String name;
-            public String value;
-            public Map<String, Property> properties;
-
-            public Property(Element element) {
-                this.name = element.getAttribute("name");
-                this.value = element.getAttribute("value");
-                if (value != null && value.length() > 0) {
-                    this.value = UtilXml.childElementValue(element, "property-value");
-                }
-
-                properties = new LinkedHashMap<String, Property>();
-                for (Element curElement: UtilXml.childElementList(element, "property")) {
-                    Property property = new Property(curElement);
-                    properties.put(property.name, property);
-                }
-            }
-
-            public Property getProperty(String name) {
-                return properties.get(name);
-            }
-
-            public List<Property> getPropertiesWithValue(String value) {
-                List<Property> props = new LinkedList<Property>();
-                if (properties != null && properties.size() > 0) {
-                    for (Property p: properties.values()) {
-                        if (p != null && value.equals(p.value)) {
-                            props.add(p);
-                        }
-                    }
-                }
-                return props;
-            }
-        }
-    }
+			public Property getProperty(String name) {
+				return properties.get(name);
+			}
+		}
+	}
 }
