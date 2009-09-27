@@ -5,18 +5,17 @@ import java.io.IOException;
 import java.io.ObjectInput;
 import java.io.ObjectOutput;
 import java.lang.reflect.Method;
+import java.util.concurrent.SynchronousQueue;
+import java.util.concurrent.ThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import jp.emcom.adv.common.messaging.MessageHandler;
 import jp.emcom.adv.common.messaging.MessagingException;
+import jp.emcom.adv.common.messaging.Messenger;
 import jp.emcom.adv.common.messaging.Publisher;
 import jp.emcom.adv.common.messaging.RepliableMessage;
-import jp.emcom.adv.common.messaging.Destination.Domain;
-import jp.emcom.adv.common.messaging.impl.DefaultMessengerFactory;
-import jp.emcom.adv.common.messaging.impl.jms.JmsDestination;
-import jp.emcom.adv.common.messaging.impl.jms.JmsProvider;
-import jp.emcom.adv.common.messaging.utils.mdb.AbstractMessageDrivenBean;
-import jp.emcom.adv.common.messaging.utils.mdb.MessageDrivenBean;
-import jp.emcom.adv.n225.test.messaging.Destination;
+import jp.emcom.adv.common.messaging.Subscriber;
+import jp.emcom.adv.n225.core.messaging.Destinations;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -37,52 +36,59 @@ public class MessagingAdapter extends ProxyFactoryBean implements InitializingBe
 		DisposableBean, MethodInterceptor, MessageHandler<InvocationWrapper> {
 	
 	private final static Logger log = LoggerFactory.getLogger(MessagingAdapter.class);
+	
+	/* common config */
+	private Messenger.Factory factory; // required. inject for one connection per-app
+	private Destinations destination;
+	private boolean isHost; // default false
 
-	private String expression;
-	private DefaultMessengerFactory factory;
-	private Destination destination;
-	private Domain domain;
-	private Domain replyDomain;
-	private boolean isSyncRun;
-	private boolean isHost;
-	private AbstractMessageDrivenBean<InvocationWrapper> messageDrivenBean;
+	/* client config */
+	private String expression; // optional
+	private boolean isSyncRun; // default false. depend on service method return type and destination definition
+	
+	/* host config */
+	private int corePoolSize; // optional
+	private int maximumPoolSize; // optional
+	private ThreadPoolExecutor executor; // optional
 
+	/* created by init */
 	private Publisher<InvocationWrapper> publisher;
-
+	private Subscriber<InvocationWrapper> subscriber;
+	
 	/*
 	 * inject properties
 	 */
 
-	public void setExpression(String expression) {
-		this.expression = expression;
-	}
-	
-	public void setFactory(DefaultMessengerFactory factory) {
+	public void setFactory(Messenger.Factory factory) {
 		this.factory = factory;
 	}
-	
-	public void setDestination(Destination destination) {
+
+	public void setDestination(Destinations destination) {
 		this.destination = destination;
-	}
-
-	public void setDomain(Domain domain) {
-		this.domain = domain;
-	}
-
-	public void setReplyDomain(Domain replyDomain) {
-		this.replyDomain = replyDomain;
-	}
-
-	public void setSyncRun(boolean isSyncRun) {
-		this.isSyncRun = isSyncRun;
 	}
 
 	public void setHost(boolean isHost) {
 		this.isHost = isHost;
 	}
 
-	public void setMessageDrivenBean(AbstractMessageDrivenBean<InvocationWrapper> messageDrivenBean) {
-		this.messageDrivenBean = messageDrivenBean;
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
+
+	public void setSyncRun(boolean isSyncRun) {
+		this.isSyncRun = isSyncRun;
+	}
+
+	public void setCorePoolSize(int corePoolSize) {
+		this.corePoolSize = corePoolSize;
+	}
+
+	public void setMaximumPoolSize(int maximumPoolSize) {
+		this.maximumPoolSize = maximumPoolSize;
+	}
+
+	public void setExecutor(ThreadPoolExecutor executor) {
+		this.executor = executor;
 	}
 
 	/**
@@ -111,26 +117,29 @@ public class MessagingAdapter extends ProxyFactoryBean implements InitializingBe
 		}
 		
 		this.addAdvisor(advisor);
-		
-		this.setProxyTargetClass(true);
 	}
 
 	/**
 	 * Initialize messaging
 	 */
 	private void initMessaging() {
-		JmsDestination dest = new JmsDestination(destination.toString(), domain, new JmsProvider(), replyDomain);
+		// init executor
+		if (isHost) {
+			if (executor == null && corePoolSize != 0 && maximumPoolSize != 0) {
+				executor = new ThreadPoolExecutor(corePoolSize, maximumPoolSize,
+		                60L, TimeUnit.SECONDS,
+		                new SynchronousQueue<Runnable>());
+			}
+		}
 		
 		// init publisher
-		publisher = factory.getPublisher(dest);
+		publisher = factory.getPublisher(destination.getDestination());
 		
 		// init subscriber
 		if (isHost) {
-			if (messageDrivenBean == null) {
-				messageDrivenBean = new MessageDrivenBean<InvocationWrapper>();
-			}
+			Subscriber<InvocationWrapper> subscriber = factory.getSubscriber(destination.getDestination());
 			
-			// TODO
+			subscriber.addMessageHandler(this);
 		}
 	}
 
@@ -139,7 +148,8 @@ public class MessagingAdapter extends ProxyFactoryBean implements InitializingBe
 	 */
 	public void destroy() throws Exception {
 		if (publisher != null) publisher.stop(0);
-		if (messageDrivenBean != null) messageDrivenBean.stop(0);
+		if (subscriber != null) subscriber.stop(0);
+		if (executor != null) executor.shutdown();
 	}
 
 	/**
@@ -158,7 +168,7 @@ public class MessagingAdapter extends ProxyFactoryBean implements InitializingBe
 			return null;
 		} else {
 			
-			//TODO return send OK
+			// Should be void method proxy.
 			return null;
 		}
 	}
@@ -166,23 +176,39 @@ public class MessagingAdapter extends ProxyFactoryBean implements InitializingBe
 	/**
 	 * MessageHandler implementation
 	 */
-	@SuppressWarnings("unchecked")
-	public void onMessage(InvocationWrapper invoker) {
-		try {
-			Object result = invoker.invoke(this.getTargetSource().getTarget());
-			
-			// send back the result.
-			RepliableMessage<Object> replier = (RepliableMessage<Object>) invoker;
-			
-			replier.reply(result);
-			
-		} catch (Exception e) {
-			log.error("Service invoke error. expression=" + expression, e);
+	public void onMessage(final InvocationWrapper invoker) {
+		if (executor != null) {
+			executor.submit(new Runnable() {
+				public void run() {
+					invoke(invoker);
+				}
+			});
+		} else {
+			invoke(invoker);
 		}
 	}
 
+	@SuppressWarnings("unchecked")
+	private void invoke(InvocationWrapper invoker) {
+		try {
+			Object result = invoker.invoke(this.getTargetSource().getTarget());
+			
+			if (result != null && invoker instanceof RepliableMessage) {
+				// send back the result
+				RepliableMessage<Object> replier = (RepliableMessage<Object>) invoker;
+				replier.reply(result);
+			}
+			
+		} catch (Throwable e) {
+			log.error("Service invoke error. targetClass=" + this.getTargetClass() + ", methodName" + invoker.getMethodName(), e);
+		}
+	}
+
+	/**
+	 * MessageHandler implementation
+	 */
 	public void onException(MessagingException e) {
-		log.error("Service host listen message error. expression=" + expression, e);
+		log.error("Service host listen message error. targetClass=" + this.getTargetClass(), e);
 	}
 }
 
@@ -209,10 +235,22 @@ class InvocationWrapper implements Externalizable {
 		return method.invoke(target, arguments);
 	}
 	
+	public String getMethodName() {
+		return methodName;
+	}
+
+	public Class<?>[] getParameterTypes() {
+		return parameterTypes;
+	}
+
+	public Object[] getArguments() {
+		return arguments;
+	}
+	
 	/*
 	 * Externalizable
 	 */
-	
+
 	public void writeExternal(ObjectOutput out) throws IOException {
 		out.writeObject(methodName);
 		out.writeObject(parameterTypes);
