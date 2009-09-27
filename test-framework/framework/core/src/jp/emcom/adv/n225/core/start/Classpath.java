@@ -9,6 +9,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.StringTokenizer;
 
+/**
+ * 
+ * @author zhangyf
+ * 
+ */
 public class Classpath {
 
 	private List<File> elements = new ArrayList<File>();
@@ -27,6 +32,17 @@ public class Classpath {
 		return false;
 	}
 
+	public boolean addClasspath(String s) {
+		boolean added = false;
+		if (s != null) {
+			StringTokenizer t = new StringTokenizer(s, File.pathSeparator);
+			while (t.hasMoreTokens()) {
+				added |= addComponent(t.nextToken());
+			}
+		}
+		return added;
+	}
+
 	public boolean addComponent(File component) {
 		if (component != null) {
 			try {
@@ -43,27 +59,6 @@ public class Classpath {
 		return false;
 	}
 
-	public boolean addClasspath(String s) {
-		boolean added = false;
-		if (s != null) {
-			StringTokenizer t = new StringTokenizer(s, File.pathSeparator);
-			while (t.hasMoreTokens()) {
-				added |= addComponent(t.nextToken());
-			}
-		}
-		return added;
-	}
-
-	private void appendPath(StringBuilder cp, String path) {
-		if (path.indexOf(' ') >= 0) {
-			cp.append('\"');
-			cp.append(path);
-			cp.append('"');
-		} else {
-			cp.append(path);
-		}
-	}
-
 	public String toString() {
 		StringBuilder cp = new StringBuilder(1024);
 		int cnt = elements.size();
@@ -77,21 +72,14 @@ public class Classpath {
 		return cp.toString();
 	}
 
-	public URL[] getUrls() {
-		int cnt = elements.size();
-		URL[] urls = new URL[cnt];
-		for (int i = 0; i < cnt; i++) {
-			try {
-				urls[i] = elements.get(i).toURI().toURL();
-			} catch (MalformedURLException e) {
-				// note: this is printing right to the console because at this
-				// point we don't have the rest of the system up, not even the
-				// logging stuff
-				System.out.println("Error adding classpath entry: " + e.toString());
-				e.printStackTrace();
-			}
+	private void appendPath(StringBuilder cp, String path) {
+		if (path.indexOf(' ') >= 0) {
+			cp.append('"');
+			cp.append(path);
+			cp.append('"');
+		} else {
+			cp.append(path);
 		}
-		return urls;
 	}
 
 	public ClassLoader getClassLoader() {
@@ -107,7 +95,20 @@ public class Classpath {
 		return new URLClassLoader(urls, parent);
 	}
 
-	public List<File> getElements() {
-		return elements;
+	private URL[] getUrls() {
+		int cnt = elements.size();
+		URL[] urls = new URL[cnt];
+		for (int i = 0; i < cnt; i++) {
+			try {
+				urls[i] = elements.get(i).toURI().toURL();
+			} catch (MalformedURLException e) {
+				// note: this is printing right to the console because at this
+				// point we don't have the rest of the system up, not even the
+				// logging stuff
+				System.out.println("Error adding classpath entry: " + e.toString());
+				e.printStackTrace();
+			}
+		}
+		return urls;
 	}
 }
