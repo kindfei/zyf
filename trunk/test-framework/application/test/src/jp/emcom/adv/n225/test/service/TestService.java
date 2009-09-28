@@ -4,8 +4,16 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 public class TestService {
+	private String name;
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+	
+	
+
 	public String sayHello() {
-		return "Hello!";
+		return name + " Hello!";
 	}
 	
 	public String sayHello(String name) {
@@ -13,7 +21,7 @@ public class TestService {
 	}
 	
 	public String sayHi() {
-		return "Hi!";
+		return name + " Hi!";
 	}
 	
 	public String sayHi(String name) {

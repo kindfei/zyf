@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<component name="test"
+<component name="test" enabled="true"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
     <resource-loader name="local" type="component"/>
-    <resource-loader name="core" prepend-env="application.home" prefix="/framework/core/" type="url"/>
+    <resource-loader name="core" prepend-env="application.home" prefix="/framework/core/" type="file"/>
     
     <classpath type="jar" location="build/lib/*"/>
     <classpath type="dir" location="config"/>

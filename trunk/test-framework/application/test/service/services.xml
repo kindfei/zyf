@@ -13,7 +13,7 @@
 	<bean id="sayHelloAdapter" class="jp.emcom.adv.n225.core.service.MessagingAdapter">
 		<property name="targetName" value="testService" />
 		<property name="expression" value="execution(* jp.emcom.adv.n225.test.service.TestService.sayHello(String))" />
-		<property name="destination" value="sayHelloDestination" />
+		<property name="destination" value="systemMonitorAlarm" />
 		<property name="syncRun" value="true" />
 		<property name="host" value="true" />
 	</bean>
@@ -21,7 +21,7 @@
 	<bean id="sayHiAdapter" class="jp.emcom.adv.n225.core.service.MessagingAdapter">
 		<property name="targetName" value="sayHelloAdapter" />
 		<property name="expression" value="execution(* jp.emcom.adv.n225.test.service.TestService.sayHi(String))" />
-		<property name="destination" value="sayHiDestination" />
+		<property name="destination" value="systemMonitorAlarm" />
 	</bean>
 
 </beans>
