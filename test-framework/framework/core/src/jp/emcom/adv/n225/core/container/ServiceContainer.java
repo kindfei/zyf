@@ -9,11 +9,11 @@ import jp.emcom.adv.n225.core.component.ComponentConfig;
 import jp.emcom.adv.n225.core.component.ComponentResourceHandler;
 import jp.emcom.adv.n225.core.component.ComponentConfig.ServiceResourceInfo;
 
-import org.springframework.context.ApplicationContext;
+import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.FileSystemXmlApplicationContext;
 
 public class ServiceContainer implements Container {
-	Map<String, ApplicationContext> service = new HashMap<String, ApplicationContext>();
+	Map<String, AbstractApplicationContext> service = new HashMap<String, AbstractApplicationContext>();
 
 	public void init(String configFile) throws Exception {
 		Map<String, List<ServiceResourceInfo>> infosMap = ComponentConfig.getAllServiceResourceInfosByName("spring");
@@ -36,7 +36,9 @@ public class ServiceContainer implements Container {
 	}
 
 	public void stop() throws Exception {
-
+		for (AbstractApplicationContext context : service.values()) {
+			context.close();
+		}
 	}
 
 }
