@@ -10,33 +10,20 @@ import javax.xml.parsers.DocumentBuilder;
 import javax.xml.parsers.DocumentBuilderFactory;
 import javax.xml.parsers.ParserConfigurationException;
 
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.w3c.dom.Node;
-import org.xml.sax.InputSource;
 import org.xml.sax.SAXException;
-
-import com.sun.org.apache.xerces.internal.parsers.DOMParser;
-import com.sun.org.apache.xerces.internal.xni.Augmentations;
-import com.sun.org.apache.xerces.internal.xni.NamespaceContext;
-import com.sun.org.apache.xerces.internal.xni.QName;
-import com.sun.org.apache.xerces.internal.xni.XMLAttributes;
-import com.sun.org.apache.xerces.internal.xni.XMLLocator;
-import com.sun.org.apache.xerces.internal.xni.XMLResourceIdentifier;
-import com.sun.org.apache.xerces.internal.xni.XMLString;
-import com.sun.org.apache.xerces.internal.xni.XNIException;
 
 /**
  * 
- * @author alex
- * 
+ * @author zhangyf
+ *
  */
 public class UtilXml {
-	private static final Logger log = LoggerFactory.getLogger(UtilXml.class);//TODO
-	
-	public static Document readXmlDocument(URL url) throws SAXException, ParserConfigurationException, IOException {
+
+	public static Document readXmlDocument(URL url) throws SAXException,
+			ParserConfigurationException, IOException {
 		if (url == null) {
 			return null;
 		}
@@ -46,7 +33,8 @@ public class UtilXml {
 		return document;
 	}
 
-	public static Document readXmlDocument(InputStream is) throws SAXException, ParserConfigurationException, IOException {
+	public static Document readXmlDocument(InputStream is) throws SAXException,
+			ParserConfigurationException, IOException {
 		if (is == null) {
 			return null;
 		}
@@ -59,7 +47,12 @@ public class UtilXml {
 		return document;
 	}
 
-	/** Return a List of Element objects that are children of the given element */
+	/**
+	 * Return a List of Element objects that are children of the given element
+	 * 
+	 * @param element
+	 * @return
+	 */
 	public static List<? extends Element> childElementList(Element element) {
 		if (element == null)
 			return null;
@@ -87,7 +80,8 @@ public class UtilXml {
 	 * @param childElementName
 	 * @return
 	 */
-	public static List<? extends Element> childElementList(Element element, String childElementName) {
+	public static List<? extends Element> childElementList(Element element,
+			String childElementName) {
 		if (element == null)
 			return null;
 
@@ -96,7 +90,9 @@ public class UtilXml {
 
 		if (node != null) {
 			do {
-				if (node.getNodeType() == Node.ELEMENT_NODE && (childElementName == null || childElementName.equals(node.getNodeName()))) {
+				if (node.getNodeType() == Node.ELEMENT_NODE
+						&& (childElementName == null || childElementName
+								.equals(node.getNodeName()))) {
 					Element childElement = (Element) node;
 
 					elements.add(childElement);
@@ -113,7 +109,8 @@ public class UtilXml {
 	 * @param childElementName
 	 * @return
 	 */
-	public static String childElementValue(Element element, String childElementName) {
+	public static String childElementValue(Element element,
+			String childElementName) {
 		if (element == null)
 			return null;
 		// get the value of the first element with the given name
@@ -131,7 +128,8 @@ public class UtilXml {
 	 * @param defaultValue
 	 * @return
 	 */
-	public static String childElementValue(Element element, String childElementName, String defaultValue) {
+	public static String childElementValue(Element element,
+			String childElementName, String defaultValue) {
 		if (element == null)
 			return defaultValue;
 		// get the value of the first element with the given name
@@ -163,7 +161,8 @@ public class UtilXml {
 
 		StringBuilder valueBuffer = new StringBuilder();
 		do {
-			if (textNode.getNodeType() == Node.CDATA_SECTION_NODE || textNode.getNodeType() == Node.TEXT_NODE) {
+			if (textNode.getNodeType() == Node.CDATA_SECTION_NODE
+					|| textNode.getNodeType() == Node.TEXT_NODE) {
 				valueBuffer.append(textNode.getNodeValue());
 			}
 		} while ((textNode = textNode.getNextSibling()) != null);
@@ -178,7 +177,8 @@ public class UtilXml {
 	 * @param childElementName
 	 * @return
 	 */
-	public static Element firstChildElement(Element element, String childElementName) {
+	public static Element firstChildElement(Element element,
+			String childElementName) {
 		if (element == null)
 			return null;
 		if (childElementName == null || childElementName.length() == 0)
@@ -188,7 +188,9 @@ public class UtilXml {
 
 		if (node != null) {
 			do {
-				if (node.getNodeType() == Node.ELEMENT_NODE && (childElementName == null || childElementName.equals(node.getNodeName()))) {
+				if (node.getNodeType() == Node.ELEMENT_NODE
+						&& (childElementName == null || childElementName
+								.equals(node.getNodeName()))) {
 					Element childElement = (Element) node;
 					return childElement;
 				}

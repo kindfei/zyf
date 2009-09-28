@@ -15,19 +15,20 @@ import javax.xml.parsers.ParserConfigurationException;
 import jp.emcom.adv.n225.core.util.UtilURL;
 import jp.emcom.adv.n225.core.util.UtilXml;
 
-import org.apache.log4j.Logger;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;
 import org.xml.sax.SAXException;
 
 /**
  * 
- * @author alex
- * 
+ * @author zhangyf
+ *
  */
 public class ComponentConfig {
 
-	private static Logger log;// TODO
+	private static Logger log = LoggerFactory.getLogger(ComponentConfig.class);
 
 	public static final String COMPONENT_XML_FILENAME = "component.xml";
 
@@ -350,26 +351,6 @@ public class ComponentConfig {
 		}
 	}
 
-	public static class ResourceInfo {
-		public ComponentConfig componentConfig;
-		public String loader;
-		public String location;
-
-		public ResourceInfo(ComponentConfig componentConfig, Element element) {
-			this.componentConfig = componentConfig;
-			this.loader = element.getAttribute("loader");
-			this.location = element.getAttribute("location");
-		}
-
-		public ComponentResourceHandler createResourceHandler() {
-			return new ComponentResourceHandler(componentConfig.getGlobalName(), loader, location);
-		}
-
-		public String getLocation() {
-			return location;
-		}
-	}
-
 	public static class ClasspathInfo {
 		public ComponentConfig componentConfig;
 		public String type;
@@ -388,6 +369,26 @@ public class ComponentConfig {
 		public ServiceResourceInfo(ComponentConfig componentConfig, Element element) {
 			super(componentConfig, element);
 			this.type = element.getAttribute("type");
+		}
+	}
+
+	public static class ResourceInfo {
+		public ComponentConfig componentConfig;
+		public String loader;
+		public String location;
+
+		public ResourceInfo(ComponentConfig componentConfig, Element element) {
+			this.componentConfig = componentConfig;
+			this.loader = element.getAttribute("loader");
+			this.location = element.getAttribute("location");
+		}
+
+		public ComponentResourceHandler createResourceHandler() {
+			return new ComponentResourceHandler(componentConfig.getGlobalName(), loader, location);
+		}
+
+		public String getLocation() {
+			return location;
 		}
 	}
 }
