@@ -15,7 +15,7 @@ import jp.emcom.adv.common.messaging.Messenger;
 import jp.emcom.adv.common.messaging.Publisher;
 import jp.emcom.adv.common.messaging.RepliableMessage;
 import jp.emcom.adv.common.messaging.Subscriber;
-import jp.emcom.adv.n225.core.messaging.Destinations;
+import jp.emcom.adv.n225.core.utils.messaging.Destinations;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
