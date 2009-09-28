@@ -7,17 +7,6 @@
            http://www.springframework.org/schema/tx 
            http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
 
-	<bean id="testService" class="jp.emcom.adv.n225.test.service.TestService">
-	</bean>
-
-	<bean id="sayHelloAdapter" class="jp.emcom.adv.n225.core.service.MessagingAdapter">
-		<property name="targetName" value="testService" />
-		<property name="expression" value="execution(* jp.emcom.adv.n225.test.service.TestService.sayHello(String))" />
-		<property name="destination" value="sayHelloDestination" />
-		<property name="syncRun" value="true" />
-		<property name="host" value="true" />
-	</bean>
-
 	<bean id="sayHiAdapter" class="jp.emcom.adv.n225.core.service.MessagingAdapter">
 		<property name="targetName" value="sayHelloAdapter" />
 		<property name="expression" value="execution(* jp.emcom.adv.n225.test.service.TestService.sayHi(String))" />
