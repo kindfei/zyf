@@ -3,8 +3,6 @@ package jp.emcom.adv.n225.core.component;
 import java.io.InputStream;
 import java.net.URL;
 
-import jp.emcom.adv.n225.core.config.GenericConfigException;
-import jp.emcom.adv.n225.core.config.ResourceHandler;
 import jp.emcom.adv.n225.core.util.UtilXml;
 
 import org.w3c.dom.Document;
@@ -15,7 +13,7 @@ import org.w3c.dom.Element;
  * @author alex
  * 
  */
-public class ComponentResourceHandler implements ResourceHandler {
+public class ComponentResourceHandler {
 
 	/**
 	 * 
@@ -46,31 +44,23 @@ public class ComponentResourceHandler implements ResourceHandler {
 		return this.location;
 	}
 
-	public Document getDocument() throws GenericConfigException {
-		try {
-			return UtilXml.readXmlDocument(this.getStream(), true);
-		} catch (org.xml.sax.SAXException e) {
-			throw new GenericConfigException("Error reading " + this.toString(), e);
-		} catch (javax.xml.parsers.ParserConfigurationException e) {
-			throw new GenericConfigException("Error reading " + this.toString(), e);
-		} catch (java.io.IOException e) {
-			throw new GenericConfigException("Error reading " + this.toString(), e);
-		}
+	public Document getDocument() throws Exception {
+		return UtilXml.readXmlDocument(this.getStream(), true);
 	}
 
-	public InputStream getStream() throws GenericConfigException {
+	public InputStream getStream() throws Exception {
 		return ComponentConfig.getStream(componentName, loaderName, location);
 	}
 
-	public URL getURL() throws GenericConfigException {
+	public URL getURL() throws Exception {
 		return ComponentConfig.getURL(componentName, loaderName, location);
 	}
 
-	public boolean isFileResource() throws GenericConfigException {
+	public boolean isFileResource() throws Exception {
 		return ComponentConfig.isFileResourceLoader(componentName, loaderName);
 	}
 
-	public String getFullLocation() throws GenericConfigException {
+	public String getFullLocation() throws Exception {
 		return ComponentConfig.getFullLocation(componentName, loaderName, location);
 	}
 

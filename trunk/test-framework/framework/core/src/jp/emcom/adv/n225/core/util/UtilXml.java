@@ -1,5 +1,6 @@
 package jp.emcom.adv.n225.core.util;
 
+import java.io.IOException;
 import java.io.InputStream;
 import java.net.URL;
 import java.util.ArrayList;
@@ -35,7 +36,7 @@ import com.sun.org.apache.xerces.internal.xni.XNIException;
 public class UtilXml {
 	private static final Logger log = LoggerFactory.getLogger(UtilXml.class);//TODO
 	
-	public static Document readXmlDocument(URL url) throws SAXException, ParserConfigurationException, java.io.IOException {
+	public static Document readXmlDocument(URL url) throws SAXException, ParserConfigurationException, IOException {
 		if (url == null) {
 			return null;
 		}
@@ -45,7 +46,7 @@ public class UtilXml {
 		return document;
 	}
 
-	public static Document readXmlDocument(InputStream is) throws SAXException, ParserConfigurationException, java.io.IOException {
+	public static Document readXmlDocument(InputStream is) throws SAXException, ParserConfigurationException, IOException {
 		if (is == null) {
 			return null;
 		}
@@ -59,7 +60,7 @@ public class UtilXml {
 	}
 
 	public static Document readXmlDocument(InputStream is, boolean withPosition) throws SAXException,
-			ParserConfigurationException, java.io.IOException {
+			ParserConfigurationException, IOException {
 		if (!withPosition) {
 			return readXmlDocument(is);
 		}
