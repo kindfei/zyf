@@ -1,13 +1,11 @@
 package jp.emcom.adv.n225.core.component;
 
-import jp.emcom.adv.n225.core.config.GenericConfigException;
-
 /**
  * 
  * @author alex
  * 
  */
-public class ComponentException extends GenericConfigException {
+public class ComponentException extends Exception {
 
 	/**
 	 * 
