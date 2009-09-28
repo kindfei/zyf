@@ -4,16 +4,12 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
-import org.apache.log4j.Logger;
-
 /**
  * 
- * @author alex
- *
+ * @author zhangyf
+ * 
  */
 public class UtilURL {
-
-	private static Logger log; //TODO
 
 	public static URL fromClass(Class<?> contextClass) {
 		String resourceName = contextClass.getName();
@@ -83,7 +79,7 @@ public class UtilURL {
 		try {
 			if (file.exists())
 				url = file.toURI().toURL();
-		} catch (java.net.MalformedURLException e) {
+		} catch (MalformedURLException e) {
 			e.printStackTrace();
 			url = null;
 		}

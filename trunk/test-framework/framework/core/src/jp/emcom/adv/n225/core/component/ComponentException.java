@@ -2,8 +2,8 @@ package jp.emcom.adv.n225.core.component;
 
 /**
  * 
- * @author alex
- * 
+ * @author zhangyf
+ *
  */
 public class ComponentException extends Exception {
 

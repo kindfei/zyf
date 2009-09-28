@@ -97,10 +97,10 @@ public class ComponentContainer implements Container {
 					def.name = config.getGlobalName();
 				}
 			} catch (Exception e) {
-				log.error("Cannot load component : " + def.name + " @ " + def.location + " : " + e.getMessage());
+				log.error("Cannot load component: {}@{}. {}", new Object[] {def.name, def.location, e.getMessage()});
 			}
 			if (config == null) {
-				log.error("Cannot load component : " + def.name + " @ " + def.location);
+				log.error("Cannot load component: {}@{}. {}", def.name, def.location);
 			} else {
 				this.loadComponent(config);
 			}
@@ -110,10 +110,10 @@ public class ComponentContainer implements Container {
 	}
 
 	private void loadComponentDirectory(String directoryName) {
-		log.info("Auto-Loading component directory : [" + directoryName + "]");
+		log.info("Auto-Loading component directory: {}", directoryName);
 		File parentPath = new File(directoryName);// TODO
 		if (!parentPath.exists() || !parentPath.isDirectory()) {
-			log.error("Auto-Load Component directory not found : " + directoryName);
+			log.error("Auto-Load Component directory not found: {}", directoryName);
 		} else {
 			File componentLoadConfig = new File(parentPath, "component-load.xml");
 			if (componentLoadConfig != null && componentLoadConfig.exists()) {
@@ -138,7 +138,7 @@ public class ComponentContainer implements Container {
 						if (componentPath.isDirectory()) {
 							// make sure we have a component configuraton file
 							String componentLocation = componentPath.getCanonicalPath();
-							File configFile = new File(componentLocation + "/component.xml");// TODO
+							File configFile = new File(componentLocation + "/component.xml"); // TODO
 							if (configFile.exists()) {
 								ComponentConfig config = null;
 								try {
@@ -146,10 +146,10 @@ public class ComponentContainer implements Container {
 									// the internal component name
 									config = ComponentConfig.getComponentConfig(null, componentLocation);
 								} catch (ComponentException e) {
-									log.error("Cannot load component : " + componentPath.getName() + " @ " + componentLocation + " : " + e.getMessage(), e);
+									log.error("Cannot load component: " + componentPath.getName() + "@" + componentLocation, e);
 								}
 								if (config == null) {
-									log.error("Cannot load component : " + componentPath.getName() + " @ " + componentLocation);
+									log.error("Cannot load component: {}@{}. {}", componentPath.getName(), componentLocation);
 								} else {
 									loadComponent(config);
 								}
@@ -166,14 +166,16 @@ public class ComponentContainer implements Container {
 	private void loadComponent(ComponentConfig config) {
 		// make sure the component is enabled
 		if (!config.enabled()) {
-			log.info("Not Loading component : [" + config.getComponentName() + "] (disabled)");
+			log.info("Not Loading component: {} (disabled)", config.getComponentName());
 			return;
 		}
 
-		log.info("Loading component : [" + config.getComponentName() + "]");
+		log.info("Loading component: {}", config.getComponentName());
+		
 		List<ComponentConfig.ClasspathInfo> classpathInfos = config.getClasspathInfos();
 		String configRoot = config.getRootLocation();
 		configRoot = configRoot.replace('\\', '/');
+		
 		// set the root to have a trailing slash
 		if (!configRoot.endsWith("/")) {
 			configRoot = configRoot + "/";
@@ -193,7 +195,7 @@ public class ComponentContainer implements Container {
 						// strip off the slash splat
 						dirLoc = location.substring(0, location.length() - 2);
 					}
-					File path = new File(configRoot + dirLoc);// TODO
+					File path = new File(configRoot + dirLoc); // TODO
 					if (path.exists()) {
 						if (path.isDirectory()) {
 							// load all .jar and .zip files in this directory
@@ -209,10 +211,10 @@ public class ComponentContainer implements Container {
 							classPath.addComponent(configRoot + location);
 						}
 					} else {
-						log.warn("Location '" + configRoot + dirLoc + "' does not exist");
+						log.warn("Location '{}' does not exist", configRoot + dirLoc);
 					}
 				} else {
-					log.error("Classpath type '" + cp.type + "' is not supported; '" + location + "' not loaded");
+					log.error("Classpath type '{}' is not supported; '{}' not loaded", cp.type, location);
 				}
 			}
 		}

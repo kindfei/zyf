@@ -10,8 +10,8 @@ import org.w3c.dom.Element;
 
 /**
  * 
- * @author alex
- * 
+ * @author zhangyf
+ *
  */
 public class ComponentResourceHandler {
 
