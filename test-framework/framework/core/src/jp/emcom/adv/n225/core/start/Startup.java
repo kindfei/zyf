@@ -108,6 +108,8 @@ public class Startup implements Runnable {
 	}
 
 	private void init(boolean fullInit) throws IOException {
+		this.loaders = new ArrayList<StartupLoader>();
+		
 		config = new Config();
 
 		config.readConfig(propsFileName);
