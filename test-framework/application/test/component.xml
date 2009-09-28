@@ -2,11 +2,13 @@
 
 <component name="test"
         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-    <resource-loader name="main" type="component"/>
+    <resource-loader name="local" type="component"/>
+    <resource-loader name="core" prepend-env="application.home" prefix="/framework/core/" type="url"/>
     
     <classpath type="jar" location="build/lib/*"/>
     <classpath type="dir" location="config"/>
     <classpath type="jar" location="lib/*"/>
     
-    <service-resource type="spring" loader="main" location="service/services.xml"/>
+    <service-resource type="spring" loader="local" location="service/services.xml"/>
+    <service-resource type="spring" loader="core" location="service/services.xml"/>
 </component>
