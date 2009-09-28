@@ -45,7 +45,7 @@ public class ComponentResourceHandler {
 	}
 
 	public Document getDocument() throws Exception {
-		return UtilXml.readXmlDocument(this.getStream(), true);
+		return UtilXml.readXmlDocument(this.getStream());
 	}
 
 	public InputStream getStream() throws Exception {
