@@ -118,6 +118,26 @@ public class ComponentConfig {
 		return serviceInfos;
 	}
 
+	public static Map<String, List<ServiceResourceInfo>> getAllServiceResourceInfosByName(String type) {
+		Map<String, List<ServiceResourceInfo>> r = new HashMap<String, List<ServiceResourceInfo>>();
+		List<ServiceResourceInfo> serviceInfos = null;
+		for (ComponentConfig cc : getAllComponents()) {
+			serviceInfos = new ArrayList<ServiceResourceInfo>();
+			List<ServiceResourceInfo> ccServiceInfoList = cc.getServiceResourceInfos();
+			if (type == null || type.length() == 0) {
+				serviceInfos.addAll(ccServiceInfoList);
+			} else {
+				for (ServiceResourceInfo serviceResourceInfo : ccServiceInfoList) {
+					if (type.equals(serviceResourceInfo.type)) {
+						serviceInfos.add(serviceResourceInfo);
+					}
+				}
+			}
+			r.put(cc.getGlobalName(), serviceInfos);
+		}
+		return r;
+	}
+
 	public static boolean isFileResourceLoader(String componentName, String resourceLoaderName) throws ComponentException {
 		ComponentConfig cc = ComponentConfig.getComponentConfig(componentName);
 		if (cc == null) {

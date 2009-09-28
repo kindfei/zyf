@@ -4,4 +4,6 @@
 
     <container name="component-container" class="jp.emcom.adv.n225.core.container.ComponentContainer"/>
 
+    <container name="service-container" class="jp.emcom.adv.n225.core.container.ServiceContainer"/>
+
 </containers>

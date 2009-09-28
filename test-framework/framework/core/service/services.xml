@@ -10,7 +10,7 @@
 	<bean id="sayHiAdapter" class="jp.emcom.adv.n225.core.service.MessagingAdapter">
 		<property name="targetName" value="sayHelloAdapter" />
 		<property name="expression" value="execution(* jp.emcom.adv.n225.test.service.TestService.sayHi(String))" />
-		<property name="destination" value="sayHiDestination" />
+		<property name="destination" value="systemMonitorAlarm" />
 	</bean>
 
 </beans>

@@ -6,7 +6,6 @@ import java.net.URL;
 import jp.emcom.adv.n225.core.util.UtilXml;
 
 import org.w3c.dom.Document;
-import org.w3c.dom.Element;
 
 /**
  * 
@@ -23,12 +22,6 @@ public class ComponentResourceHandler {
 	protected String componentName;
 	protected String loaderName;
 	protected String location;
-
-	public ComponentResourceHandler(String componentName, Element element) {
-		this.componentName = componentName;
-		this.loaderName = element.getAttribute("loader");
-		this.location = element.getAttribute("location");
-	}
 
 	public ComponentResourceHandler(String componentName, String loaderName, String location) {
 		this.componentName = componentName;
