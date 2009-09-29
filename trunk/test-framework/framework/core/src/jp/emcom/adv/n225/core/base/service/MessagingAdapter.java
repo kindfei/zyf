@@ -1,4 +1,4 @@
-package jp.emcom.adv.n225.core.service;
+package jp.emcom.adv.n225.core.base.service;
 
 import java.io.Externalizable;
 import java.io.IOException;

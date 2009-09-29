@@ -1,4 +1,4 @@
-package jp.emcom.adv.n225.core.start;
+package jp.emcom.adv.n225.core.base.start;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -24,7 +24,7 @@ import java.util.concurrent.atomic.AtomicBoolean;
  * 
  */
 public class Startup implements Runnable {
-	private static final String propsFileName = "jp/emcom/adv/n225/core/start/startup.properties";
+	private static final String propsFileName = "jp/emcom/adv/n225/core/base/start/startup.properties";
 
 	private static final String SHUTDOWN_COMMAND = "SHUTDOWN";
 

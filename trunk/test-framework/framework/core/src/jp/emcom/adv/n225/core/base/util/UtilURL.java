@@ -1,4 +1,4 @@
-package jp.emcom.adv.n225.core.util;
+package jp.emcom.adv.n225.core.base.util;
 
 import java.io.File;
 import java.net.MalformedURLException;
@@ -10,17 +10,6 @@ import java.net.URL;
  * 
  */
 public class UtilURL {
-
-	public static URL fromClass(Class<?> contextClass) {
-		String resourceName = contextClass.getName();
-		int dotIndex = resourceName.lastIndexOf('.');
-
-		if (dotIndex != -1)
-			resourceName = resourceName.substring(0, dotIndex);
-		resourceName += ".properties";
-
-		return fromResource(contextClass, resourceName);
-	}
 
 	public static URL fromResource(String resourceName) {
 		return fromResource(resourceName, null);
@@ -107,15 +96,5 @@ public class UtilURL {
 		}
 		newFilename = newFilename + filename;
 		return fromFilename(newFilename);
-	}
-
-	public static String getHomeRelativeLocation(URL fileUrl) {
-		String home = System.getProperty("application.home");
-		String path = fileUrl.getPath();
-		if (path.startsWith(home)) {
-			// note: the +1 is to remove the leading slash
-			path = path.substring(home.length() + 1);
-		}
-		return path;
 	}
 }

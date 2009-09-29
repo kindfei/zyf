@@ -1,4 +1,4 @@
-package jp.emcom.adv.n225.core.container;
+package jp.emcom.adv.n225.core.base.container;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -6,9 +6,9 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.Map;
 
-import jp.emcom.adv.n225.core.component.ComponentConfig;
-import jp.emcom.adv.n225.core.component.ComponentResourceHandler;
-import jp.emcom.adv.n225.core.component.ComponentConfig.ServiceResourceInfo;
+import jp.emcom.adv.n225.core.base.component.ComponentConfig;
+import jp.emcom.adv.n225.core.base.component.ComponentResourceHandler;
+import jp.emcom.adv.n225.core.base.component.ComponentConfig.ServiceResourceInfo;
 import jp.emcom.adv.n225.test.service.TestService;
 
 import org.slf4j.Logger;

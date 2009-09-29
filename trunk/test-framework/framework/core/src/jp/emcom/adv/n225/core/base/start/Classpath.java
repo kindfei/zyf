@@ -1,4 +1,4 @@
-package jp.emcom.adv.n225.core.start;
+package jp.emcom.adv.n225.core.base.start;
 
 import java.io.File;
 import java.io.IOException;

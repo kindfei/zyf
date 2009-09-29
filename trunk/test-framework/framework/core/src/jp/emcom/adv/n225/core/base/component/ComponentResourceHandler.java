@@ -1,9 +1,9 @@
-package jp.emcom.adv.n225.core.component;
+package jp.emcom.adv.n225.core.base.component;
 
 import java.io.InputStream;
 import java.net.URL;
 
-import jp.emcom.adv.n225.core.util.UtilXml;
+import jp.emcom.adv.n225.core.base.util.UtilXml;
 
 import org.w3c.dom.Document;
 

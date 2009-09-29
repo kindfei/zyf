@@ -1,4 +1,4 @@
-package jp.emcom.adv.n225.core.container;
+package jp.emcom.adv.n225.core.base.container;
 
 public interface Container {
 	public void init(String configFile) throws Exception;

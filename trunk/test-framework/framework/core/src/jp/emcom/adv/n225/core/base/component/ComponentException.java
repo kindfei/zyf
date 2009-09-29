@@ -1,4 +1,4 @@
-package jp.emcom.adv.n225.core.component;
+package jp.emcom.adv.n225.core.base.component;
 
 /**
  * 
