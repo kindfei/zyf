@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
-<containers>
+<containers xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
 
     <container name="component-container" class="jp.emcom.adv.n225.core.container.ComponentContainer"/>
 
-    <container name="service-container" class="jp.emcom.adv.n225.core.container.ServiceContainer"/>
+    <container name="service-container" class="jp.emcom.adv.n225.core.container.SpringServiceContainer"/>
 
 </containers>
