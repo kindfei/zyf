@@ -7,10 +7,8 @@
            http://www.springframework.org/schema/tx 
            http://www.springframework.org/schema/tx/spring-tx-2.0.xsd">
 
-	<bean id="sayHiAdapter" class="jp.emcom.adv.n225.core.service.MessagingAdapter">
-		<property name="targetName" value="sayHelloAdapter" />
-		<property name="expression" value="execution(* jp.emcom.adv.n225.test.service.TestService.sayHi(String))" />
-		<property name="destination" value="systemMonitorAlarm" />
+	<bean id="parent2" class="jp.emcom.adv.n225.test.service.TestService">
+		<property name="name" value="child2" />
 	</bean>
 
 </beans>
