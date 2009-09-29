@@ -384,11 +384,15 @@ public class ComponentConfig {
 	}
 
 	public static class ServiceResourceInfo extends ResourceInfo {
+		public String id;
 		public String type;
+		public String parent;
 
 		public ServiceResourceInfo(ComponentConfig componentConfig, Element element) {
 			super(componentConfig, element);
+			this.id = element.getAttribute("id");
 			this.type = element.getAttribute("type");
+			this.parent = element.getAttribute("parent");
 		}
 	}
 
