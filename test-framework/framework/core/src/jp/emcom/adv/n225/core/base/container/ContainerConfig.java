@@ -1,12 +1,12 @@
-package jp.emcom.adv.n225.core.container;
+package jp.emcom.adv.n225.core.base.container;
 
 import java.net.URL;
 import java.util.Collection;
 import java.util.LinkedHashMap;
 import java.util.Map;
 
-import jp.emcom.adv.n225.core.util.UtilURL;
-import jp.emcom.adv.n225.core.util.UtilXml;
+import jp.emcom.adv.n225.core.base.util.UtilURL;
+import jp.emcom.adv.n225.core.base.util.UtilXml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

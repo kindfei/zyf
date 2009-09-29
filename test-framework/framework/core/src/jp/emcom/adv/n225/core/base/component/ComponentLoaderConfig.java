@@ -1,11 +1,11 @@
-package jp.emcom.adv.n225.core.component;
+package jp.emcom.adv.n225.core.base.component;
 
 import java.net.URL;
 import java.util.LinkedList;
 import java.util.List;
 
-import jp.emcom.adv.n225.core.util.UtilURL;
-import jp.emcom.adv.n225.core.util.UtilXml;
+import jp.emcom.adv.n225.core.base.util.UtilURL;
+import jp.emcom.adv.n225.core.base.util.UtilXml;
 
 import org.w3c.dom.Document;
 import org.w3c.dom.Element;

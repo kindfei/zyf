@@ -1,4 +1,4 @@
-package jp.emcom.adv.n225.core.component;
+package jp.emcom.adv.n225.core.base.component;
 
 import java.io.File;
 import java.io.IOException;
@@ -12,8 +12,8 @@ import java.util.Map;
 
 import javax.xml.parsers.ParserConfigurationException;
 
-import jp.emcom.adv.n225.core.util.UtilURL;
-import jp.emcom.adv.n225.core.util.UtilXml;
+import jp.emcom.adv.n225.core.base.util.UtilURL;
+import jp.emcom.adv.n225.core.base.util.UtilXml;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
