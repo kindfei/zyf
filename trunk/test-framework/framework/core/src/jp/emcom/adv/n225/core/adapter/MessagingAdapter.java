@@ -1,4 +1,4 @@
-package jp.emcom.adv.n225.core.base.service;
+package jp.emcom.adv.n225.core.adapter;
 
 import java.io.Externalizable;
 import java.io.IOException;
@@ -15,7 +15,7 @@ import jp.emcom.adv.common.messaging.Messenger;
 import jp.emcom.adv.common.messaging.Publisher;
 import jp.emcom.adv.common.messaging.RepliableMessage;
 import jp.emcom.adv.common.messaging.Subscriber;
-import jp.emcom.adv.n225.core.utils.messaging.Destinations;
+import jp.emcom.adv.n225.core.messaging.DestinationAlias;
 
 import org.aopalliance.intercept.MethodInterceptor;
 import org.aopalliance.intercept.MethodInvocation;
@@ -39,7 +39,7 @@ public class MessagingAdapter extends ProxyFactoryBean implements InitializingBe
 	
 	/* common config */
 	private Messenger.Factory factory; // required. inject for one connection per-app
-	private Destinations destination;
+	private DestinationAlias destination;
 	private boolean isHost; // default false
 
 	/* client config */
@@ -63,7 +63,7 @@ public class MessagingAdapter extends ProxyFactoryBean implements InitializingBe
 		this.factory = factory;
 	}
 
-	public void setDestination(Destinations destination) {
+	public void setDestination(DestinationAlias destination) {
 		this.destination = destination;
 	}
 
