@@ -4,6 +4,8 @@ import java.io.File;
 import java.net.MalformedURLException;
 import java.net.URL;
 
+import static jp.emcom.adv.n225.core.base.start.ConfigurationConstants.*;
+
 /**
  * 
  * @author zhangyf
@@ -80,7 +82,7 @@ public class UtilURL {
 	}
 
 	public static URL fromHomePath(String filename) {
-		String home = System.getProperty("application.home");
+		String home = System.getProperty(APP_HOME);
 		if (home == null) {
 			return null;
 		}

@@ -13,6 +13,7 @@ import jp.emcom.adv.n225.core.base.component.ComponentConfig;
 import jp.emcom.adv.n225.core.base.component.ComponentException;
 import jp.emcom.adv.n225.core.base.component.ComponentLoaderConfig;
 import jp.emcom.adv.n225.core.base.start.Classpath;
+import static jp.emcom.adv.n225.core.base.start.ConfigurationConstants.*;
 
 /**
  * 
@@ -63,7 +64,7 @@ public class ComponentContainer implements Container {
 		// get the components to load
 		List<ComponentLoaderConfig.ComponentDef> components = ComponentLoaderConfig.getRootComponents(loaderConfig);
 
-		String parentPath = System.getProperty("application.home"); // TODO
+		String parentPath = System.getProperty(APP_HOME); // TODO
 
 		// load each component
 		if (components != null) {
