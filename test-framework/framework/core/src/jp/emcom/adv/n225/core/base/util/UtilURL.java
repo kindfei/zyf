@@ -27,8 +27,6 @@ public class UtilURL {
 
 		if (loader != null && url == null)
 			url = loader.getResource(resourceName);
-		if (loader != null && url == null)
-			url = loader.getResource(resourceName + ".properties");
 
 		if (loader == null && url == null) {
 			try {
@@ -41,13 +39,9 @@ public class UtilURL {
 
 		if (url == null)
 			url = loader.getResource(resourceName);
-		if (url == null)
-			url = loader.getResource(resourceName + ".properties");
 
 		if (url == null)
 			url = ClassLoader.getSystemResource(resourceName);
-		if (url == null)
-			url = ClassLoader.getSystemResource(resourceName + ".properties");
 
 		if (url == null)
 			url = fromFilename(resourceName);
