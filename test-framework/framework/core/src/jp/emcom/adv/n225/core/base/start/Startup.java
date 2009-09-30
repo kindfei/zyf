@@ -8,7 +8,6 @@ import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
-import java.lang.reflect.Method;
 import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
@@ -274,26 +273,18 @@ public class Startup implements Runnable {
 	}
 
 	private void setShutdownHook() {
-		try {
-			Method shutdownHook = java.lang.Runtime.class.getMethod("addShutdownHook", new Class[] { java.lang.Thread.class });
-			Thread hook = new Thread() {
-				public void run() {
-					setName("ShutdownHook");
-					shutdownServer();
-					// Try to avoid JVM crash
-					try {
-						Thread.sleep(1000);
-					} catch (Exception e) {
-						e.printStackTrace();
-					}
+		Runtime.getRuntime().addShutdownHook(new Thread() {
+			public void run() {
+				setName("ShutdownHook");
+				shutdownServer();
+				// Try to avoid JVM crash
+				try {
+					Thread.sleep(1000);
+				} catch (Exception e) {
+					e.printStackTrace();
 				}
-			};
-
-			shutdownHook.invoke(Runtime.getRuntime(), new Object[] { hook });
-		} catch (Exception e) {
-			// VM Does not support shutdown hook
-			e.printStackTrace();
-		}
+			}
+		});
 	}
 
 	private String sendShutdownCommand() throws IOException, ConnectException {
