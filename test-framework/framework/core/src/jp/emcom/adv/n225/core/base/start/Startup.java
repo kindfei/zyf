@@ -277,7 +277,6 @@ public class Startup implements Runnable {
 		try {
 			Method shutdownHook = java.lang.Runtime.class.getMethod("addShutdownHook", new Class[] { java.lang.Thread.class });
 			Thread hook = new Thread() {
-				@Override
 				public void run() {
 					setName("ShutdownHook");
 					shutdownServer();
@@ -337,49 +336,29 @@ public class Startup implements Runnable {
 		public void readConfig(String propsFileName) throws IOException {
 			Properties props = this.getPropertiesFile(propsFileName);
 
-			if (appHome == null) {
-				appHome = getProp(props, APP_HOME, ".");
-				if (appHome.equals(".")) {
-					appHome = System.getProperty("user.dir");
-					appHome = appHome.replace('\\', '/');
-				}
-			}
-
-			String serverHost = getProp(props, ADMIN_HOST, "127.0.0.1");
-			adminAddress = InetAddress.getByName(serverHost);
-
-			String adminPortStr = getProp(props, ADMIN_PORT, "0");
-			try {
-				adminPort = Integer.parseInt(adminPortStr);
-			} catch (Exception e) {
-				adminPort = 0;
-			}
-
-			adminKey = getProp(props, ADMIN_KEY, "");
-
-			useShutdownHook = "true".equalsIgnoreCase(getProp(props, ENABLE_HOOK, "true"));
-
-			baseConfig = getHomeProp(props, BASE_CONFIG, "framework/core/config");
-
-			baseLib = getHomeProp(props, BASE_LIB, "framework/core/lib");
-
-			baseJar = getHomeProp(props, BASE_JAR, "framework/core/build/lib");
-
-			containerConfig = getHomeProp(props, CONTAINER_CONFIG, "framework/core/config/containers.xml");
+			appHome = getProp(props, APP_HOME);
+			adminAddress = InetAddress.getByName(getProp(props, ADMIN_HOST));
+			adminPort = Integer.parseInt(getProp(props, ADMIN_PORT));
+			adminKey = getProp(props, ADMIN_KEY);
+			useShutdownHook = "true".equalsIgnoreCase(getProp(props, ENABLE_HOOK));
+			baseConfig = getHomeProp(props, BASE_CONFIG);
+			baseLib = getHomeProp(props, BASE_LIB);
+			baseJar = getHomeProp(props, BASE_JAR);
+			containerConfig = getHomeProp(props, CONTAINER_CONFIG);
 		}
 
-		private String getProp(Properties props, String key, String def) {
+		private String getProp(Properties props, String key) {
 			String value = System.getProperty(key);
 			if (value != null && value.length() > 0)
 				return value;
-			return props.getProperty(key, def);
+			return props.getProperty(key);
 		}
 
-		private String getHomeProp(Properties props, String key, String def) {
+		private String getHomeProp(Properties props, String key) {
 			String value = System.getProperty(key);
 			if (value != null && value.length() > 0)
 				return value;
-			return appHome + "/" + props.getProperty(key, def);
+			return appHome + "/" + props.getProperty(key);
 		}
 
 		private Properties getPropertiesFile(String propsFileName) throws IOException {
