@@ -111,7 +111,7 @@ public class ComponentContainer implements Container {
 
 	private void loadComponentDirectory(String directoryName) {
 		log.info("Auto-Loading component directory: {}", directoryName);
-		File parentPath = new File(directoryName);// TODO
+		File parentPath = new File(directoryName); // TODO
 		if (!parentPath.exists() || !parentPath.isDirectory()) {
 			log.error("Auto-Load Component directory not found: {}", directoryName);
 		} else {
