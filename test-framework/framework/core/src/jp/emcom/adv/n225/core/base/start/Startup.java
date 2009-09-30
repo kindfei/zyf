@@ -13,10 +13,15 @@ import java.net.ConnectException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
-import java.util.ArrayList;
+import java.util.Collection;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Properties;
 import java.util.concurrent.atomic.AtomicBoolean;
+
+import jp.emcom.adv.n225.core.base.container.Container;
+import jp.emcom.adv.n225.core.base.container.ContainerConfig;
+import static jp.emcom.adv.n225.core.base.start.ConfigurationConstants.*;
 
 /**
  * 
@@ -42,7 +47,7 @@ public class Startup implements Runnable {
 
 	private AtomicBoolean serverRunning = new AtomicBoolean(true);
 
-	private List<StartupLoader> loaders;
+	private List<Container> loadedContainers = new LinkedList<Container>();
 
 	/**
 	 * 
@@ -80,10 +85,10 @@ public class Startup implements Runnable {
 	}
 
 	private void startServer() {
-		// start the loaders
-		for (StartupLoader loader : loaders) {
+		// start the containers
+		for (Container container : loadedContainers) {
 			try {
-				loader.start();
+				container.start();
 			} catch (Exception e) {
 				e.printStackTrace();
 				System.exit(99);
@@ -95,20 +100,18 @@ public class Startup implements Runnable {
 		if (!serverStopping.compareAndSet(false, true)) {
 			return;
 		}
-		if (loaders != null && loaders.size() > 0) {
-			for (StartupLoader loader : loaders) {
-				try {
-					loader.unload();
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
+		for (int i = loadedContainers.size(); i > 0; i--) {
+			Container container = loadedContainers.get(i - 1);
+			try {
+				container.stop();
+			} catch (Exception e) {
+				e.printStackTrace();
 			}
 		}
 		serverRunning.set(false);
 	}
 
 	private void init(boolean fullInit) throws IOException {
-		this.loaders = new ArrayList<StartupLoader>();
 		
 		config = new Config();
 
@@ -120,7 +123,7 @@ public class Startup implements Runnable {
 
 			initListenerThread();
 
-			initStartLoaders();
+			initContainers();
 
 			if (config.useShutdownHook) {
 				setShutdownHook();
@@ -132,16 +135,16 @@ public class Startup implements Runnable {
 	}
 
 	private void initClasspath() throws IOException {
-		if (config.coreLib != null) {
-			loadLibs(config.coreLib, true);
+		if (config.baseLib != null) {
+			loadLibs(config.baseLib, true);
 		}
 
-		if (config.coreJar != null) {
-			loadLibs(config.coreJar, true);
+		if (config.baseJar != null) {
+			loadLibs(config.baseJar, true);
 		}
 
-		if (config.coreConfig != null) {
-			classPath.addComponent(config.coreConfig);
+		if (config.baseConfig != null) {
+			classPath.addComponent(config.baseConfig);
 		}
 
 		System.setProperty("java.class.path", classPath.toString());
@@ -228,19 +231,46 @@ public class Startup implements Runnable {
 		}
 	}
 
-	private void initStartLoaders() {
-		// initialize the loaders
-		for (String loaderClassName : config.loaders) {
-			try {
-				Class<?> loaderClass = classloader.loadClass(loaderClassName);
-				StartupLoader loader = (StartupLoader) loaderClass.newInstance();
-				loader.load(config);
-				loaders.add(loader);
-			} catch (Exception e) {
-				e.printStackTrace();
-				System.exit(99);
+	private void initContainers() {
+		// initialize the containers
+		try {
+			Collection<ContainerConfig.Container> containers = ContainerConfig.getContainers(config.containerConfig);
+	
+			if (containers != null) {
+				for (ContainerConfig.Container containerCfg : containers) {
+					loadedContainers.add(loadContainer(containerCfg));
+				}
 			}
+		} catch (Exception e) {
+			e.printStackTrace();
+			System.exit(99);
 		}
+	}
+
+	private Container loadContainer(ContainerConfig.Container containerCfg) throws Exception {
+		// load the container class
+		ClassLoader loader = Thread.currentThread().getContextClassLoader();
+		if (loader == null) {
+			loader = ClassLoader.getSystemClassLoader();
+		}
+
+		Class<?> containerClass = loader.loadClass(containerCfg.className);
+
+		if (containerClass == null) {
+			throw new Exception("Component container class not loaded");
+		}
+
+		// create a new instance of the container object
+		Container containerObj = (Container) containerClass.newInstance();
+
+		if (containerObj == null) {
+			throw new Exception("Unable to create instance of component container");
+		}
+
+		// initialize the container object
+		containerObj.init(config.containerConfig);
+
+		return containerObj;
 	}
 
 	private void setShutdownHook() {
@@ -295,60 +325,47 @@ public class Startup implements Runnable {
 	 */
 	public static class Config {
 		public String appHome;
-		public String coreConfig;
-		public String coreLib;
-		public String coreJar;
+		public String baseConfig;
+		public String baseLib;
+		public String baseJar;
 		public String containerConfig;
 		public InetAddress adminAddress;
 		public int adminPort;
 		public String adminKey;
 		public boolean useShutdownHook;
-		public List<String> loaders;
 
 		public void readConfig(String propsFileName) throws IOException {
 			Properties props = this.getPropertiesFile(propsFileName);
 
 			if (appHome == null) {
-				appHome = getProp(props, "application.home", ".");
+				appHome = getProp(props, APP_HOME, ".");
 				if (appHome.equals(".")) {
 					appHome = System.getProperty("user.dir");
 					appHome = appHome.replace('\\', '/');
 				}
 			}
 
-			String serverHost = getProp(props, "admin.host", "127.0.0.1");
+			String serverHost = getProp(props, ADMIN_HOST, "127.0.0.1");
 			adminAddress = InetAddress.getByName(serverHost);
 
-			String adminPortStr = getProp(props, "admin.port", "0");
+			String adminPortStr = getProp(props, ADMIN_PORT, "0");
 			try {
 				adminPort = Integer.parseInt(adminPortStr);
 			} catch (Exception e) {
 				adminPort = 0;
 			}
 
-			adminKey = getProp(props, "admin.key", "");
+			adminKey = getProp(props, ADMIN_KEY, "");
 
-			useShutdownHook = "true".equalsIgnoreCase(getProp(props, "enable.hook", "true"));
+			useShutdownHook = "true".equalsIgnoreCase(getProp(props, ENABLE_HOOK, "true"));
 
-			coreConfig = getHomeProp(props, "core.config", "framework/core/config");
+			baseConfig = getHomeProp(props, BASE_CONFIG, "framework/core/config");
 
-			coreLib = getHomeProp(props, "core.lib", "framework/core/lib");
+			baseLib = getHomeProp(props, BASE_LIB, "framework/core/lib");
 
-			coreJar = getHomeProp(props, "core.jar", "framework/core/build/lib");
+			baseJar = getHomeProp(props, BASE_JAR, "framework/core/build/lib");
 
-			containerConfig = getHomeProp(props, "container.config", "framework/core/config/containers.xml");
-
-			loaders = new ArrayList<String>();
-			int currentPosition = 1;
-			while (true) {
-				String loaderClass = props.getProperty("start.loader" + currentPosition);
-				if (loaderClass == null || loaderClass.length() == 0) {
-					break;
-				} else {
-					loaders.add(loaderClass);
-					currentPosition++;
-				}
-			}
+			containerConfig = getHomeProp(props, CONTAINER_CONFIG, "framework/core/config/containers.xml");
 		}
 
 		private String getProp(Properties props, String key, String def) {
