@@ -312,22 +312,30 @@ public class Startup implements Runnable {
 		public void readConfig(String propsFileName) throws IOException {
 			Properties props = this.getPropertiesFile(propsFileName);
 
-			appHome = getProp(props, APP_HOME);
-			adminAddress = InetAddress.getByName(getProp(props, ADMIN_HOST));
-			adminPort = Integer.parseInt(getProp(props, ADMIN_PORT));
-			adminKey = getProp(props, ADMIN_KEY);
-			useShutdownHook = "true".equalsIgnoreCase(getProp(props, ENABLE_HOOK));
+            if (appHome == null) {
+            	appHome = props.getProperty(APP_HOME, ".");
+                if (appHome.equals(".")) {
+                	appHome = System.getProperty("user.dir");
+                	appHome = appHome.replace('\\', '/');
+                }
+            }
+            System.setProperty(APP_HOME, appHome);
+            
+			adminAddress = InetAddress.getByName(getProp(props, ADMIN_HOST, "127.0.0.1"));
+			adminPort = Integer.parseInt(getProp(props, ADMIN_PORT, "0"));
+			adminKey = getProp(props, ADMIN_KEY, "NA");
+			useShutdownHook = "true".equalsIgnoreCase(getProp(props, ENABLE_HOOK, "true"));
 			baseConfig = getHomeProp(props, BASE_CONFIG);
 			baseLib = getHomeProp(props, BASE_LIB);
 			baseJar = getHomeProp(props, BASE_JAR);
 			containerConfig = getHomeProp(props, CONTAINER_CONFIG);
 		}
 
-		private String getProp(Properties props, String key) {
+		private String getProp(Properties props, String key, String defaultValue) {
 			String value = System.getProperty(key);
 			if (value != null && value.length() > 0)
 				return value;
-			return props.getProperty(key);
+			return props.getProperty(key, defaultValue);
 		}
 
 		private String getHomeProp(Properties props, String key) {
