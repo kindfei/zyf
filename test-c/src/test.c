@@ -3,5 +3,6 @@
 
 int main(void) {
 	puts("Hello World");
+	printf("hello");
 	return EXIT_SUCCESS;
 }
