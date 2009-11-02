@@ -1,15 +1,24 @@
-#include <stdio.h>
-#include <stdlib.h>
+int test1(){
+  return 88661;
+}
 
-int test(char* in, char * out, int* i_p) {
-	printf("char*in=%s", in);
-	*out++ = 'w';
-	*out++ = 'a';
-	*out++ = 'h';
-	*out++ = 'a';
-	*out++ = 'h';
-	*out++ = 'a';
-	*out = '\0';
-	*i_p = 10;
-	return 0;
+int test2(char * in){
+  printf("%s\n",in);
+  return 88662;
+}
+
+int test3(char * out){
+  *out++ = 'w';
+  *out++ = 'a';
+  *out++ = 'h';
+  *out++ = 'a';
+  *out++ = 'h';
+  *out++= 'a';
+  *out = '\0';
+  return 88663;
+}
+
+int test4(int * i){
+  *i = 4;
+  return 88664;
 }
