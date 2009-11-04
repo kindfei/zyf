@@ -29,7 +29,7 @@ import static incubation.app.start.ConfigurationConstants.*;
  * 
  */
 public class Startup implements Runnable {
-	private static final String propsFileName = "jp/emcom/adv/n225/core/base/start/startup.properties";
+	private static final String propsFileName = "incubation/app/start/startup.properties";
 
 	private static final String SHUTDOWN_COMMAND = "SHUTDOWN";
 
