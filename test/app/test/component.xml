@@ -1,0 +1,15 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<component name="test" enabled="true"
+        xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <resource-loader name="local" type="component"/>
+    <resource-loader name="core" prepend-env="application.home" prefix="/framework/core/" type="file"/>
+
+    <classpath type="jar" location="build/lib/*"/>
+    <classpath type="dir" location="config"/>
+    <classpath type="jar" location="lib/*"/>
+
+    <service-resource type="spring" loader="local" location="service/services-child1.xml"/>
+    <service-resource type="spring" parent="core-parent2" loader="local" location="service/services-child2.xml"/>
+
+</component>
