@@ -1,13 +1,14 @@
 package test.terracotta.cluster;
 
+import incubation.cluster.Service;
+import incubation.cluster.ServiceFactory;
+import incubation.cluster.ServiceMode;
+import incubation.jms.MessageDestination;
+import incubation.utils.CmdHelper;
+
 import java.io.IOException;
 import java.util.Properties;
 
-import zyf.cluster.Service;
-import zyf.cluster.ServiceFactory;
-import zyf.cluster.ServiceMode;
-import zyf.jms.MessageDestination;
-import zyf.utils.CmdHelper;
 
 
 

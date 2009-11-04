@@ -1,5 +1,8 @@
 package test.hibernate;
 
+import incubation.hibernate.SessionUtils;
+import incubation.utils.CmdHelper;
+
 import java.util.Iterator;
 import java.util.List;
 
@@ -12,8 +15,6 @@ import org.hibernate.Transaction;
 
 
 import test.hibernate.tables.mysql.Product;
-import zyf.hibernate.SessionUtils;
-import zyf.utils.CmdHelper;
 
 public class TestL1Cache {
 	public static void main(String[] args) {

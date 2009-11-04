@@ -1,10 +1,11 @@
 package test.hibernate;
 
+import incubation.hibernate.SessionUtils;
+import incubation.utils.CmdHelper;
+
 import org.hibernate.Session;
 import org.hibernate.Transaction;
 
-import zyf.hibernate.SessionUtils;
-import zyf.utils.CmdHelper;
 
 
 
