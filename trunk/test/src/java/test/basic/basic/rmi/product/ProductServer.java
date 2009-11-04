@@ -1,11 +1,12 @@
 package test.basic.basic.rmi.product;
 
+import incubation.utils.CmdHelper;
+
 import java.rmi.registry.LocateRegistry;
 
 import javax.naming.Context;
 import javax.naming.InitialContext;
 
-import zyf.utils.CmdHelper;
 
 
 

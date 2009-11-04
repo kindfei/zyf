@@ -1,12 +1,13 @@
 package test.basic.basic.rmi.hello;
 
+import incubation.utils.CmdHelper;
+
 import java.rmi.Naming;
 import java.rmi.RMISecurityManager;
 import java.rmi.RemoteException;
 import java.rmi.registry.LocateRegistry;
 import java.util.Set;
 
-import zyf.utils.CmdHelper;
 
 
 

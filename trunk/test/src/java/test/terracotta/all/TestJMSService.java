@@ -1,5 +1,14 @@
 package test.terracotta.all;
 
+import incubation.cluster.Service;
+import incubation.cluster.ServiceFactory;
+import incubation.cluster.ServiceMode;
+import incubation.entry.ServiceEntry;
+import incubation.jms.MessageDestination;
+import incubation.jms.MessageException;
+import incubation.jms.MessageFactory;
+import incubation.jms.MessageSender;
+
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -8,14 +17,6 @@ import java.util.Map;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import zyf.cluster.Service;
-import zyf.cluster.ServiceFactory;
-import zyf.cluster.ServiceMode;
-import zyf.entry.ServiceEntry;
-import zyf.jms.MessageDestination;
-import zyf.jms.MessageException;
-import zyf.jms.MessageFactory;
-import zyf.jms.MessageSender;
 
 
 public class TestJMSService extends ServiceEntry {

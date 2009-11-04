@@ -1,15 +1,16 @@
 package test.terracotta.entry;
 
+import incubation.entry.CMD;
+import incubation.entry.CommandType;
+import incubation.entry.Commandable;
+import incubation.entry.NormalCommand;
+import incubation.entry.ServiceEntry;
+import incubation.jmx.ATTRIBUTE;
+import incubation.jmx.OPERATION;
+
 import java.util.Timer;
 import java.util.TimerTask;
 
-import zyf.entry.CMD;
-import zyf.entry.CommandType;
-import zyf.entry.Commandable;
-import zyf.entry.NormalCommand;
-import zyf.entry.ServiceEntry;
-import zyf.jmx.ATTRIBUTE;
-import zyf.jmx.OPERATION;
 
 
 public class TestService extends ServiceEntry {

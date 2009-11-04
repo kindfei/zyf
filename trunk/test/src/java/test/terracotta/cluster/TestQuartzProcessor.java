@@ -1,5 +1,9 @@
 package test.terracotta.cluster;
 
+import incubation.cluster.ClusterTask;
+import incubation.cluster.ExecuteMode;
+import incubation.cluster.QuartzProcessor;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -7,9 +11,6 @@ import org.quartz.JobExecutionContext;
 import org.quartz.StatefulJob;
 
 import test.terracotta.cluster.tasks.TestTaskBean;
-import zyf.cluster.ClusterTask;
-import zyf.cluster.ExecuteMode;
-import zyf.cluster.QuartzProcessor;
 
 public class TestQuartzProcessor extends QuartzProcessor implements StatefulJob {
 	private int i;

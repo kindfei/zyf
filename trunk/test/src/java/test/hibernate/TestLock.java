@@ -1,5 +1,8 @@
 package test.hibernate;
 
+import incubation.hibernate.SessionUtils;
+import incubation.utils.CmdHelper;
+
 import java.sql.Connection;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
@@ -16,8 +19,6 @@ import org.hibernate.Transaction;
 
 
 import test.hibernate.tables.mysql.Product;
-import zyf.hibernate.SessionUtils;
-import zyf.utils.CmdHelper;
 
 public class TestLock {
 	public static void main(String[] args) {

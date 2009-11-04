@@ -1,5 +1,7 @@
 package test.hibernate.jdbc;
 
+import incubation.utils.CmdHelper;
+
 import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
@@ -7,7 +9,6 @@ import java.sql.PreparedStatement;
 import java.sql.SQLException;
 import java.util.Properties;
 
-import zyf.utils.CmdHelper;
 
 
 import com.mysql.jdbc.Driver;
