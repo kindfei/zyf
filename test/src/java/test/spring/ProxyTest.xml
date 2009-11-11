@@ -1,0 +1,85 @@
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans 
+           http://www.springframework.org/schema/beans/spring-beans-2.0.xsd
+           http://www.springframework.org/schema/aop 
+           http://www.springframework.org/schema/aop/spring-aop-2.0.xsd">
+	
+	<bean id="waiter" class="test.spring.TestProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<list>
+				<value>test.spring.Waiter</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="waiterHello" class="test.spring.TestProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<list>
+				<value>test.spring.Waiter</value>
+			</list>
+		</property>
+		<property name="expression" value="execution(* test.spring.Waiter.sayHello())" />
+	</bean>
+	
+	<bean id="abstractWaiter" class="test.spring.TestProxyFactoryBean">
+		<property name="targetClass" value="test.spring.AbstractWaiter" />
+	</bean>
+	
+	<bean id="abstractWaiterHi" class="test.spring.TestProxyFactoryBean">
+		<property name="targetClass" value="test.spring.AbstractWaiter" />
+		<property name="expression" value="execution(* test.spring.Waiter.sayHi())" />
+	</bean>
+	
+	<bean id="waiterHelloImpl" class="test.spring.TestProxyFactoryBean">
+		<property name="target">
+			<bean class="test.spring.WaiterHelloImpl">
+				<property name="name" value="world1" />
+			</bean>
+		</property>
+		<property name="expression" value="execution(* test.spring.Waiter.sayHi())" />
+	</bean>
+	
+	<bean id="bean" class="test.spring.WaiterImpl">
+		<property name="name" value="world2" />
+	</bean>
+	
+	<bean id="waiterImpl" class="test.spring.TestProxyFactoryBean">
+		<property name="targetName" value="bean" />
+	</bean>
+	
+	<bean id="waiterImplHi" class="test.spring.TestProxyFactoryBean">
+		<property name="targetName" value="bean" />
+		<property name="expression" value="execution(* test.spring.Waiter.sayHi())" />
+	</bean>
+	
+	<bean id="waiterOfPeople" class="test.spring.TestProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<list>
+				<value>test.spring.Waiter</value>
+			</list>
+		</property>
+		<property name="target">
+			<bean class="test.spring.People">
+				<property name="name" value="world3" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="unknownOfPeople" class="test.spring.TestProxyFactoryBean">
+		<property name="targetClass" value="test.spring.Waiter" />
+		<property name="target">
+			<bean class="test.spring.People" />
+		</property>
+	</bean>
+	
+	<bean id="customerOfPeople" class="test.spring.TestProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<list>
+				<value>test.spring.Customer</value>
+			</list>
+		</property>
+		<property name="targetClass" value="test.spring.People" />
+	</bean>
+</beans>
