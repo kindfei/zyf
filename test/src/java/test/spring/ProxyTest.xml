@@ -82,4 +82,28 @@
 		</property>
 		<property name="targetClass" value="test.spring.People" />
 	</bean>
+	
+	<bean id="variousPeople" class="test.spring.FuckingProxyFactoryBean">
+		<property name="advisors">
+			<list>
+				<bean class="test.spring.TestPointcutAdvisor">
+					<property name="name" value="advisor1" />
+					<property name="expression" value="execution(* test.spring.Waiter.sayHi())" />
+				</bean>
+				<bean class="test.spring.TestPointcutAdvisor">
+					<property name="name" value="advisor2" />
+					<property name="invokeTargetMethod" value="true" />
+					<property name="expression" value="execution(void test.spring.Customer.sayHiToo())" />
+				</bean>
+				<bean class="test.spring.TestPointcutAdvisor">
+					<property name="name" value="advisor3" />
+				</bean>
+			</list>
+		</property>
+		<property name="target">
+			<bean class="test.spring.People">
+				<property name="name" value="world4" />
+			</bean>
+		</property>
+	</bean>
 </beans>

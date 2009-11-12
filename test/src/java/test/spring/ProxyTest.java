@@ -7,6 +7,7 @@ import org.aopalliance.intercept.MethodInvocation;
 import org.apache.commons.lang.NotImplementedException;
 import org.apache.commons.lang.builder.ToStringBuilder;
 import org.apache.commons.lang.builder.ToStringStyle;
+import org.springframework.aop.Advisor;
 import org.springframework.aop.aspectj.AspectJExpressionPointcut;
 import org.springframework.aop.framework.ProxyFactoryBean;
 import org.springframework.aop.support.DefaultPointcutAdvisor;
@@ -33,6 +34,9 @@ public class ProxyTest {
 		
 		testWaiter(c, "customerOfPeople");
 		testCustomer(c, "customerOfPeople");
+		
+		testWaiter(c, "variousPeople");
+		testCustomer(c, "variousPeople");
 	}
 	
 	static void testWaiter(ClassPathXmlApplicationContext c, String name) {
@@ -205,6 +209,67 @@ class TestProxyFactoryBean extends ProxyFactoryBean implements InitializingBean,
 		System.out.println(s.toString());
 		
 		return null;
+	}
+	
+}
+
+class FuckingProxyFactoryBean extends ProxyFactoryBean {
+	/**
+	 * 
+	 */
+	private static final long serialVersionUID = -1222247018006242261L;
+
+	public void setAdvisors(Advisor[] advisors) {
+		super.addAllAdvisors(advisors);
+	}
+}
+
+class TestPointcutAdvisor extends DefaultPointcutAdvisor implements InitializingBean, MethodInterceptor {
+	private static final long serialVersionUID = 3671346627324332268L;
+	
+	private String expression;
+	private boolean invokeTargetMethod;
+	
+	private String name;
+
+	public void setExpression(String expression) {
+		this.expression = expression;
+	}
+
+	public void setInvokeTargetMethod(boolean invokeTargetMethod) {
+		this.invokeTargetMethod = invokeTargetMethod;
+	}
+	
+	public void setName(String name) {
+		this.name = name;
+	}
+
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		if (expression != null) {
+			AspectJExpressionPointcut p = new AspectJExpressionPointcut();
+			p.setExpression(expression);
+			this.setPointcut(p);
+		}
+		this.setAdvice(this);
+	}
+
+	@Override
+	public Object invoke(MethodInvocation mi) throws Throwable {
+		Method method = mi.getMethod();
+		String methodName = method.getName();
+		Class<?>[] parameterTypes = method.getParameterTypes();
+		Object[] arguments = mi.getArguments();
+		
+		ToStringBuilder s = new ToStringBuilder(this, ToStringStyle.SHORT_PREFIX_STYLE);
+		s.append(name);
+		s.append(methodName);
+		s.append(parameterTypes);
+		s.append(arguments);
+		
+		System.out.println(s.toString());
+		
+		return invokeTargetMethod ? mi.proceed() : null;
 	}
 	
 }
