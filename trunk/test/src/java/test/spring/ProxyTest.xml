@@ -106,4 +106,12 @@
 			</bean>
 		</property>
 	</bean>
+	
+	<bean id="nullWaiter" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="proxyInterfaces">
+			<list>
+				<value>test.spring.Waiter</value>
+			</list>
+		</property>
+	</bean>
 </beans>
