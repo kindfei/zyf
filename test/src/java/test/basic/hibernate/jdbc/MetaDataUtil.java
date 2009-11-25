@@ -1,4 +1,4 @@
-package test.hibernate.jdbc;
+package test.basic.hibernate.jdbc;
 
 import java.sql.Connection;
 import java.sql.DatabaseMetaData;

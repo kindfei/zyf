@@ -1,4 +1,4 @@
-package test.hibernate.tables.mysql;
+package test.basic.hibernate.tables.mysql;
 
 import java.io.Serializable;
 import org.apache.commons.lang.builder.ToStringBuilder;

@@ -1,4 +1,4 @@
-package test.hibernate;
+package test.basic.hibernate;
 
 import incubation.hibernate.SessionUtils;
 import incubation.utils.CmdHelper;
@@ -14,7 +14,7 @@ import org.hibernate.Transaction;
 
 
 
-import test.hibernate.tables.mysql.Product;
+import test.basic.hibernate.tables.mysql.Product;
 
 public class TestL2Cache {
 	public static void main(String[] args) {
