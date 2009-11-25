@@ -1,4 +1,4 @@
-package test.hibernate.jdbc;
+package test.basic.hibernate.jdbc;
 
 import incubation.utils.CmdHelper;
 

@@ -1,4 +1,4 @@
-package test.hibernate;
+package test.basic.hibernate;
 
 import incubation.hibernate.SessionUtils;
 import incubation.utils.CmdHelper;
