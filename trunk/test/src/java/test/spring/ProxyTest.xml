@@ -114,4 +114,32 @@
 			</list>
 		</property>
 	</bean>
+	
+	<bean id="advisor1" class="test.spring.TestPointcutAdvisor">
+		<property name="name" value="advisor1" />
+		<property name="expression" value="execution(* test.spring.Waiter.sayHi())" />
+	</bean>
+	<bean id="advisor2" class="test.spring.TestPointcutAdvisor">
+		<property name="name" value="advisor2" />
+		<property name="invokeTargetMethod" value="true" />
+		<property name="expression" value="execution(void test.spring.Customer.sayHiToo())" />
+	</bean>
+	<bean id="advisor3" class="test.spring.TestPointcutAdvisor">
+		<property name="name" value="advisor3" />
+	</bean>
+	
+	<bean id="variousPeople2" class="org.springframework.aop.framework.ProxyFactoryBean">
+		<property name="interceptorNames">
+			<list>
+				<value>advisor1</value>
+				<value>advisor2</value>
+				<value>advisor3</value>
+			</list>
+		</property>
+		<property name="target">
+			<bean class="test.spring.People">
+				<property name="name" value="world4" />
+			</bean>
+		</property>
+	</bean>
 </beans>

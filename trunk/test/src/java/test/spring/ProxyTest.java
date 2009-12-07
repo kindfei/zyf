@@ -39,6 +39,9 @@ public class ProxyTest {
 		testCustomer(c, "variousPeople");
 		
 		testWaiter(c, "nullWaiter");
+		
+		testWaiter(c, "variousPeople2");
+		testCustomer(c, "variousPeople2");
 	}
 	
 	static void testWaiter(ClassPathXmlApplicationContext c, String name) {
