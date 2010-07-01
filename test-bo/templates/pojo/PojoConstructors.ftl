@@ -1,0 +1,5 @@
+	/**
+	 * constructor
+	 */
+    public ${pojo.getDeclarationName()}() {
+    }
