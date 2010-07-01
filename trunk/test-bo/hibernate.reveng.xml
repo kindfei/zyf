@@ -1,0 +1,26 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE hibernate-reverse-engineering PUBLIC "-//Hibernate/Hibernate Reverse Engineering DTD 3.0//EN" "http://hibernate.sourceforge.net/hibernate-reverse-engineering-3.0.dtd" >
+
+<hibernate-reverse-engineering>
+	<type-mapping>
+		<sql-type jdbc-type="TINYINT"
+			hibernate-type="java.lang.Integer">
+		</sql-type>
+		<sql-type jdbc-type="INTEGER"
+			hibernate-type="java.lang.Integer">
+		</sql-type>
+		<sql-type jdbc-type="BIGINT" hibernate-type="java.lang.Long">
+		</sql-type>
+		<sql-type jdbc-type="DECIMAL"
+			hibernate-type="java.math.BigDecimal">
+		</sql-type>
+
+
+	</type-mapping>
+	<table-filter match-name="BO_PRODUCT_RATE_.*"
+		match-catalog="BOINFO" exclude="true">
+	</table-filter>
+	<table-filter match-name="BO_CP_INSTRUMENT_TICK_OTCFX_.*"
+		match-catalog="BOINFO" exclude="true">
+	</table-filter>
+</hibernate-reverse-engineering>

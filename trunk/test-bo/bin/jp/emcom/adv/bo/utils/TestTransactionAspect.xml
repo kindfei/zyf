@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<import resource="classpath:core-datasource.xml"/>
+	<import resource="classpath:core-dao.xml"/>
+	<import resource="classpath:core-service.xml"/>
+	<import resource="classpath:core-biz-configurator.xml"/>
+	<import resource="classpath:core-biz-messaging.xml"/>
+	
+	<bean id="service1" class="jp.emcom.adv.bo.utils.Service1">
+		<property name="service" ref="service2" />
+	</bean>
+	<bean id="service2" class="jp.emcom.adv.bo.utils.Service2">
+		<property name="service" ref="service3" />
+	</bean>
+	<bean id="service3" class="jp.emcom.adv.bo.utils.Service3">
+	</bean>
+	
+	<bean id="cachingAspect" class="jp.emcom.adv.common.spring.aop.caching.CachingAspect">
+	    <property name="enabled" value="true"/>
+	    <property name="verbose" value="false"/>
+	    <property name="capacity" value="2048"/>
+	    <property name="cacheFlushListeners">
+	        <list>
+	            <bean class="jp.emcom.adv.bo.utils.TestCacheFlushListener" />
+	        </list>
+	    </property>
+	</bean>
+	
+</beans>
