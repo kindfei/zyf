@@ -14,6 +14,14 @@ public class TestConfigurer {
 	private List<String> props;
 	private TestConfigurer info;
 	
+	public TestConfigurer() {
+		
+	}
+	
+	public TestConfigurer(TestConfigurer info) {
+		this.info = info;
+	}
+	
 	public void setP1(String p1) {
 		this.p1 = p1;
 	}

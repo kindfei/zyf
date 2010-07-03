@@ -25,6 +25,10 @@
 		</property>
 		<property name="info">
 			<bean class="test.bo.configurer.TestConfigurer">
+				<constructor-arg>
+					<bean class="test.bo.configurer.TestConfigurer">
+					</bean>
+				</constructor-arg>
 			</bean>
 		</property>
 	</bean>
