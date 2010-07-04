@@ -20,6 +20,12 @@
 		</property>
 	</bean>
 	
+	<bean id="abstractTest" abstract="true" class="test.bo.configurer.TestConfigurer">
+		<property name="p1" value="${p1}" />
+		<property name="p2" value="${p2}" />
+		<property name="p3" value="${p3}" />
+	</bean>
+	
 	<bean id="test" class="test.bo.configurer.TestConfigurer" init-method="start" destroy-method="stop">
 		<property name="p1" value="v1" />
 		<property name="p2" value="v2" />
@@ -34,10 +40,12 @@
 		<property name="info">
 			<bean class="test.bo.configurer.TestConfigurer">
 				<property name="p1" value="${p1}" />
-				<property name="p2" value="${p2}" />
+				<property name="p2">
+					<value><![CDATA[${p2}]]></value>
+				</property>
 				<property name="p3" value="${p3}" />
 				<constructor-arg>
-					<bean class="test.bo.configurer.TestConfigurer">
+					<bean parent="abstractTest">
 					</bean>
 				</constructor-arg>
 			</bean>
