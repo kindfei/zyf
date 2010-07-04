@@ -59,6 +59,14 @@ public class TestConfigurer {
 		builder.append("info", info);
 		return builder.toString();
 	}
+	
+	public void start() {
+		System.out.println("starting..." + toString());
+	}
+	
+	public void stop() {
+		System.out.println("stopping..." + toString());
+	}
 
 	public static void main(String[] args) {
 		ContextLoader loader = new ContextLoader(new String[] {
