@@ -1,5 +1,6 @@
 package jp.emcom.adv.bo.test;
 
+import org.springframework.beans.factory.support.DefaultListableBeanFactory;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.AbstractApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
@@ -16,7 +17,13 @@ public class ContextLoader {
 	}
 	
 	public ContextLoader(String[] files) {
-		context = new ClassPathXmlApplicationContext(files);
+		context = new ClassPathXmlApplicationContext(files) {
+			protected DefaultListableBeanFactory createBeanFactory() {
+				DefaultListableBeanFactory f = super.createBeanFactory();
+				f.setAllowBeanDefinitionOverriding(true);
+				return f;
+			}
+		};
 	}
 	
 	private String parse(String className) {

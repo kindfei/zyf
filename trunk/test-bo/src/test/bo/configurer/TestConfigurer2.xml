@@ -9,6 +9,12 @@
 				<value>classpath:test/bo/configurer/TestConfigurer2.properties</value>
 			</list>
 		</property>
+		<property name="localOverride" value="true" />
+		<property name="propertiesArray">
+			<list>
+				<value>p3=vvv3</value>
+			</list>
+		</property>
 	</bean>
 	
 	<bean class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">

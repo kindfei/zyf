@@ -1,14 +1,15 @@
 package jp.emcom.adv.bo.utils;
 
+import java.util.Set;
+
 import jp.emcom.adv.bo.core.dao.datasource.DataSourceType;
-import jp.emcom.adv.bo.core.utils.spring.tx.TransactionAspect;
+import jp.emcom.adv.bo.core.utils.spring.tx.TransactionInfo;
 import jp.emcom.adv.bo.core.utils.spring.tx.Tx;
 import jp.emcom.adv.bo.test.ContextLoader;
-import jp.emcom.adv.common.spring.aop.caching.CacheFlushListener;
-import jp.emcom.adv.common.spring.aop.caching.CachingAspect;
-import jp.emcom.adv.common.spring.aop.caching.annotation.CacheFlush;
+import jp.emcom.adv.common.spring.aop.caching.CachingOperation;
+import jp.emcom.adv.common.spring.aop.caching.FlushListener;
 
-import org.springframework.transaction.TransactionStatus;
+import org.springframework.transaction.TransactionDefinition;
 import org.springframework.transaction.annotation.Propagation;
 
 public class TestTransactionAspect {
@@ -16,14 +17,23 @@ public class TestTransactionAspect {
 		ContextLoader loader = new ContextLoader(TestTransactionAspect.class);
 		
 		Service1 test = (Service1) loader.getBean("service1");
-		System.out.println("#################### operation1 ####################");
-		test.operation1();
+		System.out.println("#################### read1 ####################");
+		test.read1();
 		test.printStatus();
-		System.out.println("#################### operation2 ####################");
-		test.operation2();
+		System.out.println("#################### read2 ####################");
+		test.read2();
 		test.printStatus();
-		System.out.println("#################### operation3 ####################");
-		test.operation3();
+		System.out.println("#################### read3 ####################");
+		test.read3();
+		test.printStatus();
+		System.out.println("#################### write1 ####################");
+		test.write1();
+		test.printStatus();
+		System.out.println("#################### write2 ####################");
+		test.write2();
+		test.printStatus();
+		System.out.println("#################### write3 ####################");
+		test.write3();
 		test.printStatus();
 		
 		loader.close();
@@ -31,47 +41,71 @@ public class TestTransactionAspect {
 }
 
 interface Service {
-	void operation1();
-	void operation2();
-	void operation3();
+	String read1();
+	String read2();
+	String read3();
+	void write1();
+	void write2();
+	void write3();
 }
 
 class Service1 implements Service {
 	Service service;
+
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.SUPPORTS)
+	public String read1() {
+		System.out.println("read1 has been executed.");
+		printStatus();
+		return "read1";
+	}
+
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingType=CachingOperation.CACHEABLE)
+	public String read2() {
+		System.out.println("read2 has been executed.");
+		printStatus();
+		return "read2";
+	}
+
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.SUPPORTS, isolationLevel=TransactionDefinition.ISOLATION_REPEATABLE_READ, cachingType=CachingOperation.CACHEABLE)
+	public String read3() {
+		System.out.println("read3 has been executed.");
+		printStatus();
+		return "read3";
+	}
 	
 	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED)
-	public void operation1() {
+	public void write1() {
 		if (service != null) {
-			service.operation1();
+			service.write1();
 		}
 		printStatus();
 	}
 
 	@Tx(datasource=DataSourceType.main, propagation=Propagation.SUPPORTS)
-	public void operation2() {
+	public void write2() {
 		if (service != null) {
-			service.operation2();
+			service.write2();
 		}
 		printStatus();
 	}
 
 	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED)
-	public void operation3() {
+	public void write3() {
 		if (service != null) {
-			service.operation2();
+			service.write2();
 		}
 		printStatus();
 	}
 	
 	void printStatus() {
-		TransactionStatus status = TransactionAspect.currentTransactionStatus();
+		TransactionInfo info = TransactionInfo.currentTransactionInfo(DataSourceType.main);
 		System.out.println("====================================================");
-		if (status == null) {
-			System.out.println("TransactionStatus is null");
+		if (info == null) {
+			System.out.println("TransactionInfo is null");
 		} else {
-			System.out.println("isNewTransaction=" + status.isNewTransaction());
-			System.out.println("isCompleted=" + status.isCompleted());
-			System.out.println("isRollbackOnly=" + status.isRollbackOnly());
+			System.out.println("isNewTransaction=" + info.getTransactionStatus().isNewTransaction());
+			System.out.println("isCompleted=" + info.getTransactionStatus().isCompleted());
+			System.out.println("isRollbackOnly=" + info.getTransactionStatus().isRollbackOnly());
 		}
 	}
 
@@ -85,55 +119,44 @@ class Service1 implements Service {
 }
 
 class Service2 extends Service1 {
-	@CacheFlush
-	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED)
-	public void operation1() {
-		super.operation1();
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingType=CachingOperation.CACHE_FLUSH)
+	public void write1() {
+		super.write1();
 	}
 
-	@CacheFlush
-	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED)
-	public void operation2() {
-		super.operation2();
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingType=CachingOperation.CACHE_FLUSH)
+	public void write2() {
+		super.write2();
 	}
 
-	@CacheFlush
-	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED)
-	public void operation3() {
-		super.operation3();
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingType=CachingOperation.CACHE_FLUSH)
+	public void write3() {
+		super.write3();
 	}
 }
 
 class Service3 extends Service1 {
-	@CacheFlush
-	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED)
-	public void operation1() {
-		super.operation1();
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingType=CachingOperation.CACHE_FLUSH)
+	public void write1() {
+		super.write1();
 	}
 
-	@CacheFlush
-	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED)
-	public void operation2() {
-		super.operation2();
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingType=CachingOperation.CACHE_FLUSH)
+	public void write2() {
+		super.write2();
 	}
 
-	@CacheFlush
-	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED)
-	public void operation3() {
-		super.operation3();
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingType=CachingOperation.CACHE_FLUSH)
+	public void write3() {
+		super.write3();
 	}
 }
 
-class TestCacheFlushListener implements CacheFlushListener {
+class TestCacheFlushListener implements FlushListener {
 
 	@Override
-	public void onFlush(String group) {
-		System.out.println("********* onFlush: " + group + " *********");
-	}
-
-	@Override
-	public void setCachingAspect(CachingAspect aspect) {
-		
+	public void onFlush(Set<String> groups) {
+		System.out.println("********* onFlush: " + groups + " *********");
 	}
 	
 }

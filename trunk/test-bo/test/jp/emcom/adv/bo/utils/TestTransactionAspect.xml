@@ -2,7 +2,16 @@
 <beans xmlns="http://www.springframework.org/schema/beans"
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
-
+	
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="searchSystemEnvironment" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:urls.properties</value>
+			</list>
+		</property>
+	</bean>
+	
 	<import resource="classpath:core-datasource.xml"/>
 	<import resource="classpath:core-dao.xml"/>
 	<import resource="classpath:core-service.xml"/>
@@ -18,15 +27,16 @@
 	<bean id="service3" class="jp.emcom.adv.bo.utils.Service3">
 	</bean>
 	
-	<bean id="cachingAspect" class="jp.emcom.adv.common.spring.aop.caching.CachingAspect">
+	<!-- cache -->
+   	<bean id="hierarchalCache" class="jp.emcom.adv.common.spring.aop.caching.HierarchalCache">
 	    <property name="enabled" value="true"/>
-	    <property name="verbose" value="false"/>
-	    <property name="capacity" value="2048"/>
-	    <property name="cacheFlushListeners">
+	    <property name="defaultCapacity" value="2048"/>
+	    <property name="flushListeners">
 	        <list>
-	            <bean class="jp.emcom.adv.bo.utils.TestCacheFlushListener" />
+	            <bean class="jp.emcom.adv.bo.utils.TestCacheFlushListener">
+			    </bean>
 	        </list>
 	    </property>
-	</bean>
+   	</bean>
 	
 </beans>
