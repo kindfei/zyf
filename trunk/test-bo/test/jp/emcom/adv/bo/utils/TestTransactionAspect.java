@@ -52,21 +52,21 @@ interface Service {
 class Service1 implements Service {
 	Service service;
 
-	@Tx(datasource=DataSourceType.main, propagation=Propagation.SUPPORTS)
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.SUPPORTS, cachingOperation=CachingOperation.CACHEABLE)
 	public String read1() {
 		System.out.println("read1 has been executed.");
 		printStatus();
 		return "read1";
 	}
 
-	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingType=CachingOperation.CACHEABLE)
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingOperation=CachingOperation.CACHEABLE, readonly=true)
 	public String read2() {
 		System.out.println("read2 has been executed.");
 		printStatus();
 		return "read2";
 	}
 
-	@Tx(datasource=DataSourceType.main, propagation=Propagation.SUPPORTS, isolationLevel=TransactionDefinition.ISOLATION_REPEATABLE_READ, cachingType=CachingOperation.CACHEABLE)
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.SUPPORTS, isolationLevel=TransactionDefinition.ISOLATION_REPEATABLE_READ, cachingOperation=CachingOperation.CACHEABLE)
 	public String read3() {
 		System.out.println("read3 has been executed.");
 		printStatus();
@@ -119,34 +119,34 @@ class Service1 implements Service {
 }
 
 class Service2 extends Service1 {
-	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingType=CachingOperation.CACHE_FLUSH)
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingOperation=CachingOperation.CACHE_FLUSH)
 	public void write1() {
 		super.write1();
 	}
 
-	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingType=CachingOperation.CACHE_FLUSH)
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingOperation=CachingOperation.CACHE_FLUSH)
 	public void write2() {
 		super.write2();
 	}
 
-	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingType=CachingOperation.CACHE_FLUSH)
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingOperation=CachingOperation.CACHE_FLUSH)
 	public void write3() {
 		super.write3();
 	}
 }
 
 class Service3 extends Service1 {
-	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingType=CachingOperation.CACHE_FLUSH)
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingOperation=CachingOperation.CACHE_FLUSH)
 	public void write1() {
 		super.write1();
 	}
 
-	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingType=CachingOperation.CACHE_FLUSH)
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingOperation=CachingOperation.CACHE_FLUSH)
 	public void write2() {
 		super.write2();
 	}
 
-	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingType=CachingOperation.CACHE_FLUSH)
+	@Tx(datasource=DataSourceType.main, propagation=Propagation.REQUIRED, cachingOperation=CachingOperation.CACHE_FLUSH)
 	public void write3() {
 		super.write3();
 	}
