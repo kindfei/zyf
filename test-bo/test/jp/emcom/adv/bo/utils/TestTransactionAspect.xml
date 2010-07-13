@@ -30,6 +30,7 @@
 	<!-- cache -->
    	<bean id="hierarchalCache" class="jp.emcom.adv.common.spring.aop.caching.HierarchalCache">
 	    <property name="enabled" value="true"/>
+	    <property name="verbose" value="true"/>
 	    <property name="defaultCapacity" value="2048"/>
 	    <property name="flushListeners">
 	        <list>

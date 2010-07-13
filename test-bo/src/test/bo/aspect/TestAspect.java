@@ -1,10 +1,14 @@
 package test.bo.aspect;
 
+import java.util.Arrays;
+import java.util.Map;
+
 import jp.emcom.adv.bo.test.ContextLoader;
 
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
+import org.springframework.aop.SpringProxy;
 
 @Aspect
 public class TestAspect {
@@ -27,16 +31,28 @@ public class TestAspect {
 		return pjp.proceed();
 	}
 	
+	@SuppressWarnings("unchecked")
 	public static void main(String[] args) {
 		ContextLoader cl = new ContextLoader(TestAspect.class);
 		TestBean1 tb1 = (TestBean1) cl.getBean("testBean1");
 		TestBean2 tb2 = (TestBean2) cl.getBean("testBean2");
 		
+		//
 		tb1.test1();
 		tb1.test2();
 		tb1.test3();
 		tb2.test1();
 		tb2.test2();
 		tb2.test3();
+		
+		//
+		Map<String, Object> beans = cl.getContext().getBeansOfType(SpringProxy.class);
+		for (Object bean : beans.values()) {
+			System.out.println(bean.getClass().getName()
+					+ ", " + bean.getClass().getSuperclass().getName()
+					+ ", " + Arrays.toString(bean.getClass().getInterfaces())
+					+ ", " + SpringProxy.class.isInstance(bean)
+					);
+		}
 	}
 }
