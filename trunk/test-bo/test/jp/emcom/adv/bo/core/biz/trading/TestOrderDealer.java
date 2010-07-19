@@ -28,7 +28,7 @@ public class TestOrderDealer extends ContextLoader {
 		p.setOrderAmount(new BigDecimal("10"));
 		p.setOrderPriceId("P0001");
 		p.setClientIpAddress("10.15.3.52");
-		p.setClientModuleType(ClientModuleType.TEL);
+		p.setClientModuleType(ClientModuleType.MOB);
 		
 		orderDealer.dealOrder(p);
 	}

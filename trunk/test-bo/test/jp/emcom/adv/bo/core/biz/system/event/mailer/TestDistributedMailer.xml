@@ -17,6 +17,6 @@
 	<import resource="classpath:core-service.xml"/>
 	<import resource="classpath:core-biz-configurator.xml"/>
 	<import resource="classpath:core-biz-messaging.xml"/>
-	<import resource="classpath:core-biz-system-event.xml"/>
+	<import resource="classpath:core-biz-mailer.xml"/>
 	
 </beans>
