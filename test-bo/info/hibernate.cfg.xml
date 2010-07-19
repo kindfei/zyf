@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!DOCTYPE hibernate-configuration PUBLIC
+"-//Hibernate/Hibernate Configuration DTD 3.0//EN"
+"http://hibernate.sourceforge.net/hibernate-configuration-3.0.dtd">
+<hibernate-configuration>
+    <session-factory>
+        <property name="hibernate.bytecode.use_reflection_optimizer">false</property>
+        <property name="hibernate.connection.driver_class">com.mysql.jdbc.Driver</property>
+        <property name="hibernate.connection.password">123456</property>
+        <property name="hibernate.connection.url">jdbc:mysql://10.15.2.222/BOINFO</property>
+        <property name="hibernate.connection.username">MAIN</property>
+        <property name="hibernate.dialect">org.hibernate.dialect.MySQLDialect</property>
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoInstrument15minChart" />
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoSystemMailHistory" />
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoInstrumentDailyChart" />
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoCustomerAccessLog" />
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoInstrument30minChart" />
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoInstrument10minChart" />
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoCustomerMailHistory" />
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoInstrumentHourlyChart" />
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoInstrument5minChart" />
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoInstrument1minChart" />
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoInstrumentWeeklyChart" />
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoCpInstrumentTick" />
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoNews" />
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoCsAccessLog" />
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoProductRate" />
+        <mapping class="jp.emcom.adv.bo.core.dao.po.info.BoInstrumentMonthlyChart" />
+    </session-factory>
+</hibernate-configuration>

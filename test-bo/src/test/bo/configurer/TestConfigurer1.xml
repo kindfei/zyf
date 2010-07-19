@@ -30,6 +30,7 @@
 		<property name="p1" value="${p1}" />
 		<property name="p2" value="${p2}" />
 		<property name="p3" value="${p3}" />
+		<property name="props" value="${props}" />
 	</bean>
 	
 	<bean id="test" class="test.bo.configurer.TestConfigurer" init-method="start" destroy-method="stop">
