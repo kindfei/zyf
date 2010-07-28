@@ -3,11 +3,9 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
 	
-	<bean id="test" class="test.bo.Test">
-		<property name="obj">
-			<bean class="test.bo.Test" init-method="start" destroy-method="stop">
-			</bean>
-		</property>
-	</bean>
+	
+	<bean id="test" class="test.bo.factorybean.TestFactoryBean">
+		<property name="singleton" value="true" />
+    </bean>
 	
 </beans>
