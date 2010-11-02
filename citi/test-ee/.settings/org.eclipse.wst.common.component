@@ -10,5 +10,197 @@
             <dependent-object/>
             <dependency-type>uses</dependency-type>
         </dependent-module>
+        <dependent-module archiveName="activation.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/activation.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="aspectjrt.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/aspectjrt.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="aspectjweaver.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/aspectjweaver.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="c3p0-0.9.1.2.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/c3p0-0.9.1.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="cglib-nodep-2.1_3.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/cglib-nodep-2.1_3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="common-annotations.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/common-annotations.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-attributes-api.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/commons-attributes-api.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-attributes-compiler.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/commons-attributes-compiler.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-beanutils.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/commons-beanutils.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-codec.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/commons-codec.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-collections.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/commons-collections.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-dbcp.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/commons-dbcp.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-digester.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/commons-digester.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-discovery.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/commons-discovery.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-fileupload.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/commons-fileupload.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-httpclient.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/commons-httpclient.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-io.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/commons-io.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-lang.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/commons-lang.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-logging.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/commons-logging.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-pool.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/commons-pool.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-validator.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/commons-validator.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="connector.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/connector.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="dom4j-1.6.1.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/dom4j-1.6.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="ehcache-1.5.0.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/ehcache-1.5.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="ejb-api.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/ejb-api.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="el-api.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/el-api.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="hibernate-annotations.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/hibernate-annotations.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="hibernate-commons-annotations.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/hibernate-commons-annotations.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="hibernate-entitymanager.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/hibernate-entitymanager.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="hibernate3.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/hibernate3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jaxen-1.1-beta-7.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/jaxen-1.1-beta-7.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jaxrpc.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/jaxrpc.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jms.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/jms.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jmxremote_optional.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/jmxremote_optional.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jmxremote.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/jmxremote.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jmxri.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/jmxri.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jsf-api.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/jsf-api.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jsp-api.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/jsp-api.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jstl.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/jstl.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jta.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/jta.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="log4j-1.2.15.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/log4j-1.2.15.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mail.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/mail.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="persistence.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/persistence.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="rowset.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/rowset.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="servlet-api.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/servlet-api.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="slf4j-api-1.5.0.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/slf4j-api-1.5.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="slf4j-log4j12-1.5.0.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/slf4j-log4j12-1.5.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-aop.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/spring-aop.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-beans.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/spring-beans.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-context-support.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/spring-context-support.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-context.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/spring-context.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-core.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/spring-core.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-jdbc.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/spring-jdbc.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-jms.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/spring-jms.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-orm.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/spring-orm.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-test.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/spring-test.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-tx.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/spring-tx.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-web.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/spring-web.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-webmvc-portlet.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/spring-webmvc-portlet.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-webmvc-struts.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/spring-webmvc-struts.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-webmvc.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/spring-webmvc.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/spring.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="standard.jar" deploy-path="/" handle="module:/classpath/lib/test/lib/spring-2.5.6/standard.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="test-client.jar" deploy-path="/" handle="module:/resource/test-client/test-client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
     </wb-module>
 </project-modules>

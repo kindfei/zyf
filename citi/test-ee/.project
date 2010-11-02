@@ -3,8 +3,7 @@
 	<name>test-ee</name>
 	<comment></comment>
 	<projects>
-		<project>test-ejb</project>
-		<project>test-web</project>
+		<project>test-client</project>
 	</projects>
 	<buildSpec>
 		<buildCommand>
