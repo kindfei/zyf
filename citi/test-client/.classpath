@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="ejbModule"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER/org.eclipse.jdt.internal.debug.ui.launcher.StandardVMType/Oracle WebLogic Server 11gR1 PatchSet 2 JRE">
+		<attributes>
+			<attribute name="owner.project.facets" value="jst.java"/>
+		</attributes>
+	</classpathentry>
+	<classpathentry kind="lib" path="E:/service/Oracle/Middleware/wlserver_10.3/server/lib/wlclient.jar"/>
+	<classpathentry kind="con" path="oracle.eclipse.tools.weblogic.lib.application/test-ee"/>
+	<classpathentry kind="output" path="build/classes"/>
+</classpath>
