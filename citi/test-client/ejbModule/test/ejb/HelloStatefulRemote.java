@@ -2,5 +2,6 @@ package test.ejb;
 import javax.ejb.Remote;
 
 @Remote
-public interface HelloEJBRemote extends HelloEJB {
+public interface HelloStatefulRemote extends HelloEJB {
+
 }

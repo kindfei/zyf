@@ -6,7 +6,7 @@ public class HelloEJBImpl implements HelloEJB {
 
 	@Override
 	public String sayHello(String name) {
-		return "Hello " + name + " " + count++;
+		return this.toString() + ": Hello " + name + " " + count++;
 	}
 
 }
