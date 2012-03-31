@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:mh.properties</value>
+			</list>
+		</property>
+		<property name="ignoreUnresolvablePlaceholders" value="true" />
+	</bean>
+	
+	<bean class="fei.tools.util.PropertyOptionSelector">
+		<property name="options">
+			<map>
+				<entry key="ENV" value="#{${ENV_OPTS}}" />
+				<entry key="PROVIDER" value="#{${PROVIDER_OPTS}}" />
+				<entry key="MODEL" value="#{${MODEL_OPTS}}" />
+			</map>
+		</property>
+	</bean>
+
+	<bean id="jndiTemplate" class="org.springframework.jndi.JndiTemplate">
+		<property name="environment">
+			<props>
+				<prop key="java.naming.factory.initial">${${PROVIDER}_INITIAL_CONTEXT_FACTORY}</prop>
+				<prop key="java.naming.provider.url">${${PROVIDER}_PROVIDER_URL_${ENV}}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory">
+			<bean class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter">
+				<property name="targetConnectionFactory">
+					<bean class="org.springframework.jndi.JndiObjectFactoryBean">
+						<property name="jndiTemplate" ref="jndiTemplate" />
+						<property name="jndiName" value="${${PROVIDER}_${MODEL}_CF_JNDI_NAME_${ENV}}" />
+					</bean>
+				</property>
+				<property name="username" value="${${PROVIDER}_USERNAME_${ENV}}" />
+				<property name="password" value="${${PROVIDER}_PASSWORD_${ENV}}" />
+			</bean>
+		</property>
+		<property name="destinationResolver">
+			<bean class="org.springframework.jms.support.destination.JndiDestinationResolver">
+				<property name="jndiTemplate" ref="jndiTemplate" />
+			</bean>
+		</property>
+		<property name="defaultDestinationName" value="#{T(zyf.tool.util.InteractionHandler).selectOption('Select Destination', ${${PROVIDER}_${ENV}_${MODEL}_DEST_OPTS})}" />
+		<property name="pubSubDomain" value="#{'TOPIC'.equalsIgnoreCase('${MODEL}')}" />
+	</bean>
+	
+	<bean id="messageHandler" class="fei.tools.mh.MessageHandler">
+		<property name="jmsTemplate" ref="jmsTemplate" />
+	</bean>
+</beans>

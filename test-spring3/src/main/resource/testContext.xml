@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="searchSystemEnvironment" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:testContext.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="testEL1" class="test.spring3.TestSpEL">
+		<property name="stringProp" value="#{null}" />
+		<property name="arrayProp" value="#{{'Hello','World'}}" />
+		<property name="listProp" value="#{new java.util.ArrayList()}" />
+		<property name="mapProp" value="#{new java.util.HashMap()}" />
+	</bean>
+	
+	<bean id="testEL2" class="test.spring3.TestSpEL">
+		<property name="stringProp" value="#{testEL1.arrayProp[0] + ' ' + testEL1.arrayProp[1]}" />
+		<property name="arrayProp" value="#{{'Hello','World'}}" />
+		<property name="listProp" value="${LIST}" />
+		<property name="mapProp" value="#{null}" />
+	</bean>
+</beans>
