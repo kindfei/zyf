@@ -1,0 +1,9 @@
+
+@rem Add workspace classpath variable M2_REPO to point to local repository.
+mvn -Declipse.workspace=C:\yifei\workspaces\workspace-all eclipse:add-maven-repo
+
+@rem New project
+mvn archetype:generate -DgroupId=zyf.test.spring3 -DartifactId=test-spring3 -DarchetypeArtifactId=maven-archetype-quickstart -DinteractiveMode=false
+
+@rem Convert project to eclipse format
+mvn eclipse:eclipse

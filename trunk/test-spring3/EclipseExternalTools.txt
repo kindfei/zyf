@@ -1,0 +1,24 @@
+maven clean package
+location: ${maven_exec}/mvn.bat
+working Directory: ${selected_resource_loc}
+Arguments: clean package
+
+maven eclipse clean
+location: ${maven_exec}/mvn.bat
+working Directory: ${selected_resource_loc}
+Arguments: eclipse:clean
+
+maven eclipse eclipse
+location: ${maven_exec}/mvn.bat
+working Directory: ${selected_resource_loc}
+Arguments: eclipse:eclipse
+
+maven new project
+location: ${maven_exec}/mvn.bat
+working Directory: ${workspace_loc}
+Arguments: archetype:generate
+
+maven repository variable
+location: ${maven_exec}/mvn.bat
+working Directory: ${workspace_loc}
+Arguments: -Declipse.workspace=${workspace_loc} eclipse:add-maven-repo
