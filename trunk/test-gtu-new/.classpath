@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<classpath>
+	<classpathentry kind="src" path="src/main/java"/>
+	<classpathentry kind="src" path="src/main/resources"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.launching.JRE_CONTAINER"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/GTU_LIB"/>
+	<classpathentry kind="con" path="org.eclipse.jdt.USER_LIBRARY/TEST_LIB"/>
+	<classpathentry combineaccessrules="false" kind="src" path="/citi-gpb-gtu-common"/>
+	<classpathentry kind="output" path="bin"/>
+</classpath>
