@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+
+	<bean id="dataSource" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="pbOnlineDS" />
+	</bean>
+	
+	<bean id="abstractSessionFactory" class="org.springframework.orm.hibernate3.annotation.AnnotationSessionFactoryBean" abstract="true">
+		<property name="dataSource" ref="dataSource" />
+		<property name="hibernateProperties">
+			<props>
+				<prop key="hibernate.dialect">org.hibernate.dialect.SybaseDialect</prop>
+			</props>
+		</property>
+		<property name="packagesToScan">
+			<list>
+				<value>test.po</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="sessionFactory" parent="abstractSessionFactory">
+	</bean>
+	
+	<bean id="sessionFactory1" parent="abstractSessionFactory">
+		<property name="jtaTransactionManager">
+			<bean class="org.springframework.jndi.JndiObjectFactoryBean">
+				<property name="jndiName" value="javax.transaction.TransactionManager" />
+			</bean>
+		</property>
+	</bean>
+
+	<bean id="testDao" class="test.dao.TestDaoImpl">
+		<property name="sessionFactory" ref="sessionFactory" />
+		<property name="hibernateTemplate1">
+			<bean class="org.springframework.orm.hibernate3.HibernateTemplate">
+				<property name="sessionFactory" ref="sessionFactory1" />
+			</bean>
+		</property>
+		<property name="jdbcTemplate">
+			<bean class="org.springframework.jdbc.core.JdbcTemplate">
+				<property name="dataSource" ref="dataSource" />
+			</bean>
+		</property>
+	</bean>
+</beans>
