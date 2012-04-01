@@ -1,0 +1,207 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project-modules id="moduleCoreId" project-version="1.5.0">
+    <wb-module deploy-name="test-ee-app">
+        <wb-resource deploy-path="/" source-path="/EarContent"/>
+        <dependent-module archiveName="test-ee-ejb.jar" deploy-path="/" handle="module:/resource/test-ee-ejb/test-ee-ejb">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="test-ee-utility.jar" deploy-path="/lib" handle="module:/resource/test-ee-utility/test-ee-utility">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="test-ee-web.war" deploy-path="/" handle="module:/resource/test-ee-web/test-ee-web">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="test-ee-client.jar" deploy-path="/lib" handle="module:/resource/test-ee-client/test-ee-client">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="logkit-1.0.1.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/logkit-1.0.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="ejb-3_0-api.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/ejb-3_0-api.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-jdbc-2.5.6.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/spring-jdbc-2.5.6.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="cglib-2.1_3.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/cglib-2.1_3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="hibernate-annotations-3.2.1.ga.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/hibernate-annotations-3.2.1.ga.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-tx-2.5.6.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/spring-tx-2.5.6.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="xstream-1.2.2.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/xstream-1.2.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="myfaces-api-1.1.2.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/myfaces-api-1.1.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="tibjms-4.3.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/tibjms-4.3.jar">
+            <dependent-object/>
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="xpp3-1.1.3.3.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/xpp3-1.1.3.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-digester-1.5.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/commons-digester-1.5.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-beanutils-1.7.0.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/commons-beanutils-1.7.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="aspectjweaver-1.5.3.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/aspectjweaver-1.5.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="ehcache-1.2.3.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/ehcache-1.2.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-context-2.5.6.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/spring-context-2.5.6.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="myfaces-impl-1.1.2.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/myfaces-impl-1.1.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axis-saaj-1.4.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/axis-saaj-1.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="persistence-api-1.0.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/persistence-api-1.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="xml-apis-1.0.b2.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/xml-apis-1.0.b2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-web-2.5.6.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/spring-web-2.5.6.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="oro-2.0.8.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/oro-2.0.8.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-beans-2.5.6.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/spring-beans-2.5.6.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="aopalliance-1.0.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/aopalliance-1.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="mail.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/mail.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="elf-1.1_B1.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/elf-1.1_B1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="activation-1.1.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/activation-1.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="xpp3_min-1.1.3.4.O.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/xpp3_min-1.1.3.4.O.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-collections-3.1.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/commons-collections-3.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="citi-gpb-common-dao.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/citi-gpb-common-dao.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="log4j-1.2.12.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/log4j-1.2.12.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jta-1.0.1B.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/jta-1.0.1B.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="avalon-framework-4.1.3.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/avalon-framework-4.1.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="gfm-xenv-1.0_A0.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/gfm-xenv-1.0_A0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jsr173-api-1.0.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/jsr173-api-1.0.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-pool-1.1.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/commons-pool-1.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="citi-gpb-common-service.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/citi-gpb-common-service.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-el.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/commons-el.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="asm-attrs-1.5.3.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/asm-attrs-1.5.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axis-wsdl4j-1.5.1.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/axis-wsdl4j-1.5.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="xercesImpl-2.0.2.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/xercesImpl-2.0.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-core-2.5.6.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/spring-core-2.5.6.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="citi-gpb-common-model.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/citi-gpb-common-model.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="antlr-2.7.6.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/antlr-2.7.6.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="jstl-1.1.2.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/jstl-1.1.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-logging-1.1.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/commons-logging-1.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="asm-1.5.3.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/asm-1.5.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="aspectjrt-1.5.3.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/aspectjrt-1.5.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-lang-2.3.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/commons-lang-2.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-dbcp-1.2.1.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/commons-dbcp-1.2.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-2.5.6.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/spring-2.5.6.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="servlet-api-2.3.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/servlet-api-2.3.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="commons-discovery.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/commons-discovery.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="dwr-2.0.1.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/dwr-2.0.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="citi-gpb-common-configuration.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/citi-gpb-common-configuration.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="citi-gpb-common-comm.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/citi-gpb-common-comm.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axis-1.4.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/axis-1.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="spring-webmvc-2.5.6.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/spring-webmvc-2.5.6.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="dom4j-1.6.1.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/dom4j-1.6.1.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="axis-jaxrpc-1.4.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/axis-jaxrpc-1.4.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="quartz-1.5.2.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/quartz-1.5.2.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="hibernate-3.2.1.ga.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/hibernate-3.2.1.ga.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+        <dependent-module archiveName="citi-gpb-common-util.jar" deploy-path="/APP-INF/lib" handle="module:/classpath/lib/C:/yifei/workspaces/library/GTU/citi-gpb-common-util.jar">
+            <dependency-type>uses</dependency-type>
+        </dependent-module>
+    </wb-module>
+</project-modules>
