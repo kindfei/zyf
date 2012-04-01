@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<wls:weblogic-ejb-jar xmlns:wls="http://www.bea.com/ns/weblogic/weblogic-ejb-jar"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/ejb-jar_3_0.xsd
+	http://www.bea.com/ns/weblogic/weblogic-ejb-jar http://www.bea.com/ns/weblogic/weblogic-ejb-jar/1.0/weblogic-ejb-jar.xsd">
+	
+	<!--weblogic-version:10.3 -->
+    <wls:weblogic-enterprise-bean>
+        <wls:ejb-name>HelloMDB</wls:ejb-name>
+        <wls:message-driven-descriptor>
+            <wls:pool>
+                <wls:max-beans-in-free-pool>1000</wls:max-beans-in-free-pool>
+                <wls:initial-beans-in-free-pool>0</wls:initial-beans-in-free-pool>
+            </wls:pool>
+        </wls:message-driven-descriptor>
+        <wls:dispatch-policy>TestWorkManager</wls:dispatch-policy>
+    </wls:weblogic-enterprise-bean>
+    
+    <wls:work-manager>
+        <wls:name>TestWorkManager</wls:name>
+        <wls:max-threads-constraint>
+            <wls:name>mtc</wls:name>
+            <wls:count>1</wls:count>
+        </wls:max-threads-constraint>
+    </wls:work-manager>
+    
+</wls:weblogic-ejb-jar>
