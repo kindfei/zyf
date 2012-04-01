@@ -1,0 +1,8 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<pageflow:Pageflow xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xmlns:pageflow="http://www.sybase.com/suade/pageflow" id="pf13148562534361" configfile="/test-ee-web/src/main/webapp/WEB-INF/faces-config.xml">
+  <nodes xsi:type="pageflow:PFPage" name="faces/test" x="122" y="370" id="pf13160658411850" referenceLink="//@navigationRule.0/@fromViewId|" outlinks="pf13160658411851 pf13165107831803" path="/faces/*"/>
+  <nodes xsi:type="pageflow:PFPage" name="faces/result" x="338" y="178" id="pf13160658411852" referenceLink="//@navigationRule.0/@navigationCase.1/@toViewId|" inlinks="pf13160658411851" path="/faces/DynamicComponentResult.jsp"/>
+  <nodes xsi:type="pageflow:PFPage" name="faces/DynamicComponent" x="338" y="562" id="pf13165107831804" referenceLink="//@navigationRule.0/@navigationCase.0/@toViewId|" inlinks="pf13165107831803" path="/faces/DynamicComponent.jsp"/>
+  <links id="pf13160658411851" target="pf13160658411852" source="pf13160658411850" outcome="dcr"/>
+  <links id="pf13165107831803" target="pf13165107831804" source="pf13160658411850" outcome="dc"/>
+</pageflow:Pageflow>

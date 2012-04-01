@@ -1,0 +1,39 @@
+<!DOCTYPE taglib PUBLIC "-//Sun Microsystems, Inc.//DTD JSP Tag Library 1.2//EN" "http://java.sun.com/dtd/web-jsptaglibrary_1_2.dtd">
+<taglib>
+	<!-- Tag Library Description Elements -->
+	<tlib-version>1.0</tlib-version>
+	<jsp-version>1.2</jsp-version>
+	<short-name>JSF Custom Tags</short-name>
+	<uri>faces-components</uri>
+	<description>
+		Sample custom components, renderers, validatos, and
+		converters from JSF in
+		Action.
+  </description>
+	<!-- Tag declarations -->
+	<tag>
+		<name>validateRegExp</name>
+		<tag-class>test.faces.validators.taglib.RegExpValidatorTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>expression</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+		<attribute>
+			<name>errorMessage</name>
+			<required>false</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+	</tag>
+	<tag>
+		<name>nameConverter</name>
+		<tag-class>test.faces.converters.taglib.NameConverterTag</tag-class>
+		<body-content>JSP</body-content>
+		<attribute>
+			<name>style</name>
+			<required>true</required>
+			<rtexprvalue>false</rtexprvalue>
+		</attribute>
+	</tag>
+</taglib>

@@ -1,0 +1,177 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns="http://java.sun.com/xml/ns/javaee" xmlns:web="http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
+	id="WebApp_ID" version="2.5">
+	
+	<display-name>test-ee-web</display-name>
+	
+	<welcome-file-list>
+		<welcome-file>index.html</welcome-file>
+		<welcome-file>index.htm</welcome-file>
+		<welcome-file>index.jsp</welcome-file>
+		<welcome-file>default.html</welcome-file>
+		<welcome-file>default.htm</welcome-file>
+		<welcome-file>default.jsp</welcome-file>
+	</welcome-file-list>
+	
+	<!-- Filter -->
+	<filter>
+		<filter-name>TestFilter</filter-name>
+		<filter-class>test.filter.TestFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>TestFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+		<dispatcher>FORWARD</dispatcher>
+		<dispatcher>REQUEST</dispatcher>
+		<dispatcher>INCLUDE</dispatcher>
+	</filter-mapping>
+	
+	<!-- Spring -->
+	<listener>
+		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
+	</listener>
+	<context-param>
+		<param-name>contextConfigLocation</param-name>
+		<param-value>
+			/WEB-INF/applicationContext.xml,
+			classpath:bizAppContext.xml,
+			classpath:daoContext.xml,
+			classpath:jmsContext.xml,
+			classpath:txContext.xml
+		</param-value>
+	</context-param>
+	
+	<!-- Java Faces -->
+	<listener>
+		<listener-class>org.apache.myfaces.webapp.StartupServletContextListener</listener-class>
+	</listener>
+	<context-param>
+		<param-name>javax.faces.STATE_SAVING_METHOD</param-name>
+		<param-value>server</param-value>
+	</context-param>
+	
+	<servlet>
+		<servlet-name>Faces Servlet</servlet-name>
+		<servlet-class>javax.faces.webapp.FacesServlet</servlet-class>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>Faces Servlet</servlet-name>
+		<url-pattern>*.jsf</url-pattern>
+	</servlet-mapping>
+	
+	<!-- DWR -->
+	<servlet>
+		<display-name>DWR Servlet</display-name>
+		<servlet-name>dwr-invoker</servlet-name>
+		<servlet-class>org.directwebremoting.servlet.DwrServlet</servlet-class>
+		<init-param>
+			<param-name>debug</param-name>
+			<param-value>true</param-value>
+		</init-param>
+		<init-param>
+			<param-name>jsonpEnabled</param-name>
+			<param-value>true</param-value>
+		</init-param>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>dwr-invoker</servlet-name>
+		<url-pattern>/dwr/*</url-pattern>
+	</servlet-mapping>
+	
+	<!-- Servlet -->
+	<servlet>
+		<servlet-name>TestHello</servlet-name>
+		<servlet-class>test.servlet.TestHelloServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TestHello</servlet-name>
+		<url-pattern>/TestHello</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>TestMDB</servlet-name>
+		<servlet-class>test.servlet.TestMDBServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TestMDB</servlet-name>
+		<url-pattern>/TestMDB</url-pattern>
+	</servlet-mapping>
+	
+	<servlet>
+		<servlet-name>TestTx</servlet-name>
+		<servlet-class>test.servlet.TestTxServlet</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>TestTx</servlet-name>
+		<url-pattern>/TestTx</url-pattern>
+	</servlet-mapping>
+	
+	<!-- ======================== EJB ======================== -->
+	<ejb-local-ref>
+		<ejb-ref-name>ejb/hll</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>test.ejb.hello.HelloSLSBLocal</local>
+		<ejb-link>HelloSLSB</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>ejb/hfl</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>test.ejb.hello.HelloSFSBLocal</local>
+		<ejb-link>HelloSFSB</ejb-link>
+	</ejb-local-ref>
+	
+	<ejb-local-ref>
+		<ejb-ref-name>ejb/hlli</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>test.ejb.hello.Hello</local>
+		<ejb-link>HelloSLSBLocalImpl</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>ejb/hfli</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>test.ejb.hello.Hello</local>
+		<ejb-link>HelloSFSBLocalImpl</ejb-link>
+	</ejb-local-ref>
+	
+	<ejb-local-ref>
+		<ejb-ref-name>ejb/s2hll</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>test.ejb.hello.HelloSLSBLocal</local>
+		<ejb-link>spring.ejb2.HelloSLSB</ejb-link>
+	</ejb-local-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>ejb/s2hfl</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>test.ejb.hello.HelloSFSBLocal</local>
+		<ejb-link>spring.ejb2.HelloSFSB</ejb-link>
+	</ejb-local-ref>
+	
+	<ejb-local-ref>
+		<ejb-ref-name>ejb/s3hll</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>test.ejb.hello.HelloSLSBLocal</local>
+		<ejb-link>spring.ejb3.HelloSLSB</ejb-link>
+	</ejb-local-ref>
+	<ejb-ref>
+		<ejb-ref-name>ejb/s3hlr</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<remote>test.ejb.hello.HelloSLSBRemote</remote>
+		<ejb-link>spring.ejb3.HelloSLSB</ejb-link>
+	</ejb-ref>
+	<ejb-local-ref>
+		<ejb-ref-name>ejb/s3hfl</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<local>test.ejb.hello.HelloSFSBLocal</local>
+		<ejb-link>spring.ejb3.HelloSFSB</ejb-link>
+	</ejb-local-ref>
+	<ejb-ref>
+		<ejb-ref-name>ejb/s3hfr</ejb-ref-name>
+		<ejb-ref-type>Session</ejb-ref-type>
+		<remote>test.ejb.hello.HelloSFSBRemote</remote>
+		<ejb-link>spring.ejb3.HelloSFSB</ejb-link>
+	</ejb-ref>
+	
+</web-app>

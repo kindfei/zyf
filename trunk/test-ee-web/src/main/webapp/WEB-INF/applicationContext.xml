@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:jee="http://www.springframework.org/schema/jee"
+	xmlns:tx="http://www.springframework.org/schema/tx"
+	xsi:schemaLocation="http://www.springframework.org/schema/jee http://www.springframework.org/schema/jee/spring-jee-2.5.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd
+		http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx-2.5.xsd">
+	
+	<bean id="hll" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/ejb/hll" />
+	</bean>
+	<bean id="hlr" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="hl#test.ejb.hello.HelloSLSBRemote" />
+	</bean>
+	<bean id="hfl" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="java:comp/env/ejb/hfl" />
+	</bean>
+	<bean id="hfr" class="org.springframework.jndi.JndiObjectFactoryBean">
+		<property name="jndiName" value="hf#test.ejb.hello.HelloSFSBRemote" />
+	</bean>
+
+	<jee:jndi-lookup id="hlli" jndi-name="java:comp/env/ejb/hlli" />
+	<jee:jndi-lookup id="hlri" jndi-name="hlri#test.ejb.hello.Hello" />
+	<jee:jndi-lookup id="hfli" jndi-name="java:comp/env/ejb/hfli" />
+	<jee:jndi-lookup id="hfri" jndi-name="hfri#test.ejb.hello.Hello" />
+
+	<jee:jndi-lookup id="s2hll" jndi-name="java:comp/env/ejb/s2hll" />
+	<jee:jndi-lookup id="s2hlr" jndi-name="s2hl#test.ejb.hello.HelloSLSBRemote" />
+	<jee:jndi-lookup id="s2hfl" jndi-name="java:comp/env/ejb/s2hfl" />
+	<jee:jndi-lookup id="s2hfr" jndi-name="s2hf#test.ejb.hello.HelloSFSBRemote" />
+	
+	<jee:jndi-lookup id="s3hll" jndi-name="java:comp/env/ejb/s3hll" />
+	<jee:jndi-lookup id="s3hlr" jndi-name="java:comp/env/ejb/s3hlr" />
+	<jee:jndi-lookup id="s3hfl" jndi-name="java:comp/env/ejb/s3hfl" />
+	<jee:jndi-lookup id="s3hfr" jndi-name="java:comp/env/ejb/s3hfr" />
+	
+	<bean id="testHelloPojo" class="test.servlet.TestHelloPojo">
+		<property name="hll" ref="hll" />
+		<property name="hlr" ref="hlr" />
+		<property name="hfl" ref="hfl" />
+		<property name="hfr" ref="hfr" />
+		
+		<property name="hlli" ref="hlli" />
+		<property name="hlri" ref="hlri" />
+		<property name="hfli" ref="hfli" />
+		<property name="hfri" ref="hfri" />
+		
+		<property name="s2hll" ref="s2hll" />
+		<property name="s2hlr" ref="s2hlr" />
+		<property name="s2hfl" ref="s2hfl" />
+		<property name="s2hfr" ref="s2hfr" />
+		
+		<property name="s3hll" ref="s3hll" />
+		<property name="s3hlr" ref="s3hlr" />
+		<property name="s3hfl" ref="s3hfl" />
+		<property name="s3hfr" ref="s3hfr" />
+		
+		<property name="jmsTemplate" ref="jmsTemplate" />
+	</bean>
+	
+	<jee:jndi-lookup id="testBMT" jndi-name="TestBMT#test.ejb.tx.TestBMTRemote" />
+	<jee:jndi-lookup id="testCMT" jndi-name="TestCMT#test.ejb.tx.TestCMTRemote" />
+	
+	<bean id="testTxPojo" class="test.servlet.TestTxPojo">
+		<property name="testBMT" ref="testBMT" />
+		<property name="testCMT" ref="testCMT" />
+	</bean>
+	
+</beans>
