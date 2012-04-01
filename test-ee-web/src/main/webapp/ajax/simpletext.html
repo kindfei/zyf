@@ -1,0 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<html xmlns="http://www.w3.org/1999/xhtml">
+<head>
+<title>Simple Text Generation Demo</title>
+<meta http-equiv="Content-Type" content="text/html; charset=us-ascii" />
+<script type='text/javascript' src='../dwr/engine.js'></script>
+<script type='text/javascript' src='../dwr/util.js'></script>
+<script type='text/javascript' src='../dwr/interface/SimpleText.js'></script>
+<script type="text/javascript" src='simpletext.js'></script>
+<script type="text/javascript" src='jquery-1.6.1.js'></script>
+</head>
+<body onload="dwr.util.useLoadingMessage();">
+	<p>
+		Name:
+		<input type="text" id="name" value="Joe" />
+		<input value="Send" type="button" onclick="update()" />
+		<input value="SendWithJSONP" type="button" onclick="updateWithJSONP()" />
+		<br />
+		First Name:
+		<input type="text" id="firstName" value="" />
+		Last Name:
+		<input type="text" id="lastName" value="" />
+		<input value="Send" type="button" onclick="sayHi()" />
+		<br />
+		Reply: <span id="reply" style="background: #eeffdd; padding-left: 4px; padding-right: 4px;"></span>
+	</p>
+</body>
+</html>
