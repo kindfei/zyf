@@ -1,0 +1,92 @@
+<html>
+<head>
+<title>GTU Screen Selector</title>
+</head>
+<script type="text/javascript">
+function onEvent(element, name) {
+	if (element.value != "") {
+		document.getElementById(name).disabled = true;
+	} else {
+		document.getElementById(name).disabled = false;
+	}
+}
+
+function onSubmit() {
+	var topAcct = document.getElementById("select").value;
+	if (document.getElementById("text").value != "") {
+		topAcct = document.getElementById("text").value;
+	}
+	if (topAcct == "") {
+		alert("Missing topAcct.");
+		return;
+	}
+	
+	var env = getCheckedValue(document.form.env);
+	
+	var screen = getCheckedValue(document.form.screen);
+	
+	var style = getCheckedValue(document.form.style);
+	
+	var url = "http://" + env + "/PBTradeUpload/pages/" + screen + "?topAcct=" + topAcct
+
+	if (style != "") {
+		url += "&newDesign=" + style
+	}
+	
+	window.open(url);
+}
+
+function getCheckedValue(radioObj) {
+	if (!radioObj) {
+		return "";
+	}
+	var radioLength = radioObj.length;
+	if (radioLength == undefined) {
+		if (radioObj.checked) {
+			return radioObj.value;
+		} else {
+			return "";
+		}
+	}
+	for (var i = 0; i < radioLength; i++) {
+		if (radioObj[i].checked) {
+			return radioObj[i].value;
+		}
+	}
+	return "";
+}
+</script>
+<body>
+	<form name="form">
+		<B>ENV:</B>
+		<br>
+		<input type="radio" name="env" value="localhost:7001" checked="checked">LOCAL
+		<input type="radio" name="env" value="epblnx6d.nam.nsroot.net:16584">DEV-6
+		<input type="radio" name="env" value="epblnx8u.nam.nsroot.net:26584">UAT-8
+		<p>
+		<B>Screen:</B>
+		<br>
+		<input type="radio" name="screen" value="index.jsf" checked="checked">Trade Allocation
+		<input type="radio" name="screen" value="tradeSearchForm.jsf">Trade Search
+		<p>
+		<B>Style:</B>
+		<br>
+		<input type="radio" name="style" value="N">Prime Finance
+		<input type="radio" name="style" value="Y">CITI Velocity
+		<p>
+		<B>Top Account:</B>
+		<br>
+		<select id="select" onChange="onEvent(this, 'text')">
+			<option value=""></option>
+			<option value="ADVENT">ADVENT</option>
+			<option value="TIGER">TIGER</option>
+			<option value="HBK">HBK</option>
+			<option value="WELL">WELL</option>
+			<option value="VIKING">VIKING</option>
+		</select>
+		<input type="text" id="text" onChange="onEvent(this, 'select')">
+		<p>
+		<input type="button" value="GOTO" onclick="onSubmit()">
+	</form>
+</body>
+</html>
