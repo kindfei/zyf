@@ -1,0 +1,86 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Test</title>
+<script type="text/javascript" src="test.js"></script>
+<script type="text/javascript">
+function validate(obj) {
+	var text1 = document.getElementById("text1");
+	evaluate("text1", text1);
+	evaluate("text1.vale", text1.value);
+	
+	var text2 = document.getElementById("text2");
+	evaluate("text2", text2);
+	evaluate("text2.value", text2.value);
+	
+	var nonexistent = document.getElementById("nonexistent");
+	evaluate("nonexistent", nonexistent);
+	
+	evaluate("undefined");
+	
+	return false;
+}
+
+function evaluate(title, obj) {
+	output("------ " + title + " ------");
+	
+	if (obj == null) output("equals null", "red");
+	else output("don't equals null", "blue");
+	if (obj === null) output("is null", "red");
+	else output("is not null", "blue");
+	
+	if (obj == "") output("equals empty string", "red");
+	else output("don't equals empty string", "blue");
+	if (obj === "") output("is empty string", "red");
+	else output("is not empty string", "blue");
+	
+	if (obj == 1.0) output("equals double 1.0", "red");
+	else output("don't equals double 1.0", "blue");
+	if (obj === 1.0) output("is double 1.0", "red");
+	else output("is not double 1.0", "blue");
+	
+	if (typeof(obj) == 'string') output("equals typeof string", "red");
+	else output("don't equals typeof string", "blue");
+	if (typeof(obj) === 'string') output("is typeof string", "red");
+	else output("is not typeof string", "blue");
+
+	if (typeof obj == 'object') output("eqauls typeof object", "red");
+	else output("don't eqauls typeof object", "blue");
+	if (typeof obj === 'object') output("is typeof object", "red");
+	else output("is not typeof object", "blue");
+
+	if (typeof obj == 'undefined') output("equals typeof undefined", "red");
+	else output("don't equals typeof undefined", "blue");
+	if (typeof obj === 'undefined') output("is typeof undefined", "red");
+	else output("is not typeof undefined", "blue");
+	
+	if (obj) output("truthy", "red");
+	else output("not truthy", "blue");
+}
+
+function output(msg, color) {
+	var eOut = document.getElementById("out");
+	var r = eOut.innerHTML;
+	if (color) {
+		r += "<font color='" + color + "'>" + msg + "</font>";
+	} else {
+		r += msg;
+	}
+	eOut.innerHTML = r + "<br>";
+}
+
+</script>
+</head>
+<body>
+<form onsubmit="return validate(this)">
+	text1 <input id="text1" type="text" value="1.0">
+	<p>
+	text2 <input id="text2" type="text">
+	<p>
+	<input type="submit" value="submit">
+</form>
+<P>
+<span id="out"><b>RESULT:</b><br></span>
+</body>
+</html>

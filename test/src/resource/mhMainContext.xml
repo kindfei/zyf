@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:mhMainOverride.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="evnironments" class="fei.tools.util.SystemPropertyOptions">
+		<property name="optionName" value="ENV" />
+	</bean>
+	
+	<bean id="providers" class="fei.tools.util.SystemPropertyOptions">
+		<property name="optionName" value="PROVIDER" />
+	</bean>
+	
+	<bean id="models" class="fei.tools.util.SystemPropertyOptions">
+		<property name="optionName" value="MODEL" />
+	</bean>
+	
+	<bean id="destinations" class="fei.tools.util.SystemPropertyOptions">
+		<property name="optionName" value="DESTINATION" />
+	</bean>
+	
+	<bean id="variableContext" class="fei.tools.util.VariableContextFactoryBean" destroy-method="close">
+		<property name="configLocations" value="mhJmsContext.xml" />
+		<property name="optionsBeans">
+			<list>
+				<ref bean="providers" />
+				<ref bean="evnironments" />
+				<ref bean="models" />
+				<ref bean="destinations" />
+			</list>
+		</property>
+	</bean>
+</beans>

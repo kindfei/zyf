@@ -1,0 +1,35 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD HTML 4.01 Transitional//EN" "http://www.w3.org/TR/html4/loose.dtd">
+<html>
+<head>
+<meta http-equiv="Content-Type" content="text/html; charset=ISO-8859-1">
+<title>Test</title>
+<script type="text/javascript" src="test.js"></script>
+<script type="text/javascript">
+
+function selectValue(value) {
+	var e = document.getElementById("sel");
+	for (i = 0; i < e.length; i++) {
+		if (e.options[i].value == value) {
+			e.selectedIndex = i;
+			return;
+		}
+	}
+	e.selectedIndex = 0;
+	e.disabled = true;
+}
+
+</script>
+</head>
+<body>
+<form onsubmit="">
+	<input type="text" onblur="selectValue(this.value)">
+	<select id="sel">
+		<option value=""></option>
+		<option value="a">A</option>
+		<option value="b">B</option>
+		<option value="c">C</option>
+		<option value="d">D</option>
+		<option value="e">E</option>
+	</select>
+</form>
+</html>
