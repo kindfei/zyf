@@ -1,1 +1,0 @@
-./CreateCertificate.cmd sign-user-cert
