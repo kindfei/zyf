@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:aop="http://www.springframework.org/schema/aop"
+	xsi:schemaLocation="http://www.springframework.org/schema/aop http://www.springframework.org/schema/aop/spring-aop-2.5.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean id="testAspect" class="test.spring.aop.TestAspect">
+		
+	</bean>
+	
+	<bean id="testService" class="test.spring.aop.TestServiceImpl">
+		
+	</bean>
+
+	<aop:config proxy-target-class="false">
+		<aop:pointcut expression="execution(* zyf.test.spring.aop.*ServiceImpl.*(..)) and args(name)" id="service" />
+		<aop:aspect ref="testAspect">
+			<aop:before method="before" pointcut-ref="service" arg-names="name" />
+			<aop:around method="around" pointcut-ref="service" arg-names="name" />
+			<aop:after method="after" pointcut-ref="service" arg-names="name" />
+			<aop:after-returning method="afterReturning" pointcut-ref="service" returning="retVal" arg-names="retVal,name" />
+			<aop:after-throwing method="afterThrowing" pointcut-ref="service" throwing="e" arg-names="e,name" />
+		</aop:aspect>
+	</aop:config>
+
+</beans>

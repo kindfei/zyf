@@ -1,0 +1,215 @@
+<html>
+<head>
+<title>GTU Screen Selector</title>
+</head>
+<script type="text/javascript">
+function onEvent(element, name) {
+	if (element.value != "") {
+		document.getElementById(name).disabled = true;
+	} else {
+		document.getElementById(name).disabled = false;
+	}
+}
+
+function onOperChanged() {
+	var oper = getCheckedValue(document.form.operation);
+	if (oper == "A") {
+		document.getElementById("tradeId").disabled = true;
+		document.getElementById("topAcct").disabled = false;
+	} else if (oper == "M") {
+		document.getElementById("topAcct").disabled = true;
+		document.getElementById("tradeId").disabled = false;
+	}
+}
+
+function onSubmit(screen) {
+	var topAcct = document.getElementById("select").value;
+	if (document.getElementById("text").value != "") {
+		topAcct = document.getElementById("text").value;
+	}
+	if (topAcct == "") {
+		alert("Missing topAcct.");
+		return;
+	}
+	
+	var url = obtainUrl(screen);
+	
+	url += "topAcct=" + topAcct;
+	
+	window.open(url);
+}
+
+function affmanOnSubmit() {
+	
+	var oper = getCheckedValue(document.form.operation);
+	var screen;
+	if (oper == "A") {
+		screen = "tradeAllocPB.jsf"
+	} else if (oper == "M") {
+		screen = "tradeDetailForm.jsf"
+	} else {
+		alert("Select a operation.");
+		return;
+	}
+	
+	var url = obtainUrl(screen);
+	url += "IsFromAffirm=Y";
+	
+	topAcct = document.getElementById("topAcct").value;
+	tradeId = document.getElementById("tradeId").value;
+	
+	if (oper == "A") {
+		if (!topAcct) {
+			alert("Missing topAcct.");
+			return;
+		}
+		url += "&topAcct=" + topAcct;
+	} else if (oper == "M") {
+		if (!tradeId) {
+			alert("Missing tradeId.");
+			return;
+		}
+		url += "&tradeId=" + tradeId;
+	}
+	
+	tradeDate = document.getElementById("tradeDate").value;
+	settleDate = document.getElementById("settleDate").value;
+	quantity = document.getElementById("quantity").value;
+	price = document.getElementById("price").value;
+	commission = document.getElementById("commission").value;
+	secFee = document.getElementById("secFee").value;
+	bondInt = document.getElementById("bondInt").value;
+	exBroker = document.getElementById("exBroker").value;
+	
+	if (tradeDate) url += "&tradeDate=" + tradeDate;
+	if (settleDate) url += "&settleDate=" + settleDate;
+	if (quantity) url += "&quantity=" + quantity;
+	if (price) url += "&price=" + price;
+	if (commission) url += "&commission=" + commission;
+	if (secFee) url += "&secFee=" + secFee;
+	if (bondInt) url += "&bondInt=" + bondInt;
+	if (exBroker) url += "&exBroker=" + exBroker;
+	
+	window.open(url);
+}
+
+function obtainUrl(screen) {
+	var env = getCheckedValue(document.form.env);
+	
+	var url = "http://" + env + "/PBTradeUpload/pages/" + screen + "?";
+	
+	var style = getCheckedValue(document.form.style);
+
+	if (style != "") {
+		url += "newDesign=" + style + "&";
+	}
+	
+	return url
+}
+
+function getCheckedValue(radioObj) {
+	if (!radioObj) {
+		return "";
+	}
+	var radioLength = radioObj.length;
+	if (radioLength == undefined) {
+		if (radioObj.checked) {
+			return radioObj.value;
+		} else {
+			return "";
+		}
+	}
+	for (var i = 0; i < radioLength; i++) {
+		if (radioObj[i].checked) {
+			return radioObj[i].value;
+		}
+	}
+	return "";
+}
+</script>
+<body>
+	<form name="form">
+		<B>ENV:</B>
+		<br>
+		<input type="radio" name="env" value="localhost:7001" checked="checked">LOCAL
+		<input type="radio" name="env" value="epblnx6d.nam.nsroot.net:16584">DEV-6
+		<input type="radio" name="env" value="epblnx8u.nam.nsroot.net:26584">UAT-8
+		<p>
+		<B>Style:</B>
+		<br>
+		<input type="radio" name="style" value="N">Prime Finance
+		<input type="radio" name="style" value="Y">CITI Velocity
+		<p>
+		<B>Top Account:</B>
+		<br>
+		<select id="select" onChange="onEvent(this, 'text')">
+			<option value=""></option>
+			<option value="ADVENT">ADVENT</option>
+			<option value="TIGER">TIGER</option>
+			<option value="HBK">HBK</option>
+			<option value="WELL">WELL</option>
+			<option value="VIKING">VIKING</option>
+			<option value="ALPINE">ALPINE</option>
+		</select>
+		<input type="text" id="text" onChange="onEvent(this, 'select')">
+		<p>
+		<input type="button" value="Trade Allocation" onclick="onSubmit('index.jsf')">
+		<input type="button" value="Trade Search" onclick="onSubmit('tradeSearchForm.jsf')">
+		<P>
+		<B>Affman:</B>
+		<br>
+		<input type="radio" name="operation" value="A" onchange="onOperChanged()">Trade Allocation
+		<input type="radio" name="operation" value="M" onchange="onOperChanged()">Trade Cancel/Modify
+		<table>
+			<tr>
+				<td>topAcct</td>
+				<td>
+					<input id="topAcct" type="text">
+				</td>
+				<td>tradeId</td>
+				<td>
+					<input id="tradeId" type="text">
+				</td>
+			</tr>
+			<tr>
+				<td>tradeDate</td>
+				<td>
+					<input id="tradeDate" type="text">
+				</td>
+				<td>settleDate</td>
+				<td>
+					<input id="settleDate" type="text">
+				</td>
+				<td>quantity</td>
+				<td>
+					<input id="quantity" type="text">
+				</td>
+				<td>price</td>
+				<td>
+					<input id="price" type="text">
+				</td>
+			</tr>
+			<tr>
+				<td>commission</td>
+				<td>
+					<input id="commission" type="text">
+				</td>
+				<td>secFee</td>
+				<td>
+					<input id="secFee" type="text">
+				</td>
+				<td>bondInt</td>
+				<td>
+					<input id="bondInt" type="text">
+				</td>
+				<td>exBroker</td>
+				<td>
+					<input id="exBroker" type="text">
+				</td>
+			</tr>
+		</table>
+		<p>
+		<input type="button" value="submit" onclick="affmanOnSubmit()">
+	</form>
+</body>
+</html>

@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean class="zyf.test.spring.TestFactoryMethod" factory-method="getInstance">
+		<property name="text" value="haha" />
+	</bean>
+	
+	<bean class="zyf.test.spring.TestFactoryAware" factory-method="getInstance">
+	</bean>
+	
+	<bean id="str" class="java.lang.String">
+		<constructor-arg value="test string" />
+	</bean>
+
+</beans>

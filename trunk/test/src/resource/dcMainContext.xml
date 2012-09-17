@@ -1,0 +1,131 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="searchSystemEnvironment" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:dcMainPlaceholder.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean class="org.springframework.beans.factory.config.PropertyOverrideConfigurer">
+		<property name="locations">
+			<list>
+				<value>classpath:dcMainOverride.properties</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="evnironments" class="fei.tools.util.SystemPropertyOptions">
+		<property name="optionName" value="ENV" />
+	</bean>
+	
+	<bean id="variableContext" class="fei.tools.util.VariableContextFactoryBean" destroy-method="close">
+		<property name="configLocations" value="dcDaContext.xml" />
+		<property name="optionsBeans">
+			<list>
+				<ref bean="evnironments"/>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="csvFileReporter" class="fei.tools.dc.cc.cp.CsvFileReporter">
+		<property name="targetDir" value="C:\yifei" />
+		<property name="inOneFile" value="false" />
+		<property name="nullValue" value="NULL" />
+		<property name="presentMode" value="horizontal" />
+		<property name="ignoreSameResult" value="true" />
+		<property name="onlyDifferentColumn" value="true" />
+		<property name="columnsForDisplay">
+			<list>
+				<value>tradeId</value>
+				<value>tradeVer</value>
+			</list>
+		</property>
+		<property name="groupKeys">
+			<list>
+				<value>topAcct</value>
+			</list>
+		</property>
+	</bean>
+	
+	<bean id="abstractCompareCase" class="fei.tools.dc.cc.DefaultCompareCase">
+		<property name="parameters1">
+			<list>
+				<value>2010-12-22 12:00AM</value>
+				<value>2010-12-23 12:00AM</value>
+			</list>
+		</property>
+		<property name="parameters2">
+			<list>
+				<value>2010-12-22 12:00AM</value>
+				<value>2010-12-23 12:00AM</value>
+			</list>
+		</property>
+		<property name="relatedColumns">
+			<list>
+				<value>topAcct</value>
+				<value>type</value>
+				<value>status</value>
+				<value>subAcct</value>
+				<value>secId</value>
+				<value>buySell</value>
+				<value>quantity</value>
+				<value>price</value>
+				<value>tradeDate</value>
+			</list>
+		</property>
+		<property name="ignoreColumns">
+			<list>
+				<value>tradeId</value>
+			</list>
+		</property>
+		<property name="dataAccessorName" value="jdbcDataAccessor" />
+		<property name="reporter" ref="csvFileReporter" />
+	</bean>
+	
+	<bean id="dataComparator" class="fei.tools.dc.DataComparator">
+		<property name="context1" ref="variableContext" />
+		<property name="context2" ref="variableContext" />
+		<property name="compareCases">
+			<list>
+				<!-- US Trades -->
+				<bean parent="abstractCompareCase">
+					<property name="name" value="UsTradeCompare" />
+					<property name="sql"><value><![CDATA[
+						select b.msgState, b.tmsMsg1 as message, a.* from TblTrade a, TblTmsMsg b 
+						where a.modDt >= ? and a.modDt < ? and a.type not in ('OHD','OAL','NOT') 
+						and a.buySell not in ('DVP','RVP','TFI','TFO') 
+						and a.tradeId *= b.tradeId and a.tradeVer *= b.tradeVer
+					]]></value></property>
+				</bean>
+				
+				<!-- US Asset Transfer -->
+				<bean parent="abstractCompareCase">
+					<property name="name" value="UsAssetTransferCompare" />
+					<property name="sql"><value><![CDATA[
+						select b.msgState, b.radarMsg1 as message, a.* from TblTrade a, TblRadarMsg b 
+						where a.modDt >= ? and a.modDt < ? and a.type not in ('OHD','OAL','NOT') 
+						and a.buySell in ('DVP','RVP','TFI','TFO') 
+						and a.tradeId *= b.tradeId and a.tradeVer *= b.tradeVer
+					]]></value></property>
+				</bean>
+				
+				<!-- IPB trades -->
+				<bean parent="abstractCompareCase">
+					<property name="name" value="IpbTradeCompare" />
+					<property name="sql"><value><![CDATA[
+						select b.msgState, '' as message, a.* from TblTrade a, TblIpbMsg b 
+						where a.modDt >= ? and a.modDt < ? and a.type in ('OHD','OAL') 
+						and a.tradeId *= b.tradeId and a.tradeVer *= b.tradeVer
+					]]></value></property>
+				</bean>
+			</list>
+		</property>
+	</bean>
+
+</beans>

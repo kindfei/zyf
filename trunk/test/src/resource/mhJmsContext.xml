@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xsi:schemaLocation="http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans-2.5.xsd">
+
+	<bean class="org.springframework.beans.factory.config.PropertyPlaceholderConfigurer">
+		<property name="searchSystemEnvironment" value="true" />
+		<property name="locations">
+			<list>
+				<value>classpath:mhJmsplaceholder.properties</value>
+			</list>
+		</property>
+	</bean>
+
+	<bean id="jndiTemplate" class="org.springframework.jndi.JndiTemplate">
+		<property name="environment">
+			<props>
+				<prop key="java.naming.factory.initial">${INITIAL_CONTEXT_FACTORY_${PROVIDER}}</prop>
+				<prop key="java.naming.provider.url">${PROVIDER_URL_${PROVIDER}_${ENV}}</prop>
+			</props>
+		</property>
+	</bean>
+
+	<bean id="jmsTemplate" class="org.springframework.jms.core.JmsTemplate">
+		<property name="connectionFactory">
+			<bean class="org.springframework.jms.connection.UserCredentialsConnectionFactoryAdapter">
+				<property name="targetConnectionFactory">
+					<bean class="org.springframework.jndi.JndiObjectFactoryBean">
+						<property name="jndiTemplate" ref="jndiTemplate" />
+						<property name="jndiName" value="${${MODEL}_CF_JNDI_NAME_${PROVIDER}_${ENV}}" />
+					</bean>
+				</property>
+				<property name="username" value="${USERNAME_${PROVIDER}_${ENV}}" />
+				<property name="password" value="${PASSWORD_${PROVIDER}_${ENV}}" />
+			</bean>
+		</property>
+		<property name="destinationResolver">
+			<bean class="org.springframework.jms.support.destination.JndiDestinationResolver">
+				<property name="jndiTemplate" ref="jndiTemplate" />
+			</bean>
+		</property>
+		<property name="defaultDestinationName" value="${DESTINATION}" />
+		<property name="pubSubDomain">
+			<bean class="fei.tools.mh.PubSubDomainValue">
+				<property name="model" value="${MODEL}" />
+				<property name="topicValue" value="TOPIC" />
+			</bean>
+		</property>
+	</bean>
+	
+	<bean id="messageHandler" class="fei.tools.mh.MessageHandler">
+		<property name="jmsTemplate" ref="jmsTemplate" />
+	</bean>
+</beans>
