@@ -1,1 +1,0 @@
-./CreateCertificate.cmd new-root-ca
